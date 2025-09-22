@@ -1,7 +1,7 @@
 #+TITLE: Atlas Keyboard
 #+OPTIONS: toc:nil num:nil
 
-[[atlas-render2.png]]
+[[atlas-render.png]]
 
 * Atlas
 Atlas is a split keyboard with:
@@ -11,4 +11,3 @@ Atlas is a split keyboard with:
 
 A dongle will likely be required for dual TrackPoints.
 Any movement on a pointing device should automatically trigger the mousekey layer.
-
