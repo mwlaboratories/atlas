@@ -1,0 +1,24 @@
+#+TITLE: Atlas Keyboard
+#+OPTIONS: toc:nil num:nil
+
+* Atlas
+Atlas is a split keyboard with:
+- 34 keys
+- Dual TrackPoints (one per half)
+- Optional oversized standalone trackball
+
+I think a dongle will be needed for the dual TrackPoints to work.  
+
+When moving any pointing device, the *mousekey layer* activates automatically.  
+This makes cool setups possible, e.g.:
+- Left TrackPoint = high sensitivity
+- Right TrackPoint = low sensitivity
+- Trackball = fast scrolling / navigation
+
+#+CAPTION: Render of Atlas
+[[./images/atlas-render.png]]
+
+* Progress
+Some shots of the design process:  
+[[./images/progress1.png]]  
+[[./images/progress2.png]]  
