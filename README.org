@@ -11,14 +11,4 @@ Atlas is a split keyboard with:
 
 I think a dongle will be needed for the dual TrackPoints to work.  
 
-When moving any pointing device, the *mousekey layer* activates automatically.  
-This makes cool setups possible, e.g.:
-- Left TrackPoint = high sensitivity
-- Right TrackPoint = low sensitivity
-- Trackball = fast scrolling / navigation
-
-* Progress
-Some shots of the design process:  
-[[progress1.png]]  
-[[progress2.png]]  
-
+When moving any pointing device, the *mousekey layer* should activate automatically. 
