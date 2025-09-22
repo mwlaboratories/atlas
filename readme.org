@@ -9,7 +9,8 @@ Atlas is a split keyboard with:
 - Dual TrackPoints (one per half)
 - Optional oversized standalone trackball
 
-WARNING: work in progress, still untested, PCB's might not work if you order them as is
+WARNING: 
+Work in progress, still untested, PCB's might not work if you order them as is.
 
 A dongle will likely be required to get zmk to play nice with dual TrackPoints.
 Any movement on a pointing device should automatically trigger the mousekey layer.
