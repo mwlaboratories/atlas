@@ -1,7 +1,7 @@
 #+TITLE: Atlas Keyboard
 #+OPTIONS: toc:nil num:nil
 
-[[atlas-render.png]]
+[[atlas-render2.png]]
 
 * Atlas
 Atlas is a split keyboard with:
@@ -21,3 +21,4 @@ This makes cool setups possible, e.g.:
 Some shots of the design process:  
 [[progress1.png]]  
 [[progress2.png]]  
+
