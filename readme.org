@@ -9,8 +9,10 @@ Atlas is a split keyboard with:
 - Dual TrackPoints (one per half)
 - Optional oversized standalone trackball
 
+WARNING: work in progress, still untested, PCB's might not work if you order them as is
+
 A dongle will likely be required to get zmk to play nice with dual TrackPoints.
 Any movement on a pointing device should automatically trigger the mousekey layer.
 Battery is currently a 401025 sized lipo, but I'd like to go a bit bigger.
 
-Trackball uses a 57.2mm sized pool ball, has space for a 501522 lipo the PCB is a modded AdeptBLE PCB.
+Trackball uses a 57.2mm sized pool ball, has space for a 501522 lipo, the PCB is a modded AdeptBLE PCB.
