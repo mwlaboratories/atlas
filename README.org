@@ -9,6 +9,6 @@ Atlas is a split keyboard with:
 - Dual TrackPoints (one per half)
 - Optional oversized standalone trackball
 
-I think a dongle will be needed for the dual TrackPoints to work.  
+A dongle will likely be required for dual TrackPoints.
+Any movement on a pointing device should automatically trigger the mousekey layer.
 
-When moving any pointing device, the *mousekey layer* should activate automatically. 
