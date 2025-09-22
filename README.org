@@ -1,6 +1,8 @@
 #+TITLE: Atlas Keyboard
 #+OPTIONS: toc:nil num:nil
 
+[[atlas-render.png]]
+
 * Atlas
 Atlas is a split keyboard with:
 - 34 keys
@@ -15,10 +17,7 @@ This makes cool setups possible, e.g.:
 - Right TrackPoint = low sensitivity
 - Trackball = fast scrolling / navigation
 
-#+CAPTION: Render of Atlas
-[[./images/atlas-render.png]]
-
 * Progress
 Some shots of the design process:  
-[[./images/progress1.png]]  
-[[./images/progress2.png]]  
+[[progress1.png]]  
+[[progress2.png]]  
