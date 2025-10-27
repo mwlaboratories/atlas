@@ -1,0 +1,277 @@
+# ========================================================================
+# JUSTFILE: ZMK Firmware Build Automation
+# ========================================================================
+# 
+# This Justfile provides a convenient interface for building ZMK keyboard
+# firmware. It automates the complex process of:
+#   - Parsing build configuration from build.yaml
+#   - Cross-compiling firmware for various keyboard boards and shields
+#   - Generating firmware artifacts in the correct format (.uf2 or .bin)
+#   - Visualizing keyboard keymaps
+#   - Running tests
+#   - Managing the Zephyr/West workspace
+#
+# Usage examples:
+#   just                # List all available recipes
+#   just build          # Build all firmware targets from build.yaml
+#   just build "split"  # Build only targets matching "split"
+#   just clean          # Remove build artifacts
+#   just draw           # Generate keymap visualization
+# ========================================================================
+
+# ------------------------------------------------------------------------
+# DEFAULT RECIPE: Show Available Commands
+# ------------------------------------------------------------------------
+# The '@' prefix suppresses echoing the command itself.
+# --list shows all recipes, --unsorted doesn't alphabetize them.
+# ------------------------------------------------------------------------
+default:
+    @just --list --unsorted
+
+# ------------------------------------------------------------------------
+# PATH VARIABLES
+# ------------------------------------------------------------------------
+# These define the key directories used throughout the build process.
+# absolute_path() ensures these are always absolute paths, preventing
+# issues when running just from different directories.
+#
+# config:  Your ZMK configuration directory (keymaps, .conf files, etc.)
+# build:   Temporary build directory (CMake cache, object files)
+# out:     Final firmware artifacts directory (.uf2 or .bin files)
+# draw:    Keymap visualization output directory
+# ------------------------------------------------------------------------
+config := absolute_path('config')
+build := absolute_path('.build')
+out := absolute_path('firmware')
+draw := absolute_path('draw')
+
+# ------------------------------------------------------------------------
+# INTERNAL RECIPE: Parse Build Targets from build.yaml
+# ------------------------------------------------------------------------
+# This helper function parses the build.yaml configuration file and
+# filters targets based on a search expression.
+#
+# Parameters:
+#   $expr: Search expression to filter targets (e.g., "corne", "left", "all")
+#
+# How it works:
+#   1. Uses yq to extract board, shield, snippet, and artifact-name fields
+#   2. Handles both direct targets and included configuration files
+#   3. Generates all combinations of options
+#   4. Filters results based on the expression (case-insensitive)
+#   5. Returns comma-separated values: board,shield,snippet,artifact
+#
+# The bash shebang (!/usr/bin/env bash) runs this as a bash script,
+# allowing access to shell features like command substitution and pipes.
+# ------------------------------------------------------------------------
+_parse_targets $expr:
+    #!/usr/bin/env bash
+    attrs="[.board, .shield, .snippet, .\"artifact-name\"]"
+    filter="(($attrs | map(. // [.]) | combinations), ((.include // {})[] | $attrs)) | join(\",\")"
+    echo "$(yq -r "$filter" build.yaml | grep -v "^," | grep -i "${expr/#all/.*}")"
+
+# ------------------------------------------------------------------------
+# INTERNAL RECIPE: Build Single Firmware Target
+# ------------------------------------------------------------------------
+# This is the workhorse that actually compiles one firmware configuration.
+# It's called internally by the main build recipe.
+#
+# Parameters:
+#   $board:      The microcontroller board (e.g., "nice_nano_v2")
+#   $shield:     The keyboard shield (e.g., "corne_left")
+#   $snippet:    Optional build snippet for extra configuration
+#   $artifact:   Name for the output file (auto-generated if not provided)
+#   *west_args:  Additional arguments to pass to west build
+#
+# Build Process:
+#   1. Determines the artifact name (output file)
+#   2. Creates a unique build directory for this configuration
+#   3. Runs West (Zephyr's meta-tool) to build the firmware
+#   4. Copies the output file (.uf2 for modern boards, .bin for older ones)
+#
+# Important CMake flags:
+#   -DZMK_CONFIG: Point to the config directory
+#   -DSHIELD: Specify which keyboard shield to build for
+# ------------------------------------------------------------------------
+_build_single $board $shield $snippet $artifact *west_args:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    artifact="${artifact:-${shield:+${shield// /+}-}${board}}"
+    build_dir="{{ build / '$artifact' }}"
+
+    echo "Building firmware for $artifact..."
+    west build -s zmk/app -d "$build_dir" -b $board {{ west_args }} ${snippet:+-S "$snippet"} -- \
+        -DZMK_CONFIG="{{ config }}" ${shield:+-DSHIELD="$shield"}
+
+    if [[ -f "$build_dir/zephyr/zmk.uf2" ]]; then
+        mkdir -p "{{ out }}" && cp "$build_dir/zephyr/zmk.uf2" "{{ out }}/$artifact.uf2"
+    else
+        mkdir -p "{{ out }}" && cp "$build_dir/zephyr/zmk.bin" "{{ out }}/$artifact.bin"
+    fi
+
+# ------------------------------------------------------------------------
+# MAIN RECIPE: Build All Matching Targets
+# ------------------------------------------------------------------------
+# This is the primary build interface. It parses build.yaml, filters targets
+# by an expression, and builds each matching configuration.
+#
+# Parameters:
+#   expr:        Search expression to filter targets (e.g., "corne", "split")
+#   *west_args:  Additional arguments to pass to each build
+#
+# Example usage:
+#   just build                  # Build all targets (if "all" works)
+#   just build corne           # Build only Corne keyboard targets
+#   just build "nice_nano"     # Build only Nice!Nano targets
+#   just build " -- -G Ninja"  # Build with Ninja generator
+# ------------------------------------------------------------------------
+build expr *west_args:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    targets=$(just _parse_targets {{ expr }})
+
+    [[ -z $targets ]] && echo "No matching targets found. Aborting..." >&2 && exit 1
+    echo "$targets" | while IFS=, read -r board shield snippet artifact; do
+        just _build_single "$board" "$shield" "$snippet" "$artifact" {{ west_args }}
+    done
+
+# ------------------------------------------------------------------------
+# RECIPE: Clean Build Artifacts
+# ------------------------------------------------------------------------
+# Removes temporary build files and compiled firmware artifacts.
+# This frees disk space but doesn't remove the West workspace.
+# ------------------------------------------------------------------------
+clean:
+    rm -rf {{ build }} {{ out }}
+
+# ------------------------------------------------------------------------
+# RECIPE: Deep Clean
+# ------------------------------------------------------------------------
+# Removes everything including the West workspace and ZMK source code.
+# After running this, you'll need to run 'just init' again before building.
+# Cleaner than 'clean' but more disruptive.
+# ------------------------------------------------------------------------
+clean-all: clean
+    rm -rf .west zmk
+
+# ------------------------------------------------------------------------
+# RECIPE: Clean Nix Cache
+# ------------------------------------------------------------------------
+# Removes old Nix packages and builds from the Nix store.
+# Useful for freeing up disk space used by old package versions.
+# ------------------------------------------------------------------------
+clean-nix:
+    nix-collect-garbage --delete-old
+
+# ------------------------------------------------------------------------
+# RECIPE: Draw Keymap Visualization
+# ------------------------------------------------------------------------
+# Generates an SVG visualization of your keyboard layout from the keymap.
+# This helps visualize your keymap graphically and is useful for documentation.
+#
+# Process:
+#   1. Parse the base.keymap file with keymap-drawer
+#   2. Extract combo information and assign to virtual "Combos" layer
+#   3. Generate an SVG diagram using the Ferris/Sweep layout
+#
+# Output: draw/base.svg (visual diagram)
+# ------------------------------------------------------------------------
+draw:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    keymap -c "{{ draw }}/config.yaml" parse -z "{{ config }}/base.keymap" --virtual-layers Combos >"{{ draw }}/base.yaml"
+    yq -Yi '.combos.[].l = ["Combos"]' "{{ draw }}/base.yaml"
+    keymap -c "{{ draw }}/config.yaml" draw "{{ draw }}/base.yaml" -k "ferris/sweep" >"{{ draw }}/base.svg"
+
+# ------------------------------------------------------------------------
+# RECIPE: Initialize West Workspace
+# ------------------------------------------------------------------------
+# Initializes the West workspace and downloads the ZMK source code.
+# This is a one-time setup step required before building firmware.
+#
+# What it does:
+#   - west init:  Initializes the West workspace
+#   - -l config:  Points to local config directory
+#   - west update: Downloads ZMK and dependencies (--filter=blob:none saves space)
+#   - west zephyr-export: Exports Zephyr environment for CMake
+# ------------------------------------------------------------------------
+init:
+    west init -l config
+    west update --fetch-opt=--filter=blob:none
+    west zephyr-export
+
+# ------------------------------------------------------------------------
+# RECIPE: List Build Targets
+# ------------------------------------------------------------------------
+# Displays all available build targets from build.yaml in a readable format.
+# Parses all targets and formats them as a column table.
+# ------------------------------------------------------------------------
+list:
+    @just _parse_targets all | sed 's/,*$//' | sort | column
+
+# ------------------------------------------------------------------------
+# RECIPE: Update West
+# ------------------------------------------------------------------------
+# Updates the ZMK source code to the latest version.
+# Run this periodically to get bug fixes and new features.
+# ------------------------------------------------------------------------
+update:
+    west update --fetch-opt=--filter=blob:none
+
+# ------------------------------------------------------------------------
+# RECIPE: Upgrade Development Tools
+# ------------------------------------------------------------------------
+# Updates the Nix flake and rebuilds the development environment.
+# This updates the Zephyr SDK and Python dependencies.
+# ------------------------------------------------------------------------
+upgrade-sdk:
+    nix flake update --flake .
+
+# ------------------------------------------------------------------------
+# RECIPE: Test Keymap Configuration
+# ------------------------------------------------------------------------
+# Runs automated tests on keymap configurations to verify they work correctly.
+# This is useful for regression testing when modifying keymaps.
+#
+# Parameters:
+#   $testpath:     Path to the test configuration directory
+#   *FLAGS:        Optional flags:
+#                  --no-build:     Skip compilation, just run tests
+#                  --verbose:      Show detailed test output
+#                  --auto-accept:  Update expected results without prompting
+#
+# How it works:
+#   1. Compiles ZMK for native_posix (Linux) with the test config
+#   2. Runs the firmware executable and captures key events
+#   3. Filters events based on patterns in the test directory
+#   4. Compares against expected results (snapshot file)
+#
+# [no-cd]: This attribute means just won't change directory before running
+# ------------------------------------------------------------------------
+[no-cd]
+test $testpath *FLAGS:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    testcase=$(basename "$testpath")
+    build_dir="{{ build / "tests" / '$testcase' }}"
+    config_dir="{{ '$(pwd)' / '$testpath' }}"
+    cd {{ justfile_directory() }}
+
+    if [[ "{{ FLAGS }}" != *"--no-build"* ]]; then
+        echo "Running $testcase..."
+        rm -rf "$build_dir"
+        west build -s zmk/app -d "$build_dir" -b native_posix_64 -- \
+            -DCONFIG_ASSERT=y -DZMK_CONFIG="$config_dir"
+    fi
+
+    ${build_dir}/zephyr/zmk.exe | sed -e "s/.*> //" |
+        tee ${build_dir}/keycode_events.full.log |
+        sed -n -f ${config_dir}/events.patterns > ${build_dir}/keycode_events.log
+    if [[ "{{ FLAGS }}" == *"--verbose"* ]]; then
+        cat ${build_dir}/keycode_events.log
+    fi
+
+    if [[ "{{ FLAGS }}" == *"--auto-accept"* ]]; then
+        cp ${build_dir}/keycode_events.log ${config_dir}/keycode_events.snapshot
+    fi
+    diff -auZ ${config_dir}/keycode_events.snapshot ${build_dir}/keycode_events.log
