@@ -5737,7 +5737,7 @@
 		)
 		(fp_arc
 			(start -4.0132 -2.475999)
-			(mid -4.095393 -1.872392)
+			(mid -4.095393 -1.872391)
 			(end -4.699 -1.7902)
 			(stroke
 				(width 0.12)
@@ -11028,7 +11028,7 @@
 		)
 		(fp_arc
 			(start -4.0132 -2.475999)
-			(mid -4.095393 -1.872392)
+			(mid -4.095393 -1.872391)
 			(end -4.699 -1.7902)
 			(stroke
 				(width 0.12)
@@ -12564,7 +12564,7 @@
 			(at 0 -1.5 90)
 			(layer "B.SilkS")
 			(hide yes)
-			(uuid "3f247ffc-3946-4715-ba21-aa232b10f13f")
+			(uuid "d544b1d3-d32b-41fa-890e-852d49c90e87")
 			(effects
 				(font
 					(size 1 1)
@@ -12577,7 +12577,7 @@
 			(at 0 1.2 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "59b8225c-750c-4ad2-a947-db42d2da7030")
+			(uuid "b884686b-1962-44ce-b088-b4ef20850632")
 			(effects
 				(font
 					(size 1 1)
@@ -12590,7 +12590,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "19ea106b-58e9-4c17-a5f3-fd11b3f75605")
+			(uuid "af2cc0ec-d489-41db-b07c-b53bd6300fa2")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12603,7 +12603,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "54e5dbea-79d7-466f-809a-ab24a4063633")
+			(uuid "05f2b40a-1805-40ce-9957-d612fcbcf2f1")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12616,7 +12616,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "510d36e1-fa8c-488c-9f19-0b0134403046")
+			(uuid "f7d542a9-f764-4215-b85b-f642215f24c8")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12660,23 +12660,23 @@
 		(attr through_hole)
 		(fp_line
 			(start 0.4 0.7)
-			(end -0.499999 0)
+			(end -0.5 0)
 			(stroke
 				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "d0619757-e057-45b1-89a9-e8b410c988b8")
+			(uuid "48e35c07-4fc7-435f-aced-c9dee76e6b9f")
 		)
 		(fp_line
-			(start -0.499999 0)
+			(start -0.5 0)
 			(end 0.4 -0.7)
 			(stroke
 				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "96081945-fcb5-4fb5-84bd-a310f9438a43")
+			(uuid "c403d20a-768e-44e9-a13c-5381db85eb5c")
 		)
 		(fp_line
 			(start -0.5 -0.7)
@@ -12686,7 +12686,7 @@
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "305ab194-03cb-4b3b-9e87-e0306bb900f1")
+			(uuid "3589b81f-922b-4f87-a53a-85fa6c3a6bab")
 		)
 		(fp_line
 			(start 0.4 -0.7)
@@ -12696,27 +12696,27 @@
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "3df9f8bf-6bb0-4c53-ae75-8c86ffe4ccec")
+			(uuid "2a768c94-5002-4c76-802c-cba3cd0aad31")
 		)
 		(pad "1" smd rect
-			(at -1.700001 0 270)
+			(at -1.7 0 270)
 			(size 1.8 1.5)
 			(layers "B.Cu" "B.Paste" "B.Mask")
 			(net 59 "ROW1_R")
 			(pinfunction "K")
 			(pintype "passive")
-			(uuid "a65b52b1-db7f-4eb9-aaaa-856167c4b7d8")
+			(uuid "1b240176-b53a-48b8-b5dc-efa1dc6a3739")
 		)
 		(pad "2" smd rect
-			(at 1.700001 0 270)
+			(at 1.7 0 270)
 			(size 1.8 1.5)
 			(layers "B.Cu" "B.Paste" "B.Mask")
 			(net 63 "Net-(D26-A)")
 			(pinfunction "A")
 			(pintype "passive")
-			(uuid "3b3b4926-bef0-48e7-ac30-efe390aa94a3")
+			(uuid "41a7203b-b1de-4afc-9bd0-990aa68ea248")
 		)
-		(model "${KIPRJMOD}/TOTEM3D/D_SOD-123.step"
+		(model "C:/Users/Gomar/Downloads/sod123 v4.step"
 			(offset
 				(xyz 0 0 -0.1)
 			)
@@ -12740,7 +12740,7 @@
 			(at 0 -1.5 90)
 			(layer "B.SilkS")
 			(hide yes)
-			(uuid "2e450f87-186b-47af-a53e-5727d70c91bd")
+			(uuid "42ba967e-9d18-475b-8941-8eca7a71a128")
 			(effects
 				(font
 					(size 1 1)
@@ -12753,7 +12753,7 @@
 			(at 0 1.2 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "9b3bde6e-0567-4940-99c1-1a8863bdcb55")
+			(uuid "368c35a6-2a98-42eb-9b89-ea55d06c6a39")
 			(effects
 				(font
 					(size 1 1)
@@ -12766,7 +12766,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "e27787cc-1be5-49a4-a0f9-eec3cf1a6288")
+			(uuid "ede456ab-3240-4e74-a8d3-bada88a3770d")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12779,7 +12779,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "483d5ba1-4488-460d-b708-2ec706ce1f63")
+			(uuid "7f2fb4c0-9b93-4146-83a6-affef2c35cc0")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12792,7 +12792,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "88fd28c3-1608-46dd-90a2-230358ff5654")
+			(uuid "90d56c92-8176-4bad-8a74-16f734211bff")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12836,23 +12836,23 @@
 		(attr through_hole)
 		(fp_line
 			(start 0.4 0.7)
-			(end -0.499999 0)
+			(end -0.5 0)
 			(stroke
 				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "db6a5b2d-af55-4bf3-bbd4-612ca074eae4")
+			(uuid "3389492d-407a-44fa-a1c3-ca6aa293d80a")
 		)
 		(fp_line
-			(start -0.499999 0)
+			(start -0.5 0)
 			(end 0.4 -0.7)
 			(stroke
 				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "a7f3011b-8d77-4267-b789-012427af335c")
+			(uuid "5ff14bbd-0e8c-4983-8425-d5b2d004165a")
 		)
 		(fp_line
 			(start -0.5 -0.7)
@@ -12862,7 +12862,7 @@
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "3efb81f1-b9de-41a5-aa91-ff0cccd01540")
+			(uuid "b436ea05-0891-4f16-bf72-6a3f7d66b074")
 		)
 		(fp_line
 			(start 0.4 -0.7)
@@ -12872,27 +12872,27 @@
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "13207dae-29d8-4fed-bc11-cd7c55f9c9d4")
+			(uuid "43bb632c-1a2d-4728-bf0b-a92005968b63")
 		)
 		(pad "1" smd rect
-			(at -1.700001 0 270)
+			(at -1.7 0 270)
 			(size 1.8 1.5)
 			(layers "B.Cu" "B.Paste" "B.Mask")
 			(net 2 "ROW0_L")
 			(pinfunction "K")
 			(pintype "passive")
-			(uuid "c8362c40-af4e-4dbf-886f-b2272a0f9e6d")
+			(uuid "1e2a1f5d-b839-4205-8f17-7dbd55b7e726")
 		)
 		(pad "2" smd rect
-			(at 1.700001 0 270)
+			(at 1.7 0 270)
 			(size 1.8 1.5)
 			(layers "B.Cu" "B.Paste" "B.Mask")
 			(net 4 "Net-(D2-A)")
 			(pinfunction "A")
 			(pintype "passive")
-			(uuid "026c44f5-10d7-4f11-9e86-6da5526640c6")
+			(uuid "7857345a-b55b-4d4d-995d-5421927d7609")
 		)
-		(model "${KIPRJMOD}/TOTEM3D/D_SOD-123.step"
+		(model "C:/Users/Gomar/Downloads/sod123 v4.step"
 			(offset
 				(xyz 0 0 -0.1)
 			)
@@ -12916,7 +12916,7 @@
 			(at 0 -1.5 90)
 			(layer "B.SilkS")
 			(hide yes)
-			(uuid "e30b20b7-3c82-4175-8251-15cc5e131a77")
+			(uuid "bebf5f48-8c81-48a5-91ab-d3ed2f7c436b")
 			(effects
 				(font
 					(size 1 1)
@@ -12929,7 +12929,7 @@
 			(at 0 1.2 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "ad0fa591-a72a-42c6-ae81-750f166a10e0")
+			(uuid "66c26aab-bca6-4325-bd8c-974a1cbd3543")
 			(effects
 				(font
 					(size 1 1)
@@ -12942,7 +12942,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "dde84816-4c4b-4dd3-a761-65bd8a2d6957")
+			(uuid "91bf243f-db33-473a-adc1-6ecb1ff109ff")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12955,7 +12955,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "cd3aaf05-658e-458a-8c76-66bc8f1f43f3")
+			(uuid "b5533d85-3db5-4391-85a2-e5a70f4e9117")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12968,7 +12968,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "9ae431b5-89a3-406c-9e91-a0e2e1ce44e8")
+			(uuid "e8b91a3a-708a-43ce-8e18-90d5ea0e7460")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13012,23 +13012,23 @@
 		(attr through_hole)
 		(fp_line
 			(start 0.4 0.7)
-			(end -0.499999 0)
+			(end -0.5 0)
 			(stroke
 				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "5283febd-4190-488a-82c4-d670685deebe")
+			(uuid "4f2fa030-aa2a-4948-91b2-d59b34a67ead")
 		)
 		(fp_line
-			(start -0.499999 0)
+			(start -0.5 0)
 			(end 0.4 -0.7)
 			(stroke
 				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "4120a038-9d8f-4dd7-8f30-11eea354078e")
+			(uuid "6f5d90a5-8a86-4cd6-86c6-85e9cbf0a25a")
 		)
 		(fp_line
 			(start -0.5 -0.7)
@@ -13038,7 +13038,7 @@
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "83de14e3-fe77-4353-95b8-054b2f0e0111")
+			(uuid "3e0cac53-7984-4bc2-affc-4aed53044019")
 		)
 		(fp_line
 			(start 0.4 -0.7)
@@ -13048,27 +13048,27 @@
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "eed0d864-0164-4e3c-8ca4-dda82030bc7d")
+			(uuid "f903227c-8f5f-4112-a272-6b420aaef279")
 		)
 		(pad "1" smd rect
-			(at -1.700001 0 270)
+			(at -1.7 0 270)
 			(size 1.8 1.5)
 			(layers "B.Cu" "B.Paste" "B.Mask")
 			(net 14 "ROW2_L")
 			(pinfunction "K")
 			(pintype "passive")
-			(uuid "e5765f02-b6b3-463b-97cf-c466ab710acc")
+			(uuid "f301ecf3-d1c4-4c1c-99aa-9a98b5c5b86d")
 		)
 		(pad "2" smd rect
-			(at 1.700001 0 270)
+			(at 1.7 0 270)
 			(size 1.8 1.5)
 			(layers "B.Cu" "B.Paste" "B.Mask")
 			(net 17 "Net-(D13-A)")
 			(pinfunction "A")
 			(pintype "passive")
-			(uuid "514fc85f-6d83-4d5a-aa19-32faf68bd57b")
+			(uuid "7862f0f3-007c-4de9-b21c-6958ae929df5")
 		)
-		(model "${KIPRJMOD}/TOTEM3D/D_SOD-123.step"
+		(model "C:/Users/Gomar/Downloads/sod123 v4.step"
 			(offset
 				(xyz 0 0 -0.1)
 			)
@@ -13092,7 +13092,7 @@
 			(at 0 -1.5 90)
 			(layer "B.SilkS")
 			(hide yes)
-			(uuid "826974c4-557d-4f2e-8031-a00251e35526")
+			(uuid "4bfd114e-549e-4ce6-93b4-f3b428776af6")
 			(effects
 				(font
 					(size 1 1)
@@ -13105,7 +13105,7 @@
 			(at 0 1.2 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "3c190504-ee75-4c4b-bdf1-535c526bcd99")
+			(uuid "c580137d-be2a-4c9c-bd25-a9f1858cca14")
 			(effects
 				(font
 					(size 1 1)
@@ -13118,7 +13118,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "442f61c7-2883-48d0-ba4a-a5fcef151105")
+			(uuid "2737f613-cf80-4fc5-a226-fe860f48c770")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13131,7 +13131,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "a0699194-43f9-4205-9dc2-918d1d5dc0ec")
+			(uuid "5e65f159-c189-4812-ab64-8b4ba7d3eff3")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13144,7 +13144,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "b8964c12-21bd-4fdc-9608-6cef8541e510")
+			(uuid "c2b27cf0-ac1d-4133-b247-eb0aaa8c59b3")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13188,23 +13188,23 @@
 		(attr through_hole)
 		(fp_line
 			(start 0.4 0.7)
-			(end -0.499999 0)
+			(end -0.5 0)
 			(stroke
 				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "c2c0c164-585e-452a-99b4-20941372914e")
+			(uuid "9638ea14-fd80-49be-9455-e1e699ced0ac")
 		)
 		(fp_line
-			(start -0.499999 0)
+			(start -0.5 0)
 			(end 0.4 -0.7)
 			(stroke
 				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "9f1acda4-6b7b-44bc-9b6b-5e688640c7d2")
+			(uuid "d67ea1f0-8c6e-4e04-ac8d-58bca08691fc")
 		)
 		(fp_line
 			(start -0.5 -0.7)
@@ -13214,7 +13214,7 @@
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "270e2d59-2ed8-4e01-a3d5-a12d79821596")
+			(uuid "e037b1e4-2189-45a7-90d6-f2d531981765")
 		)
 		(fp_line
 			(start 0.4 -0.7)
@@ -13224,27 +13224,27 @@
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "61576b69-0784-4032-90fa-68f459639082")
+			(uuid "39bb5752-3502-46cd-a396-21ac124cf216")
 		)
 		(pad "1" smd rect
-			(at -1.700001 0 270)
+			(at -1.7 0 270)
 			(size 1.8 1.5)
 			(layers "B.Cu" "B.Paste" "B.Mask")
 			(net 14 "ROW2_L")
 			(pinfunction "K")
 			(pintype "passive")
-			(uuid "0f03fca9-ef76-4d8d-8f87-e9757db5880c")
+			(uuid "869b5d46-8138-43c6-b7dd-9499c9b0038d")
 		)
 		(pad "2" smd rect
-			(at 1.700001 0 270)
+			(at 1.7 0 270)
 			(size 1.8 1.5)
 			(layers "B.Cu" "B.Paste" "B.Mask")
 			(net 16 "Net-(D12-A)")
 			(pinfunction "A")
 			(pintype "passive")
-			(uuid "be3e45ab-7e33-4d7d-bfae-edced65fe74e")
+			(uuid "04567074-9414-4943-88cb-359e80d06333")
 		)
-		(model "${KIPRJMOD}/TOTEM3D/D_SOD-123.step"
+		(model "C:/Users/Gomar/Downloads/sod123 v4.step"
 			(offset
 				(xyz 0 0 -0.1)
 			)
@@ -13268,7 +13268,7 @@
 			(at 0 -1.5 90)
 			(layer "B.SilkS")
 			(hide yes)
-			(uuid "668643c1-5db9-48f4-b2a6-ed66ed63af96")
+			(uuid "5987aff6-3455-4627-87ff-add082fbcc44")
 			(effects
 				(font
 					(size 1 1)
@@ -13281,7 +13281,7 @@
 			(at 0 1.2 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "2d5bed02-09e4-4787-8dcf-cd7f77244fbe")
+			(uuid "bc263601-f52e-4875-8dcc-6382dd355137")
 			(effects
 				(font
 					(size 1 1)
@@ -13294,7 +13294,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "4816acee-6348-4550-a3f4-3962c79949b9")
+			(uuid "567e3a2c-c23a-485f-b0b4-7f597e26596a")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13307,7 +13307,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "a7160b1e-7194-447e-9b22-d1585fbae9ea")
+			(uuid "73d67f13-e8fa-4cfa-98c7-590f4c7d17b1")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13320,7 +13320,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "f847bd2b-8d8a-4946-a0e9-af219a20979c")
+			(uuid "a02eed50-741e-465c-ac63-90b28830921b")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13364,23 +13364,23 @@
 		(attr through_hole)
 		(fp_line
 			(start 0.4 0.7)
-			(end -0.499999 0)
+			(end -0.5 0)
 			(stroke
 				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "bbf22ce6-ca97-47c9-9556-2e56a6931b13")
+			(uuid "9ebf7b5e-81e5-461c-9d81-737ee05fc593")
 		)
 		(fp_line
-			(start -0.499999 0)
+			(start -0.5 0)
 			(end 0.4 -0.7)
 			(stroke
 				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "53b9da18-e6fb-4bf6-8267-822c8d516674")
+			(uuid "6934551c-679e-4721-aa78-b6947550a87d")
 		)
 		(fp_line
 			(start -0.5 -0.7)
@@ -13390,7 +13390,7 @@
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "f61bfc82-68d4-4c65-979f-e0c5112c5057")
+			(uuid "948b8d45-2338-4d31-8522-5a16973d901f")
 		)
 		(fp_line
 			(start 0.4 -0.7)
@@ -13400,27 +13400,27 @@
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "68103f6e-32a3-4ae2-8f7a-3fc64a87a8ea")
+			(uuid "ae45c5d0-67f5-4252-9a9d-6edf0eef994c")
 		)
 		(pad "1" smd rect
-			(at -1.700001 0 270)
+			(at -1.7 0 270)
 			(size 1.8 1.5)
 			(layers "B.Cu" "B.Paste" "B.Mask")
 			(net 67 "ROW2_R")
 			(pinfunction "K")
 			(pintype "passive")
-			(uuid "07968282-d1c7-4361-938a-b2e8c69a7be7")
+			(uuid "eedc81cd-c7a5-49a4-a79a-f2d991257165")
 		)
 		(pad "2" smd rect
-			(at 1.700001 0 270)
+			(at 1.7 0 270)
 			(size 1.8 1.5)
 			(layers "B.Cu" "B.Paste" "B.Mask")
 			(net 70 "Net-(D31-A)")
 			(pinfunction "A")
 			(pintype "passive")
-			(uuid "74382cc7-c3d2-4605-88f2-c0a80c771f58")
+			(uuid "9ac7fdf5-6d57-4570-bace-132f46c7e39f")
 		)
-		(model "${KIPRJMOD}/TOTEM3D/D_SOD-123.step"
+		(model "C:/Users/Gomar/Downloads/sod123 v4.step"
 			(offset
 				(xyz 0 0 -0.1)
 			)
@@ -13444,7 +13444,7 @@
 			(at 0 -1.5 90)
 			(layer "B.SilkS")
 			(hide yes)
-			(uuid "b5592ede-7c63-4d30-bbd9-b49910f3c6a3")
+			(uuid "f569d2ef-bfcb-4350-b8fb-5acc4edd1fad")
 			(effects
 				(font
 					(size 1 1)
@@ -13457,7 +13457,7 @@
 			(at 0 1.2 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "bd38b447-6650-4eea-b11b-971bdf11241d")
+			(uuid "08aafd30-4d4b-4b0a-86e6-4c0dc4196255")
 			(effects
 				(font
 					(size 1 1)
@@ -13470,7 +13470,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "6cdad408-8151-4ebc-aed7-492f79668e63")
+			(uuid "4301506b-48ef-4f9d-990f-a7cc0a32cfed")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13483,7 +13483,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "120b1765-9fcf-4b49-844f-fa049b7dba84")
+			(uuid "0f924611-ec3b-4191-8324-caf8efdae202")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13496,7 +13496,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "f7ec74b4-e76d-45e3-80ac-67a2b88b1db5")
+			(uuid "3f81a226-956e-4eb3-8c90-2782cb6fbb05")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13540,23 +13540,23 @@
 		(attr through_hole)
 		(fp_line
 			(start 0.4 0.7)
-			(end -0.499999 0)
+			(end -0.5 0)
 			(stroke
 				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "c09ccdeb-d768-4120-a9f6-871cd7e782a6")
+			(uuid "2032855f-8732-44fe-833a-cefa5b41c04c")
 		)
 		(fp_line
-			(start -0.499999 0)
+			(start -0.5 0)
 			(end 0.4 -0.7)
 			(stroke
 				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "cb6afd13-3dce-4300-8660-371c38d283eb")
+			(uuid "c339618d-f2cf-4b03-9195-c88dc500a160")
 		)
 		(fp_line
 			(start -0.5 -0.7)
@@ -13566,7 +13566,7 @@
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "00e79108-2d9c-4869-848e-37ea6390fe27")
+			(uuid "533eab60-d06c-4ec6-96d6-8203081ff24b")
 		)
 		(fp_line
 			(start 0.4 -0.7)
@@ -13576,27 +13576,27 @@
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "34bc7b55-9ff6-46a8-b0e9-937f2ab91a74")
+			(uuid "e509264d-bef2-4e22-884b-47ae40527eed")
 		)
 		(pad "1" smd rect
-			(at -1.700001 0 270)
+			(at -1.7 0 270)
 			(size 1.8 1.5)
 			(layers "B.Cu" "B.Paste" "B.Mask")
 			(net 73 "ROW3_R")
 			(pinfunction "K")
 			(pintype "passive")
-			(uuid "71f6682e-db23-4334-9449-ed5287016386")
+			(uuid "b8e3d061-4457-4b1b-a0ce-c22abe3d72fd")
 		)
 		(pad "2" smd rect
-			(at 1.700001 0 270)
+			(at 1.7 0 270)
 			(size 1.8 1.5)
 			(layers "B.Cu" "B.Paste" "B.Mask")
 			(net 74 "Net-(D34-A)")
 			(pinfunction "A")
 			(pintype "passive")
-			(uuid "52ff58e9-6d88-4f77-b43b-ada6519641c5")
+			(uuid "eb6f31d0-3eb1-4089-9693-1a75384a7baf")
 		)
-		(model "${KIPRJMOD}/TOTEM3D/D_SOD-123.step"
+		(model "C:/Users/Gomar/Downloads/sod123 v4.step"
 			(offset
 				(xyz 0 0 -0.1)
 			)
@@ -13620,7 +13620,7 @@
 			(at 0 -1.5 90)
 			(layer "B.SilkS")
 			(hide yes)
-			(uuid "9d31c96e-1508-4534-a499-c30d0d787454")
+			(uuid "bf89238a-aded-4dc3-9753-e91162a2f619")
 			(effects
 				(font
 					(size 1 1)
@@ -13633,7 +13633,7 @@
 			(at 0 1.2 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "be5e6a22-919c-4bc9-ab3e-c6a664431cbf")
+			(uuid "5359ef20-d860-442c-9130-dd2c8430eff8")
 			(effects
 				(font
 					(size 1 1)
@@ -13646,7 +13646,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "15ae3175-fafd-45ac-86a6-8857836d6f0f")
+			(uuid "24ddc237-303e-4989-8a76-5ad3af0874ba")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13659,7 +13659,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "b34b4194-9182-4518-95c7-de0d8fa8eaa0")
+			(uuid "38caab8f-2a50-4e6b-931a-658e8a74ffe8")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13672,7 +13672,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "11447b9f-e0b1-432e-9e2f-eb3e62229cdf")
+			(uuid "d5495553-a104-433e-8678-a79b45694e50")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13716,23 +13716,23 @@
 		(attr through_hole)
 		(fp_line
 			(start 0.4 0.7)
-			(end -0.499999 0)
+			(end -0.5 0)
 			(stroke
 				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "24a10edf-bafa-48d3-a3a2-1520481c92bd")
+			(uuid "e97c5b2b-0f41-4bca-b456-88f3c9f657b9")
 		)
 		(fp_line
-			(start -0.499999 0)
+			(start -0.5 0)
 			(end 0.4 -0.7)
 			(stroke
 				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "bc0b538e-f97e-4ef3-b8b2-13e34efbd77e")
+			(uuid "97d30e92-829f-49be-a5ca-67015e680522")
 		)
 		(fp_line
 			(start -0.5 -0.7)
@@ -13742,7 +13742,7 @@
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "b3432f4c-b21f-4a64-9fa4-7ed5a0c96892")
+			(uuid "ebb4cbe7-0f56-4b71-b78f-7d81f4118616")
 		)
 		(fp_line
 			(start 0.4 -0.7)
@@ -13752,27 +13752,27 @@
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "45084394-a1dc-4367-b5a8-68c5fa21c500")
+			(uuid "194dc42c-6a85-4a60-acbf-6b64e409a7fe")
 		)
 		(pad "1" smd rect
-			(at -1.700001 0 270)
+			(at -1.7 0 270)
 			(size 1.8 1.5)
 			(layers "B.Cu" "B.Paste" "B.Mask")
 			(net 2 "ROW0_L")
 			(pinfunction "K")
 			(pintype "passive")
-			(uuid "863b6eb3-e042-433f-a92e-dcfb1a70abd4")
+			(uuid "81579461-b7cc-43bc-a8ff-61b2efd12f56")
 		)
 		(pad "2" smd rect
-			(at 1.700001 0 270)
+			(at 1.7 0 270)
 			(size 1.8 1.5)
 			(layers "B.Cu" "B.Paste" "B.Mask")
 			(net 5 "Net-(D3-A)")
 			(pinfunction "A")
 			(pintype "passive")
-			(uuid "e27fa375-fe58-4ddd-a77a-1707fcef1370")
+			(uuid "29946309-9d0c-4b75-98c7-64793559e835")
 		)
-		(model "${KIPRJMOD}/TOTEM3D/D_SOD-123.step"
+		(model "C:/Users/Gomar/Downloads/sod123 v4.step"
 			(offset
 				(xyz 0 0 -0.1)
 			)
@@ -13796,7 +13796,7 @@
 			(at 0 -1.5 90)
 			(layer "B.SilkS")
 			(hide yes)
-			(uuid "b5e75b2d-a1ce-4a06-8ec6-4b3735c797a7")
+			(uuid "cfd4034c-7436-45d6-8e6d-424106230229")
 			(effects
 				(font
 					(size 1 1)
@@ -13809,7 +13809,7 @@
 			(at 0 1.2 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "436ef7ad-3169-4753-a48c-aa92fcbccfae")
+			(uuid "3251447e-435a-4b6d-b945-dcd6888aba29")
 			(effects
 				(font
 					(size 1 1)
@@ -13822,7 +13822,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "ddc9c6d8-3c06-416c-8eb4-f878d2b78a5f")
+			(uuid "e7dd17ea-6a01-4131-97cf-4e43391ad4df")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13835,7 +13835,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "c938269c-6a51-4395-8542-da0f1553f729")
+			(uuid "c00d4c11-4b6f-4435-8f5a-52957989566e")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13848,7 +13848,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "e66f662d-cd6d-41da-8206-c5483677bd1c")
+			(uuid "15022f1b-033e-459c-ab97-5bdfd198d559")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13892,23 +13892,23 @@
 		(attr through_hole)
 		(fp_line
 			(start 0.4 0.7)
-			(end -0.499999 0)
+			(end -0.5 0)
 			(stroke
 				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "5c71cf6f-1256-43b7-a377-2cb4e694532f")
+			(uuid "03aa98d1-a306-4da6-9716-3a056b2bb5c3")
 		)
 		(fp_line
-			(start -0.499999 0)
+			(start -0.5 0)
 			(end 0.4 -0.7)
 			(stroke
 				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "4d02a3d0-e6f8-4998-a962-8bbe7c61bb77")
+			(uuid "265a3157-db3d-46c5-80ef-64372a2b7f60")
 		)
 		(fp_line
 			(start -0.5 -0.7)
@@ -13918,7 +13918,7 @@
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "60fd36fd-5f17-4bef-b581-89d034fe3feb")
+			(uuid "28d7f7b2-929f-43bb-b0e5-e5614b7ec769")
 		)
 		(fp_line
 			(start 0.4 -0.7)
@@ -13928,27 +13928,27 @@
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "1d2d28b8-f162-4787-8bde-3ecd41534049")
+			(uuid "84e5662b-e7fb-45bb-909f-c796710de4e2")
 		)
 		(pad "1" smd rect
-			(at -1.700001 0 270)
+			(at -1.7 0 270)
 			(size 1.8 1.5)
 			(layers "B.Cu" "B.Paste" "B.Mask")
 			(net 14 "ROW2_L")
 			(pinfunction "K")
 			(pintype "passive")
-			(uuid "42f81e5e-e397-4308-adf5-8bec185927b4")
+			(uuid "fe0ebd89-7857-4100-bfc3-8e09c2df21b8")
 		)
 		(pad "2" smd rect
-			(at 1.700001 0 270)
+			(at 1.7 0 270)
 			(size 1.8 1.5)
 			(layers "B.Cu" "B.Paste" "B.Mask")
 			(net 15 "Net-(D11-A)")
 			(pinfunction "A")
 			(pintype "passive")
-			(uuid "d4505187-5c9c-4357-9472-4f6c3319624e")
+			(uuid "2f0f6173-38b1-47e4-8cf9-840318e0935a")
 		)
-		(model "${KIPRJMOD}/TOTEM3D/D_SOD-123.step"
+		(model "C:/Users/Gomar/Downloads/sod123 v4.step"
 			(offset
 				(xyz 0 0 -0.1)
 			)
@@ -13972,7 +13972,7 @@
 			(at 0 -1.5 90)
 			(layer "B.SilkS")
 			(hide yes)
-			(uuid "401f213f-bd16-426a-8b83-cd907b0b0cb2")
+			(uuid "d4ac84a3-1dfc-454a-aa07-9f0f2b7d9798")
 			(effects
 				(font
 					(size 1 1)
@@ -13985,7 +13985,7 @@
 			(at 0 1.2 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "ace6145e-c630-400d-81a4-d29c7018c56c")
+			(uuid "05b68c11-576c-4175-bdff-7061e7eb1b89")
 			(effects
 				(font
 					(size 1 1)
@@ -13998,7 +13998,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "85e075db-88d2-4ded-a5f2-f023f176e68e")
+			(uuid "0209e4f0-2454-4751-84f3-9c45fea9ad53")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14011,7 +14011,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "5a7ef5c5-1c16-4b69-9878-aedf4e4dffa2")
+			(uuid "110b9eb1-3fd7-4706-8ea6-826388a7d735")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14024,7 +14024,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "bd8c0c6f-f19d-4ab9-a9d9-27f78c18b1d9")
+			(uuid "5db69efe-a36b-45e8-a2df-bb6a991823f5")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14068,23 +14068,23 @@
 		(attr through_hole)
 		(fp_line
 			(start 0.4 0.7)
-			(end -0.499999 0)
+			(end -0.5 0)
 			(stroke
 				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "ae4b8636-3490-4305-b81f-cb8a03b5450c")
+			(uuid "5d09f076-b20c-4a50-bb68-cbdfd3d114e5")
 		)
 		(fp_line
-			(start -0.499999 0)
+			(start -0.5 0)
 			(end 0.4 -0.7)
 			(stroke
 				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "47831420-d732-4cdf-8fa3-c1e95c37d047")
+			(uuid "0b83ce43-16a2-4485-bbdd-b544f92aae71")
 		)
 		(fp_line
 			(start -0.5 -0.7)
@@ -14094,7 +14094,7 @@
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "a342747d-b769-4eba-be75-c067b99f1ce8")
+			(uuid "b4f46c98-8063-4851-964d-3d8b30b1e39b")
 		)
 		(fp_line
 			(start 0.4 -0.7)
@@ -14104,27 +14104,27 @@
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "9e25d289-8454-45e7-8477-f551935c0f35")
+			(uuid "7370723a-3f06-401d-a527-73abf7e70316")
 		)
 		(pad "1" smd rect
-			(at -1.700001 0 270)
+			(at -1.7 0 270)
 			(size 1.8 1.5)
 			(layers "B.Cu" "B.Paste" "B.Mask")
 			(net 50 "ROW0_R")
 			(pinfunction "K")
 			(pintype "passive")
-			(uuid "8fe5b8c2-cba8-4024-afb2-40a5270bd154")
+			(uuid "a9990af4-cf87-4c2c-8548-c04855df25d9")
 		)
 		(pad "2" smd rect
-			(at 1.700001 0 270)
+			(at 1.7 0 270)
 			(size 1.8 1.5)
 			(layers "B.Cu" "B.Paste" "B.Mask")
 			(net 54 "Net-(D21-A)")
 			(pinfunction "A")
 			(pintype "passive")
-			(uuid "9646e852-b02e-43fe-bfb1-77e4fc75a15d")
+			(uuid "2727b7e7-9348-49df-8b36-5747d10db856")
 		)
-		(model "${KIPRJMOD}/TOTEM3D/D_SOD-123.step"
+		(model "C:/Users/Gomar/Downloads/sod123 v4.step"
 			(offset
 				(xyz 0 0 -0.1)
 			)
@@ -14148,7 +14148,7 @@
 			(at 0 -1.5 90)
 			(layer "B.SilkS")
 			(hide yes)
-			(uuid "acb44630-6582-44ca-b488-7d658ff60ca4")
+			(uuid "fd7762ef-f57c-4cc5-8b09-fc32acb0973c")
 			(effects
 				(font
 					(size 1 1)
@@ -14161,7 +14161,7 @@
 			(at 0 1.2 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "ac4d8693-957d-43c3-82ec-6578dd2d5077")
+			(uuid "d37bb850-6f5a-416a-b479-f34664f18927")
 			(effects
 				(font
 					(size 1 1)
@@ -14174,7 +14174,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "60b4ec4f-9b4d-4caf-8475-b2075ddc757a")
+			(uuid "7d631e88-97f0-44a7-aff5-7bd5e7dee6fb")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14187,7 +14187,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "1a5afd34-5c6b-4681-bd7a-1c0010e07212")
+			(uuid "8c217d4c-a6cb-40ef-9267-ff7d72dfe22a")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14200,7 +14200,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "b42aa92d-3729-4fb9-8f00-8d4bd89cc257")
+			(uuid "742807f8-b7a8-4202-997f-a358682f5154")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14244,23 +14244,23 @@
 		(attr through_hole)
 		(fp_line
 			(start 0.4 0.7)
-			(end -0.499999 0)
+			(end -0.5 0)
 			(stroke
 				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "733c411c-08cd-4fef-99ae-c160fa97a238")
+			(uuid "ffd23101-f465-474d-8524-d6afced55f3d")
 		)
 		(fp_line
-			(start -0.499999 0)
+			(start -0.5 0)
 			(end 0.4 -0.7)
 			(stroke
 				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "9a79592e-e914-4e61-a641-3b47649eb7c2")
+			(uuid "c9b4c3fa-7e5a-4bec-9135-b9d27f6fd2ce")
 		)
 		(fp_line
 			(start -0.5 -0.7)
@@ -14270,7 +14270,7 @@
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "444eda1d-ae97-44d8-9228-e212e94a9cb5")
+			(uuid "3f65608b-b9d9-48a9-8297-41ab60767ab9")
 		)
 		(fp_line
 			(start 0.4 -0.7)
@@ -14280,27 +14280,27 @@
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "7c2b50ed-a84d-4fd8-ab91-2290627ed573")
+			(uuid "230ce352-0106-4f38-af88-ea3378f6e193")
 		)
 		(pad "1" smd rect
-			(at -1.700001 0 270)
+			(at -1.7 0 270)
 			(size 1.8 1.5)
 			(layers "B.Cu" "B.Paste" "B.Mask")
 			(net 67 "ROW2_R")
 			(pinfunction "K")
 			(pintype "passive")
-			(uuid "2cd743ae-21a9-4783-abc7-506c55c5771a")
+			(uuid "702fd354-4e5f-4c53-b540-7bf0fc01504e")
 		)
 		(pad "2" smd rect
-			(at 1.700001 0 270)
+			(at 1.7 0 270)
 			(size 1.8 1.5)
 			(layers "B.Cu" "B.Paste" "B.Mask")
 			(net 69 "Net-(D30-A)")
 			(pinfunction "A")
 			(pintype "passive")
-			(uuid "0d73ca36-001f-4198-ba12-b1ddf34ee7a8")
+			(uuid "2e0e3355-8e72-4a33-b33a-f85137c563b1")
 		)
-		(model "${KIPRJMOD}/TOTEM3D/D_SOD-123.step"
+		(model "C:/Users/Gomar/Downloads/sod123 v4.step"
 			(offset
 				(xyz 0 0 -0.1)
 			)
@@ -14324,7 +14324,7 @@
 			(at 0 -1.5 90)
 			(layer "B.SilkS")
 			(hide yes)
-			(uuid "e42df4f4-5c1f-4463-bd7f-79aca198325a")
+			(uuid "b367e805-2157-4738-8260-6cdc923398a7")
 			(effects
 				(font
 					(size 1 1)
@@ -14337,7 +14337,7 @@
 			(at 0 1.2 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "7b10fc53-55c4-4f11-aa17-821ce39cb653")
+			(uuid "09a8e1fb-ec52-4136-8eb3-28998c210064")
 			(effects
 				(font
 					(size 1 1)
@@ -14350,7 +14350,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "a1949b67-d771-4013-9f19-3d186f011b8b")
+			(uuid "618c7b14-1c52-4879-ac5c-0b5104a9ac09")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14363,7 +14363,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "ec5342cd-6982-404c-90f0-ae064f4b56a0")
+			(uuid "4edcfc0e-c882-42d3-a9da-2099528fbb58")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14376,7 +14376,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "72614069-f57d-4b95-beee-d4886e4afc83")
+			(uuid "5a993b53-ced3-44d5-9767-8bf951c480d2")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14420,23 +14420,23 @@
 		(attr through_hole)
 		(fp_line
 			(start 0.4 0.7)
-			(end -0.499999 0)
+			(end -0.5 0)
 			(stroke
 				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "1e4f2924-dd04-4679-b244-27b1bd88cf8d")
+			(uuid "49fbaa5f-12a6-41bb-ab30-21a9ede663c7")
 		)
 		(fp_line
-			(start -0.499999 0)
+			(start -0.5 0)
 			(end 0.4 -0.7)
 			(stroke
 				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "3d7d298e-2ef2-4e64-a37b-697920bf223a")
+			(uuid "914192a7-7ab8-4be7-a905-2b02d889e44d")
 		)
 		(fp_line
 			(start -0.5 -0.7)
@@ -14446,7 +14446,7 @@
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "e86a39b9-f7f9-4cf9-98d7-3f63ba5fae3e")
+			(uuid "04446829-9309-4ce1-9400-d52c3405f39d")
 		)
 		(fp_line
 			(start 0.4 -0.7)
@@ -14456,27 +14456,27 @@
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "556ccf28-353d-42e2-a349-bdd8dc525973")
+			(uuid "6bf03969-86a5-4ef3-898d-ae43c1637544")
 		)
 		(pad "1" smd rect
-			(at -1.700001 0 270)
+			(at -1.7 0 270)
 			(size 1.8 1.5)
 			(layers "B.Cu" "B.Paste" "B.Mask")
 			(net 67 "ROW2_R")
 			(pinfunction "K")
 			(pintype "passive")
-			(uuid "267f7fa0-a2b6-4a71-924c-1023664df93c")
+			(uuid "6d26cfa7-b36c-4565-b02c-81d836635384")
 		)
 		(pad "2" smd rect
-			(at 1.700001 0 270)
+			(at 1.7 0 270)
 			(size 1.8 1.5)
 			(layers "B.Cu" "B.Paste" "B.Mask")
 			(net 68 "Net-(D29-A)")
 			(pinfunction "A")
 			(pintype "passive")
-			(uuid "4442e509-3cf5-450e-8bbb-038d4fffa55e")
+			(uuid "347b293b-051b-4301-9f03-dddc8719dcb8")
 		)
-		(model "${KIPRJMOD}/TOTEM3D/D_SOD-123.step"
+		(model "C:/Users/Gomar/Downloads/sod123 v4.step"
 			(offset
 				(xyz 0 0 -0.1)
 			)
@@ -14500,7 +14500,7 @@
 			(at 0 -1.5 90)
 			(layer "B.SilkS")
 			(hide yes)
-			(uuid "08dda7b5-a503-4def-adf8-3b7de445622b")
+			(uuid "4520fc8e-c87a-4620-9c75-980255776dd2")
 			(effects
 				(font
 					(size 1 1)
@@ -14513,7 +14513,7 @@
 			(at 0 1.2 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "77dbef5b-04f8-4231-8e13-7a84566fc50a")
+			(uuid "f638f48e-30a7-48ce-8075-73b546b67658")
 			(effects
 				(font
 					(size 1 1)
@@ -14526,7 +14526,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "dfe67d7f-0225-4fba-8c20-8cf2f830602a")
+			(uuid "2e913480-f066-4c04-82ac-97c3be8f947b")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14539,7 +14539,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "72944346-002a-4309-8e38-eac166c80fb4")
+			(uuid "575291c2-f683-42c5-8a57-fd842ad2cabe")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14552,7 +14552,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "9521ca8e-5bd9-404c-87ab-7ecb126b57d0")
+			(uuid "ca3a7a13-afdc-43db-b683-e237e5b527fc")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14596,23 +14596,23 @@
 		(attr through_hole)
 		(fp_line
 			(start 0.4 0.7)
-			(end -0.499999 0)
+			(end -0.5 0)
 			(stroke
 				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "a362d53a-e4c5-423a-be1d-037912924efa")
+			(uuid "e95e4398-f6a5-4c3f-ba18-8c81f385634c")
 		)
 		(fp_line
-			(start -0.499999 0)
+			(start -0.5 0)
 			(end 0.4 -0.7)
 			(stroke
 				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "b5661698-f4a1-4162-804e-4739462b6826")
+			(uuid "b6542bbb-7fa2-43f9-8749-f3fad9c5fee5")
 		)
 		(fp_line
 			(start -0.5 -0.7)
@@ -14622,7 +14622,7 @@
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "38492593-2354-4364-ac0e-d3f4c9492620")
+			(uuid "ffaf602e-3652-4522-9e7f-7133793774f2")
 		)
 		(fp_line
 			(start 0.4 -0.7)
@@ -14632,27 +14632,27 @@
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "8a0a2538-f1b1-47b0-b77a-05e051d8e33a")
+			(uuid "bbd09a05-22c5-4691-910b-be64d02d61ca")
 		)
 		(pad "1" smd rect
-			(at -1.700001 0 270)
+			(at -1.7 0 270)
 			(size 1.8 1.5)
 			(layers "B.Cu" "B.Paste" "B.Mask")
 			(net 59 "ROW1_R")
 			(pinfunction "K")
 			(pintype "passive")
-			(uuid "163e12e8-babb-4143-85de-2996fdd31648")
+			(uuid "a22404dd-b6c7-4e03-9328-4b981c15e917")
 		)
 		(pad "2" smd rect
-			(at 1.700001 0 270)
+			(at 1.7 0 270)
 			(size 1.8 1.5)
 			(layers "B.Cu" "B.Paste" "B.Mask")
 			(net 64 "Net-(D27-A)")
 			(pinfunction "A")
 			(pintype "passive")
-			(uuid "086857ac-71ca-48c2-85f4-54ed50b4a804")
+			(uuid "81054f3a-e31b-433a-b954-561888337066")
 		)
-		(model "${KIPRJMOD}/TOTEM3D/D_SOD-123.step"
+		(model "C:/Users/Gomar/Downloads/sod123 v4.step"
 			(offset
 				(xyz 0 0 -0.1)
 			)
@@ -14676,7 +14676,7 @@
 			(at 0 -1.5 90)
 			(layer "B.SilkS")
 			(hide yes)
-			(uuid "975cbc1f-bf2e-4916-911f-77f9a22d33c9")
+			(uuid "23e10d4a-afcc-460f-b51c-4a241e7d0f7a")
 			(effects
 				(font
 					(size 1 1)
@@ -14689,7 +14689,7 @@
 			(at 0 1.2 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "3f7d8df1-195e-4943-bc7a-4b53cdcfcc16")
+			(uuid "fb5222a0-e65b-492e-8181-88b2eb90af5a")
 			(effects
 				(font
 					(size 1 1)
@@ -14702,7 +14702,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "fa205a56-243a-422f-9240-25adde38e076")
+			(uuid "c02e6ecd-a718-4e59-a4d1-8bea6fa0d0e1")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14715,7 +14715,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "a34fa703-4623-4f65-b3c4-59d5e09c6538")
+			(uuid "2513cdcb-d64c-4203-99ea-ab7611907bc0")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14728,7 +14728,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "cff612b0-7e35-48a9-bfd0-a2fab1465c10")
+			(uuid "7a35b9c9-71bb-4d8f-ae89-b5487286eb10")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14772,23 +14772,23 @@
 		(attr through_hole)
 		(fp_line
 			(start 0.4 0.7)
-			(end -0.499999 0)
+			(end -0.5 0)
 			(stroke
 				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "495ca394-e467-45a9-909e-2ecc7b661c23")
+			(uuid "92127d74-c250-4999-a9db-f375e24b1d4f")
 		)
 		(fp_line
-			(start -0.499999 0)
+			(start -0.5 0)
 			(end 0.4 -0.7)
 			(stroke
 				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "6ae0d4ad-9d46-4fb3-a1a0-4d3c6dde92cf")
+			(uuid "0a8c3e34-f499-4466-93f1-bbc2b500731c")
 		)
 		(fp_line
 			(start -0.5 -0.7)
@@ -14798,7 +14798,7 @@
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "45dd3783-0e94-4fa0-9a27-acbed048237f")
+			(uuid "b2cc33c6-6f6c-45aa-b2f3-ddea89779daf")
 		)
 		(fp_line
 			(start 0.4 -0.7)
@@ -14808,27 +14808,27 @@
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "d0bf5a7a-1185-4118-9221-0cefab937f48")
+			(uuid "bc7792bb-9c01-4356-bd17-1465ff194e78")
 		)
 		(pad "1" smd rect
-			(at -1.700001 0 270)
+			(at -1.7 0 270)
 			(size 1.8 1.5)
 			(layers "B.Cu" "B.Paste" "B.Mask")
 			(net 2 "ROW0_L")
 			(pinfunction "K")
 			(pintype "passive")
-			(uuid "1cc7d270-46fc-47d3-974d-fba6374bad3c")
+			(uuid "2fc4513a-02af-4795-995f-b7ee45f9435d")
 		)
 		(pad "2" smd rect
-			(at 1.700001 0 270)
+			(at 1.7 0 270)
 			(size 1.8 1.5)
 			(layers "B.Cu" "B.Paste" "B.Mask")
 			(net 3 "Net-(D1-A)")
 			(pinfunction "A")
 			(pintype "passive")
-			(uuid "4e9d0ffd-7432-45f7-ad8a-7a7cf3fa645a")
+			(uuid "10379ba0-d09f-48df-b43b-527cf52d0a37")
 		)
-		(model "${KIPRJMOD}/TOTEM3D/D_SOD-123.step"
+		(model "C:/Users/Gomar/Downloads/sod123 v4.step"
 			(offset
 				(xyz 0 0 -0.1)
 			)
@@ -14852,7 +14852,7 @@
 			(at 0 -1.5 90)
 			(layer "B.SilkS")
 			(hide yes)
-			(uuid "b67f7b66-827f-49c4-b1db-88d4dd4cb269")
+			(uuid "c310d8b5-9221-4e52-adb5-1a805078f140")
 			(effects
 				(font
 					(size 1 1)
@@ -14865,7 +14865,7 @@
 			(at 0 1.2 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "0ac5f983-dec2-4df0-b40b-68e9a647fb04")
+			(uuid "16e0ec93-ba34-4f0f-af58-447f9aec5cb8")
 			(effects
 				(font
 					(size 1 1)
@@ -14878,7 +14878,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "79691028-b54c-47fb-bc5f-fdf4b60330d2")
+			(uuid "7fa97b25-995a-4806-a742-3ec3d6a97e88")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14891,7 +14891,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "0919459c-828e-4f14-9bfe-afcbd4cdecdc")
+			(uuid "63813fc3-d7be-4852-a776-9d2fc9480c54")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14904,7 +14904,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "39fc3192-a9d0-4af2-aec7-dfa745f38cd5")
+			(uuid "0c68ef4e-3315-4d87-a03d-8e76bc69ba62")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14948,23 +14948,23 @@
 		(attr through_hole)
 		(fp_line
 			(start 0.4 0.7)
-			(end -0.499999 0)
+			(end -0.5 0)
 			(stroke
 				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "e7e3dc5c-ed43-477a-bb8b-5e95a4366469")
+			(uuid "df0f0aeb-d634-4adf-9682-24a831f8259c")
 		)
 		(fp_line
-			(start -0.499999 0)
+			(start -0.5 0)
 			(end 0.4 -0.7)
 			(stroke
 				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "0418f3dd-34de-4c96-81c2-b8f06b754ce8")
+			(uuid "d563ea34-8927-4e7d-baf3-bd49356897df")
 		)
 		(fp_line
 			(start -0.5 -0.7)
@@ -14974,7 +14974,7 @@
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "2c757b90-d48c-4206-87fb-d218d8d48dd7")
+			(uuid "16c9ad9d-d7a5-4c21-9000-483fd1eac507")
 		)
 		(fp_line
 			(start 0.4 -0.7)
@@ -14984,27 +14984,27 @@
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "67cfc613-f5ea-4986-8856-904bb045cf0e")
+			(uuid "b2f1ea96-397a-47c3-8c8e-25030fef69ef")
 		)
 		(pad "1" smd rect
-			(at -1.700001 0 270)
+			(at -1.7 0 270)
 			(size 1.8 1.5)
 			(layers "B.Cu" "B.Paste" "B.Mask")
 			(net 73 "ROW3_R")
 			(pinfunction "K")
 			(pintype "passive")
-			(uuid "f5937ce9-629b-4abf-b291-0aa2d7b35be6")
+			(uuid "3c15bc5b-71c9-4817-9e06-dd1178be11cf")
 		)
 		(pad "2" smd rect
-			(at 1.700001 0 270)
+			(at 1.7 0 270)
 			(size 1.8 1.5)
 			(layers "B.Cu" "B.Paste" "B.Mask")
 			(net 72 "Net-(D33-A)")
 			(pinfunction "A")
 			(pintype "passive")
-			(uuid "68198a86-40f1-4f06-8dab-bdd49c96dc76")
+			(uuid "5babddf7-d9d9-4e03-bef5-c66ff6ff8c79")
 		)
-		(model "${KIPRJMOD}/TOTEM3D/D_SOD-123.step"
+		(model "C:/Users/Gomar/Downloads/sod123 v4.step"
 			(offset
 				(xyz 0 0 -0.1)
 			)
@@ -15028,7 +15028,7 @@
 			(at 0 -1.5 90)
 			(layer "B.SilkS")
 			(hide yes)
-			(uuid "5f96ec26-f139-4cad-9c72-c9c240fd7f56")
+			(uuid "9bb0d007-971f-4a05-bf0e-ede0f8d44e6c")
 			(effects
 				(font
 					(size 1 1)
@@ -15041,7 +15041,7 @@
 			(at 0 1.2 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "8139ff89-d19b-40dc-9e3c-79da04f31d8e")
+			(uuid "a3d01a03-7ed1-4170-81f0-ea0526af6522")
 			(effects
 				(font
 					(size 1 1)
@@ -15054,7 +15054,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "0524826a-9c2e-401b-86b2-a4dc559e32bf")
+			(uuid "bd3efacf-14c2-4cfc-93e0-b86a10c1ccb0")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15067,7 +15067,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "e283cb2d-a5ea-4845-950f-41d90cb04aca")
+			(uuid "788bcb5c-1405-4f46-94e2-855b72b1b587")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15080,7 +15080,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "ae91abf2-352e-4f54-8ee9-0cdf010a1a7f")
+			(uuid "de27d539-ce98-44b3-8663-8689ee157247")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15124,23 +15124,23 @@
 		(attr through_hole)
 		(fp_line
 			(start 0.4 0.7)
-			(end -0.499999 0)
+			(end -0.5 0)
 			(stroke
 				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "a9848134-932e-4420-95d8-d133317fc8db")
+			(uuid "759e1975-f215-4248-933a-0c639c113c7f")
 		)
 		(fp_line
-			(start -0.499999 0)
+			(start -0.5 0)
 			(end 0.4 -0.7)
 			(stroke
 				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "eaaae380-a92f-47a3-9713-749aa67dd193")
+			(uuid "803b9522-4179-4394-9c15-0ba8c3cd984b")
 		)
 		(fp_line
 			(start -0.5 -0.7)
@@ -15150,7 +15150,7 @@
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "2b54cbf8-f2a0-4ea3-a69b-a6cb11b3d3d6")
+			(uuid "501898a1-e275-445f-a0f0-0301a5600cda")
 		)
 		(fp_line
 			(start 0.4 -0.7)
@@ -15160,27 +15160,27 @@
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "5fa1fa43-75c8-4e39-b8e5-8426f7d7a829")
+			(uuid "822e2235-fece-4617-a395-9a256794ded6")
 		)
 		(pad "1" smd rect
-			(at -1.700001 0 270)
+			(at -1.7 0 270)
 			(size 1.8 1.5)
 			(layers "B.Cu" "B.Paste" "B.Mask")
 			(net 67 "ROW2_R")
 			(pinfunction "K")
 			(pintype "passive")
-			(uuid "fc39f194-0248-43aa-ac38-a5a9cc28cbbf")
+			(uuid "ab49b422-5dfb-416a-b0e1-ec2948806800")
 		)
 		(pad "2" smd rect
-			(at 1.700001 0 270)
+			(at 1.7 0 270)
 			(size 1.8 1.5)
 			(layers "B.Cu" "B.Paste" "B.Mask")
 			(net 65 "Net-(D28-A)")
 			(pinfunction "A")
 			(pintype "passive")
-			(uuid "68213812-99d9-42fd-8efc-e739072afd78")
+			(uuid "d0633948-ea28-433b-b885-eed463f15f46")
 		)
-		(model "${KIPRJMOD}/TOTEM3D/D_SOD-123.step"
+		(model "C:/Users/Gomar/Downloads/sod123 v4.step"
 			(offset
 				(xyz 0 0 -0.1)
 			)
@@ -15204,7 +15204,7 @@
 			(at 0 -1.5 90)
 			(layer "B.SilkS")
 			(hide yes)
-			(uuid "5175133c-c398-41e1-9d14-6ca97201c234")
+			(uuid "b6320bd7-9a14-41fd-8447-30e6d3e619e0")
 			(effects
 				(font
 					(size 1 1)
@@ -15217,7 +15217,7 @@
 			(at 0 1.2 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "60a0d207-1d7f-4385-aec4-ee2c4ae858da")
+			(uuid "8e1b4eb9-250a-4bb9-909a-b82e72af4074")
 			(effects
 				(font
 					(size 1 1)
@@ -15230,7 +15230,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "1e7ea36e-08fe-425a-91de-0bf6ea9ae06c")
+			(uuid "e7306c61-e3e4-4f24-a495-f6d11c788255")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15243,7 +15243,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "66270367-a1f8-40ef-ae89-86d047385ba3")
+			(uuid "8ec52610-67dd-4c28-9cb0-b22388ba784c")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15256,7 +15256,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "dcfcf51f-e61c-472f-9c20-6d74b5b52dec")
+			(uuid "66b4d2ac-d822-453f-9730-aab0aa6c4924")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15300,23 +15300,23 @@
 		(attr through_hole)
 		(fp_line
 			(start 0.4 0.7)
-			(end -0.499999 0)
+			(end -0.5 0)
 			(stroke
 				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "c59ed6ae-0865-4998-830d-0ae397047df7")
+			(uuid "c42cf134-ecfd-4de7-a1f3-ef22060057ea")
 		)
 		(fp_line
-			(start -0.499999 0)
+			(start -0.5 0)
 			(end 0.4 -0.7)
 			(stroke
 				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "d5f62da9-33a9-402f-982d-9bd3fe0afc57")
+			(uuid "1ae1537c-e260-409f-a6a3-fb1f54ba8410")
 		)
 		(fp_line
 			(start -0.5 -0.7)
@@ -15326,7 +15326,7 @@
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "a468689a-22fd-4f78-a2bd-b28c38c1e357")
+			(uuid "ac0ccd25-24a4-4dca-b45d-27aa4c889086")
 		)
 		(fp_line
 			(start 0.4 -0.7)
@@ -15336,27 +15336,27 @@
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "8ba19cd2-b19b-485f-acb8-5a75d3c23406")
+			(uuid "2ecb921f-07d4-42eb-a8d3-43ba7861cb54")
 		)
 		(pad "1" smd rect
-			(at -1.700001 0 270)
+			(at -1.7 0 270)
 			(size 1.8 1.5)
 			(layers "B.Cu" "B.Paste" "B.Mask")
 			(net 8 "ROW1_L")
 			(pinfunction "K")
 			(pintype "passive")
-			(uuid "59abc64d-955f-4a53-a505-ce0cd370e1ca")
+			(uuid "69b1b6dd-1d5e-4a52-a7db-e985e6062f30")
 		)
 		(pad "2" smd rect
-			(at 1.700001 0 270)
+			(at 1.7 0 270)
 			(size 1.8 1.5)
 			(layers "B.Cu" "B.Paste" "B.Mask")
 			(net 9 "Net-(D6-A)")
 			(pinfunction "A")
 			(pintype "passive")
-			(uuid "cf3cc9a5-40ab-4289-a5fe-c512a89887ec")
+			(uuid "05eb53c7-f634-41ca-812f-56293c57ece3")
 		)
-		(model "${KIPRJMOD}/TOTEM3D/D_SOD-123.step"
+		(model "C:/Users/Gomar/Downloads/sod123 v4.step"
 			(offset
 				(xyz 0 0 -0.1)
 			)
@@ -15380,7 +15380,7 @@
 			(at 0 -1.5 90)
 			(layer "B.SilkS")
 			(hide yes)
-			(uuid "d487e7b5-9abf-417e-b80a-bf79ed1ee90c")
+			(uuid "26939ab3-a350-4a2f-83de-cbd1346a1eee")
 			(effects
 				(font
 					(size 1 1)
@@ -15393,7 +15393,7 @@
 			(at 0 1.2 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "dd3bf472-8265-49b2-8436-0564a087cf4d")
+			(uuid "e43a3dd7-7d4d-4cb4-a27b-eeda38c6cf10")
 			(effects
 				(font
 					(size 1 1)
@@ -15406,7 +15406,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "913c2f09-58a4-45de-be78-8f8365899bf4")
+			(uuid "e5836ae6-dff4-481b-a53b-6a2f8282e0d2")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15419,7 +15419,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "df0ac1b4-69be-409f-a690-6c005f6520d1")
+			(uuid "11a46fca-bdde-4419-96ec-ab8913011911")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15432,7 +15432,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "3fcbf8bd-70e9-46f7-a471-9ae329442130")
+			(uuid "41eeb124-05fc-421d-bc7b-f960f00db265")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15476,23 +15476,23 @@
 		(attr through_hole)
 		(fp_line
 			(start 0.4 0.7)
-			(end -0.499999 0)
+			(end -0.5 0)
 			(stroke
 				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "3235ba8a-9df1-42f3-a370-47cfe7452028")
+			(uuid "23f64466-5cef-4ac9-b78a-e12aaae80aad")
 		)
 		(fp_line
-			(start -0.499999 0)
+			(start -0.5 0)
 			(end 0.4 -0.7)
 			(stroke
 				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "54056b65-31ac-4c68-ba71-1a7ed1dded84")
+			(uuid "45815d3e-3e21-454d-9304-9f7cf292d8db")
 		)
 		(fp_line
 			(start -0.5 -0.7)
@@ -15502,7 +15502,7 @@
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "78b1c693-433f-4c94-83ac-f3aed7f2b6f5")
+			(uuid "9b6b3604-87ed-41ff-a0c1-2b0a97bf986f")
 		)
 		(fp_line
 			(start 0.4 -0.7)
@@ -15512,27 +15512,27 @@
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "1c40175f-b384-4fd8-8c53-d47d140cd471")
+			(uuid "62667b91-040f-4a30-8cf4-4cef07d8d9f0")
 		)
 		(pad "1" smd rect
-			(at -1.700001 0 270)
+			(at -1.7 0 270)
 			(size 1.8 1.5)
 			(layers "B.Cu" "B.Paste" "B.Mask")
 			(net 59 "ROW1_R")
 			(pinfunction "K")
 			(pintype "passive")
-			(uuid "cb42a0a3-e2bc-4aca-9efb-6e6dd7b46b41")
+			(uuid "7da740cf-bdb2-47e7-9f75-e20573512349")
 		)
 		(pad "2" smd rect
-			(at 1.700001 0 270)
+			(at 1.7 0 270)
 			(size 1.8 1.5)
 			(layers "B.Cu" "B.Paste" "B.Mask")
 			(net 60 "Net-(D24-A)")
 			(pinfunction "A")
 			(pintype "passive")
-			(uuid "efbbae92-383c-4003-b7dd-0dd3450f92e2")
+			(uuid "49f013b1-3fb2-474a-bfdf-73f1a9cc7496")
 		)
-		(model "${KIPRJMOD}/TOTEM3D/D_SOD-123.step"
+		(model "C:/Users/Gomar/Downloads/sod123 v4.step"
 			(offset
 				(xyz 0 0 -0.1)
 			)
@@ -15556,7 +15556,7 @@
 			(at 0 -1.5 90)
 			(layer "B.SilkS")
 			(hide yes)
-			(uuid "8f2e3688-8a44-4d18-96bf-92cbbb865cf1")
+			(uuid "b1ecd85e-9734-4677-80fc-5cdd06c5be11")
 			(effects
 				(font
 					(size 1 1)
@@ -15569,7 +15569,7 @@
 			(at 0 1.2 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "004ba0ee-cf8f-4aea-8114-f1e00faf2c9c")
+			(uuid "5c6b227f-3b1b-4157-87d1-fbafb39b7b4e")
 			(effects
 				(font
 					(size 1 1)
@@ -15582,7 +15582,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "d3633862-882b-43e9-be1a-1d813e67209d")
+			(uuid "9e60dbf3-308e-4c2a-8d53-d64f2942042d")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15595,7 +15595,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "d2294cd2-2da8-48ca-99b7-1d1d24026b85")
+			(uuid "866f5ffe-dbb9-4bec-a12b-65bc725c1b86")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15608,7 +15608,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "9c2910fb-73a3-4347-823f-6944b3cce616")
+			(uuid "a0bd75b9-b5d1-4dc8-a77b-8e03ae934db7")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15652,23 +15652,23 @@
 		(attr through_hole)
 		(fp_line
 			(start 0.4 0.7)
-			(end -0.499999 0)
+			(end -0.5 0)
 			(stroke
 				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "940312f7-122d-45da-88f6-fe4bb762ed58")
+			(uuid "55dbf18b-de17-4c80-ac42-c59373786ff1")
 		)
 		(fp_line
-			(start -0.499999 0)
+			(start -0.5 0)
 			(end 0.4 -0.7)
 			(stroke
 				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "59346bea-3c23-435c-97a3-2457e01922fe")
+			(uuid "7c0da54b-f1ea-40fa-9740-2ec1b5220bf6")
 		)
 		(fp_line
 			(start -0.5 -0.7)
@@ -15678,7 +15678,7 @@
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "4f7d8533-4a0a-4abb-9c0e-80a5f00416f7")
+			(uuid "003f7007-52b4-48de-9fbc-1ef23029bbff")
 		)
 		(fp_line
 			(start 0.4 -0.7)
@@ -15688,27 +15688,27 @@
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "a1a626f9-7d08-4b17-a78d-824d53ab07c7")
+			(uuid "29234685-6a30-47fb-9f92-7d667deae707")
 		)
 		(pad "1" smd rect
-			(at -1.700001 0 270)
+			(at -1.7 0 270)
 			(size 1.8 1.5)
 			(layers "B.Cu" "B.Paste" "B.Mask")
 			(net 59 "ROW1_R")
 			(pinfunction "K")
 			(pintype "passive")
-			(uuid "4b3688ed-4ea9-46b9-b2e5-3ed929e4c9ef")
+			(uuid "8e3bb37f-6c27-4209-8ba0-b2ea1780f7c1")
 		)
 		(pad "2" smd rect
-			(at 1.700001 0 270)
+			(at 1.7 0 270)
 			(size 1.8 1.5)
 			(layers "B.Cu" "B.Paste" "B.Mask")
 			(net 57 "Net-(D23-A)")
 			(pinfunction "A")
 			(pintype "passive")
-			(uuid "456b08ef-b6ed-448c-8dfd-e19fceab287a")
+			(uuid "b88771b8-eb92-4847-ba63-7dca5c075551")
 		)
-		(model "${KIPRJMOD}/TOTEM3D/D_SOD-123.step"
+		(model "C:/Users/Gomar/Downloads/sod123 v4.step"
 			(offset
 				(xyz 0 0 -0.1)
 			)
@@ -15732,7 +15732,7 @@
 			(at 0 -1.5 90)
 			(layer "B.SilkS")
 			(hide yes)
-			(uuid "2fe83c1a-3c88-4686-b689-231221b130ab")
+			(uuid "e68857d0-3349-4c2a-ba73-96a99da22859")
 			(effects
 				(font
 					(size 1 1)
@@ -15745,7 +15745,7 @@
 			(at 0 1.2 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "ab39b49b-60f4-4830-9641-86dad7c4ff4a")
+			(uuid "f842bf65-8c0a-4973-91c6-7b23ddefe0ee")
 			(effects
 				(font
 					(size 1 1)
@@ -15758,7 +15758,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "6c1f49d8-7dd6-4057-8803-7030e7155637")
+			(uuid "54542635-27ae-4222-8630-1e3530f65e21")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15771,7 +15771,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "38c771e2-95b8-4daf-a58e-842a0501b425")
+			(uuid "800589f4-b8cc-4a5c-96ce-436ead1f55f6")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15784,7 +15784,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "16b7c795-c49a-4532-94b8-6442af14b3e9")
+			(uuid "14c1d844-b89a-47b0-ab0e-32467f627c48")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15828,23 +15828,23 @@
 		(attr through_hole)
 		(fp_line
 			(start 0.4 0.7)
-			(end -0.499999 0)
+			(end -0.5 0)
 			(stroke
 				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "73f2a4b5-4542-41b8-8f5d-2ad8ebc38d9c")
+			(uuid "a85edd94-a2a0-4f25-8350-790e1c0025a6")
 		)
 		(fp_line
-			(start -0.499999 0)
+			(start -0.5 0)
 			(end 0.4 -0.7)
 			(stroke
 				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "15b518dd-b098-42ea-b95f-b274c5a5c3a8")
+			(uuid "e5a04d44-cf7b-4d35-9949-9c9f370a5542")
 		)
 		(fp_line
 			(start -0.5 -0.7)
@@ -15854,7 +15854,7 @@
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "def50aae-8328-4aa2-9982-baccc4344d88")
+			(uuid "4aaa9152-5388-4d34-bc29-1899f784fd1e")
 		)
 		(fp_line
 			(start 0.4 -0.7)
@@ -15864,27 +15864,27 @@
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "315f7f7a-a230-4699-bca7-709668749a14")
+			(uuid "1c531ef0-5a18-4854-9f97-2b0aba2102d5")
 		)
 		(pad "1" smd rect
-			(at -1.700001 0 270)
+			(at -1.7 0 270)
 			(size 1.8 1.5)
 			(layers "B.Cu" "B.Paste" "B.Mask")
 			(net 59 "ROW1_R")
 			(pinfunction "K")
 			(pintype "passive")
-			(uuid "16873982-98d5-4a0b-86a7-0707ada856a5")
+			(uuid "aa98b73d-c628-4cee-a7b7-bf5f11abced3")
 		)
 		(pad "2" smd rect
-			(at 1.700001 0 270)
+			(at 1.7 0 270)
 			(size 1.8 1.5)
 			(layers "B.Cu" "B.Paste" "B.Mask")
 			(net 61 "Net-(D25-A)")
 			(pinfunction "A")
 			(pintype "passive")
-			(uuid "20437f33-70ff-4965-967e-355c8b329706")
+			(uuid "a759b1e1-7efd-4f84-812e-b7c5673b2090")
 		)
-		(model "${KIPRJMOD}/TOTEM3D/D_SOD-123.step"
+		(model "C:/Users/Gomar/Downloads/sod123 v4.step"
 			(offset
 				(xyz 0 0 -0.1)
 			)
@@ -15908,7 +15908,7 @@
 			(at 0 -1.5 90)
 			(layer "B.SilkS")
 			(hide yes)
-			(uuid "7b0f8677-0c9e-4acb-8f63-fcc55b2b0d4f")
+			(uuid "5b0d00d6-08cc-4008-89b7-5dfa1bf642f3")
 			(effects
 				(font
 					(size 1 1)
@@ -15921,7 +15921,7 @@
 			(at 0 1.2 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "7d76c06d-3afd-4304-918c-8561733f161e")
+			(uuid "c00d22db-bffc-4fed-bcc8-c9094d5e8a49")
 			(effects
 				(font
 					(size 1 1)
@@ -15934,7 +15934,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "cab1aee6-7762-4007-a1ac-bedddef6a6df")
+			(uuid "02b9623f-fbc5-4224-a74a-37c4cc241275")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15947,7 +15947,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "a5f5710b-bafd-4380-a1fc-6490fac9cb2e")
+			(uuid "eee32d33-6ad1-4119-93e0-f9627382f370")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15960,7 +15960,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "1a942a04-5591-4d79-b252-ae7553aa52d8")
+			(uuid "c4484a23-70cc-40de-86fd-8638edc9c128")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -16004,23 +16004,23 @@
 		(attr through_hole)
 		(fp_line
 			(start 0.4 0.7)
-			(end -0.499999 0)
+			(end -0.5 0)
 			(stroke
 				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "ed4fae60-3337-4f40-9259-27d394a7a6b3")
+			(uuid "b21801ef-3d08-4b66-8129-8d2b7cbd1992")
 		)
 		(fp_line
-			(start -0.499999 0)
+			(start -0.5 0)
 			(end 0.4 -0.7)
 			(stroke
 				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "80a037ec-f50e-4c63-8a44-eb4ecb7ebb86")
+			(uuid "3f2dcbbb-4c41-40a6-85a6-c6404e2217e3")
 		)
 		(fp_line
 			(start -0.5 -0.7)
@@ -16030,7 +16030,7 @@
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "2d2c24ba-b5d1-4ec9-961a-8fc707019a28")
+			(uuid "38a6aabf-1082-406e-a458-4c36d9c8d262")
 		)
 		(fp_line
 			(start 0.4 -0.7)
@@ -16040,27 +16040,27 @@
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "76b34d3a-cbb5-43a3-b389-f97ecd506e7d")
+			(uuid "bbf6b894-96c4-45c5-971a-0453d213e731")
 		)
 		(pad "1" smd rect
-			(at -1.700001 0 270)
+			(at -1.7 0 270)
 			(size 1.8 1.5)
 			(layers "B.Cu" "B.Paste" "B.Mask")
 			(net 14 "ROW2_L")
 			(pinfunction "K")
 			(pintype "passive")
-			(uuid "44acc315-d57a-44d3-80fd-208cf53a5605")
+			(uuid "ff8cbfd0-04d2-4038-a14f-b7f8eabec5ff")
 		)
 		(pad "2" smd rect
-			(at 1.700001 0 270)
+			(at 1.7 0 270)
 			(size 1.8 1.5)
 			(layers "B.Cu" "B.Paste" "B.Mask")
 			(net 18 "Net-(D14-A)")
 			(pinfunction "A")
 			(pintype "passive")
-			(uuid "a33b911c-f656-4b6a-8034-4dd713bc8758")
+			(uuid "c968ce16-fd2d-4ec4-a04d-0c423c6197f9")
 		)
-		(model "${KIPRJMOD}/TOTEM3D/D_SOD-123.step"
+		(model "C:/Users/Gomar/Downloads/sod123 v4.step"
 			(offset
 				(xyz 0 0 -0.1)
 			)
@@ -16084,7 +16084,7 @@
 			(at 0 -1.5 90)
 			(layer "B.SilkS")
 			(hide yes)
-			(uuid "5ec2306e-0fa9-47dd-bde0-76038735a8ec")
+			(uuid "90270f49-b5c2-45bd-bc0a-9ff98c65a21c")
 			(effects
 				(font
 					(size 1 1)
@@ -16097,7 +16097,7 @@
 			(at 0 1.2 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "0b657263-91db-49cc-8dcd-807658508293")
+			(uuid "2be28a34-d08e-4f30-b909-25e90b82be98")
 			(effects
 				(font
 					(size 1 1)
@@ -16110,7 +16110,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "4b5c9565-0da9-4920-a75b-35920ae42b58")
+			(uuid "957f8805-b23d-4c03-a980-e975fe561e4d")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -16123,7 +16123,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "11a23b94-139e-429f-822c-e849fe10b9af")
+			(uuid "6fbf42a3-3be1-4515-af3b-02e72599a0ca")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -16136,7 +16136,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "cb6e347c-d3e8-4189-bc2d-70ab47e4af65")
+			(uuid "4627a277-8338-4993-b78d-eb15924cecc6")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -16180,23 +16180,23 @@
 		(attr through_hole)
 		(fp_line
 			(start 0.4 0.7)
-			(end -0.499999 0)
+			(end -0.5 0)
 			(stroke
 				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "40422637-56f3-4231-a0fd-e5d0ade2aef4")
+			(uuid "04c05f20-1445-495a-9df4-cb7773862548")
 		)
 		(fp_line
-			(start -0.499999 0)
+			(start -0.5 0)
 			(end 0.4 -0.7)
 			(stroke
 				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "d58107ac-eeb1-4dcc-8b51-786304694138")
+			(uuid "35f2b25c-a3f1-4967-a6db-3e56adf60b6f")
 		)
 		(fp_line
 			(start -0.5 -0.7)
@@ -16206,7 +16206,7 @@
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "f985a261-9e3d-4007-a931-1d3f5597b8f9")
+			(uuid "73db91c3-67d6-4492-bd78-cdb0dd6be3f1")
 		)
 		(fp_line
 			(start 0.4 -0.7)
@@ -16216,27 +16216,27 @@
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "cff02610-8fa1-4d7c-9f84-a85d45d72556")
+			(uuid "d59ec1df-996b-4026-b693-96cf0f5ccccc")
 		)
 		(pad "1" smd rect
-			(at -1.700001 0 270)
+			(at -1.7 0 270)
 			(size 1.8 1.5)
 			(layers "B.Cu" "B.Paste" "B.Mask")
 			(net 21 "ROW3_L")
 			(pinfunction "K")
 			(pintype "passive")
-			(uuid "b26fd8ef-34dd-407b-9cb9-bf22a0ed200c")
+			(uuid "8391f733-c243-446a-993d-838da81711ba")
 		)
 		(pad "2" smd rect
-			(at 1.700001 0 270)
+			(at 1.7 0 270)
 			(size 1.8 1.5)
 			(layers "B.Cu" "B.Paste" "B.Mask")
 			(net 20 "Net-(D16-A)")
 			(pinfunction "A")
 			(pintype "passive")
-			(uuid "6330c89f-b18a-4269-a9cd-ef44c28186a9")
+			(uuid "c873abc4-0d27-4c16-af15-edf2c58a21b4")
 		)
-		(model "${KIPRJMOD}/TOTEM3D/D_SOD-123.step"
+		(model "C:/Users/Gomar/Downloads/sod123 v4.step"
 			(offset
 				(xyz 0 0 -0.1)
 			)
@@ -16260,7 +16260,7 @@
 			(at 0 -1.5 90)
 			(layer "B.SilkS")
 			(hide yes)
-			(uuid "0bd0caa1-19ba-482b-81b3-9372725eba85")
+			(uuid "004f68f2-4357-4864-a3d0-6673afb05008")
 			(effects
 				(font
 					(size 1 1)
@@ -16273,7 +16273,7 @@
 			(at 0 1.2 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "7b92da4c-572f-4e2d-b907-37637423e2a6")
+			(uuid "44dfbd97-a8b5-40a9-bce2-a9f854daf3ce")
 			(effects
 				(font
 					(size 1 1)
@@ -16286,7 +16286,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "0cf61b49-d8f7-4460-9dee-22f9ee82bd8d")
+			(uuid "d9c95bc2-6ac2-4662-a146-461c78147bb1")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -16299,7 +16299,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "358d9fdc-0856-4782-ab7f-f6c6f94f6aa1")
+			(uuid "496ca931-813c-4992-a31d-e484edcf91b2")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -16312,7 +16312,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "213e8cbf-fd4a-40e6-a1a8-1b0a41631b8d")
+			(uuid "341d045c-bd59-4a6b-b1f9-5428eef1aa15")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -16356,23 +16356,23 @@
 		(attr through_hole)
 		(fp_line
 			(start 0.4 0.7)
-			(end -0.499999 0)
+			(end -0.5 0)
 			(stroke
 				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "030d6139-9781-4c9d-b90b-71f20b29ba0a")
+			(uuid "59a3d7b0-9404-4761-bb3d-06401e7e5924")
 		)
 		(fp_line
-			(start -0.499999 0)
+			(start -0.5 0)
 			(end 0.4 -0.7)
 			(stroke
 				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "cee5e2c1-0d60-47cf-8288-aa195ab961e5")
+			(uuid "ba9adad1-c4a7-40b4-9a05-896d01b2a459")
 		)
 		(fp_line
 			(start -0.5 -0.7)
@@ -16382,7 +16382,7 @@
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "9a52eb6a-99b6-49fc-bc8b-1c9fb0f89748")
+			(uuid "b96c5d41-299f-4f01-8da8-77c7b3117ce2")
 		)
 		(fp_line
 			(start 0.4 -0.7)
@@ -16392,27 +16392,27 @@
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "c435fd26-68d3-4c8e-9ee0-1d546a2eb511")
+			(uuid "8fe1da09-aaba-4259-8a65-d61659a2d9ec")
 		)
 		(pad "1" smd rect
-			(at -1.700001 0 270)
+			(at -1.7 0 270)
 			(size 1.8 1.5)
 			(layers "B.Cu" "B.Paste" "B.Mask")
 			(net 8 "ROW1_L")
 			(pinfunction "K")
 			(pintype "passive")
-			(uuid "e357eb40-5b27-42d9-9787-57bc82c1f2a9")
+			(uuid "843b6975-ff76-436e-b53b-0d31545dc351")
 		)
 		(pad "2" smd rect
-			(at 1.700001 0 270)
+			(at 1.7 0 270)
 			(size 1.8 1.5)
 			(layers "B.Cu" "B.Paste" "B.Mask")
 			(net 13 "Net-(D10-A)")
 			(pinfunction "A")
 			(pintype "passive")
-			(uuid "0830a57c-cdcc-4a59-ade8-86798c272362")
+			(uuid "d3ecc335-e8e0-455b-9cab-62ddcce3ab8c")
 		)
-		(model "${KIPRJMOD}/TOTEM3D/D_SOD-123.step"
+		(model "C:/Users/Gomar/Downloads/sod123 v4.step"
 			(offset
 				(xyz 0 0 -0.1)
 			)
@@ -16436,7 +16436,7 @@
 			(at 0 -1.5 90)
 			(layer "B.SilkS")
 			(hide yes)
-			(uuid "54ddbac7-b846-40bd-80e7-eb22497ac8c6")
+			(uuid "8cc74e16-4013-45a9-8e7d-ef92277e50dc")
 			(effects
 				(font
 					(size 1 1)
@@ -16449,7 +16449,7 @@
 			(at 0 1.2 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "222a32b0-a50d-46fa-a83a-1019dabb73d4")
+			(uuid "a71fb613-1f35-436a-8395-5f6821305b4a")
 			(effects
 				(font
 					(size 1 1)
@@ -16462,7 +16462,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "f38c07af-bc68-4cb3-b16d-e12867385dfd")
+			(uuid "36228005-1eb4-4456-a650-ebd8ac86fce4")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -16475,7 +16475,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "c6e60d42-90d6-46bb-b26e-8658ad1229e8")
+			(uuid "2510096d-a4e5-40e8-9dc6-022dbbe19c8b")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -16488,7 +16488,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "127d0d92-a61b-4dd6-8d42-8a563de5f28e")
+			(uuid "7c0e5d1e-1a14-43b2-a70b-6ed09f02f9bd")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -16532,23 +16532,23 @@
 		(attr through_hole)
 		(fp_line
 			(start 0.4 0.7)
-			(end -0.499999 0)
+			(end -0.5 0)
 			(stroke
 				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "eeee8f2a-0491-4a18-a9c7-de28c8afdf5f")
+			(uuid "7243df95-34e4-4476-bd69-fad0f38f9bad")
 		)
 		(fp_line
-			(start -0.499999 0)
+			(start -0.5 0)
 			(end 0.4 -0.7)
 			(stroke
 				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "e781b7f7-5ed3-45ee-9c09-40f564b95e5c")
+			(uuid "c30155fa-42e5-4e3e-b23f-2b7719266508")
 		)
 		(fp_line
 			(start -0.5 -0.7)
@@ -16558,7 +16558,7 @@
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "ac4d7e3c-17c0-4fca-b543-6f043211f7ef")
+			(uuid "6c6ab57d-ecb3-4ee4-8078-3e4ba3b4377b")
 		)
 		(fp_line
 			(start 0.4 -0.7)
@@ -16568,27 +16568,27 @@
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "d08c776d-d9dd-4a9c-94fa-379bebe6d216")
+			(uuid "f65dd664-439d-4fb4-9f79-1d8daf26cab0")
 		)
 		(pad "1" smd rect
-			(at -1.700001 0 270)
+			(at -1.7 0 270)
 			(size 1.8 1.5)
 			(layers "B.Cu" "B.Paste" "B.Mask")
 			(net 21 "ROW3_L")
 			(pinfunction "K")
 			(pintype "passive")
-			(uuid "a8c79fb8-b3cc-4747-bfb6-b904e5415b3f")
+			(uuid "8a775140-0dc5-49b4-b3a9-b960ed208705")
 		)
 		(pad "2" smd rect
-			(at 1.700001 0 270)
+			(at 1.7 0 270)
 			(size 1.8 1.5)
 			(layers "B.Cu" "B.Paste" "B.Mask")
 			(net 22 "Net-(D17-A)")
 			(pinfunction "A")
 			(pintype "passive")
-			(uuid "e28b4cd3-1ea2-4658-baf0-9dc03006063b")
+			(uuid "e120e358-0b24-4854-b82c-74bab18b9988")
 		)
-		(model "${KIPRJMOD}/TOTEM3D/D_SOD-123.step"
+		(model "C:/Users/Gomar/Downloads/sod123 v4.step"
 			(offset
 				(xyz 0 0 -0.1)
 			)
@@ -16612,7 +16612,7 @@
 			(at 0 -1.5 90)
 			(layer "B.SilkS")
 			(hide yes)
-			(uuid "d807b7b0-9916-4a9a-87f7-99c1f7fc1017")
+			(uuid "e68dc5a3-4465-4a74-b99a-b6141ae28842")
 			(effects
 				(font
 					(size 1 1)
@@ -16625,7 +16625,7 @@
 			(at 0 1.2 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "31b970d7-c628-4cf9-957f-19fbf285d5d6")
+			(uuid "f02f0ec7-065c-476a-8996-0b3dfd2e75f8")
 			(effects
 				(font
 					(size 1 1)
@@ -16638,7 +16638,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "6f92aef3-77a2-426e-9d45-c975a5839a0b")
+			(uuid "81719836-9ff7-4261-b89b-abc393927825")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -16651,7 +16651,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "6dfbb7fb-9f99-43e7-aa78-611e51228605")
+			(uuid "debecf4c-6e68-4b00-abb6-fb79a0e7304d")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -16664,7 +16664,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "84d5427d-aead-434b-a002-80a27b4dce42")
+			(uuid "7f089bcd-f4ef-4444-a55b-02e6317f0940")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -16708,23 +16708,23 @@
 		(attr through_hole)
 		(fp_line
 			(start 0.4 0.7)
-			(end -0.499999 0)
+			(end -0.5 0)
 			(stroke
 				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "5fb59910-5d92-418f-b704-2b9777eb2c16")
+			(uuid "98a1b5f6-0d44-412d-bdcb-e3108ce2423c")
 		)
 		(fp_line
-			(start -0.499999 0)
+			(start -0.5 0)
 			(end 0.4 -0.7)
 			(stroke
 				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "75028d04-3bce-46b6-8e31-94748feb7325")
+			(uuid "07fff806-2e6b-47f2-870a-61dbf138bea9")
 		)
 		(fp_line
 			(start -0.5 -0.7)
@@ -16734,7 +16734,7 @@
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "2c4ed7e1-404e-45d8-846d-12f99f2e4f26")
+			(uuid "9b5226a8-f123-4285-9554-fcdeaaea92ef")
 		)
 		(fp_line
 			(start 0.4 -0.7)
@@ -16744,27 +16744,27 @@
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "a3135fe2-fd7f-422c-a903-0d177b049367")
+			(uuid "dfa8a4fd-cc74-40c8-b4dc-1411589a4831")
 		)
 		(pad "1" smd rect
-			(at -1.700001 0 270)
+			(at -1.7 0 270)
 			(size 1.8 1.5)
 			(layers "B.Cu" "B.Paste" "B.Mask")
 			(net 8 "ROW1_L")
 			(pinfunction "K")
 			(pintype "passive")
-			(uuid "72f2521b-ce35-42c0-9036-fe776dc5cf93")
+			(uuid "047790a3-dde2-4879-8905-615d99323f6a")
 		)
 		(pad "2" smd rect
-			(at 1.700001 0 270)
+			(at 1.7 0 270)
 			(size 1.8 1.5)
 			(layers "B.Cu" "B.Paste" "B.Mask")
 			(net 10 "Net-(D7-A)")
 			(pinfunction "A")
 			(pintype "passive")
-			(uuid "c0f606ee-5363-4397-96ed-7b23ce25c706")
+			(uuid "e1900976-fbd9-4f59-84ff-ea680e660a96")
 		)
-		(model "${KIPRJMOD}/TOTEM3D/D_SOD-123.step"
+		(model "C:/Users/Gomar/Downloads/sod123 v4.step"
 			(offset
 				(xyz 0 0 -0.1)
 			)
@@ -16788,7 +16788,7 @@
 			(at 0 -1.5 90)
 			(layer "B.SilkS")
 			(hide yes)
-			(uuid "b9e100a3-6d8e-43ff-bed1-55d9a1505ced")
+			(uuid "8f87225e-b70d-4b99-aca8-dae8d2b74ae6")
 			(effects
 				(font
 					(size 1 1)
@@ -16801,7 +16801,7 @@
 			(at 0 1.2 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "06cb61cb-6480-4fab-93e8-c1fd1314d195")
+			(uuid "941061fe-9170-433c-8ed7-ff2de01304c8")
 			(effects
 				(font
 					(size 1 1)
@@ -16814,7 +16814,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "520fc15b-df6f-4423-a86b-675617135895")
+			(uuid "de723ea1-4d9f-45cd-9762-24b3c2cb6736")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -16827,7 +16827,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "39159391-49f8-47c2-ab09-6a7f6c285ca1")
+			(uuid "39d060a2-5e59-4505-8ef1-1487e1644f4e")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -16840,7 +16840,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "ccf97175-c5d2-45f9-b5df-88a0002e1dbd")
+			(uuid "78083767-8f97-4de6-8575-71bc1939b869")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -16884,23 +16884,23 @@
 		(attr through_hole)
 		(fp_line
 			(start 0.4 0.7)
-			(end -0.499999 0)
+			(end -0.5 0)
 			(stroke
 				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "ebacd33c-e406-41af-87c9-c84b3f7f3472")
+			(uuid "a83b2007-e815-4de5-ab94-15f886abc71d")
 		)
 		(fp_line
-			(start -0.499999 0)
+			(start -0.5 0)
 			(end 0.4 -0.7)
 			(stroke
 				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "107c7a4f-d12c-4f8f-805f-551c08301ac8")
+			(uuid "4af51f67-c5e9-4cbc-8bb1-5fb7f4d70b84")
 		)
 		(fp_line
 			(start -0.5 -0.7)
@@ -16910,7 +16910,7 @@
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "d52d1e08-55f8-4e92-9139-61dacb09ece3")
+			(uuid "fcc03e5d-bc36-4bc3-951d-e0e41ff9fed0")
 		)
 		(fp_line
 			(start 0.4 -0.7)
@@ -16920,27 +16920,27 @@
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "183037b9-e287-43a9-850e-6a009248351a")
+			(uuid "1b90abbb-7614-4452-a6d0-5ba53eb58264")
 		)
 		(pad "1" smd rect
-			(at -1.700001 0 270)
+			(at -1.7 0 270)
 			(size 1.8 1.5)
 			(layers "B.Cu" "B.Paste" "B.Mask")
 			(net 50 "ROW0_R")
 			(pinfunction "K")
 			(pintype "passive")
-			(uuid "0fb4bbe1-8d4d-4d54-ab63-9a44d0385da6")
+			(uuid "5a38f998-c232-455a-bb68-28c5208f15ea")
 		)
 		(pad "2" smd rect
-			(at 1.700001 0 270)
+			(at 1.7 0 270)
 			(size 1.8 1.5)
 			(layers "B.Cu" "B.Paste" "B.Mask")
 			(net 53 "Net-(D20-A)")
 			(pinfunction "A")
 			(pintype "passive")
-			(uuid "1b01c425-64c5-416b-bbb3-9b1fbfeb25ff")
+			(uuid "6846e3cc-e17d-485a-888d-371b824129f4")
 		)
-		(model "${KIPRJMOD}/TOTEM3D/D_SOD-123.step"
+		(model "C:/Users/Gomar/Downloads/sod123 v4.step"
 			(offset
 				(xyz 0 0 -0.1)
 			)
@@ -16964,7 +16964,7 @@
 			(at 0 -1.5 90)
 			(layer "B.SilkS")
 			(hide yes)
-			(uuid "17f0aa97-04a7-444f-a43a-4ff0417f7d4f")
+			(uuid "a254a83f-06f3-466f-9abe-d40e23ef754b")
 			(effects
 				(font
 					(size 1 1)
@@ -16977,7 +16977,7 @@
 			(at 0 1.2 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "d35d2c5b-fb8f-4c0d-87bd-f38820be39de")
+			(uuid "cef2223b-9beb-46f8-aee3-0c3c7bc66bf6")
 			(effects
 				(font
 					(size 1 1)
@@ -16990,7 +16990,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "643ed424-dad5-4c82-9aec-861283febf2a")
+			(uuid "78564918-b961-4b9f-96bd-97f01ce398a2")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -17003,7 +17003,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "7df57663-8549-40ea-bf43-024df357e844")
+			(uuid "907b614d-0d61-4846-9974-955a803cb99f")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -17016,7 +17016,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "305715e4-b62b-4118-8139-0b93471a7ff1")
+			(uuid "ea439d49-d3d8-4b02-ba78-851f46db0f87")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -17060,23 +17060,23 @@
 		(attr through_hole)
 		(fp_line
 			(start 0.4 0.7)
-			(end -0.499999 0)
+			(end -0.5 0)
 			(stroke
 				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "50db5f69-be78-4e77-a200-e05a00c00049")
+			(uuid "74ee724a-c77e-4a82-adab-c0bfc1a121df")
 		)
 		(fp_line
-			(start -0.499999 0)
+			(start -0.5 0)
 			(end 0.4 -0.7)
 			(stroke
 				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "34ae2b68-6943-4827-85d5-d63e0a7e08bb")
+			(uuid "5599cbc4-c8fc-411c-b950-25b503ea90aa")
 		)
 		(fp_line
 			(start -0.5 -0.7)
@@ -17086,7 +17086,7 @@
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "fc7ebee5-5166-4453-820b-e7b70a27edfd")
+			(uuid "eedbb592-e58f-4ced-8ebd-54c9f2084743")
 		)
 		(fp_line
 			(start 0.4 -0.7)
@@ -17096,27 +17096,27 @@
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "f465df71-ed29-4d81-bedd-de49ec6ff128")
+			(uuid "2a7ab1ab-64a4-469c-aa5b-9fb8beb1cafc")
 		)
 		(pad "1" smd rect
-			(at -1.700001 0 270)
+			(at -1.7 0 270)
 			(size 1.8 1.5)
 			(layers "B.Cu" "B.Paste" "B.Mask")
 			(net 14 "ROW2_L")
 			(pinfunction "K")
 			(pintype "passive")
-			(uuid "1c895450-7377-437a-9b59-6ca73f1a5f51")
+			(uuid "2509200a-600e-47fa-ac96-e48e6e3a3006")
 		)
 		(pad "2" smd rect
-			(at 1.700001 0 270)
+			(at 1.7 0 270)
 			(size 1.8 1.5)
 			(layers "B.Cu" "B.Paste" "B.Mask")
 			(net 19 "Net-(D15-A)")
 			(pinfunction "A")
 			(pintype "passive")
-			(uuid "3d04de59-fdcb-42da-a1c2-91d5767d459e")
+			(uuid "6647bc6e-31dc-4a40-998e-be5c52d76f18")
 		)
-		(model "${KIPRJMOD}/TOTEM3D/D_SOD-123.step"
+		(model "C:/Users/Gomar/Downloads/sod123 v4.step"
 			(offset
 				(xyz 0 0 -0.1)
 			)
@@ -17140,7 +17140,7 @@
 			(at 0 -1.5 90)
 			(layer "B.SilkS")
 			(hide yes)
-			(uuid "35e1fc5c-ed0e-4579-8272-d9f9e88e39ed")
+			(uuid "926ffea4-3a95-49f5-aaa8-90706c365f96")
 			(effects
 				(font
 					(size 1 1)
@@ -17153,7 +17153,7 @@
 			(at 0 1.2 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "9721ee81-0c5b-4bcb-b7c6-823f77a952e5")
+			(uuid "6a1a56da-5796-448f-8e09-0cf40bea1d60")
 			(effects
 				(font
 					(size 1 1)
@@ -17166,7 +17166,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "8a366bfa-2fbf-456f-9377-e5dd9d3707ad")
+			(uuid "829ac13c-602c-4a2b-825d-2d92e368793c")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -17179,7 +17179,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "b5ec8ac4-49ec-478d-84f6-219ab11dbafd")
+			(uuid "b030bd6b-28a6-4391-9321-340a17cb728b")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -17192,7 +17192,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "fb425865-a0a7-462d-ae18-e73038f7fb99")
+			(uuid "29f640b6-37d1-419c-b193-ccbb4355a54a")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -17236,23 +17236,23 @@
 		(attr through_hole)
 		(fp_line
 			(start 0.4 0.7)
-			(end -0.499999 0)
+			(end -0.5 0)
 			(stroke
 				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "2267a825-eba6-4e1f-917a-9d46f433c4ab")
+			(uuid "831f52c0-ccf5-425e-8dee-a6f293adcf02")
 		)
 		(fp_line
-			(start -0.499999 0)
+			(start -0.5 0)
 			(end 0.4 -0.7)
 			(stroke
 				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "0557f3dc-84bc-4da1-bb2a-7d7ff5205c3f")
+			(uuid "4aae20cb-668d-40ee-91d4-12ca3fca0efc")
 		)
 		(fp_line
 			(start -0.5 -0.7)
@@ -17262,7 +17262,7 @@
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "9c532506-f403-4530-9662-9a04a959d72c")
+			(uuid "53ca0e88-7fe3-47c3-8f6e-58bbd1665f00")
 		)
 		(fp_line
 			(start 0.4 -0.7)
@@ -17272,27 +17272,27 @@
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "883d13a2-221b-44d4-bb55-990b38fc32fd")
+			(uuid "9e407c2a-9bf8-4621-b844-5e3805c5b974")
 		)
 		(pad "1" smd rect
-			(at -1.700001 0 270)
+			(at -1.7 0 270)
 			(size 1.8 1.5)
 			(layers "B.Cu" "B.Paste" "B.Mask")
 			(net 8 "ROW1_L")
 			(pinfunction "K")
 			(pintype "passive")
-			(uuid "8d2a7834-1489-4d17-91ae-cce6f321a06b")
+			(uuid "85873b8c-9444-477b-be54-039f95d0df59")
 		)
 		(pad "2" smd rect
-			(at 1.700001 0 270)
+			(at 1.7 0 270)
 			(size 1.8 1.5)
 			(layers "B.Cu" "B.Paste" "B.Mask")
 			(net 11 "Net-(D8-A)")
 			(pinfunction "A")
 			(pintype "passive")
-			(uuid "a8c2d8f8-9328-4c56-b7f4-1fc39ae9f2b8")
+			(uuid "0e683509-14ba-4414-93f1-575a97e023f4")
 		)
-		(model "${KIPRJMOD}/TOTEM3D/D_SOD-123.step"
+		(model "C:/Users/Gomar/Downloads/sod123 v4.step"
 			(offset
 				(xyz 0 0 -0.1)
 			)
@@ -17316,7 +17316,7 @@
 			(at 0 -1.5 90)
 			(layer "B.SilkS")
 			(hide yes)
-			(uuid "04fd9b5a-cd2a-4574-9486-d9065e12757b")
+			(uuid "db2b897e-d2d3-427c-970e-c16226107308")
 			(effects
 				(font
 					(size 1 1)
@@ -17329,7 +17329,7 @@
 			(at 0 1.2 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "7de80bd9-eee8-4e98-ac5d-27431a9cf369")
+			(uuid "4ff04888-e5d4-406a-8d0d-1a2b85627dd2")
 			(effects
 				(font
 					(size 1 1)
@@ -17342,7 +17342,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "83c2ecb0-b65f-4ac9-9601-e1ca35397cee")
+			(uuid "cc1296b3-2f9e-41fc-874b-1241ca435f07")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -17355,7 +17355,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "870743d3-f3f7-41e5-8a90-db97b05c592e")
+			(uuid "5da76461-b03c-49eb-9c96-a5f543ddfcbf")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -17368,7 +17368,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "b58c7a5a-f0df-419b-ba9d-fd8e91c3b5f7")
+			(uuid "935be4f2-28ab-4570-a317-9c9fbf06b701")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -17412,23 +17412,23 @@
 		(attr through_hole)
 		(fp_line
 			(start 0.4 0.7)
-			(end -0.499999 0)
+			(end -0.5 0)
 			(stroke
 				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "12f2b20e-76e7-41b1-b934-99a804a77518")
+			(uuid "5bd9f1dc-c2b1-49ba-a6b5-fda1275cb977")
 		)
 		(fp_line
-			(start -0.499999 0)
+			(start -0.5 0)
 			(end 0.4 -0.7)
 			(stroke
 				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "2a49e408-f7fa-4ffb-af43-3c3c28d97d05")
+			(uuid "85d52543-1456-48b0-ba8a-7d4b02ae0ccd")
 		)
 		(fp_line
 			(start -0.5 -0.7)
@@ -17438,7 +17438,7 @@
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "d490effa-17d4-4aee-ac60-822db8b34148")
+			(uuid "0a5b3475-1e7f-4963-8b25-36e9a3e6de17")
 		)
 		(fp_line
 			(start 0.4 -0.7)
@@ -17448,27 +17448,27 @@
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "05e42fe6-1181-4e94-8ae5-62e26f82fae9")
+			(uuid "f5f30153-cc76-4586-9901-f28486902109")
 		)
 		(pad "1" smd rect
-			(at -1.700001 0 270)
+			(at -1.7 0 270)
 			(size 1.8 1.5)
 			(layers "B.Cu" "B.Paste" "B.Mask")
 			(net 50 "ROW0_R")
 			(pinfunction "K")
 			(pintype "passive")
-			(uuid "3f23f04b-75d9-46e8-a816-3b4b76a51c4e")
+			(uuid "0c689ca3-18d6-4ead-ac67-42227438307b")
 		)
 		(pad "2" smd rect
-			(at 1.700001 0 270)
+			(at 1.7 0 270)
 			(size 1.8 1.5)
 			(layers "B.Cu" "B.Paste" "B.Mask")
 			(net 55 "Net-(D22-A)")
 			(pinfunction "A")
 			(pintype "passive")
-			(uuid "c8d96e24-f1cd-4a29-a0e9-86f484ce5d88")
+			(uuid "44022314-57fd-4eba-8e6c-85e1f18dece0")
 		)
-		(model "${KIPRJMOD}/TOTEM3D/D_SOD-123.step"
+		(model "C:/Users/Gomar/Downloads/sod123 v4.step"
 			(offset
 				(xyz 0 0 -0.1)
 			)
@@ -17492,7 +17492,7 @@
 			(at 0 -1.5 90)
 			(layer "B.SilkS")
 			(hide yes)
-			(uuid "5020880d-9a9a-46ee-897e-dee90580d4db")
+			(uuid "eb228d2d-610a-4c3f-a685-e64b95cedaf6")
 			(effects
 				(font
 					(size 1 1)
@@ -17505,7 +17505,7 @@
 			(at 0 1.2 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "da1b29cb-8945-4dc4-aa47-22fb540db259")
+			(uuid "cc955c0f-9fa7-4913-9695-12ab435e8228")
 			(effects
 				(font
 					(size 1 1)
@@ -17518,7 +17518,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "a513c897-3b27-4e5f-b117-a296d20dafa9")
+			(uuid "68ac15be-f029-481d-ad9e-79ad7573f405")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -17531,7 +17531,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "2cc868ab-888d-4dcd-ab99-9acd02de004b")
+			(uuid "c7f86aff-991d-463b-9631-37868bc35aa7")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -17544,7 +17544,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "f96d4902-64b4-49ed-9cf0-6e22aa563bef")
+			(uuid "05f50a1a-c2f7-4ead-82af-c149a47449fb")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -17588,23 +17588,23 @@
 		(attr through_hole)
 		(fp_line
 			(start 0.4 0.7)
-			(end -0.499999 0)
+			(end -0.5 0)
 			(stroke
 				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "eae53613-ce28-40cb-a203-68e8dc3ba833")
+			(uuid "461318da-5763-4e02-a08b-0680bddefc49")
 		)
 		(fp_line
-			(start -0.499999 0)
+			(start -0.5 0)
 			(end 0.4 -0.7)
 			(stroke
 				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "06a455f5-0059-48d3-813e-c0ca1fb4bf39")
+			(uuid "7173122e-be34-478b-89cf-1056d4a22e21")
 		)
 		(fp_line
 			(start -0.5 -0.7)
@@ -17614,7 +17614,7 @@
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "42a3a685-2c56-40ce-aa9e-dab0adf6e472")
+			(uuid "c6dc9bd9-508d-44b0-9325-11e84343980c")
 		)
 		(fp_line
 			(start 0.4 -0.7)
@@ -17624,27 +17624,27 @@
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "c722963e-ca8c-4e25-9695-61a0cf785611")
+			(uuid "e10fe7f0-417d-4172-8780-5d9e8582346a")
 		)
 		(pad "1" smd rect
-			(at -1.700001 0 270)
+			(at -1.7 0 270)
 			(size 1.8 1.5)
 			(layers "B.Cu" "B.Paste" "B.Mask")
 			(net 67 "ROW2_R")
 			(pinfunction "K")
 			(pintype "passive")
-			(uuid "49a0c928-0361-47bc-8b9c-2447c84d4d37")
+			(uuid "ad898354-55e8-4159-8c19-26e076ddd10e")
 		)
 		(pad "2" smd rect
-			(at 1.700001 0 270)
+			(at 1.7 0 270)
 			(size 1.8 1.5)
 			(layers "B.Cu" "B.Paste" "B.Mask")
 			(net 71 "Net-(D32-A)")
 			(pinfunction "A")
 			(pintype "passive")
-			(uuid "5bebcc7a-60ed-4d6c-8ca3-f098773432c2")
+			(uuid "247e6802-3080-488f-b7f4-19ddaccec6fc")
 		)
-		(model "${KIPRJMOD}/TOTEM3D/D_SOD-123.step"
+		(model "C:/Users/Gomar/Downloads/sod123 v4.step"
 			(offset
 				(xyz 0 0 -0.1)
 			)
@@ -17668,7 +17668,7 @@
 			(at 0 -1.5 90)
 			(layer "B.SilkS")
 			(hide yes)
-			(uuid "f4c96c2c-a7f0-4d96-aa60-461156bfbad3")
+			(uuid "5489bf37-d244-4597-a8cc-ed0509a336f6")
 			(effects
 				(font
 					(size 1 1)
@@ -17681,7 +17681,7 @@
 			(at 0 1.2 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "b79696a5-fb11-42af-9057-f04ec161864e")
+			(uuid "e2756393-5997-4820-8279-a3ac55d52fd4")
 			(effects
 				(font
 					(size 1 1)
@@ -17694,7 +17694,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "0de88e0e-f007-44b4-927a-e6c5da62c4d5")
+			(uuid "d7adc89c-f894-4c0c-89e1-47ebc0dc7bf4")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -17707,7 +17707,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "eaa297e9-80fb-4144-b419-10ed33ede3d1")
+			(uuid "d387a84a-2d32-42e1-a19c-cb791f3a6d41")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -17720,7 +17720,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "1082b72f-ef6d-4ead-b471-4e178545dda0")
+			(uuid "f571e168-14df-45bd-b8d3-dcce51480bba")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -17764,23 +17764,23 @@
 		(attr through_hole)
 		(fp_line
 			(start 0.4 0.7)
-			(end -0.499999 0)
+			(end -0.5 0)
 			(stroke
 				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "9277496d-ffb9-465e-9553-a81cde85780b")
+			(uuid "aaf1ff67-c4ae-49fb-b22e-04839d923a83")
 		)
 		(fp_line
-			(start -0.499999 0)
+			(start -0.5 0)
 			(end 0.4 -0.7)
 			(stroke
 				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "6ae7bcee-a561-4f84-9cdd-035e373bccef")
+			(uuid "c78c6f9e-a0f0-42a5-adbb-cbed2d8857e0")
 		)
 		(fp_line
 			(start -0.5 -0.7)
@@ -17790,7 +17790,7 @@
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "dd3f5db1-4cef-489f-82c8-cf2de561d618")
+			(uuid "5f1a0cca-a6fd-40ee-98e5-42d3600578e9")
 		)
 		(fp_line
 			(start 0.4 -0.7)
@@ -17800,27 +17800,27 @@
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "c7b6b18b-710c-4110-adce-d140dca77601")
+			(uuid "68a08759-a72a-4d13-8628-4a250c3ec6a3")
 		)
 		(pad "1" smd rect
-			(at -1.700001 0 270)
+			(at -1.7 0 270)
 			(size 1.8 1.5)
 			(layers "B.Cu" "B.Paste" "B.Mask")
 			(net 2 "ROW0_L")
 			(pinfunction "K")
 			(pintype "passive")
-			(uuid "6b751bcd-16c0-4d7d-a42c-30ad00fe41ff")
+			(uuid "033c775e-c139-4fe8-aff4-3d9ee0cbfe90")
 		)
 		(pad "2" smd rect
-			(at 1.700001 0 270)
+			(at 1.7 0 270)
 			(size 1.8 1.5)
 			(layers "B.Cu" "B.Paste" "B.Mask")
 			(net 6 "Net-(D4-A)")
 			(pinfunction "A")
 			(pintype "passive")
-			(uuid "aadf1adb-e1d0-43d0-86c9-5b9f56c2473e")
+			(uuid "812d2c7d-7a91-45e3-b2b8-9364897bc00d")
 		)
-		(model "${KIPRJMOD}/TOTEM3D/D_SOD-123.step"
+		(model "C:/Users/Gomar/Downloads/sod123 v4.step"
 			(offset
 				(xyz 0 0 -0.1)
 			)
@@ -17844,7 +17844,7 @@
 			(at 0 -1.5 90)
 			(layer "B.SilkS")
 			(hide yes)
-			(uuid "925ad172-1ebf-49fc-a363-2e7e74a72668")
+			(uuid "28077f21-39ee-418a-a9f8-d66ffc8fe2f0")
 			(effects
 				(font
 					(size 1 1)
@@ -17857,7 +17857,7 @@
 			(at 0 1.2 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "1e5b6da6-2934-43b3-92fb-c8eb8d2c7363")
+			(uuid "d75007ba-e1c6-463a-a26d-82ea67be95f1")
 			(effects
 				(font
 					(size 1 1)
@@ -17870,7 +17870,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "0c743933-e25c-45f5-9f11-fbc84736887c")
+			(uuid "6bc32fc2-baa0-47e6-9de5-885431249ebf")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -17883,7 +17883,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "e0189ecc-fc46-476b-b856-82d48be1cb58")
+			(uuid "a6f529d7-b7f4-4769-93cb-ee9671621189")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -17896,7 +17896,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "d2c08331-322e-4026-83f6-1a1776fdee2e")
+			(uuid "33b7e312-2ae5-4af7-9ad9-227aa7e55f86")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -17940,23 +17940,23 @@
 		(attr through_hole)
 		(fp_line
 			(start 0.4 0.7)
-			(end -0.499999 0)
+			(end -0.5 0)
 			(stroke
 				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "201a8e5d-900b-4a7d-b8ac-513f161ae847")
+			(uuid "22afb396-ec77-47fe-a524-152169760acd")
 		)
 		(fp_line
-			(start -0.499999 0)
+			(start -0.5 0)
 			(end 0.4 -0.7)
 			(stroke
 				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "952af026-c1a3-4342-99d2-f41e0e66049d")
+			(uuid "68aa0c23-c6fd-4e4d-88aa-8f4baa0344ae")
 		)
 		(fp_line
 			(start -0.5 -0.7)
@@ -17966,7 +17966,7 @@
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "698e622c-0e5b-4a8e-9c65-19b301158f78")
+			(uuid "6375cf3b-2b08-4fb7-8277-dc6beb96c2fb")
 		)
 		(fp_line
 			(start 0.4 -0.7)
@@ -17976,27 +17976,27 @@
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "720081d7-aa5c-4b91-9224-297038bf0bd6")
+			(uuid "58f9e8b4-9ffb-4735-aced-bec2ae3af35a")
 		)
 		(pad "1" smd rect
-			(at -1.700001 0 270)
+			(at -1.7 0 270)
 			(size 1.8 1.5)
 			(layers "B.Cu" "B.Paste" "B.Mask")
 			(net 50 "ROW0_R")
 			(pinfunction "K")
 			(pintype "passive")
-			(uuid "8b49322b-4848-461a-862d-285c6845f51f")
+			(uuid "abc0bb0c-e8a2-4e1e-a7d0-4795a62b5e82")
 		)
 		(pad "2" smd rect
-			(at 1.700001 0 270)
+			(at 1.7 0 270)
 			(size 1.8 1.5)
 			(layers "B.Cu" "B.Paste" "B.Mask")
 			(net 51 "Net-(D18-A)")
 			(pinfunction "A")
 			(pintype "passive")
-			(uuid "cabb24d2-09ce-413b-be3f-1fc6d06da78b")
+			(uuid "50ccc761-49d5-4b24-b126-05a89162a003")
 		)
-		(model "${KIPRJMOD}/TOTEM3D/D_SOD-123.step"
+		(model "C:/Users/Gomar/Downloads/sod123 v4.step"
 			(offset
 				(xyz 0 0 -0.1)
 			)
@@ -18020,7 +18020,7 @@
 			(at 0 -1.5 90)
 			(layer "B.SilkS")
 			(hide yes)
-			(uuid "d8624a27-8886-4027-9ce8-1a1577ff0432")
+			(uuid "acb323f5-454e-4dfc-b90d-765fa3b24a66")
 			(effects
 				(font
 					(size 1 1)
@@ -18033,7 +18033,7 @@
 			(at 0 1.2 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "5c7c8092-9903-47b0-8fe3-3b868d7d1198")
+			(uuid "2fa49905-6f6c-40b6-9840-f3834e9cafb3")
 			(effects
 				(font
 					(size 1 1)
@@ -18046,7 +18046,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "c9e408e6-c48d-4970-8ac2-bd5d493b0d88")
+			(uuid "f6fb640f-1146-45d1-b406-ad3a632a5969")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -18059,7 +18059,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "af573aa2-0314-4d62-95e1-758d0a44d563")
+			(uuid "19c19899-9cc3-47a1-a117-5cca1cc83fbf")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -18072,7 +18072,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "3290ed1a-f8be-4b70-b494-5a684496b479")
+			(uuid "a05d59de-182b-47db-83a3-c7ecbb2fa195")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -18116,23 +18116,23 @@
 		(attr through_hole)
 		(fp_line
 			(start 0.4 0.7)
-			(end -0.499999 0)
+			(end -0.5 0)
 			(stroke
 				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "177ffd96-7f4a-44a6-8833-7abd7b491e60")
+			(uuid "214b5d0f-fe53-4a1c-a78c-207db23a9c42")
 		)
 		(fp_line
-			(start -0.499999 0)
+			(start -0.5 0)
 			(end 0.4 -0.7)
 			(stroke
 				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "57239490-7e9e-4db9-8f22-b27db71d9fc5")
+			(uuid "e448d8b6-ff62-41ad-ab1c-3f031aafc35c")
 		)
 		(fp_line
 			(start -0.5 -0.7)
@@ -18142,7 +18142,7 @@
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "bbf4d109-d5e3-4b1e-80a5-eacceec01fb6")
+			(uuid "7a182941-94f5-4940-bd35-83003ff1df72")
 		)
 		(fp_line
 			(start 0.4 -0.7)
@@ -18152,27 +18152,27 @@
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "d03737d2-fdea-4e41-bbcc-856d29acc878")
+			(uuid "4c93ad01-3ac9-49d1-87dd-01a148c82dc2")
 		)
 		(pad "1" smd rect
-			(at -1.700001 0 270)
+			(at -1.7 0 270)
 			(size 1.8 1.5)
 			(layers "B.Cu" "B.Paste" "B.Mask")
 			(net 50 "ROW0_R")
 			(pinfunction "K")
 			(pintype "passive")
-			(uuid "f76c94e8-6f14-4ccd-ad80-6ceb2eadb02f")
+			(uuid "f8af6376-6975-4844-b948-aaa2e37aeb32")
 		)
 		(pad "2" smd rect
-			(at 1.700001 0 270)
+			(at 1.7 0 270)
 			(size 1.8 1.5)
 			(layers "B.Cu" "B.Paste" "B.Mask")
 			(net 52 "Net-(D19-A)")
 			(pinfunction "A")
 			(pintype "passive")
-			(uuid "b076956d-db79-4c94-9bff-82ceb0ccf446")
+			(uuid "c91ace94-1c92-4f98-8fee-8edc934b398c")
 		)
-		(model "${KIPRJMOD}/TOTEM3D/D_SOD-123.step"
+		(model "C:/Users/Gomar/Downloads/sod123 v4.step"
 			(offset
 				(xyz 0 0 -0.1)
 			)
@@ -18196,7 +18196,7 @@
 			(at 0 -1.5 90)
 			(layer "B.SilkS")
 			(hide yes)
-			(uuid "9b0a2eff-1728-4f9d-8c4e-61c17a8ec39b")
+			(uuid "8c8d45aa-97e4-4816-bfca-72ee9c564c2f")
 			(effects
 				(font
 					(size 1 1)
@@ -18209,7 +18209,7 @@
 			(at 0 1.2 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "d076c312-eff7-4c7d-b820-024fd8d93dfa")
+			(uuid "558f7fa9-2059-4e65-b55d-271966d588f0")
 			(effects
 				(font
 					(size 1 1)
@@ -18221,8 +18221,7 @@
 		(property "Footprint" "totem:Diode_SOD123"
 			(at 0 0 90)
 			(layer "B.Fab")
-			(hide yes)
-			(uuid "d2aea6b2-e755-4bd4-9d73-c2b81f0176bb")
+			(uuid "0da565f1-966e-4d1b-9b49-e36f597a5fa7")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -18235,7 +18234,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "df3e7c4f-e371-47fc-b0e9-e49f100a1e44")
+			(uuid "a3ca4ff6-c1ce-4125-86c5-2a124d7312b1")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -18248,7 +18247,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "a25c615a-f345-45e7-95b7-cadca65fd810")
+			(uuid "e61d980f-f06e-423f-a214-d0db072b48df")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -18292,23 +18291,23 @@
 		(attr through_hole)
 		(fp_line
 			(start 0.4 0.7)
-			(end -0.499999 0)
+			(end -0.5 0)
 			(stroke
 				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "68c609d4-6cb9-4e4c-bbed-c369b87e1a22")
+			(uuid "9644a4f9-60f8-47ab-901e-94f534e20292")
 		)
 		(fp_line
-			(start -0.499999 0)
+			(start -0.5 0)
 			(end 0.4 -0.7)
 			(stroke
 				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "4676f8b3-38b4-496c-8a6b-35e7b2c138c6")
+			(uuid "b7fe0a62-40fd-46c3-852f-6ed58b08e05a")
 		)
 		(fp_line
 			(start -0.5 -0.7)
@@ -18318,7 +18317,7 @@
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "15a210bf-ea4b-4e13-ad12-ddfc621bdd2c")
+			(uuid "747abaf0-20d0-47fb-b3c0-d895c121ede8")
 		)
 		(fp_line
 			(start 0.4 -0.7)
@@ -18328,27 +18327,27 @@
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "007ee4bf-b5ec-4a4a-b941-b4a575b10d5e")
+			(uuid "7fad0c98-a44a-44eb-9dda-669232d843e8")
 		)
 		(pad "1" smd rect
-			(at -1.700001 0 270)
+			(at -1.7 0 270)
 			(size 1.8 1.5)
 			(layers "B.Cu" "B.Paste" "B.Mask")
 			(net 2 "ROW0_L")
 			(pinfunction "K")
 			(pintype "passive")
-			(uuid "fa29deaa-7b31-4fe9-b69f-bd71a4e538ca")
+			(uuid "b994f8e4-be13-478c-a595-3ebc37767e1a")
 		)
 		(pad "2" smd rect
-			(at 1.700001 0 270)
+			(at 1.7 0 270)
 			(size 1.8 1.5)
 			(layers "B.Cu" "B.Paste" "B.Mask")
 			(net 7 "Net-(D5-A)")
 			(pinfunction "A")
 			(pintype "passive")
-			(uuid "4366223b-444c-4639-8f9e-3503fcad2650")
+			(uuid "14d1c946-9555-433e-bb19-488ea3a8eeee")
 		)
-		(model "${KIPRJMOD}/TOTEM3D/D_SOD-123.step"
+		(model "C:/Users/Gomar/Downloads/sod123 v4.step"
 			(offset
 				(xyz 0 0 -0.1)
 			)
@@ -18372,7 +18371,7 @@
 			(at 0 -1.5 90)
 			(layer "B.SilkS")
 			(hide yes)
-			(uuid "2ef16e80-60d2-48c4-9351-de79c67485e9")
+			(uuid "2ed507d2-3a0a-4ca1-a226-d3395281a031")
 			(effects
 				(font
 					(size 1 1)
@@ -18385,7 +18384,7 @@
 			(at 0 1.2 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "10b0a645-d8b8-42e9-92dc-3a67b1bd10b9")
+			(uuid "4fff18d8-024b-489c-98d3-36baa1cde178")
 			(effects
 				(font
 					(size 1 1)
@@ -18398,7 +18397,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "9ab52bb1-c548-43c5-9b3e-0e44173f010e")
+			(uuid "acb5a2e6-e74f-4950-9e66-55ade9fcdaa4")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -18411,7 +18410,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "26e2289c-864f-4f58-8d43-774e33d2bc0f")
+			(uuid "d83374f2-b9a1-4783-9199-8804f5fd6310")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -18424,7 +18423,7 @@
 			(at 0 0 90)
 			(layer "B.Fab")
 			(hide yes)
-			(uuid "109cc269-f1ab-4f89-947e-05a809aed386")
+			(uuid "dd479eee-9bc1-4dae-b3e8-ab6419ecfbfb")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -18468,23 +18467,23 @@
 		(attr through_hole)
 		(fp_line
 			(start 0.4 0.7)
-			(end -0.499999 0)
+			(end -0.5 0)
 			(stroke
 				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "6a63d2f0-1354-4ec7-955e-3bc16b07cbda")
+			(uuid "d89b914c-4d25-4bba-80d6-487761a3cb0d")
 		)
 		(fp_line
-			(start -0.499999 0)
+			(start -0.5 0)
 			(end 0.4 -0.7)
 			(stroke
 				(width 0.15)
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "295b3aba-0893-47cb-bc13-569a5f5b056e")
+			(uuid "cad722b0-864d-4d84-b5e1-41b47b505b87")
 		)
 		(fp_line
 			(start -0.5 -0.7)
@@ -18494,7 +18493,7 @@
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "10c2f843-1ed9-48d2-a46c-d02f85cf2617")
+			(uuid "f3d2bafd-e223-42ed-916b-8df91c0149c9")
 		)
 		(fp_line
 			(start 0.4 -0.7)
@@ -18504,27 +18503,27 @@
 				(type solid)
 			)
 			(layer "B.SilkS")
-			(uuid "d3d3697e-2f6d-41b1-af75-53fc15451577")
+			(uuid "37a19c0e-0901-4625-9dcf-0ca5f3349542")
 		)
 		(pad "1" smd rect
-			(at -1.700001 0 270)
+			(at -1.7 0 270)
 			(size 1.8 1.5)
 			(layers "B.Cu" "B.Paste" "B.Mask")
 			(net 8 "ROW1_L")
 			(pinfunction "K")
 			(pintype "passive")
-			(uuid "2be9cbe1-bab3-47c0-b732-d161f3cb2a5b")
+			(uuid "5587c474-2c86-451d-9b47-60a1cc468ad2")
 		)
 		(pad "2" smd rect
-			(at 1.700001 0 270)
+			(at 1.7 0 270)
 			(size 1.8 1.5)
 			(layers "B.Cu" "B.Paste" "B.Mask")
 			(net 12 "Net-(D9-A)")
 			(pinfunction "A")
 			(pintype "passive")
-			(uuid "8839a985-7505-4ba2-840d-7027f343b90b")
+			(uuid "16ff6339-90e0-48d3-94ec-2b26c0a6b1f8")
 		)
-		(model "${KIPRJMOD}/TOTEM3D/D_SOD-123.step"
+		(model "C:/Users/Gomar/Downloads/sod123 v4.step"
 			(offset
 				(xyz 0 0 -0.1)
 			)
