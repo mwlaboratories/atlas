@@ -1,4 +1,4 @@
-#include "totem.dtsi"
+#include "atlas.dtsi"
 
 &default_transform {
     col-offset = <5>;

@@ -6,5 +6,5 @@ requires: [seeeduino_xiao_ble]
 features:
   - keys
 siblings:
-  - totem_left
-  - totem_right
+  - atlas_left
+  - atlas_right
