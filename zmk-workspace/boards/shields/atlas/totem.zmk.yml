@@ -1,0 +1,10 @@
+file_format: "1"
+id: atlas
+name: ATLAS
+type: shield
+requires: [seeeduino_xiao_ble]
+features:
+  - keys
+siblings:
+  - totem_left
+  - totem_right
