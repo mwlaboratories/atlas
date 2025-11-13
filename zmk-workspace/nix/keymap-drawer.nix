@@ -30,6 +30,15 @@ buildPythonApplication rec {
 
   build-system = [ poetry-core ];
 
+  postPatch = ''
+    substituteInPlace pyproject.toml \
+      --replace "[tool.poetry]" "[tool.poetry]
+name = \"${pname}\"
+version = \"${version}\"
+description = \"${meta.description}\"
+authors = [\"Cem Aksoylar <caksoylar@gmail.com>\"]"
+  '';
+
   propagatedBuildInputs = [
     pydantic
     pcpp

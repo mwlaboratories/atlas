@@ -20,11 +20,12 @@
     # INPUT: nixpkgs - The Nix Package Collection
     # ----------------------------------------------------------------------
     # nixpkgs is the largest software repository in the Nix ecosystem.
-    # We're using the nixos-unstable branch to get the latest packages.
+    # We pin to the nixos-24.05 release channel to keep a stable toolchain
+    # (including clang-tools_17) that remains compatible with Zephyr/ZMK.
     # This is the source of all the build tools (cmake, ninja, gcc, etc.)
     # and provides nixpkgs.lib for utility functions.
     # ----------------------------------------------------------------------
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
 
     # ----------------------------------------------------------------------
     # INPUT: zephyr - The Zephyr RTOS (ZMK Fork)
@@ -185,6 +186,9 @@
           shellHook = ''
             export ZMK_BUILD_DIR=$(pwd)/.build;
             export ZMK_SRC_DIR=$(pwd)/zmk/app;
+            if [ -n "\${PS1:-}" ]; then
+              export PS1="\n\[\033[1;32m\][zmk-shell:\w]\$\[\033[0m\] ";
+            fi
           '';
         };
       }
