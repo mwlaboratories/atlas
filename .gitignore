@@ -6,3 +6,4 @@ firmware
 zephyr
 zmk
 draw/base.yaml
+kb_zmk_ps2_mouse_trackpoint_driver
