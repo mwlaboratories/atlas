@@ -1,10 +1,10 @@
-if SHIELD_ATLAS_LEFT
+if SHIELD_ATLAS_RIGHT
 
 config ZMK_KEYBOARD_NAME
     default "ATLAS"
     
 config ZMK_SPLIT_ROLE_CENTRAL
-    default n
+    default y
 
 endif
 
