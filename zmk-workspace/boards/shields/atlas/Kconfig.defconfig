@@ -1,0 +1,16 @@
+if SHIELD_ATLAS_LEFT
+
+config ZMK_KEYBOARD_NAME
+    default "ATLAS"
+    
+config ZMK_SPLIT_ROLE_CENTRAL
+    default n
+
+endif
+
+if SHIELD_ATLAS_LEFT || SHIELD_ATLAS_RIGHT
+
+config ZMK_SPLIT
+    default y
+
+endif
