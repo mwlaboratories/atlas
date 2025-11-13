@@ -1,4 +1,4 @@
-#include "totem.dtsi"
+#include "atlas.dtsi"
 
 &kscan0 {
     col-gpios
