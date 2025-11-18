@@ -1,44 +1,41 @@
 #include <behaviors.dtsi>
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/bt.h>
-
-#define BASE 0
-#define LOWER 1
-#define MOUSE_TP 2
-#define MOUSE_TP_SET 3
-
-/*
- * Defines to enable/disable features
- *
- * These defines allow us to conditionally enable and disable parts of the keymap config.
- *
- * For example, if we decide to build the firmware without the mouse features, we can
- * disable all the config options that rely on those forks and modules without having
- * to edit the entire keymap file manually every time.
- */
-
-#define HAS_MOUSE_TP
 #include <dt-bindings/zmk/mouse.h>
 
-#ifdef HAS_MOUSE_TP
-  // We store the trackpoint settings in a separate file
-  // to make organization a little easier.
-  #include "include/mouse_tp.dtsi"
-#endif  // HAS_MOUSE_TP
 
+&mt {
+    flavor = "tap-preferred";
+    tapping_term_ms = <200>;
+};
 
+&mmv {
+   time-to-max-speed-ms = <680>;
+   acceleration-exponent=<2>;
+};
 
-// Adjust layer keys based on enabled features.
-//
-// This prevents build errors when we build the firmware
-// without the mouse keys PR or the TP module.
-#ifdef HAS_MOUSE_TP
-  #define U_TOG_TP_SET &tog MOUSE_TP_SET
-#else
-  #define U_TOG_TP_SET &none
-#endif  // HAS_MOUSE_TP
+/ { 
+    behaviors {
+        hm: homerow_mods {
+            compatible = "zmk,behavior-hold-tap";
+            label = "HOMEROW_MODS";
+            #binding-cells = <2>;
+            tapping-term-ms = <200>;
+            quick_tap_ms = <0>;
+            flavor = "tap-preferred";
+            bindings = <&kp>, <&kp>;
+        };
+        td: tapdance {
+            compatible = "zmk,behavior-hold-tap";
+            label = "TAPDANCE";
+            #binding-cells = <2>;
+            tapping-term-ms = <150>;
+            quick_tap_ms = <0>;
+            flavor = "tap-preferred";
+            bindings = <&kp>, <&kp>;
+        };
+    };
 
-/ {
         keymap {
                 compatible = "zmk,keymap";
 
@@ -60,68 +57,74 @@
                  * - &trans (transparent - key does nothing)
                  * - &bt BT_SEL N (Bluetooth device selection)
                  */
-                Base_layer {
-                        display-name = "Base";
+                default_layer {
                         bindings = <
 //                    ┏━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┓   ┏━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┓
-                      &kp Q              &kp W              &kp F              &kp P              &kp B                  &kp J              &kp L              &kp U              &kp Y              &kp SQT
+                      &kp Q              &kp W              &kp E              &kp R              &kp T                  &kp Y              &kp U              &kp I              &kp O              &kp P
 //                    ┣━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━┫   ┣━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━┫
-                      &kp A              &kp R              &kp S              &kp T              &kp G                  &kp M              &kp N              &kp E              &kp I              &kp O
+                      &kp A              &kp S              &kp D              &kp F              &kp G                  &kp H              &kp J              &kp K              &kp L              &kp SQT
 //                    ┣━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━┫   ┣━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━┫
-                      &kp Z              &kp X              &kp C              &kp D              &kp V                  &kp K              &kp H              &kp COMMA          &kp DOT            &kp QMARK           
+                      &kp Z              &kp X              &kp C              &kp V              &kp B                  &kp N              &kp M              &kp COMMA          &kp DOT            &kp QMARK           
 //                    ┗━━━━━━━━━━━━━━━━━━┻━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━┫   ┣━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━┛
-                                                                               &kp SPACE          &kp ENTER              &mo LOWER          &kp LSHFT          
+                                                                               &mt LC(LS(LALT)) SPC &sk LSHIFT           &sk RCTRL          &to 1
 //                                                                             ┗━━━━━━━━━━━━━━━━━━┻━━━━━━━━━━━━━━━━━━┛   ┗━━━━━━━━━━━━━━━━━━┻━━━━━━━━━━━━━━━━━━┛
                         >;
                 };
 
-                Lower_layer {
-                        display-name = "Lower";
+                left_layer {
                         bindings = <
 //                    ┏━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┓   ┏━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┓
-                      &trans             &kp NUMBER_7       &kp NUMBER_8       &kp NUMBER_9       &trans                 &trans             &trans             &trans             &trans             &trans
+                      &kp ESC            &kp ATSN           &td LC(LG(LS(N4))) LS(N3) &kp DLLR    &kp PRCNT           &kp CARET &kp LS(COMMA) &kp LS(DOT) &kp SEMI &kp BKSP
 //                    ┣━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━┫   ┣━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━┫
-                      &kp NUMBER_0       &kp NUMBER_4       &kp NUMBER_5       &kp NUMBER_6       &trans                 &trans             &trans             &trans             &trans             &trans
+                      &kp TAB            &kp EQUAL          &kp LA(RBKT)      &kp LA(LS(RBKT))   &kp SQT              &kp BSLH &kp LBRC  &kp RBRC &kp PIPE  &kp ENTER
 //                    ┣━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━┫   ┣━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━┫
-                      &trans             &trans             &kp NUMBER_1       &kp NUMBER_2       &kp NUMBER_3           &trans             &trans             &trans             &trans             &trans
+                      &kp TILDE          &kp LA(N3)         &kp LA(LBKT)      &kp LA(LS(LBKT))   &kp DQT              &kp LBKT &kp LPRN &kp RPRN &kp RBKT  &to 3
 //                    ┗━━━━━━━━━━━━━━━━━━┻━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━┫   ┣━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━┛
-                                                                               &trans             &kp SPACE              &kp ENTER          &trans
+                                                                               &to 0               &sk LSHIFT           &sk RALT            &to 2
 //                                                                             ┗━━━━━━━━━━━━━━━━━━┻━━━━━━━━━━━━━━━━━━┛   ┗━━━━━━━━━━━━━━━━━━┻━━━━━━━━━━━━━━━━━━┛
                         >;
                 };
 
-#ifdef HAS_MOUSE_TP
-
-                MouseTP_layer {
-                        display-name = "TP";
+                right_layer {
                         bindings = <
 //                    ┏━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┓   ┏━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┓
-                      U_TOG_TP_SET       U_TOG_TP_SET       &trans             &trans             &msc SCRL_UP           &trans             &trans             &trans             &trans             &trans
+                      &kp ESC            &kp C_PP           &kp C_PREV         &kp C_NEXT         &kp LS(MINUS)        &kp MINUS  &kp N7 &kp N8 &kp N9 &trans
 //                    ┣━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━┫   ┣━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━┫
-                      &trans             &trans             &trans             &trans             &trans                  &trans             &trans             &trans             &trans             &trans
+                      &kp TAB            &trans            &kp C_VOL_DN       &kp C_VOL_UP       &kp LS(EQUAL)        &kp EQUAL &kp N4  &kp N5  &kp N6   &kp ENTER
 //                    ┣━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━┫   ┣━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━┫
-                      &trans             &trans             &trans             &trans             &msc SCRL_DOWN          &trans             &trans             &trans             &trans             &trans
+                      &to 4              &kp AMPS          &kp SLASH         &kp STAR           &kp DOT              &kp N0 &kp N1 &kp N2 &kp N3  &trans
 //                    ┗━━━━━━━━━━━━━━━━━━┻━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━┫   ┣━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━┛
-                                                                               &mkp MCLK           &mkp LCLK               &mkp RCLK          &mkp MCLK
+                                                                               &to 0               &sk LGUI              &sk RALT  &to 2
 //                                                                             ┗━━━━━━━━━━━━━━━━━━┻━━━━━━━━━━━━━━━━━━┛   ┗━━━━━━━━━━━━━━━━━━┻━━━━━━━━━━━━━━━━━━┛
                         >;
                 };
 
-                MouseSettings_layer {
-                        display-name = "TP Set";
+                tri_layer {
                         bindings = <
 //                    ┏━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┓   ┏━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┓
-                      U_TOG_TP_SET      U_TOG_TP_SET        &trans            U_MSS_TP_S_D        U_MSS_TP_S_I           U_MSS_TP_PT_I       U_MSS_TP_S_D      U_MSS_TP_S_I        &trans             &trans
+                      &trans            &msc SCRL_LEFT     &mmv MOVE_UP       &msc SCRL_RIGHT     &kp NUM_5            &kp LG(LBKT)   &kp LC(LS(TAB))   &kp RC(TAB) &kp LG(RBKT) &trans
 //                    ┣━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━┫   ┣━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━┫
-                      U_MSS_RESET       U_MSS_RESET         &trans            U_MSS_TP_NI_D       U_MSS_TP_NI_I          U_MSS_TP_PT_D       U_MSS_TP_NI_D     U_MSS_TP_NI_I       &trans             &trans
+                      &kp F1            &mmv MOVE_LEFT     &mmv MOVE_DOWN     &mmv MOVE_RIGHT    &kp DEL               &kp LEFT &kp DOWN  &kp UP &kp RIGHT &kp ENTER
 //                    ┣━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━┫   ┣━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━┫
-                      &trans            U_MSS_LOG           U_MSS_LOG         &trans             U_MSS_TP_V6_D           U_MSS_TP_V6_I       &trans            U_MSS_TP_V6_D        U_MSS_TP_V6_I      &trans
+                      &td LG(GRAVE) GRAVE &mkp RCLK         &msc SCRL_UP      &msc SCRL_DOWN     &trans               &mkp LCLK &kp PG_DN  &kp C_VOL_DN  &trans &trans
 //                    ┗━━━━━━━━━━━━━━━━━━┻━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━┫   ┣━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━┛
-                                                                              &trans             &mkp LCLK               &mkp RCLK           &trans
+                                                                               &to 0               &trans                &sk RALT &to 1
 //                                                                             ┗━━━━━━━━━━━━━━━━━━┻━━━━━━━━━━━━━━━━━━┛   ┗━━━━━━━━━━━━━━━━━━┻━━━━━━━━━━━━━━━━━━┛
                         >;
                 };
 
-        #endif
+                bt {
+                        bindings = <
+//                    ┏━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┓   ┏━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┓
+                      &trans            &trans            &trans            &trans            &trans                &trans &trans &trans &trans &trans
+//                    ┣━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━┫   ┣━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━┫
+                      &trans            &trans            &trans            &trans            &trans                &trans &trans &trans &trans &trans
+//                    ┣━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━┫   ┣━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━┫
+                      &bt BT_PRV         &bt BT_NXT        &bt BT_CLR         &trans            &trans                &trans &trans  &trans  &trans &trans
+//                    ┗━━━━━━━━━━━━━━━━━━┻━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━┫   ┣━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━┛
+                                                                               &to 0               &trans                &trans &to 1
+//                                                                             ┗━━━━━━━━━━━━━━━━━━┻━━━━━━━━━━━━━━━━━━┛   ┗━━━━━━━━━━━━━━━━━━┻━━━━━━━━━━━━━━━━━━┛
+                        >;
+                };
         };
 };
