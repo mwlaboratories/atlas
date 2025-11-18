@@ -1,4 +1,4 @@
-if SHIELD_ATLAS_RIGHT
+if SHIELD_ATLAS_LEFT
 
 config ZMK_KEYBOARD_NAME
     default "ATLAS"
