@@ -68,7 +68,7 @@
         };
     };
 
-    keymap {
+   keymap {
         compatible = "zmk,keymap";
         default_layer {
             bindings = <
@@ -79,10 +79,10 @@
         //│  A       │  S       │  D       │  F       │  G       │   │  H       │  J       │  K       │  L       │BACKSPACE │
             &kp A    WHRML(S,         D,         F)     &kp G          &kp H      WHRMR(J,        K,           L)   &kp BSPC
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //│  Z       │  X       │  C       │  V       │  B       │   │  N       │  M       │ , <      │ . >      │ ENTER    │
-            &kp Z      &kp X      &kp C      &kp V      &kp B          &kp N      &kp M      &kp COMMA  &kp DOT    &kp ENTER
+        //│  Z       │  X       │  C       │  V       │  B       │   │  N       │  M       │ , <      │ . >      │ DELETE   │
+            &kp Z      &kp X      &kp C      &kp V      &kp B          &kp N      &kp M      &kp COMMA  &kp DOT    &kp DEL
         //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
-                                           &lt LEF TAB  &kp LSHIFT    &kp SPACE  &lt RIG TAB
+                                           &kp SPACE  &lt LEF TAB    &lt RIG ENTER  &kp LSHIFT
         //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯
             >;
         };
@@ -111,10 +111,10 @@
             &kp N1    &kp N2     &kp N3     &kp N4     &kp N5          &kp N6     &kp N7     &kp N8     &kp N9      &kp N0
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
         //│ DELETE   │ CapsLock │ PrintSc  │  INSERT  │          |   |          │ LEFT     │ DOWN     │ UP       │ RIGHT    │
-            &kp DEL   &kp CAPS   &kp PSCRN  &kp INS     &trans          &trans    &kp LARW   &kp DARW   &kp UARW   &kp RARW 
+            &kp DEL   &kp CAPS   &kp PSCRN  &kp INS     &trans           &kp LARW   &kp DARW   &kp UARW   &kp RARW   &trans 
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
         //│          │          │          │          │          │   │          │ HOME     │ PAGE DN  │ PAGE UP  │ END      │
-            &trans    &trans     &trans     &trans      &trans           &trans     &kp HOME   &kp PG_DN  &kp PG_UP  &kp END 
+            &trans    &trans     &trans     &trans      &trans           &kp HOME   &kp PG_DN  &kp PG_UP  &kp END &trans 
         //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
                                              &trans     &kp ESC        &trans     &trans
         //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯
@@ -124,7 +124,7 @@
         tri_layer {
             bindings = <
         //╭──────────┬──────────┬──────────┬───────────┬────────────╮   ╭────────────┬────────────┬──────────┬───────────┬──────────╮
-        //│  F1      │  F2      │  F3      │  F4       │ PROFILE 0  │   │ PROFILE 2  │ TOGGLEOUT  │  GAME   │ VOL MUTE  │ NEXTSONG │
+        //│  F1      │  F2      │  F3      │  F4       │ PROFILE 0  │   │ PROFILE 2  │ TOGGLEOUT  │  GAME    │ VOL MUTE  │ NEXTSONG │
             &kp F1     &kp F2     &kp F3     &kp F4     &bt BT_SEL 0     &bt BT_SEL 2  &out OUT_TOG &tog GAME  &kp C_MUTE  &kp C_NEXT
         //├──────────┼──────────┼──────────┼───────────┼────────────┤   ├────────────┼────────────┼──────────┼───────────┼──────────┤
         //│  F5      │  F6      │  F7      │  F8       │ PROFILE 1  │   │ PROFILE 3  │ INC BRIGHT │          │  VOL UP   │PAUSEMUSIC│
@@ -142,16 +142,16 @@
         /* gaming_layer {
             bindings = <
         //╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
-        //│  Q       │  W       │  E       │  R       │  T       │   │  Y       │  U       │  I       │  O       │  P       │
-            &kp Q      &kp W      &kp E      &kp R      &kp T          &kp Y      &kp U      &kp I      &kp O      &kp P
+        //│  F       │  E       │  W       │  R       │  T       │   │ 1        │  2       │  3       │  4       │  5       │
+            &kp F      &kp E      &kp W      &kp R      &kp T          &kp N1    &kp N2     &kp N3     &kp N4     &kp N5
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //│  A       │  S       │  D       │  F       │  G       │   │  H       │  J       │  K       │  L       │BACKSPACE │
-            &kp A      &kp S      &kp D      &kp F      &kp G          &kp H      &kp J      &kp K      &kp L      &kp BSPC
+        //│  LSHIFT  │  A       │  S       │  D       │  G       │   │  F1      │  F2      │  F3      │ F4       │  F5      │
+            &kp LSHIFT  &kp A      &kp S      &kp D      &kp G          &kp F1     &kp F2     &kp F3     &kp F4     &kp F5
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //│  Z       │  X       │  C       │  V       │  B       │   │  N       │  M       │ , <      │ . >      │ ENTER    │
-            &kp Z      &kp X      &kp C      &kp V      &kp B          &kp N      &kp M      &kp COMMA  &kp DOT    &kp ENTER
+        //│  LCTRL   │  X       │  C       │  V       │  B       │   │  N       │  M       │ , <      │ . >      │ ENTER    │
+            &kp LCTRL   &kp X      &kp C      &kp V      &kp B          &kp N      &kp M      &kp COMMA  &kp DOT   &kp ENTER
         //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
-                                           &lt LEF TAB  &kp LSHIFT    &kp SPACE  &lt RIG TAB
+                                           &kp SPACE  &kp LALT        &lt LEF TAB    &lt RIG LSHIFT  
         //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯
             >;
         }; */
