@@ -14,6 +14,7 @@ Work in progress, still untested, PCB's might not work if you order them as is.
 
 A dongle will likely be required to get zmk to play nice with dual TrackPoints.
 Any movement on a pointing device should automatically trigger the mousekey layer.
-Battery is currently a 401025 sized lipo, but I'd like to go a bit bigger.
++Battery is currently a 401025 sized lipo, but I'd like to go a bit bigger.+
+Battery upgraded to 140mah 501522
 
 Trackball uses a 57.2mm sized pool ball, has space for a 501522 lipo, the PCB is a modded AdeptBLE PCB.
