@@ -3,7 +3,7 @@
 
 [[atlas-render.png]]
 
-[[atlas-progress.jpeg]]
+[[atlas-update.jpeg]]
 
 * Atlas
 Atlas is a split keyboard with:
