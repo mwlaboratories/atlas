@@ -2,6 +2,7 @@
 #+OPTIONS: toc:nil num:nil
 
 [[atlas-render.png]]
+
 [[atlas-progress.jpeg]]
 
 * Atlas
