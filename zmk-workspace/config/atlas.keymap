@@ -60,6 +60,15 @@
         };
     };
 
+    combos {
+        compatible = "zmk,combos";
+        combo_game_toggle {
+            timeout-ms = <50>;
+            key-positions = <8 9>;  // O + P positions
+            bindings = <&tog GAME>;
+        };
+    };
+
     conditional_layers {
         compatible = "zmk,conditional-layers";
         tri_layer {
@@ -124,8 +133,8 @@
         tri_layer {
             bindings = <
         //╭──────────┬──────────┬──────────┬───────────┬────────────╮   ╭────────────┬────────────┬──────────┬───────────┬──────────╮
-        //│  F1      │  F2      │  F3      │  F4       │ PROFILE 0  │   │ PROFILE 2  │ TOGGLEOUT  │  GAME    │ VOL MUTE  │ NEXTSONG │
-            &kp F1     &kp F2     &kp F3     &kp F4     &bt BT_SEL 0     &bt BT_SEL 2  &out OUT_TOG &tog GAME  &kp C_MUTE  &kp C_NEXT
+        //│  F1      │  F2      │  F3      │  F4       │ PROFILE 0  │   │ PROFILE 2  │ TOGGLEOUT  │          │ VOL MUTE  │ NEXTSONG │
+            &kp F1     &kp F2     &kp F3     &kp F4     &bt BT_SEL 0     &bt BT_SEL 2  &out OUT_TOG &trans     &kp C_MUTE  &kp C_NEXT
         //├──────────┼──────────┼──────────┼───────────┼────────────┤   ├────────────┼────────────┼──────────┼───────────┼──────────┤
         //│  F5      │  F6      │  F7      │  F8       │ PROFILE 1  │   │ PROFILE 3  │ INC BRIGHT │          │  VOL UP   │PAUSEMUSIC│
             &kp F5     &kp F6     &kp F7     &kp F8     &bt BT_SEL 1     &bt BT_SEL 3  &kp C_BRI_UP  &trans   &kp C_VOL_UP  &kp C_PP
@@ -139,21 +148,21 @@
         };
 
 
-        /* gaming_layer {
+        gaming_layer {
             bindings = <
         //╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
-        //│  F       │  E       │  W       │  R       │  T       │   │ 1        │  2       │  3       │  4       │  5       │
-            &kp F      &kp E      &kp W      &kp R      &kp T          &kp N1    &kp N2     &kp N3     &kp N4     &kp N5
+        //│  TAB     │  Q       │  W       │  E       │  R       │   │  1       │  2       │  3       │  4       │  5       │
+            &kp TAB    &kp Q      &kp W      &kp E      &kp R          &kp N1     &kp N2     &kp N3     &kp N4     &kp N5
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //│  LSHIFT  │  A       │  S       │  D       │  G       │   │  F1      │  F2      │  F3      │ F4       │  F5      │
-            &kp LSHIFT  &kp A      &kp S      &kp D      &kp G          &kp F1     &kp F2     &kp F3     &kp F4     &kp F5
+        //│  LSHIFT  │  A       │  S       │  D       │  F       │   │  F1      │  F2      │  F3      │  F4      │  F5      │
+            &kp LSHIFT &kp A      &kp S      &kp D      &kp F          &kp F1     &kp F2     &kp F3     &kp F4     &kp F5
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //│  LCTRL   │  X       │  C       │  V       │  B       │   │  N       │  M       │ , <      │ . >      │ ENTER    │
-            &kp LCTRL   &kp X      &kp C      &kp V      &kp B          &kp N      &kp M      &kp COMMA  &kp DOT   &kp ENTER
+        //│  LCTRL   │  Z       │  X       │  C       │  V       │   │  G       │  T       │  M       │  B       │  ESC     │
+            &kp LCTRL  &kp Z      &kp X      &kp C      &kp V          &kp G      &kp T      &kp M      &kp B      &kp ESC
         //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
-                                           &kp SPACE  &kp LALT        &lt LEF TAB    &lt RIG LSHIFT  
+                                            &kp SPACE  &kp LALT       &kp N6     &kp ENTER
         //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯
             >;
-        }; */
+        };
     };
 };
