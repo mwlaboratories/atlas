@@ -1,0 +1,22 @@
+[00:00:01.764,678] [0m<dbg> ps2_uart: ps2_uart_read_process_received_byte: Received byte: 0x0[0m
+
+[1;31m--- 293 messages dropped ---
+
+[0m[00:00:01.764,709] [0m<dbg> ps2_uart: ps2_uart_data_queue_add: Adding byte to data queue: 0x0[0m
+
+[00:00:02.532,135] [0m<dbg> zmk: kscan_matrix_read: Sending event at 0,4 state on[0m
+
+[00:00:02.532,257] [0m<dbg> zmk: zmk_physical_layouts_kscan_process_msgq: Row: 0, col: 4, position: 4, pressed: true[0m
+
+[00:00:02.532,287] [0m<dbg> zmk: split_peripheral_listener: [0m
+
+[00:00:02.621,124] [0m<dbg> zmk: kscan_matrix_read: Sending event at 0,4 state off[0m
+
+[00:00:02.621,276] [0m<dbg> zmk: zmk_physical_layouts_kscan_process_msgq: Row: 0, col: 4, position: 4, pressed: false[0m
+
+[00:00:02.621,307] [0m<dbg> zmk: split_peripheral_listener: [0m
+
+[00:00:02.709,136] [0m<dbg> zmk: kscan_matrix_read: Sending event at 0,3 state on[0m
+
+[00:00:02.709,259] [0m<dbg> zmk: zmk_physical_layouts_kscan_process_msgq: Row: 0, col: 3, position: 3, pressed: true[0m
+
