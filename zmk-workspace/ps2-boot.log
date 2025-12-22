@@ -1,22 +1,62 @@
-[00:00:01.764,678] [0m<dbg> ps2_uart: ps2_uart_read_process_received_byte: Received byte: 0x0[0m
+[00:00:00.290,130] [0m<inf> zmk: Welcome to ZMK!
+[0m
 
-[1;31m--- 293 messages dropped ---
+[1;31m--- 27 messages dropped ---
 
-[0m[00:00:01.764,709] [0m<dbg> ps2_uart: ps2_uart_data_queue_add: Adding byte to data queue: 0x0[0m
+[0m[00:00:00.291,168] [0m<inf> bt_hci_core: Identity: E8:3A:11:D6:EA:B9 (random)[0m
 
-[00:00:02.532,135] [0m<dbg> zmk: kscan_matrix_read: Sending event at 0,4 state on[0m
+[00:00:00.291,229] [0m<inf> bt_hci_core: HCI: version 5.4 (0x0d) revision 0x0000, manufacturer 0x05f1[0m
 
-[00:00:02.532,257] [0m<dbg> zmk: zmk_physical_layouts_kscan_process_msgq: Row: 0, col: 4, position: 4, pressed: true[0m
+[00:00:00.291,259] [0m<inf> bt_hci_core: LMP: version 5.4 (0x0d) subver 0xffff[0m
 
-[00:00:02.532,287] [0m<dbg> zmk: split_peripheral_listener: [0m
+[00:00:00.706,390] [0m<dbg> zmk: split_svc_pos_state_ccc: value 1[0m
 
-[00:00:02.621,124] [0m<dbg> zmk: kscan_matrix_read: Sending event at 0,4 state off[0m
+[00:00:00.706,420] [0m<dbg> zmk: split_input_events_ccc: value 1[0m
 
-[00:00:02.621,276] [0m<dbg> zmk: zmk_physical_layouts_kscan_process_msgq: Row: 0, col: 4, position: 4, pressed: false[0m
+[00:00:00.706,604] [0m<dbg> zmk: security_changed: Security changed: DB:1F:16:1B:ED:E3 (random) level 2[0m
 
-[00:00:02.621,307] [0m<dbg> zmk: split_peripheral_listener: [0m
+[00:00:00.781,494] [0m<dbg> zmk: bvd_sample_fetch: ADC raw 1590 ~ 1397 mV => 4136 mV[0m
 
-[00:00:02.709,136] [0m<dbg> zmk: kscan_matrix_read: Sending event at 0,3 state on[0m
+[00:00:00.781,524] [0m<dbg> zmk: bvd_sample_fetch: Percent: 92[0m
 
-[00:00:02.709,259] [0m<dbg> zmk: zmk_physical_layouts_kscan_process_msgq: Row: 0, col: 3, position: 3, pressed: true[0m
+[00:00:00.781,555] [0m<dbg> zmk: split_peripheral_listener: [0m
+
+[00:00:00.781,585] [0m<dbg> zmk: zmk_battery_update: Setting BAS GATT battery level to 92.[0m
+
+[00:00:00.871,948] [0m<dbg> zmk: split_svc_select_phys_layout_callback: S[00:00:10.288,055] [1;33m<wrn> ps2_uart: Data queue timed out...[0m
+
+[00:00:10.288,085] [1;33m<wrn> zmk: Could not read PS/2 device self-test result: -116. [0m
+
+[00:00:10.288,085] [0m<inf> zmk: Trying to reset PS2 device...[0m
+
+[00:00:10.288,116] [0m<dbg> zmk: zmk_mouse_ps2_send_cmd: Sending cmd...[0m
+
+[00:00:10.288,116] [0m<dbg> ps2_uart: ps2_uart_write_byte: 
+[0m
+
+[00:00:10.288,146] [0m<dbg> ps2_uart: ps2_uart_write_byte: Writing: 0xff[0m
+
+[00:00:10.289,276] [0m<inf> ps2_uart: Inside ps2_uart_write_scl_interrupt_handler_blocking[0m
+
+[00:00:10.290,039] [1;33m<wrn> ps2_uart: Ack bit was invalid for write of 0xff[0m
+
+[00:00:10.290,039] [0m<dbg> ps2_uart: ps2_uart_write_finish: Successfully wrote value 0xff[0m
+
+[00:00:10.290,069] [0m<dbg> ps2_uart: ps2_uart_write_finish: END WRITE: 0xff
+[0m
+
+[00:00:10.290,924] [0m<dbg> ps2_uart: ps2_uart_read_process_received_byte: UART Received: 0xfa[0m
+
+[00:00:10.290,954] [0m<dbg> ps2_uart: ps2_uart_read_process_received_byte: Received byte: 0xfa[0m
+
+[00:00:10.290,985] [0m<dbg> ps2_uart: ps2_uart_write_byte_await_response: Write for byte 0xff received response: 0xfa[0m
+
+[00:00:10.290,985] [0m<dbg> ps2_uart: ps2_uart_write_byte: END WRITE: 0xff
+[0m
+
+[00:00:10.291,015] [0m<inf> zmk: Trying to initialize mouse device (attempt 4 / 10)[0m
+
+[00:00:12.291,076] [1;33m<wrn> ps2_uart: Data queue timed out...[0m
+
+[00:00:12.291,107] [1;33m<wrn> zmk: Could not read PS/2 device self-test result: -116. [0m
 

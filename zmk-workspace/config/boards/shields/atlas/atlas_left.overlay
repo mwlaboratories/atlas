@@ -124,9 +124,8 @@
         compatible = "zmk,input-mouse-ps2";
         status = "okay";
         ps2-device = <&uart_ps2>;
-        /* Reset pin disabled - testing stability
-         * rst-gpios = <&gpio0 10 GPIO_ACTIVE_HIGH>;
-         */
+        /* Reset pin on NFC2 (P0.10) - helps with init timing */
+        rst-gpios = <&gpio0 10 GPIO_ACTIVE_HIGH>;
         sampling-rate = <100>;
         tp-sensitivity = <128>;
         tp-neg-inertia = <6>;
