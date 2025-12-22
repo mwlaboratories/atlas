@@ -34,5 +34,23 @@
         display-name = "Default Layout";
         transform = <&default_transform>;
     };
+
+    /* Input split proxy - receives events from peripheral */
+    split_inputs {
+        #address-cells = <1>;
+        #size-cells = <0>;
+
+        trackpoint_split: trackpoint_split@0 {
+            compatible = "zmk,input-split";
+            reg = <0>;
+        };
+    };
+
+    /* Input listener - converts to HID mouse reports */
+    trackpoint_listener: trackpoint_listener {
+        compatible = "zmk,input-listener";
+        status = "okay";
+        device = <&trackpoint_split>;
+    };
 };
 
