@@ -5,6 +5,14 @@ config ZMK_SPLIT
 
 endif
 
+# Enable pointing for left peripheral and dongle
+if SHIELD_ATLAS_LEFT || SHIELD_ATLAS_DONGLE
+
+config ZMK_POINTING
+    default y
+
+endif
+
 if SHIELD_ATLAS_DONGLE
 
 # Max 16 characters in keyboard name
