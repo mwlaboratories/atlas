@@ -34,21 +34,45 @@ CONFIG_PS2_UART_WRITE_MODE_BLOCKING=y
 
 ### Trackpoint Status (Dec 2025) - WORKING
 
-**Resolution:** All-in-one trackpoint module works immediately. Previous failures were hardware/wiring issues.
+**Resolution:** All-in-one trackpoint module works. Reset pin is required for reliable initialization.
+
+#### Critical Requirements
+1. **Reset pin MUST be enabled** - without it, trackpoint only initializes when USB logs are actively being read (timing issue)
+2. **GPIO_PULL_UP required** on both SCL and SDA lines
+3. **Good solder joints** - framing errors indicate bad connections
+
+#### Config Requirements
+```dts
+/* In mouse_ps2 node */
+rst-gpios = <&gpio0 10 GPIO_ACTIVE_HIGH>;  /* NFC2 pin - REQUIRED */
+
+/* In uart_ps2 node */
+scl-gpios = <&gpio1 11 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
+sda-gpios = <&gpio1 12 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
+```
 
 #### What Failed
 - TP #1 and #2: Separate trackpoint modules with manual wiring
-- Symptoms: Framing errors on every byte, 0xF4 failed all retries
-- Cause: Bad solder joints / wiring between TP and MCU
+- Re-soldering on original XIAO BLE caused framing errors (board may have been damaged)
+- Disabling reset pin caused init timing issues
 
 #### What Works
-- All-in-one integrated trackpoint module (22 Dec 2025)
-- No framing errors, initialization succeeds, movement data flows
+- All-in-one integrated trackpoint module
+- Reset pin on NFC2 (P0.10) for reliable initialization
+- Fresh XIAO BLE board if original has issues
+
+#### Debugging Framing Errors
+If you see `Framing error (4)` on responses:
+1. Check solder joints on CLK (D6) and DATA (D7)
+2. Verify GPIO_PULL_UP flags are present
+3. Ensure reset pin is enabled
+4. Try a different XIAO BLE board
 
 ### Previous Hypotheses (ruled out)
 - ~~SCL GPIO interrupts not firing~~ - writes succeed, problem is on receive
 - ~~BT priority conflict~~ - priority settings didn't help
 - ~~Blocking write mode~~ - already enabled, didn't help
+- ~~Reset pin optional~~ - actually required for init timing
 
 ### Pinctrl Gotcha
 UART "off" state must NOT use P0.28 (it's matrix row D2). Use P0.31 instead.
