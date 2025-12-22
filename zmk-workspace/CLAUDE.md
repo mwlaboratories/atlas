@@ -32,39 +32,56 @@ CONFIG_UART_INTERRUPT_DRIVEN=y
 CONFIG_PS2_UART_WRITE_MODE_BLOCKING=y
 ```
 
-### Current Issue (Dec 2025)
-- Trackpoint detected and passes self-test (0xAA)
-- **Problem**: "Could not enable data reporting" - 0xF4 command fails with "scl timeout"
-- All 5 write retry attempts fail (normal is 1-2 failures then success)
-- BT priority settings added but didn't resolve
-- No mouse movement data reaching dongle via input-split
+### Current Issue (Dec 2025) - HARDWARE/SOLDER PROBLEM
 
-### Forum Post Summary
+**Diagnosis:** Bad solder joints on trackpoint causing signal integrity issues.
+
+**Symptoms observed:**
+- Self-test (0xAA) passes ✓
+- Reset (0xFF) works ✓
+- TP sensitivity (0xE2) commands work with retries ✓
+- **0xF4 (enable data reporting) fails all 5 retries**
+- All received bytes have **"Framing error"** in logs
+- Trackpoint responds 0xFE (resend) - it detects corruption too
+- When trackpoint touched after partial init: parity errors, resend loops, system crash
+
+**Key log messages:**
 ```
-Hardware: XIAO BLE (nRF52840), Lenovo trackpoint, 3-piece split (dongle + left + right)
-Driver: badjeff/kb_zmk_ps2_mouse_trackpoint_driver (uart-ps2)
-Pins: D6=Clock(P1.11), D7=Data(P1.12)
-
-Working: Trackpoint passes self-test (0xAA), device ID read succeeds
-Failing: "Could not enable data reporting" - 0xF4 write fails all retries with "scl timeout"
-
-Tried: BT priority shifting, blocking write mode, interrupt priority overrides in DT
-Hypothesis: SCL GPIO interrupts not firing in time during write phase
+<wrn> ps2_uart: UART RX detected error for byte 0xfe: Framing error (4)
+<wrn> ps2_uart: Write of 0xf4 received error response: 0xfe
+<err> zmk: Could not enable data reporting: 4
 ```
+
+**Root cause:** Electrical signal from trackpoint → MCU is degraded due to poor solder joints. Writes succeed but responses are corrupted. Some commands pass (borderline), 0xF4 consistently fails.
+
+**Solution:** Replace trackpoint with clean solder joints. Consider external 4.7kΩ-10kΩ pull-ups on Clock/Data if internal pull-ups insufficient.
+
+### Previous Hypotheses (ruled out)
+- ~~SCL GPIO interrupts not firing~~ - writes succeed, problem is on receive
+- ~~BT priority conflict~~ - priority settings didn't help
+- ~~Blocking write mode~~ - already enabled, didn't help
 
 ### Pinctrl Gotcha
 UART "off" state must NOT use P0.28 (it's matrix row D2). Use P0.31 instead.
 
 ## USB Debugging
 
-Enable on **dongle only** (avoids multiple /dev/ttyACM devices):
+For trackpoint debugging, enable on **left half** (direct PS2 logs):
 ```
 CONFIG_ZMK_USB_LOGGING=y
+CONFIG_PS2_LOG_LEVEL_DBG=y
+CONFIG_INPUT_LOG_LEVEL_DBG=y
+CONFIG_UART_LOG_LEVEL_DBG=y
 ```
 
-Capture logs:
+Capture boot sequence (reset left half after starting):
 ```bash
-timeout 15 cat /dev/ttyACM0 | grep -iE "(ps2|mouse|error|input)"
+while [ ! -e /dev/ttyACM0 ]; do sleep 0.1; done; timeout 30 cat /dev/ttyACM0 | tee ps2-boot.log
+```
+
+Filter for PS2 messages:
+```bash
+grep -iE "(ps2|mouse|0xf4|0xaa|framing|error)" ps2-boot.log
 ```
 
 NixOS: Requires `dialout` group + full reboot.
