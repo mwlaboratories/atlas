@@ -1,0 +1,26 @@
+[00:00:00.288,543] [0m<dbg> zmk: kscan_matrix_init_input_inst: Configured pin 29 on gpio@50000000 for input[0m
+
+[1;31m--- 24 messages dropped ---
+
+[0m[00:00:00.290,130] [0m<inf> bt_hci_core: HCI: version 5.4 (0x0d) revision 0x0000, manufacturer 0x05f1[0m
+
+[00:00:00.290,313] [0m<inf> bt_hci_core: LMP: version 5.4 (0x0d) subver 0xffff[0m
+
+[1;31m--- 6 messages dropped ---
+
+[0m[00:00:00.502,380] [0m<dbg> zmk: zmk_usb_get_conn_state: state: 1[0m
+
+[00:00:00.569,183] [0m<dbg> zmk: zmk_usb_get_conn_state: state: 1[0m
+
+[00:00:00.569,244] [0m<dbg> zmk: zmk_usb_get_conn_state: state: 1[0m
+
+[00:00:00.698,791] [0m<dbg> zmk: zmk_usb_get_conn_state: state: 3[0m
+
+[00:00:00.698,883] [0m<dbg> zmk: zmk_usb_get_conn_state: state: 3[0m
+
+[00:00:00.860,717] [0m<dbg> zmk: bvd_sample_fetch: ADC raw 1597 ~ 1403 mV => 4153 mV[0m
+
+[00:00:00.860,748] [0m<dbg> zmk: bvd_sample_fetch: Percent: 94[0m
+
+[00:00:00.860,778] [0m<dbg> zmk: split_peripheral_listener: [0m
+

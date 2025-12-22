@@ -32,29 +32,18 @@ CONFIG_UART_INTERRUPT_DRIVEN=y
 CONFIG_PS2_UART_WRITE_MODE_BLOCKING=y
 ```
 
-### Current Issue (Dec 2025) - HARDWARE/SOLDER PROBLEM
+### Trackpoint Status (Dec 2025) - WORKING
 
-**Diagnosis:** Bad solder joints on trackpoint causing signal integrity issues.
+**Resolution:** All-in-one trackpoint module works immediately. Previous failures were hardware/wiring issues.
 
-**Symptoms observed:**
-- Self-test (0xAA) passes ✓
-- Reset (0xFF) works ✓
-- TP sensitivity (0xE2) commands work with retries ✓
-- **0xF4 (enable data reporting) fails all 5 retries**
-- All received bytes have **"Framing error"** in logs
-- Trackpoint responds 0xFE (resend) - it detects corruption too
-- When trackpoint touched after partial init: parity errors, resend loops, system crash
+#### What Failed
+- TP #1 and #2: Separate trackpoint modules with manual wiring
+- Symptoms: Framing errors on every byte, 0xF4 failed all retries
+- Cause: Bad solder joints / wiring between TP and MCU
 
-**Key log messages:**
-```
-<wrn> ps2_uart: UART RX detected error for byte 0xfe: Framing error (4)
-<wrn> ps2_uart: Write of 0xf4 received error response: 0xfe
-<err> zmk: Could not enable data reporting: 4
-```
-
-**Root cause:** Electrical signal from trackpoint → MCU is degraded due to poor solder joints. Writes succeed but responses are corrupted. Some commands pass (borderline), 0xF4 consistently fails.
-
-**Solution:** Replace trackpoint with clean solder joints. Consider external 4.7kΩ-10kΩ pull-ups on Clock/Data if internal pull-ups insufficient.
+#### What Works
+- All-in-one integrated trackpoint module (22 Dec 2025)
+- No framing errors, initialization succeeds, movement data flows
 
 ### Previous Hypotheses (ruled out)
 - ~~SCL GPIO interrupts not firing~~ - writes succeed, problem is on receive
