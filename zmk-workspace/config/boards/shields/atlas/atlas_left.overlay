@@ -18,11 +18,12 @@
  */
 
 /* Interrupt priority overrides for PS/2 timing */
+/* GPIOTE and UART0 at priority 0 for reliable PS/2 communication */
 &gpiote { interrupts = < 6 0 >; };
 &clock { interrupts = < 0 3 >; };
 &power { interrupts = < 0 3 >; };
 &radio { interrupts = < 1 3 >; };
-&uart0 { interrupts = < 2 3 >; };
+&uart0 { interrupts = < 2 0 >; };  /* Priority 0 for PS/2 UART responses */
 &i2c0 { interrupts = < 3 3 >; };
 &spi0 { interrupts = < 3 3 >; };
 &i2c1 { interrupts = < 4 3 >; };
@@ -124,11 +125,15 @@
         compatible = "zmk,input-mouse-ps2";
         status = "okay";
         ps2-device = <&uart_ps2>;
-        /* Reset pin on NFC2 (P0.10) - helps with init timing */
+        /* Reset pin on NFC2 (P0.10) - required for reliable init */
         rst-gpios = <&gpio0 10 GPIO_ACTIVE_HIGH>;
-        sampling-rate = <100>;
+        /* Lower sampling rate for more timing margin on command responses */
+        sampling-rate = <60>;
         tp-sensitivity = <128>;
         tp-neg-inertia = <6>;
         tp-val6-upper-speed = <97>;
+        /* Press-to-select: tap trackpoint = left click */
+        tp-press-to-select;
+        tp-press-to-select-threshold = <2>;  /* Lower = more sensitive */
     };
 };

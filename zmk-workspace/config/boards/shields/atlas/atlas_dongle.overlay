@@ -1,6 +1,7 @@
 #include <dt-bindings/zmk/matrix_transform.h>
 #include <dt-bindings/zmk/input_transform.h>
 #include <zephyr/dt-bindings/input/input-event-codes.h>
+#include <input/processors/temp_layer.dtsi>
 
 / {
     chosen {
@@ -71,8 +72,16 @@
         compatible = "zmk,input-listener";
         status = "okay";
         device = <&trackpoint_split>;
-        /* XY swap + 2x sensitivity */
-        input-processors = <&input_transform INPUT_TRANSFORM_XY_SWAP>, <&input_scaler 2 1>;
+        /* XY swap + 2x sensitivity + auto mouse layer */
+        input-processors = <&input_transform INPUT_TRANSFORM_XY_SWAP>,
+                           <&input_scaler 2 1>,
+                           <&zip_temp_layer 5 250>;
     };
+};
+
+/* Temp layer processor config for mouse layer */
+&zip_temp_layer {
+    require-prior-idle-ms = <250>;
+    excluded-positions = <32 33>;
 };
 
