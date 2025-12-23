@@ -15,7 +15,6 @@
 - Still experiencing random crashes - likely noisy UART lines (hardware issue)
 
 ** Hardware Notes
-- Reset pin required for reliable trackpoint init
 - Crashes may need shorter wires or external pull-up resistors on CLK/DATA lines
 
 ** Build
