@@ -68,6 +68,14 @@ If you see `Framing error (4)` on responses:
 3. Ensure reset pin is enabled
 4. Try a different XIAO BLE board
 
+#### Signal Integrity Issues (Crashes)
+Random crashes and severe framing errors are likely caused by **signal integrity problems** on the PS/2 lines. Software tuning (interrupt priorities, delays) can only help so much.
+
+**Hardware fixes to try:**
+1. **Shorten UART wires** - Long wires pick up noise and have signal degradation
+2. **Add external pull-up resistors** - 4.7kΩ to 10kΩ on both SCL and SDA to VCC (3.3V). The internal GPIO pull-ups may be too weak (~13kΩ on nRF52)
+3. **Shield/twist wires** - Keep CLK and DATA wires close together and away from power lines
+
 ### Interrupt Priority Tuning (Dec 2025)
 
 **Current experiment:** UART0 at priority 0 (highest) to reduce framing errors.
@@ -105,14 +113,18 @@ CONFIG_INPUT_LOG_LEVEL_WRN=y
 CONFIG_UART_LOG_LEVEL_WRN=y
 ```
 
-Capture boot sequence (reset left half after starting):
+### Debug Script
+Use `./debug.sh` for interactive logging with timing analysis:
 ```bash
-while [ ! -e /dev/ttyACM0 ]; do sleep 0.1; done; timeout 30 cat /dev/ttyACM0 | tee ps2-boot.log
+./debug.sh
+# Options:
+# 1) Boot capture (60s, filtered) - survives resets
+# 2) Crash monitor (continuous, auto-reconnect)
+# 3) Full verbose (60s, everything)
+# 4) View latest log + timing report
+# 5) Analyze a log file
 ```
 
-Filter for PS2 messages:
-```bash
-grep -iE "(ps2|mouse|0xf4|0xaa|framing|error)" ps2-boot.log
-```
+Logs saved to `logs/` directory with automatic timing reports showing first error, self-test pass, data reporting enabled, and issue counts.
 
 NixOS: Requires `dialout` group + full reboot.
