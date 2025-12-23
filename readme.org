@@ -6,17 +6,20 @@
 [[atlas-update.jpeg]]
 
 * Atlas
-Atlas is a split keyboard with:
-- 34 keys
-- Dual TrackPoints (one per half)
-- Optional oversized standalone trackball
+34-key split keyboard with TrackPoint, using XIAO BLE controllers and a dongle.
 
-*** WARNING: 
-Work in progress, still untested, PCB's might not work if you order them as is.
+** Status (Dec 2025)
+- Left side TrackPoint working (Sprintek all-in-one module)
+- Mouse layer auto-activates on trackpoint movement
+- Press-to-select (tap trackpoint = left click) working
+- Still experiencing random crashes - likely noisy UART lines (hardware issue)
 
-A dongle will likely be required to get zmk to play nice with dual TrackPoints.
-Any movement on a pointing device should automatically trigger the mousekey layer.
-+Battery is currently a 401025 sized lipo, but I'd like to go a bit bigger.+
-Battery upgraded to 140mah 501522
+** Hardware Notes
+- Reset pin required for reliable trackpoint init
+- Crashes may need shorter wires or external pull-up resistors on CLK/DATA lines
 
-Trackball uses a 57.2mm sized pool ball, has space for a 501522 lipo, the PCB is a modded AdeptBLE PCB.
+** Build
+#+begin_src bash
+nix develop
+just build all
+#+end_src
