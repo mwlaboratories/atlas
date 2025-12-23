@@ -17,6 +17,7 @@
 #define RIG 2
 #define TRI 3
 #define GAME 4
+#define MOUSE_TP 5
 
 &mt {
     flavor = "tap-preferred";
@@ -58,6 +59,13 @@
             flavor = "tap-preferred";
             bindings = <&kp>, <&kp>;
         };
+        tog_game_hold: tog_game_hold {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            flavor = "hold-preferred";
+            tapping-term-ms = <2000>;
+            bindings = <&tog>, <&none>;
+        };
     };
 
     combos {
@@ -65,7 +73,7 @@
         combo_game_toggle {
             timeout-ms = <50>;
             key-positions = <8 9>;  // O + P positions
-            bindings = <&tog GAME>;
+            bindings = <&tog_game_hold GAME 0>;
         };
     };
 
@@ -161,6 +169,23 @@
             &kp LCTRL  &kp Z      &kp X      &kp C      &kp V          &kp G      &kp T      &kp M      &kp B      &kp ESC
         //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
                                             &kp SPACE  &kp LALT       &kp N6     &kp ENTER
+        //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯
+            >;
+        };
+
+        mouse_layer {
+            bindings = <
+        //╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
+        //│          │          │          │          │          │   │          │          │          │          │          │
+            &trans     &trans     &trans     &trans     &trans         &trans     &trans     &trans     &trans     &trans
+        //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
+        //│          │          │          │          │          │   │          │          │          │          │          │
+            &trans     &trans     &trans     &trans     &trans         &trans     &trans     &trans     &trans     &trans
+        //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
+        //│          │          │          │          │          │   │          │          │          │          │          │
+            &trans     &trans     &trans     &trans     &trans         &trans     &trans     &trans     &trans     &trans
+        //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
+                                            &trans     &trans         &mkp MB1   &mkp MB2
         //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯
             >;
         };

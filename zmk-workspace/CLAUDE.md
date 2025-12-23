@@ -68,9 +68,26 @@ If you see `Framing error (4)` on responses:
 3. Ensure reset pin is enabled
 4. Try a different XIAO BLE board
 
+### Interrupt Priority Tuning (Dec 2025)
+
+**Current experiment:** UART0 at priority 0 (highest) to reduce framing errors.
+
+```dts
+/* In atlas_left.overlay - UART0 priority raised */
+&uart0 { interrupts = < 2 0 >; };  /* Was priority 3 */
+```
+
+**To revert:** Change back to `< 2 3 >` if this causes other issues.
+
+**Symptoms being addressed:**
+- Framing errors during PS2 communication
+- Packet misalignment ("Bit 3 of packet is 0 instead of 1")
+- Input queue full / events dropped
+- SCL timeouts
+
 ### Previous Hypotheses (ruled out)
 - ~~SCL GPIO interrupts not firing~~ - writes succeed, problem is on receive
-- ~~BT priority conflict~~ - priority settings didn't help
+- ~~BT priority conflict~~ - BT LLL/ULL priority settings didn't help alone
 - ~~Blocking write mode~~ - already enabled, didn't help
 - ~~Reset pin optional~~ - actually required for init timing
 
@@ -82,9 +99,10 @@ UART "off" state must NOT use P0.28 (it's matrix row D2). Use P0.31 instead.
 For trackpoint debugging, enable on **left half** (direct PS2 logs):
 ```
 CONFIG_ZMK_USB_LOGGING=y
-CONFIG_PS2_LOG_LEVEL_DBG=y
-CONFIG_INPUT_LOG_LEVEL_DBG=y
-CONFIG_UART_LOG_LEVEL_DBG=y
+# Use WRN for less overhead, DBG for full detail
+CONFIG_PS2_LOG_LEVEL_WRN=y   # or DBG for verbose
+CONFIG_INPUT_LOG_LEVEL_WRN=y
+CONFIG_UART_LOG_LEVEL_WRN=y
 ```
 
 Capture boot sequence (reset left half after starting):
