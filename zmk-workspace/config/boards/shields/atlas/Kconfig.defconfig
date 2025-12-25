@@ -1,12 +1,12 @@
-if SHIELD_ATLAS_LEFT || SHIELD_ATLAS_RIGHT
+if SHIELD_ATLAS_LEFT || SHIELD_ATLAS_RIGHT || SHIELD_ATLAS_TRACKBALL
 
 config ZMK_SPLIT
     default y
 
 endif
 
-# Enable pointing for left peripheral and dongle
-if SHIELD_ATLAS_LEFT || SHIELD_ATLAS_DONGLE
+# Enable pointing for left peripheral, trackball, and dongle
+if SHIELD_ATLAS_LEFT || SHIELD_ATLAS_TRACKBALL || SHIELD_ATLAS_DONGLE
 
 config ZMK_POINTING
     default y
@@ -26,16 +26,16 @@ config ZMK_SPLIT
     default y
 
 # Set this to the number of peripherals your dongle will have.
-# For a unibody, this would be 1. If you have left and right halves, set it to 2, etc.
+# Left + Right + Trackball = 3 peripherals
 config ZMK_SPLIT_BLE_CENTRAL_PERIPHERALS
-    default 2
+    default 3
 
 # Set this to ZMK_SPLIT_BLE_CENTRAL_PERIPHERALS + your desired number of BT profiles (default is 5)
 config BT_MAX_CONN
-    default 7
+    default 8
 
 # Set this to the same number as BT_MAX_CONN
 config BT_MAX_PAIRED
-    default 7
+    default 8
 
 endif

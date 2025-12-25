@@ -38,7 +38,7 @@
         transform = <&default_transform>;
     };
 
-    /* Input split proxy - receives events from peripheral */
+    /* Input split proxy - receives events from peripherals */
     split_inputs {
         #address-cells = <1>;
         #size-cells = <0>;
@@ -47,21 +47,68 @@
             compatible = "zmk,input-split";
             reg = <0>;
         };
+
+        trackball_split: trackball_split@1 {
+            compatible = "zmk,input-split";
+            reg = <1>;
+        };
     };
 
-    /* Input listener - converts to HID mouse reports */
+    /* Scroll mode processor - converts XY to scroll wheel */
+    zip_xy_to_scroll: zip_xy_to_scroll {
+        compatible = "zmk,input-processor-code-mapper";
+        #input-processor-cells = <0>;
+        type = <INPUT_EV_REL>;
+        map = <INPUT_REL_X INPUT_REL_HWHEEL>, <INPUT_REL_Y INPUT_REL_WHEEL>;
+    };
+
+    /* Trackpoint listener - converts to HID mouse reports */
     trackpoint_listener: trackpoint_listener {
         compatible = "zmk,input-listener";
         status = "okay";
         device = <&trackpoint_split>;
         /* 2x sensitivity + auto mouse layer */
         input-processors = <&zip_xy_scaler 2 1>, <&zip_temp_layer 5 3000>;
+
+        /* Layer 6: Snipe mode (1/4 speed) */
+        snipe {
+            layers = <6>;
+            input-processors = <&zip_xy_scaler 1 4>;
+        };
+
+        /* Layer 7: Scroll mode - scale FIRST, then convert (scaler only works on X/Y) */
+        scroll {
+            layers = <7>;
+            input-processors = <&zip_xy_scaler 1 8>, <&zip_xy_to_scroll>;
+        };
+    };
+
+    /* Trackball listener - same layer-aware processing */
+    trackball_listener: trackball_listener {
+        compatible = "zmk,input-listener";
+        status = "okay";
+        device = <&trackball_split>;
+        /* 2x sensitivity + auto mouse layer */
+        input-processors = <&zip_xy_scaler 2 1>, <&zip_temp_layer 5 3000>;
+
+        /* Layer 6: Snipe mode (1/4 speed) */
+        snipe {
+            layers = <6>;
+            input-processors = <&zip_xy_scaler 1 4>;
+        };
+
+        /* Layer 7: Scroll mode - scale FIRST, then convert (scaler only works on X/Y) */
+        scroll {
+            layers = <7>;
+            input-processors = <&zip_xy_scaler 1 8>, <&zip_xy_to_scroll>;
+        };
     };
 };
 
 /* Temp layer processor config for mouse layer */
 &zip_temp_layer {
     require-prior-idle-ms = <250>;
-    excluded-positions = <32 33>;
+    /* Exclude all 4 thumb keys from resetting timeout */
+    excluded-positions = <30 31 32 33>;
 };
 

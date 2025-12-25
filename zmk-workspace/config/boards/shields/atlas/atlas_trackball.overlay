@@ -1,0 +1,69 @@
+#include <dt-bindings/pinctrl/nrf-pinctrl.h>
+#include <zephyr/dt-bindings/input/input-event-codes.h>
+
+/ {
+    chosen {
+        zmk,kscan = &mock_kscan;
+    };
+
+    /* Mock kscan - trackball has no keyboard matrix */
+    mock_kscan: mock_kscan_0 {
+        compatible = "zmk,kscan-mock";
+        columns = <0>;
+        rows = <0>;
+        events = <0>;
+    };
+};
+
+&pinctrl {
+    spi0_default: spi0_default {
+        group1 {
+            psels = <NRF_PSEL(SPIM_SCK, 1, 13)>,
+                    <NRF_PSEL(SPIM_MOSI, 0, 4)>,
+                    <NRF_PSEL(SPIM_MISO, 0, 4)>;  /* PMW3610 uses 3-wire SPI - SDIO on same pin */
+        };
+    };
+    spi0_sleep: spi0_sleep {
+        group1 {
+            psels = <NRF_PSEL(SPIM_SCK, 1, 13)>,
+                    <NRF_PSEL(SPIM_MOSI, 0, 4)>,
+                    <NRF_PSEL(SPIM_MISO, 0, 4)>;  /* PMW3610 uses 3-wire SPI - SDIO on same pin */
+            low-power-enable;
+        };
+    };
+};
+
+&spi0 {
+    status = "okay";
+    compatible = "nordic,nrf-spim";
+    pinctrl-0 = <&spi0_default>;
+    pinctrl-1 = <&spi0_sleep>;
+    pinctrl-names = "default", "sleep";
+    cs-gpios = <&gpio1 12 GPIO_ACTIVE_LOW>;  /* D7 */
+
+    trackball: trackball@0 {
+        compatible = "pixart,pmw3610";
+        reg = <0>;
+        spi-max-frequency = <2000000>;
+        motion-gpios = <&gpio0 5 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;  /* D10 */
+        zephyr,axis-x = <INPUT_REL_X>;
+        zephyr,axis-y = <INPUT_REL_Y>;
+        res-cpi = <800>;
+        smart-mode;
+        force-awake;
+    };
+};
+
+/ {
+    /* Input split for forwarding trackball to central */
+    split_inputs {
+        #address-cells = <1>;
+        #size-cells = <0>;
+
+        trackball_split: trackball_split@1 {
+            compatible = "zmk,input-split";
+            reg = <1>;
+            device = <&trackball>;
+        };
+    };
+};

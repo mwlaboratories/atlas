@@ -23,10 +23,13 @@ include:
     shield: atlas_dongle
   - board: xiao_ble
     shield: settings_reset
-  # Left and right halves configured as peripherals for the dongle
+  # Left, right, and trackball configured as peripherals for the dongle
   - board: xiao_ble
     shield: atlas_left
     cmake-args: -DCONFIG_ZMK_SPLIT=y -DCONFIG_ZMK_SPLIT_ROLE_CENTRAL=n
   - board: xiao_ble
     shield: atlas_right
+    cmake-args: -DCONFIG_ZMK_SPLIT=y -DCONFIG_ZMK_SPLIT_ROLE_CENTRAL=n
+  - board: xiao_ble
+    shield: atlas_trackball
     cmake-args: -DCONFIG_ZMK_SPLIT=y -DCONFIG_ZMK_SPLIT_ROLE_CENTRAL=n
