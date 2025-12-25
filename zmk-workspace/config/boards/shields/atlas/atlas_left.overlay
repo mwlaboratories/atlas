@@ -19,7 +19,7 @@
 
 /* Interrupt priority overrides for PS/2 timing */
 /* GPIOTE and UART0 at priority 0 for reliable PS/2 communication */
-&gpiote { interrupts = < 6 0 >; };
+&gpiote { interrupts = < 6 2 >; };  /* Lower priority - UART0 handles reads */
 &clock { interrupts = < 0 3 >; };
 &power { interrupts = < 0 3 >; };
 &radio { interrupts = < 1 3 >; };
@@ -127,11 +127,10 @@
         ps2-device = <&uart_ps2>;
         /* Reset pin on NFC2 (P0.10) - required for reliable init */
         rst-gpios = <&gpio0 10 GPIO_ACTIVE_HIGH>;
-        /* Lower sampling rate for more timing margin on command responses */
-        sampling-rate = <60>;
-        tp-sensitivity = <128>;
+        sampling-rate = <100>;
+        tp-sensitivity = <255>;  /* Max value (0-255, default 128) */
         tp-neg-inertia = <6>;
-        tp-val6-upper-speed = <97>;
+        tp-val6-upper-speed = <255>;  /* Max speed (0-255, default 97) */
         /* Press-to-select: tap trackpoint = left click */
         tp-press-to-select;
         tp-press-to-select-threshold = <2>;  /* Lower = more sensitive */

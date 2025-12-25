@@ -1,7 +1,7 @@
 #include <dt-bindings/zmk/matrix_transform.h>
-#include <dt-bindings/zmk/input_transform.h>
 #include <zephyr/dt-bindings/input/input-event-codes.h>
 #include <input/processors/temp_layer.dtsi>
+#include <input/processors/scaler.dtsi>
 
 / {
     chosen {
@@ -49,33 +49,13 @@
         };
     };
 
-    /* Input processor for axis transform */
-    input_transform: input_transform {
-        compatible = "zmk,input-processor-transform";
-        #input-processor-cells = <1>;
-        type = <INPUT_EV_REL>;
-        x-codes = <INPUT_REL_X>;
-        y-codes = <INPUT_REL_Y>;
-    };
-
-    /* Input processor for sensitivity scaling */
-    input_scaler: input_scaler {
-        compatible = "zmk,input-processor-scaler";
-        #input-processor-cells = <2>;
-        type = <INPUT_EV_REL>;
-        codes = <INPUT_REL_X INPUT_REL_Y>;
-        track-remainders;
-    };
-
     /* Input listener - converts to HID mouse reports */
     trackpoint_listener: trackpoint_listener {
         compatible = "zmk,input-listener";
         status = "okay";
         device = <&trackpoint_split>;
-        /* XY swap + 2x sensitivity + auto mouse layer */
-        input-processors = <&input_transform INPUT_TRANSFORM_XY_SWAP>,
-                           <&input_scaler 2 1>,
-                           <&zip_temp_layer 5 250>;
+        /* 2x sensitivity + auto mouse layer */
+        input-processors = <&zip_xy_scaler 2 1>, <&zip_temp_layer 5 3000>;
     };
 };
 
