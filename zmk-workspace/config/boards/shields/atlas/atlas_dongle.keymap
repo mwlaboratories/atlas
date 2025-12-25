@@ -71,14 +71,14 @@
 
                 /*
                  * MOUSE LAYER (Layer 5) - Auto-activates on trackball/trackpoint movement
-                 * Thumb keys become: SNIPE | SCROLL | LEFT CLICK | RIGHT CLICK
+                 * Thumb keys become: SCROLL | LEFT CLICK | LEFT CLICK | RIGHT CLICK
                  */
                 mouse_layer {
                         bindings = <
                         &trans &trans &trans &trans &trans    &trans &trans &trans &trans &trans
                         &trans &trans &trans &trans &trans    &trans &trans &trans &trans &trans
                         &trans &trans &trans &trans &trans    &trans &trans &trans &trans &trans
-                                              &mo 6  &mo 7     &mkp LCLK &mkp RCLK
+                                              &mo 7  &mkp LCLK     &mkp LCLK &mkp RCLK
                         >;
                 };
 
@@ -88,7 +88,7 @@
                         &trans &trans &trans &trans &trans    &trans &trans &trans &trans &trans
                         &trans &trans &trans &trans &trans    &trans &trans &trans &trans &trans
                         &trans &trans &trans &trans &trans    &trans &trans &trans &trans &trans
-                                              &mo 6  &mo 7     &mkp LCLK &mkp RCLK
+                                              &mo 7  &mkp LCLK     &mkp LCLK &mkp RCLK
                         >;
                 };
 
@@ -98,7 +98,7 @@
                         &trans &trans &trans &trans &trans    &trans &trans &trans &trans &trans
                         &trans &trans &trans &trans &trans    &trans &trans &trans &trans &trans
                         &trans &trans &trans &trans &trans    &trans &trans &trans &trans &trans
-                                              &mo 6  &mo 7     &mkp LCLK &mkp RCLK
+                                              &mo 7  &mkp LCLK     &mkp LCLK &mkp RCLK
                         >;
                 };
         };

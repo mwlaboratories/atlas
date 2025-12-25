@@ -176,8 +176,8 @@
         mouse_layer {
             bindings = <
         //╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
-        //│          │  SNIPE   │  SCROLL  │          │          │   │          │          │  SCROLL  │  SNIPE   │          │
-            &trans     &mo 6      &mo 7      &trans     &trans         &trans     &trans     &mo 7      &mo 6      &trans
+        //│          │          │          │          │          │   │          │          │          │          │          │
+            &trans     &trans     &trans     &trans     &trans         &trans     &trans     &trans     &trans     &trans
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
         //│          │          │          │          │          │   │          │          │          │          │          │
             &trans     &trans     &trans     &trans     &trans         &trans     &trans     &trans     &trans     &trans
@@ -185,8 +185,8 @@
         //│          │          │          │          │          │   │          │          │          │          │          │
             &trans     &trans     &trans     &trans     &trans         &trans     &trans     &trans     &trans     &trans
         //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
-        //                                 │  RCLICK  │  LCLICK  │   │  LCLICK  │  RCLICK  │
-                                            &mkp RCLK  &mkp LCLK      &mkp LCLK  &mkp RCLK
+        //                                 │  SCROLL  │  LCLICK  │   │  LCLICK  │  RCLICK  │
+                                            &mo 7      &mkp LCLK      &mkp LCLK  &mkp RCLK
         //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯
             >;
         };
@@ -194,15 +194,15 @@
         snipe_layer {
             bindings = <
         //╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
-        //│          │  SNIPE   │  SCROLL  │          │          │   │          │          │  SCROLL  │  SNIPE   │          │
-            &trans     &mo 6      &mo 7      &trans     &trans         &trans     &trans     &mo 7      &mo 6      &trans
+        //│          │          │          │          │          │   │          │          │          │          │          │
+            &trans     &trans     &trans     &trans     &trans         &trans     &trans     &trans     &trans     &trans
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
             &trans     &trans     &trans     &trans     &trans         &trans     &trans     &trans     &trans     &trans
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
             &trans     &trans     &trans     &trans     &trans         &trans     &trans     &trans     &trans     &trans
         //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
-        //                                 │  RCLICK  │  LCLICK  │   │  LCLICK  │  RCLICK  │
-                                            &mkp RCLK  &mkp LCLK      &mkp LCLK  &mkp RCLK
+        //                                 │  SCROLL  │  LCLICK  │   │  LCLICK  │  RCLICK  │
+                                            &mo 7      &mkp LCLK      &mkp LCLK  &mkp RCLK
         //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯
             >;
         };
@@ -210,15 +210,15 @@
         scroll_layer {
             bindings = <
         //╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
-        //│          │  SNIPE   │  SCROLL  │          │          │   │          │          │  SCROLL  │  SNIPE   │          │
-            &trans     &mo 6      &mo 7      &trans     &trans         &trans     &trans     &mo 7      &mo 6      &trans
+        //│          │          │          │          │          │   │          │          │          │          │          │
+            &trans     &trans     &trans     &trans     &trans         &trans     &trans     &trans     &trans     &trans
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
             &trans     &trans     &trans     &trans     &trans         &trans     &trans     &trans     &trans     &trans
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
             &trans     &trans     &trans     &trans     &trans         &trans     &trans     &trans     &trans     &trans
         //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
-        //                                 │  RCLICK  │  LCLICK  │   │  LCLICK  │  RCLICK  │
-                                            &mkp RCLK  &mkp LCLK      &mkp LCLK  &mkp RCLK
+        //                                 │  SCROLL  │  LCLICK  │   │  LCLICK  │  RCLICK  │
+                                            &mo 7      &mkp LCLK      &mkp LCLK  &mkp RCLK
         //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯
             >;
         };
