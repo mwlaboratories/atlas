@@ -19,18 +19,24 @@
     spi0_default: spi0_default {
         group1 {
             psels = <NRF_PSEL(SPIM_SCK, 1, 13)>,
-                    <NRF_PSEL(SPIM_MOSI, 0, 4)>,
-                    <NRF_PSEL(SPIM_MISO, 0, 4)>;  /* PMW3610 uses 3-wire SPI - SDIO on same pin */
+                    <NRF_PSEL(SPIM_MOSI, 1, 14)>,
+                    <NRF_PSEL(SPIM_MISO, 1, 14)>;
         };
     };
+
     spi0_sleep: spi0_sleep {
         group1 {
             psels = <NRF_PSEL(SPIM_SCK, 1, 13)>,
-                    <NRF_PSEL(SPIM_MOSI, 0, 4)>,
-                    <NRF_PSEL(SPIM_MISO, 0, 4)>;  /* PMW3610 uses 3-wire SPI - SDIO on same pin */
+                    <NRF_PSEL(SPIM_MOSI, 1, 14)>,
+                    <NRF_PSEL(SPIM_MISO, 1, 14)>;
             low-power-enable;
         };
     };
+};
+
+/* Disable UART to avoid pin conflicts */
+&uart0 {
+    status = "disabled";
 };
 
 &spi0 {
@@ -39,18 +45,20 @@
     pinctrl-0 = <&spi0_default>;
     pinctrl-1 = <&spi0_sleep>;
     pinctrl-names = "default", "sleep";
-    cs-gpios = <&gpio1 12 GPIO_ACTIVE_LOW>;  /* D7 */
+    cs-gpios = <&xiao_d 7 GPIO_ACTIVE_LOW>;
 
     trackball: trackball@0 {
-        compatible = "pixart,pmw3610";
+        status = "okay";
+        compatible = "pixart,pmw3610-alt";
         reg = <0>;
         spi-max-frequency = <2000000>;
-        motion-gpios = <&gpio0 5 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;  /* D10 */
-        zephyr,axis-x = <INPUT_REL_X>;
-        zephyr,axis-y = <INPUT_REL_Y>;
-        res-cpi = <800>;
-        smart-mode;
+        irq-gpios = <&xiao_d 10 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
+        cpi = <800>;
+        evt-type = <INPUT_EV_REL>;
+        x-input-code = <INPUT_REL_X>;
+        y-input-code = <INPUT_REL_Y>;
         force-awake;
+        swap-xy;
     };
 };
 
