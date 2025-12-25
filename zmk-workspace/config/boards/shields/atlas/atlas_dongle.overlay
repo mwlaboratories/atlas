@@ -68,7 +68,7 @@
         status = "okay";
         device = <&trackpoint_split>;
         /* 2x sensitivity + auto mouse layer */
-        input-processors = <&zip_xy_scaler 2 1>, <&zip_temp_layer 5 1000>;
+        input-processors = <&zip_xy_scaler 2 1>, <&zip_temp_layer 5 2000>;
 
         /* Layer 6: Snipe mode (1/4 speed) */
         snipe {
@@ -89,7 +89,7 @@
         status = "okay";
         device = <&trackball_split>;
         /* 2x sensitivity + auto mouse layer */
-        input-processors = <&zip_xy_scaler 2 1>, <&zip_temp_layer 5 1000>;
+        input-processors = <&zip_xy_scaler 2 1>, <&zip_temp_layer 5 2000>;
 
         /* Layer 6: Snipe mode (1/4 speed) */
         snipe {
