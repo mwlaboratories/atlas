@@ -17,17 +17,22 @@
 
 ** Architecture
 #+begin_example
-Dongle (central) <-- Left (trackpoint) + Right (keyboard) + Trackball (PMW3610)
+Dongle (central) <-- Left (trackpoint) + Right (trackpoint) + Trackball (PMW3610)
 #+end_example
 
 ** Mouse Layer
-When moving trackpoint or trackball, layer 5 auto-activates for 3 seconds.
+When moving trackpoint or trackball, layer 5 auto-activates for 1 second.
 
-Thumb keys become:
-| SNIPE | SCROLL | LEFT CLICK | RIGHT CLICK |
+#+begin_example
+Top row keys:
+|   | W=SNIPE | E=SCROLL |   |   |   |   | I=SCROLL | O=SNIPE |   |
 
-- *Snipe*: Hold for 1/4 cursor speed (precision mode)
-- *Scroll*: Hold to convert movement to scroll wheel
+Thumb keys:
+| RCLK | LCLK | LCLK | RCLK |
+#+end_example
+
+- *Snipe* (W/O): Hold for 1/4 cursor speed (precision mode)
+- *Scroll* (E/I): Hold to convert movement to scroll wheel (1/8 speed)
 
 ** Hardware Notes
 - TrackPoint: Random crashes may need shorter wires or external pull-up resistors on CLK/DATA
