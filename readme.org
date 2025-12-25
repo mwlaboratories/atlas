@@ -6,19 +6,41 @@
 [[atlas-update.jpeg]]
 
 * Atlas
-34-key split keyboard with TrackPoint, using XIAO BLE controllers and a dongle.
+34-key split keyboard with TrackPoint and Trackball, using XIAO BLE controllers and a dongle.
 
 ** Status (Dec 2025)
 - Left side TrackPoint working (Sprintek all-in-one module)
-- Mouse layer auto-activates on trackpoint movement
+- Standalone PMW3610 trackball working as third peripheral
+- Mouse layer auto-activates on trackpoint/trackball movement
+- Snipe mode (slow cursor) and scroll mode working
 - Press-to-select (tap trackpoint = left click) working
-- Still experiencing random crashes - likely noisy UART lines (hardware issue)
+
+** Architecture
+#+begin_example
+Dongle (central) <-- Left (trackpoint) + Right (keyboard) + Trackball (PMW3610)
+#+end_example
+
+** Mouse Layer
+When moving trackpoint or trackball, layer 5 auto-activates for 3 seconds.
+
+Thumb keys become:
+| SNIPE | SCROLL | LEFT CLICK | RIGHT CLICK |
+
+- *Snipe*: Hold for 1/4 cursor speed (precision mode)
+- *Scroll*: Hold to convert movement to scroll wheel
 
 ** Hardware Notes
-- Crashes may need shorter wires or external pull-up resistors on CLK/DATA lines
+- TrackPoint: Random crashes may need shorter wires or external pull-up resistors on CLK/DATA
+- Trackball: Uses 3-wire SPI (MOSI/MISO shared on D9)
 
 ** Build
 #+begin_src bash
 nix develop
 just build all
 #+end_src
+
+** Flashing After Config Changes
+If peripheral count changes, must re-pair all devices:
+1. Flash =settings_reset= to all devices
+2. Flash new firmware to all
+3. Power on dongle first, then peripherals
