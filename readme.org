@@ -12,7 +12,7 @@
 - Left side TrackPoint working (Sprintek all-in-one module)
 - Standalone PMW3610 trackball working as third peripheral
 - Mouse layer auto-activates on trackpoint/trackball movement
-- Snipe mode (slow cursor) and scroll mode working
+- Scroll mode working
 - Press-to-select (tap trackpoint = left click) working
 
 ** Architecture
@@ -24,15 +24,11 @@ Dongle (central) <-- Left (trackpoint) + Right (trackpoint) + Trackball (PMW3610
 When moving trackpoint or trackball, layer 5 auto-activates for 1 second.
 
 #+begin_example
-Top row keys:
-|   | W=SNIPE | E=SCROLL |   |   |   |   | I=SCROLL | O=SNIPE |   |
-
 Thumb keys:
-| RCLK | LCLK | LCLK | RCLK |
+| SCROLL | LCLK | LCLK | RCLK |
 #+end_example
 
-- *Snipe* (W/O): Hold for 1/4 cursor speed (precision mode)
-- *Scroll* (E/I): Hold to convert movement to scroll wheel (1/8 speed)
+- *Scroll*: Hold to convert movement to scroll wheel
 
 ** Hardware Notes
 - TrackPoint: Random crashes may need shorter wires or external pull-up resistors on CLK/DATA

@@ -1,3 +1,13 @@
+/*
+ * ============================================================================
+ * SHIELD DEFAULT KEYMAP - NOT USED (overridden by config/atlas.keymap)
+ * ============================================================================
+ * This is the fallback keymap for the atlas shield definition.
+ * It is NOT used when config/atlas.keymap exists (which it does).
+ *
+ * To edit your actual keymap, modify: config/atlas.keymap
+ */
+
 #include <behaviors.dtsi>
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/bt.h>

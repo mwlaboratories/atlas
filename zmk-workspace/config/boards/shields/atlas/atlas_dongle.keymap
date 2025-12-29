@@ -1,3 +1,14 @@
+/*
+ * ============================================================================
+ * DONGLE KEYMAP - Used by the dongle (central device)
+ * ============================================================================
+ * The dongle receives key events from peripherals and sends HID to the host.
+ * Layer definitions here must match config/atlas.keymap for proper functionality.
+ *
+ * Mouse/scroll layers (5, 6) are defined here with thumb key bindings since
+ * the dongle handles pointing device input processing.
+ */
+
 #include <behaviors.dtsi>
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/bt.h>
@@ -78,27 +89,17 @@
                         &trans &trans &trans &trans &trans    &trans &trans &trans &trans &trans
                         &trans &trans &trans &trans &trans    &trans &trans &trans &trans &trans
                         &trans &trans &trans &trans &trans    &trans &trans &trans &trans &trans
-                                              &mo 7  &mkp LCLK     &mkp LCLK &mkp RCLK
+                                              &mo 6  &mkp LCLK     &mkp LCLK &mkp RCLK
                         >;
                 };
 
-                /* SNIPE LAYER (Layer 6) - Hold left thumb 1 for slow/precise movement */
-                snipe_layer {
-                        bindings = <
-                        &trans &trans &trans &trans &trans    &trans &trans &trans &trans &trans
-                        &trans &trans &trans &trans &trans    &trans &trans &trans &trans &trans
-                        &trans &trans &trans &trans &trans    &trans &trans &trans &trans &trans
-                                              &mo 7  &mkp LCLK     &mkp LCLK &mkp RCLK
-                        >;
-                };
-
-                /* SCROLL LAYER (Layer 7) - Hold left thumb 2 for scroll mode */
+                /* SCROLL LAYER (Layer 6) - Hold left thumb 1 for scroll mode */
                 scroll_layer {
                         bindings = <
                         &trans &trans &trans &trans &trans    &trans &trans &trans &trans &trans
                         &trans &trans &trans &trans &trans    &trans &trans &trans &trans &trans
                         &trans &trans &trans &trans &trans    &trans &trans &trans &trans &trans
-                                              &mo 7  &mkp LCLK     &mkp LCLK &mkp RCLK
+                                              &mo 6  &mkp LCLK     &mkp LCLK &mkp RCLK
                         >;
                 };
         };
