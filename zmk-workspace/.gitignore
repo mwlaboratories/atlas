@@ -7,6 +7,13 @@ debug.sh
 # Build artifacts
 .build/
 
+# West-managed modules (external repos)
+zmk/
+zephyr/
+modules/
+zmk-pmw3610-driver/
+kb_zmk_ps2_mouse_trackpoint_driver/
+
 # Logs
 logs/
 *.log
