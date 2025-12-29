@@ -1,6 +1,17 @@
 // Copyright (c) 2022 The ZMK Contributors
 // SPDX-License-Identifier: MIT
 
+/*
+ * ============================================================================
+ * ACTIVE KEYMAP - This is the keymap actually used by the left/right halves
+ * ============================================================================
+ * This file overrides the shield default (config/boards/shields/atlas/atlas.keymap)
+ * Edit THIS file to change your keyboard layout.
+ *
+ * Note: The dongle uses a separate keymap (config/boards/shields/atlas/atlas_dongle.keymap)
+ * which must have matching layer definitions for mouse/scroll functionality.
+ */
+
 #include <behaviors.dtsi>
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/bt.h>
@@ -186,23 +197,7 @@
             &trans     &trans     &trans     &trans     &trans         &trans     &trans     &trans     &trans     &trans
         //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
         //                                 │  SCROLL  │  LCLICK  │   │  LCLICK  │  RCLICK  │
-                                            &mo 7      &mkp LCLK      &mkp LCLK  &mkp RCLK
-        //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯
-            >;
-        };
-
-        snipe_layer {
-            bindings = <
-        //╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
-        //│          │          │          │          │          │   │          │          │          │          │          │
-            &trans     &trans     &trans     &trans     &trans         &trans     &trans     &trans     &trans     &trans
-        //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-            &trans     &trans     &trans     &trans     &trans         &trans     &trans     &trans     &trans     &trans
-        //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-            &trans     &trans     &trans     &trans     &trans         &trans     &trans     &trans     &trans     &trans
-        //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
-        //                                 │  SCROLL  │  LCLICK  │   │  LCLICK  │  RCLICK  │
-                                            &mo 7      &mkp LCLK      &mkp LCLK  &mkp RCLK
+                                            &mo 6      &mkp LCLK      &mkp LCLK  &mkp RCLK
         //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯
             >;
         };
@@ -213,12 +208,14 @@
         //│          │          │          │          │          │   │          │          │          │          │          │
             &trans     &trans     &trans     &trans     &trans         &trans     &trans     &trans     &trans     &trans
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
+        //│          │          │          │          │          │   │          │          │          │          │          │
             &trans     &trans     &trans     &trans     &trans         &trans     &trans     &trans     &trans     &trans
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
+        //│          │          │          │          │          │   │          │          │          │          │          │
             &trans     &trans     &trans     &trans     &trans         &trans     &trans     &trans     &trans     &trans
         //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
         //                                 │  SCROLL  │  LCLICK  │   │  LCLICK  │  RCLICK  │
-                                            &mo 7      &mkp LCLK      &mkp LCLK  &mkp RCLK
+                                            &mo 6      &mkp LCLK      &mkp LCLK  &mkp RCLK
         //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯
             >;
         };
