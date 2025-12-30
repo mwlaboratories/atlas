@@ -1,5 +1,15 @@
 #include "atlas.dtsi"
 
+/ {
+    /* ESB split transport address config */
+    esb_split {
+        compatible = "zmk,esb-split";
+        base-addr-0 = <0xE7 0xE7 0xE7 0xE7>;
+        base-addr-1 = <0xC2 0xC2 0xC2 0xC2>;
+        addr-prefix = <0xE7 0xC2 0xC3 0xC4 0xC5 0xC6 0xC7 0xC8>;
+    };
+};
+
 &default_transform {
     col-offset = <5>;
 };
