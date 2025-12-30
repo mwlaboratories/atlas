@@ -12,6 +12,7 @@
 #include <behaviors.dtsi>
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/bt.h>
+#include <dt-bindings/zmk/outputs.h>
 #include <dt-bindings/zmk/mouse.h>
 
 / {
@@ -67,10 +68,14 @@
                         &trans &trans &trans &trans &trans    &trans &trans &trans &trans &trans
                                               &trans &trans    &trans &trans
                 >; };
+                /* TRI LAYER (Layer 3) - BT/Output controls (must run on dongle) */
                 layer_3 { bindings = <
-                        &trans &trans &trans &trans &trans    &trans &trans &trans &trans &trans
-                        &trans &trans &trans &trans &trans    &trans &trans &trans &trans &trans
-                        &trans &trans &trans &trans &trans    &trans &trans &trans &trans &trans
+                //      │         │         │         │ BT_SEL 0 │    │ BT_SEL 2 │ OUT_TOG  │         │         │         │
+                        &trans &trans &trans &trans &bt BT_SEL 0    &bt BT_SEL 2 &out OUT_TOG &trans &trans &trans
+                //      │         │         │         │ BT_SEL 1 │    │ BT_SEL 3 │          │         │         │         │
+                        &trans &trans &trans &trans &bt BT_SEL 1    &bt BT_SEL 3 &trans &trans &trans &trans
+                //      │         │         │         │ BT_CLR   │    │ BT_SEL 4 │          │         │         │         │
+                        &trans &trans &trans &trans &bt BT_CLR      &bt BT_SEL 4 &trans &trans &trans &trans
                                               &trans &trans    &trans &trans
                 >; };
                 layer_4 { bindings = <
