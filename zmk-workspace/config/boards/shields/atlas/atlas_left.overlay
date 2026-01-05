@@ -102,8 +102,8 @@
     uart_ps2: uart_ps2 {
         status = "okay";
         compatible = "uart-ps2";
-        scl-gpios = <&gpio1 11 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
-        sda-gpios = <&gpio1 12 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
+        scl-gpios = <&gpio1 11 GPIO_ACTIVE_HIGH>;
+        sda-gpios = <&gpio1 12 GPIO_ACTIVE_HIGH>;
     };
 };
 
