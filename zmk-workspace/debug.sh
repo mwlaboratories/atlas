@@ -165,7 +165,9 @@ while true; do
             # Log and display
             echo "$line" | tee -a "$LOG"
             # Highlight important events
-            if echo "$line" | grep -q "RESET PIN HIGH"; then
+            if echo "$line" | grep -q "Crash recovery:"; then
+                echo -e "${RED}>>> CRASH RECOVERY <<<${NC}"
+            elif echo "$line" | grep -q "RESET PIN HIGH"; then
                 echo -e "${RED}>>> T+G RESET TRIGGERED <<<${NC}"
             elif echo "$line" | grep -q "RESET TOGGLE COMPLETE"; then
                 echo -e "${GREEN}>>> RESET COMPLETE <<<${NC}"

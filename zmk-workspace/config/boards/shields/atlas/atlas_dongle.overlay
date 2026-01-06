@@ -71,18 +71,26 @@
         map = <INPUT_REL_X INPUT_REL_HWHEEL>, <INPUT_REL_Y INPUT_REL_WHEEL>;
     };
 
+    /* Swap X and Y axes */
+    zip_xy_swap: zip_xy_swap {
+        compatible = "zmk,input-processor-code-mapper";
+        #input-processor-cells = <0>;
+        type = <INPUT_EV_REL>;
+        map = <INPUT_REL_X INPUT_REL_Y>, <INPUT_REL_Y INPUT_REL_X>;
+    };
+
     /* Trackpoint listener - converts to HID mouse reports */
     trackpoint_listener: trackpoint_listener {
         compatible = "zmk,input-listener";
         status = "okay";
         device = <&trackpoint_split>;
-        /* Invert both axes (negative scaler) + 4x sensitivity + auto mouse layer */
-        input-processors = <&zip_xy_scaler (-4) 1>, <&zip_temp_layer 5 1000>;
+        /* Swap axes + 4x sensitivity + auto mouse layer */
+        input-processors = <&zip_xy_swap>, <&zip_xy_scaler 4 1>, <&zip_temp_layer 5 1000>;
 
-        /* Layer 6: Scroll mode - invert + reduced sensitivity */
+        /* Layer 6: Scroll mode - swap + reduced sensitivity */
         scroll {
             layers = <6>;
-            input-processors = <&zip_xy_scaler (-1) 4>, <&zip_xy_to_scroll>;
+            input-processors = <&zip_xy_swap>, <&zip_xy_scaler 1 4>, <&zip_xy_to_scroll>;
         };
     };
 
