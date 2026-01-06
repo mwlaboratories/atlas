@@ -30,7 +30,7 @@ draw_config:
 
   # Typography
   line_spacing: 1.1
-  shrink_wide_legends: 5
+  shrink_wide_legends: 7
   glyph_tap_size: 16
   glyph_hold_size: 11
   glyph_shifted_size: 10
@@ -60,9 +60,16 @@ draw_config:
     /* Layer headers */
     text.label { fill: #374151; font-weight: 600; font-size: 14px; }
 
-    /* Combo boxes */
-    rect.combo { fill: #eff6ff; stroke: #93c5fd; }
-    path.combo { stroke: #93c5fd; stroke-width: 1; }
+    /* Combo boxes - subtle orange to match keycaps */
+    rect.combo { fill: #fef3e2; stroke: #E09A2F; stroke-width: 1.5; }
+    path.combo { stroke: #E09A2F; stroke-width: 1; }
+    text.combo, text.combo.hold {
+      font-size: 11px;
+      font-weight: 600;
+      fill: #92400e;
+      dominant-baseline: middle;
+      text-anchor: middle;
+    }
 
     /* Special key highlighting */
     rect.key.layer-activator { fill: #dbeafe; }
@@ -117,18 +124,25 @@ draw_config:
   append_colon_to_layer_header: false
 
 parse_config:
-  # Better trans key representation
+  # Cleaner trans key - empty/subtle
   trans_legend:
-    t: "·"
+    t: ""
     type: trans
+
+  # Map raw ZMK bindings to clean display text
+  raw_binding_map:
+    "&mkp LCLK": "L Click"
+    "&mkp RCLK": "R Click"
+    "&mo 6": "Scroll"
+    "&tog_game_hold GAME 0": "Game"
 
   # Cleaner layer names for display
   layer_legend_map:
     default: "Base"
-    left: "Symbols"
-    right: "Nav & Nums"
-    tri: "Function"
-    gaming: "Gaming"
+    sym: "Sym"
+    num: "Num"
+    func: "Func"
+    game: "Game"
     mouse: "Mouse (auto 1s)"
     scroll: "Scroll"
 

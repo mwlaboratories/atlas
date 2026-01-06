@@ -22,9 +22,9 @@
 #define WHRML(k2,k3,k4) &ht LALT k2  &ht LGUI k3  &ht LCTRL k4
 #define WHRMR(k1,k2,k3) &ht RCTRL k1  &ht RGUI k2  &ht RALT k3
 
-#define LEF 1
-#define RIG 2
-#define TRI 3
+#define SYM 1
+#define NUM 2
+#define FUNC 3
 #define GAME 4
 #define MOUSE_TP 5
 
@@ -83,14 +83,15 @@
             timeout-ms = <50>;
             key-positions = <8 9>;  // O + P positions
             bindings = <&tog_game_hold GAME 0>;
+            layers = <0 GAME>;  // Active on base and game layers
         };
     };
 
     conditional_layers {
         compatible = "zmk,conditional-layers";
-        tri_layer {
-            if-layers = <RIG LEF>;
-            then-layer = <TRI>;
+        func_layer {
+            if-layers = <NUM SYM>;
+            then-layer = <FUNC>;
         };
     };
 
@@ -108,12 +109,12 @@
         //│  Z       │  X       │  C       │  V       │  B       │   │  N       │  M       │ , <      │ . >      │ DELETE   │
             &kp Z      &kp X      &kp C      &kp V      &kp B          &kp N      &kp M      &kp COMMA  &kp DOT    &kp DEL
         //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
-                                           &kp SPACE  &lt LEF TAB    &lt RIG ENTER  &kp LSHIFT
+                                           &kp SPACE  &lt SYM TAB    &lt NUM ENTER  &kp LSHIFT
         //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯
             >;
         };
 
-        left_layer {
+        sym_layer {
             bindings = <
         //╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
         //│  !       │  @       │  #       │  $       │  %       │   │  ^       │  &       │  *       │  `       │  ~       │
@@ -130,7 +131,7 @@
             >;
         };
 
-        right_layer {
+        num_layer {
             bindings = <
         //╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
         //│ 1        │  2       │  3       │  4       │  5       │   │ 6        │ 7        │ 8        │ 9        │   0      │
@@ -142,12 +143,12 @@
         //│          │          │          │          │          │   │          │ HOME     │ PAGE DN  │ PAGE UP  │ END      │
             &trans    &trans     &trans     &trans      &trans           &kp HOME   &kp PG_DN  &kp PG_UP  &kp END &trans 
         //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
-                                             &trans     &kp ESC        &trans     &trans
+                                             &kp ESC    &trans         &trans     &trans
         //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯
             >;
         };
 
-        tri_layer {
+        func_layer {
             bindings = <
         //╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬───────────┬──────────╮
         //│  F1      │  F2      │  F3      │  F4      │          │   │          │          │          │ VOL MUTE  │ NEXTSONG │
@@ -165,7 +166,7 @@
         };
 
 
-        gaming_layer {
+        game_layer {
             bindings = <
         //╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
         //│  TAB     │  Q       │  W       │  E       │  R       │   │  1       │  2       │  3       │  4       │  5       │

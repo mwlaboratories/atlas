@@ -63,7 +63,7 @@ keymap:
     # Include mouse layer (auto-activates for 1s on trackpoint/trackball movement)
     keymap -c "{{ config }}/keymap-drawer.yaml" draw "{{ config }}/keymap.yaml" \
         -n "33333+2 2+33333" \
-        -s default left right tri gaming mouse \
+        -s default sym num func game mouse \
         -o "{{ config }}/keymap.svg"
     echo "Generated: {{ config }}/keymap.svg"
 
