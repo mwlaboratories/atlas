@@ -4,6 +4,8 @@ manifest:
       url-base: https://github.com/zmkfirmware
     - name: badjeff
       url-base: https://github.com/badjeff
+    - name: mwlaboratories
+      url-base: https://github.com/mwlaboratories
     - name: nrfconnect
       url-base: https://github.com/nrfconnect
 
@@ -13,7 +15,7 @@ manifest:
       revision: main
       import: app/west.yml
     - name: kb_zmk_ps2_mouse_trackpoint_driver
-      remote: badjeff
+      remote: mwlaboratories
       revision: main
     - name: zmk-pmw3610-driver
       remote: badjeff
