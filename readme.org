@@ -3,8 +3,6 @@
 
 [[atlas-render.png]]
 
-[[atlas-update.jpeg]]
-
 [[zmk-workspace/nix/keymap.svg]]
 
 * Atlas
