@@ -1,0 +1,150 @@
+# Keymap Drawer Configuration for Atlas 34-key Split Keyboard
+# Optimized for "mainstream friendly" aesthetic
+
+draw_config:
+  # Key dimensions (slightly larger for readability)
+  key_w: 64
+  key_h: 60
+  split_gap: 40
+  key_rx: 8
+  key_ry: 8
+
+  # Layout - show layers in 2 columns for easy comparison
+  n_columns: 2
+
+  # Visual polish
+  draw_key_sides: true
+  key_side_pars:
+    rel_x: 0
+    rel_y: 3
+    rel_w: 8
+    rel_h: 8
+    rx: 3
+    ry: 3
+
+  # Spacing
+  inner_pad_w: 3
+  inner_pad_h: 3
+  outer_pad_w: 40
+  outer_pad_h: 40
+
+  # Typography
+  line_spacing: 1.1
+  shrink_wide_legends: 5
+  glyph_tap_size: 16
+  glyph_hold_size: 11
+  glyph_shifted_size: 10
+
+  # Modern, clean styling (light mode)
+  dark_mode: false
+
+  # Custom CSS for a polished, professional look
+  svg_extra_style: |
+    /* Base text styling */
+    text { font-family: 'Inter', 'SF Pro Display', -apple-system, system-ui, sans-serif; }
+
+    /* Key styling */
+    rect.key { fill: #ffffff; stroke: #d1d5db; stroke-width: 1; }
+    rect.key.held, rect.key.toggled { fill: #fef3c7; }
+    rect.key.ghost { fill: #f3f4f6; opacity: 0.7; }
+    rect.key.trans { fill: #f9fafb; }
+
+    /* Key sides for 3D effect */
+    rect.side { fill: #e5e7eb; }
+
+    /* Hold modifier styling - subtle but visible */
+    text.hold { fill: #6b7280; font-size: 10px; }
+    text.tap { fill: #1f2937; font-weight: 500; }
+    text.shifted { fill: #9ca3af; }
+
+    /* Layer headers */
+    text.label { fill: #374151; font-weight: 600; font-size: 14px; }
+
+    /* Combo boxes */
+    rect.combo { fill: #eff6ff; stroke: #93c5fd; }
+    path.combo { stroke: #93c5fd; stroke-width: 1; }
+
+    /* Special key highlighting */
+    rect.key.layer-activator { fill: #dbeafe; }
+    rect.key.mouse { fill: #fce7f3; }
+
+  # Glyphs for better visual communication
+  glyphs:
+    # Arrows - using Unicode (works everywhere)
+    arrow_up: "↑"
+    arrow_down: "↓"
+    arrow_left: "←"
+    arrow_right: "→"
+
+    # Media controls
+    vol_up: "🔊"
+    vol_down: "🔉"
+    vol_mute: "🔇"
+    play_pause: "⏯"
+    next: "⏭"
+    prev: "⏮"
+
+    # Bluetooth/connectivity
+    bluetooth: "📶"
+
+    # Other useful symbols
+    home: "⌂"
+    page_up: "⇞"
+    page_down: "⇟"
+    end_key: "⌁"
+    delete: "⌫"
+    backspace: "⌫"
+    tab: "⇥"
+    enter: "⏎"
+    shift: "⇧"
+    ctrl: "⌃"
+    alt: "⌥"
+    gui: "⌘"
+    space: "␣"
+    escape: "⎋"
+    caps: "⇪"
+    print_screen: "⎙"
+    brightness_up: "☀+"
+    brightness_down: "☀-"
+    scroll: "⌲"
+    mouse_left: "🖱L"
+    mouse_right: "🖱R"
+
+  # Footer with keyboard name
+  footer_text: "Atlas 34-key · ZMK"
+
+  # Don't add colon to layer names (cleaner)
+  append_colon_to_layer_header: false
+
+parse_config:
+  # Better trans key representation
+  trans_legend:
+    t: "·"
+    type: trans
+
+  # Cleaner layer names for display
+  layer_legend_map:
+    default: "Base"
+    left: "Symbols"
+    right: "Nav & Nums"
+    tri: "Function"
+    gaming: "Gaming"
+    mouse_layer: "Mouse"
+    scroll_layer: "Scroll"
+
+  # Mark layer activators distinctly
+  mark_alternate_layer_activators: true
+
+  # Modifier display - use symbols for mainstream users
+  modifier_fn_map:
+    left_ctrl: "Ctrl"
+    right_ctrl: "Ctrl"
+    left_shift: "Shift"
+    right_shift: "Shift"
+    left_alt: "Alt"
+    right_alt: "AltGr"
+    left_gui: "Cmd"
+    right_gui: "Cmd"
+    keycode_combiner: "{mods}+{key}"
+    mod_combiner: "{mod_1}+{mod_2}"
+

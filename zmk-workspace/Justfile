@@ -53,6 +53,30 @@ draw:
     yq -Yi '.combos.[].l = ["Combos"]' "{{ draw }}/base.yaml"
     keymap -c "{{ draw }}/config.yaml" draw "{{ draw }}/base.yaml" -k "ferris/sweep" >"{{ draw }}/base.svg"
 
+# Generate beautiful Atlas keymap visualization
+keymap:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    echo "Parsing atlas.keymap..."
+    keymap -c "{{ config }}/keymap-drawer.yaml" parse -z "{{ config }}/atlas.keymap" -c 10 -o "{{ config }}/keymap.yaml"
+    echo "Drawing SVG (34-key split layout)..."
+    # Exclude mouse/scroll layers (mostly transparent) for cleaner visualization
+    keymap -c "{{ config }}/keymap-drawer.yaml" draw "{{ config }}/keymap.yaml" \
+        -n "33333+2 2+33333" \
+        -s default left right tri gaming \
+        -o "{{ config }}/keymap.svg"
+    echo "Generated: {{ config }}/keymap.svg"
+
+# Generate keymap with all layers including mouse/scroll
+keymap-full:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    keymap -c "{{ config }}/keymap-drawer.yaml" parse -z "{{ config }}/atlas.keymap" -c 10 -o "{{ config }}/keymap.yaml"
+    keymap -c "{{ config }}/keymap-drawer.yaml" draw "{{ config }}/keymap.yaml" \
+        -n "33333+2 2+33333" \
+        -o "{{ config }}/keymap-full.svg"
+    echo "Generated: {{ config }}/keymap-full.svg"
+
 init:
     west init -l config
     west update --fetch-opt=--filter=blob:none
