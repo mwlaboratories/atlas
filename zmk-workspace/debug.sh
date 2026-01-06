@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
-# ZMK Trackpoint Debug Logger - Continuous, auto-reconnect
+# ZMK Trackpoint Debug Logger - Auto-detect port, capture from boot
 
-DEVICE="${1:-/dev/ttyACM1}"
 LOG_DIR="logs"
 mkdir -p "$LOG_DIR"
 
@@ -12,6 +11,7 @@ FILTER='(kscan_matrix|split_peripheral_listener|zmk_physical_layouts_kscan|zmk_u
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
+CYAN='\033[0;36m'
 NC='\033[0m'
 
 LOG="$LOG_DIR/debug-$(date +%Y%m%d-%H%M%S).log"
@@ -48,17 +48,15 @@ show_timing_report() {
         echo -e "${GREEN}First movement:${NC} $time"
     fi
 
-    # T+G triggered reset (looks for "RESET PIN HIGH" from debug_reset_toggle.c)
+    # T+G triggered reset
     tg_reset=$(grep -m1 "RESET PIN HIGH" "$log" 2>/dev/null)
     if [ -n "$tg_reset" ]; then
         time=$(echo "$tg_reset" | grep -oE '\[([0-9:.,]+)\]' | head -1)
         echo -e "${YELLOW}T+G Reset triggered:${NC} $time"
     fi
 
-    # Count T+G reset events
-    resets=$(grep -c "RESET PIN HIGH\|RESET TOGGLE COMPLETE" "$log" 2>/dev/null || echo 0)
-
     # Count issues
+    resets=$(grep -c "RESET PIN HIGH\|RESET TOGGLE COMPLETE" "$log" 2>/dev/null || echo 0)
     errs=$(grep -c "<err>" "$log" 2>/dev/null || echo 0)
     warns=$(grep -c "<wrn>" "$log" 2>/dev/null || echo 0)
     framing=$(grep -c "Framing error" "$log" 2>/dev/null || echo 0)
@@ -71,30 +69,112 @@ show_timing_report() {
     echo "  Framing errors: $framing | Dropped: $dropped"
     echo "  Queue full: $queue_full | Misaligned: $misalign"
     echo "  TP Resets detected: $resets"
+    echo -e "\nLog saved: $log"
 }
 
-trap "show_timing_report '$LOG'; exit 0" INT TERM
-
-echo "Logging to $LOG (Ctrl+C to stop)"
-echo "Auto-reconnects on reset. Watching for T+G reset combo..."
+# --- Step 1: Detect port by disconnect/reconnect ---
+echo -e "${CYAN}=== ZMK Debug Logger ===${NC}"
 echo ""
 
+# Get initial port count
+initial_ports=$(ls /dev/ttyACM* 2>/dev/null | sort)
+initial_count=$(echo "$initial_ports" | grep -c . 2>/dev/null || echo 0)
+
+echo -e "${YELLOW}Disconnect${NC} the keyboard USB cable..."
+echo -n "Waiting"
+
+# Wait for port count to decrease (device unplugged)
+while true; do
+    current_ports=$(ls /dev/ttyACM* 2>/dev/null | sort)
+    current_count=$(echo "$current_ports" | grep -c . 2>/dev/null || echo 0)
+    if [ "$current_count" -lt "$initial_count" ] || [ -z "$current_ports" ]; then
+        break
+    fi
+    echo -n "."
+    sleep 0.3
+done
+echo " unplugged!"
+
+# Remember state after unplug
+unplugged_ports=$(ls /dev/ttyACM* 2>/dev/null | sort)
+
+echo -e "${GREEN}Reconnect${NC} the keyboard USB cable..."
+echo -n "Waiting"
+
+# Wait for a NEW port to appear
+while true; do
+    current_ports=$(ls /dev/ttyACM* 2>/dev/null | sort)
+    # Find port that wasn't there when unplugged
+    for port in $current_ports; do
+        if ! echo "$unplugged_ports" | grep -q "^${port}$"; then
+            DEVICE="$port"
+            break 2
+        fi
+    done
+    echo -n "."
+    sleep 0.3
+done
+echo " connected!"
+echo -e "${GREEN}Detected:${NC} $DEVICE"
+echo ""
+
+# --- Step 2: Wait for reset to capture boot ---
+echo -e "${YELLOW}Press the RESET button${NC} on the XIAO BLE to capture boot messages..."
+echo -n "Waiting for device to disappear"
+
+# Wait for device to disappear (reset pressed)
+while [ -e "$DEVICE" ]; do
+    echo -n "."
+    sleep 0.2
+done
+echo " reset detected!"
+
+# Wait for device to reappear
+echo -n "Waiting for boot"
+while [ ! -e "$DEVICE" ]; do
+    echo -n "."
+    sleep 0.1
+done
+echo ""
+echo -e "${GREEN}Device ready!${NC}"
+echo ""
+
+# --- Step 3: Start logging ---
+cleanup() {
+    echo ""
+    echo "=== $(date): Stopped ===" >> "$LOG"
+    show_timing_report "$LOG"
+    exit 0
+}
+trap cleanup INT TERM
+
+echo -e "Logging to ${CYAN}$LOG${NC}"
+echo -e "Press ${RED}Ctrl+C${NC} to stop"
+echo ""
+
+echo "=== $(date): Boot capture started ===" >> "$LOG"
+
+# Keep logging forever, reconnect if device drops
 while true; do
     if [ -e "$DEVICE" ]; then
-        echo "=== $(date): Connected ===" | tee -a "$LOG"
-        cat "$DEVICE" 2>/dev/null | grep --line-buffered -vE "$FILTER" | while read line; do
+        while IFS= read -r line; do
+            # Skip filtered lines
+            if echo "$line" | grep -qE "$FILTER"; then
+                continue
+            fi
+            # Log and display
             echo "$line" | tee -a "$LOG"
-            # Check for T+G reset toggle events
+            # Highlight important events
             if echo "$line" | grep -q "RESET PIN HIGH"; then
                 echo -e "${RED}>>> T+G RESET TRIGGERED <<<${NC}"
             elif echo "$line" | grep -q "RESET TOGGLE COMPLETE"; then
                 echo -e "${GREEN}>>> RESET COMPLETE <<<${NC}"
-            # Check for trackpoint self-test response
             elif echo "$line" | grep -qE "0xaa|self.test"; then
                 echo -e "${YELLOW}^^^ Self-test ^^^${NC}"
             fi
-        done
-        echo "=== $(date): Disconnected ===" | tee -a "$LOG"
+        done < "$DEVICE" 2>/dev/null
+        echo -e "${YELLOW}--- Device disconnected, waiting... ---${NC}"
+        echo "=== $(date): Reconnecting... ===" >> "$LOG"
     fi
     sleep 0.5
 done
