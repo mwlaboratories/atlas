@@ -135,6 +135,7 @@ parse_config:
     "&mkp RCLK": "R Click"
     "&mo 6": "Scroll"
     "&tog_game_hold GAME 0": "Game"
+    # Arrow keys
     "&kp LARW": "←"
     "&kp DARW": "↓"
     "&kp UARW": "↑"
@@ -143,6 +144,13 @@ parse_config:
     "&kp DOWN": "↓"
     "&kp UP": "↑"
     "&kp RIGHT": "→"
+    # Media controls
+    "&kp C_PREV": "◀◀"
+    "&kp C_NEXT": "▶▶"
+    "&kp C_VOL_DN": "Vol-"
+    "&kp C_VOL_UP": "Vol+"
+    "&kp C_PP": "▶❚❚"
+    "&kp C_MUTE": "Mute"
 
   # Cleaner layer names for display
   layer_legend_map:

@@ -151,14 +151,14 @@
         func_layer {
             bindings = <
         //╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬───────────┬──────────╮
-        //│  F1      │  F2      │  F3      │  F4      │  F5      │   │          │          │          │ VOL MUTE  │ NEXTSONG │
-            &kp F1     &kp F2     &kp F3     &kp F4     &kp F5         &trans     &trans     &trans     &kp C_MUTE  &kp C_NEXT
+        //│  F1      │  F2      │  F3      │  F4      │  F5      │   │          │          │ VOL MUTE │           │          │
+            &kp F1     &kp F2     &kp F3     &kp F4     &kp F5         &trans     &trans     &kp C_MUTE &trans      &trans
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼───────────┼──────────┤
-        //│  F6      │  F7      │  F8      │  F9      │  F10     │   │          │          │          │  VOL UP   │PAUSEMUSIC│
-            &kp F6     &kp F7     &kp F8     &kp F9     &kp F10        &trans     &trans     &trans     &kp C_VOL_UP  &kp C_PP
+        //│  F6      │  F7      │  F8      │  F9      │  F10     │   │ PREVSONG │ VOL DOWN │  VOL UP  │ NEXTSONG  │PAUSEMUSIC│
+            &kp F6     &kp F7     &kp F8     &kp F9     &kp F10        &kp C_PREV &kp C_VOL_DN &kp C_VOL_UP &kp C_NEXT &kp C_PP
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼───────────┼──────────┤
-        //│  F11     │  F12     │          │          │          │   │          │          │          |  VOL DOWN │ PREVSONG │
-            &kp F11    &kp F12    &trans     &trans     &trans         &trans     &trans     &trans     &kp C_VOL_DN &kp C_PREV
+        //│  F11     │  F12     │          │          │          │   │          │          │          |           │          │
+            &kp F11    &kp F12    &trans     &trans     &trans         &trans     &trans     &trans     &trans      &trans
         //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴───────────┴──────────╯
                                                 &trans     &trans         &trans     &trans
         //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯
