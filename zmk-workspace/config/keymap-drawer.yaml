@@ -135,6 +135,14 @@ parse_config:
     "&mkp RCLK": "R Click"
     "&mo 6": "Scroll"
     "&tog_game_hold GAME 0": "Game"
+    "&kp LARW": "←"
+    "&kp DARW": "↓"
+    "&kp UARW": "↑"
+    "&kp RARW": "→"
+    "&kp LEFT": "←"
+    "&kp DOWN": "↓"
+    "&kp UP": "↑"
+    "&kp RIGHT": "→"
 
   # Cleaner layer names for display
   layer_legend_map:
