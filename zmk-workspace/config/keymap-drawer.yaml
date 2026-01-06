@@ -45,7 +45,7 @@ draw_config:
 
     /* Key styling */
     rect.key { fill: #ffffff; stroke: #d1d5db; stroke-width: 1; }
-    rect.key.held, rect.key.toggled { fill: #fef3c7; }
+    rect.key.held, rect.key.toggled { fill: #E09A2F; }
     rect.key.ghost { fill: #f3f4f6; opacity: 0.7; }
     rect.key.trans { fill: #f9fafb; }
 
@@ -111,7 +111,7 @@ draw_config:
     mouse_right: "🖱R"
 
   # Footer with keyboard name
-  footer_text: "Atlas 34-key · ZMK"
+  footer_text: "Atlas 34-key · ZMK · Mouse layer auto-activates for 1s on movement"
 
   # Don't add colon to layer names (cleaner)
   append_colon_to_layer_header: false
@@ -129,8 +129,8 @@ parse_config:
     right: "Nav & Nums"
     tri: "Function"
     gaming: "Gaming"
-    mouse_layer: "Mouse"
-    scroll_layer: "Scroll"
+    mouse: "Mouse (auto 1s)"
+    scroll: "Scroll"
 
   # Mark layer activators distinctly
   mark_alternate_layer_activators: true
