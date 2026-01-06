@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-# ZMK Trackpoint Debug Logger - Interactive
+# ZMK Trackpoint Debug Logger - Continuous, auto-reconnect
 
-DEVICE="/dev/ttyACM0"
+DEVICE="${1:-/dev/ttyACM1}"
 LOG_DIR="logs"
 mkdir -p "$LOG_DIR"
 
-# Filter for clean output
+# Filter noisy output
 FILTER='(kscan_matrix|split_peripheral_listener|zmk_physical_layouts_kscan|zmk_usb_get_conn_state|bvd_sample_fetch|Setting BAS GATT|<dbg>.*ps2_uart|<dbg>.*data_queue|split_svc_pos_state|split_input_events_ccc|security_changed|<dbg>.*zmk_mouse_ps2_activity|^\s*$|^$)'
 
 # Colors
@@ -13,6 +13,8 @@ RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 NC='\033[0m'
+
+LOG="$LOG_DIR/debug-$(date +%Y%m%d-%H%M%S).log"
 
 show_timing_report() {
     local log="$1"
@@ -46,6 +48,16 @@ show_timing_report() {
         echo -e "${GREEN}First movement:${NC} $time"
     fi
 
+    # T+G triggered reset (looks for "RESET PIN HIGH" from debug_reset_toggle.c)
+    tg_reset=$(grep -m1 "RESET PIN HIGH" "$log" 2>/dev/null)
+    if [ -n "$tg_reset" ]; then
+        time=$(echo "$tg_reset" | grep -oE '\[([0-9:.,]+)\]' | head -1)
+        echo -e "${YELLOW}T+G Reset triggered:${NC} $time"
+    fi
+
+    # Count T+G reset events
+    resets=$(grep -c "RESET PIN HIGH\|RESET TOGGLE COMPLETE" "$log" 2>/dev/null || echo 0)
+
     # Count issues
     errs=$(grep -c "<err>" "$log" 2>/dev/null || echo 0)
     warns=$(grep -c "<wrn>" "$log" 2>/dev/null || echo 0)
@@ -58,98 +70,31 @@ show_timing_report() {
     echo "  Errors: $errs | Warnings: $warns"
     echo "  Framing errors: $framing | Dropped: $dropped"
     echo "  Queue full: $queue_full | Misaligned: $misalign"
+    echo "  TP Resets detected: $resets"
 }
 
-wait_for_device() {
+trap "show_timing_report '$LOG'; exit 0" INT TERM
+
+echo "Logging to $LOG (Ctrl+C to stop)"
+echo "Auto-reconnects on reset. Watching for T+G reset combo..."
+echo ""
+
+while true; do
     if [ -e "$DEVICE" ]; then
-        echo "Device connected. Press reset on left half..."
-        while [ -e "$DEVICE" ]; do sleep 0.1; done
-        echo "Disconnected, waiting for boot..."
-    else
-        echo "Waiting for $DEVICE..."
+        echo "=== $(date): Connected ===" | tee -a "$LOG"
+        cat "$DEVICE" 2>/dev/null | grep --line-buffered -vE "$FILTER" | while read line; do
+            echo "$line" | tee -a "$LOG"
+            # Check for T+G reset toggle events
+            if echo "$line" | grep -q "RESET PIN HIGH"; then
+                echo -e "${RED}>>> T+G RESET TRIGGERED <<<${NC}"
+            elif echo "$line" | grep -q "RESET TOGGLE COMPLETE"; then
+                echo -e "${GREEN}>>> RESET COMPLETE <<<${NC}"
+            # Check for trackpoint self-test response
+            elif echo "$line" | grep -qE "0xaa|self.test"; then
+                echo -e "${YELLOW}^^^ Self-test ^^^${NC}"
+            fi
+        done
+        echo "=== $(date): Disconnected ===" | tee -a "$LOG"
     fi
-    while [ ! -e "$DEVICE" ]; do sleep 0.1; done
-    echo "Device found!"
-    sleep 0.3
-}
-
-# Interactive menu
-echo "ZMK Trackpoint Debugger"
-echo "======================="
-echo ""
-echo "1) Boot capture (60s, filtered)"
-echo "2) Crash monitor (continuous, auto-reconnect)"
-echo "3) Full verbose (60s, everything)"
-echo "4) View latest log + timing report"
-echo "5) Analyze a log file"
-echo ""
-read -p "Choice [1-5]: " choice
-
-case "$choice" in
-    1)
-        LOG="$LOG_DIR/boot-$(date +%Y%m%d-%H%M%S).log"
-        echo "Boot capture to $LOG (60s, survives resets)"
-        echo "Press Ctrl+C when done."
-        trap "show_timing_report '$LOG'; exit 0" INT
-        END=$((SECONDS + 60))
-        while [ $SECONDS -lt $END ]; do
-            if [ -e "$DEVICE" ]; then
-                echo "=== $(date +%H:%M:%S): Connected ===" | tee -a "$LOG"
-                timeout $((END - SECONDS)) cat "$DEVICE" 2>/dev/null | grep --line-buffered -vE "$FILTER" | cat -s | tee -a "$LOG"
-                [ $SECONDS -lt $END ] && echo "=== $(date +%H:%M:%S): Reset detected ===" | tee -a "$LOG"
-            fi
-            sleep 0.3
-        done
-        show_timing_report "$LOG"
-        ;;
-    2)
-        LOG="$LOG_DIR/crash-$(date +%Y%m%d-%H%M%S).log"
-        echo "Crash monitoring to $LOG (Ctrl+C to stop)"
-        echo "Will show timing report on exit."
-        trap "show_timing_report '$LOG'; exit 0" INT
-        while true; do
-            if [ -e "$DEVICE" ]; then
-                echo "=== $(date): Connected ===" | tee -a "$LOG"
-                cat "$DEVICE" | grep --line-buffered -vE "$FILTER" | cat -s | tee -a "$LOG"
-                echo "=== $(date): CRASHED/DISCONNECTED ===" | tee -a "$LOG"
-            fi
-            sleep 1
-        done
-        ;;
-    3)
-        LOG="$LOG_DIR/verbose-$(date +%Y%m%d-%H%M%S).log"
-        wait_for_device
-        echo "Capturing 60s verbose to $LOG..."
-        timeout 60 cat "$DEVICE" | tee "$LOG"
-        show_timing_report "$LOG"
-        ;;
-    4)
-        LATEST=$(ls -t "$LOG_DIR"/*.log 2>/dev/null | head -1)
-        if [ -z "$LATEST" ]; then
-            echo "No logs found"
-            exit 1
-        fi
-        show_timing_report "$LATEST"
-        echo -e "\nPress Enter to view log, or Ctrl+C to exit"
-        read
-        less "$LATEST"
-        ;;
-    5)
-        echo "Available logs:"
-        ls -t "$LOG_DIR"/*.log 2>/dev/null | head -10 | nl
-        read -p "Enter number: " num
-        LOG=$(ls -t "$LOG_DIR"/*.log 2>/dev/null | sed -n "${num}p")
-        if [ -n "$LOG" ]; then
-            show_timing_report "$LOG"
-            echo -e "\nPress Enter to view log"
-            read
-            less "$LOG"
-        else
-            echo "Invalid selection"
-        fi
-        ;;
-    *)
-        echo "Invalid choice"
-        exit 1
-        ;;
-esac
+    sleep 0.5
+done
