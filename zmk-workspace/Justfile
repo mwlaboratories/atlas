@@ -76,6 +76,7 @@ keymap-full:
     echo "Drawing SVG (all layers)..."
     keymap -c "{{ nix }}/keymap-drawer.yaml" draw "{{ nix }}/keymap.yaml" \
         -n "33333+2 2+33333" \
+        -s default sym num func game mouse \
         -o "{{ nix }}/keymap.svg"
     echo "Converting to PNG..."
     rsvg-convert -o "{{ nix }}/keymap.png" "{{ nix }}/keymap.svg"

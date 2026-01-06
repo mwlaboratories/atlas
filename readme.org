@@ -31,7 +31,7 @@ Thumb keys:
 - *Scroll*: Hold to convert movement to scroll wheel
 
 ** Hardware Notes
-- TrackPoint: Random crashes may need shorter wires or external pull-up resistors on CLK/DATA
+- TrackPoint: Still has stability issues with pullup resistors
 - Trackball: Uses 3-wire SPI (MOSI/MISO shared on D9)
 
 ** Build
