@@ -5,6 +5,8 @@
 
 [[atlas-update.jpeg]]
 
+[[zmk-workspace/config/keymap.svg]]
+
 * Atlas
 34-key split keyboard with TrackPoint and Trackball, using XIAO BLE controllers and a dongle.
 

@@ -25,7 +25,7 @@
     # This is the source of all the build tools (cmake, ninja, gcc, etc.)
     # and provides nixpkgs.lib for utility functions.
     # ----------------------------------------------------------------------
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
 
     # ----------------------------------------------------------------------
     # INPUT: zephyr - The Zephyr RTOS (ZMK Fork)
@@ -97,7 +97,7 @@
         # ------------------------------------------------------------------
         pkgs = nixpkgs.legacyPackages.${system};
         zephyr = zephyr-nix.packages.${system};
-        keymap_drawer = pkgs.python3Packages.callPackage ./nix/keymap-drawer.nix {};
+        keymap_drawer = pkgs.python312Packages.callPackage ./nix/keymap-drawer.nix {};
       in {
         # ------------------------------------------------------------------
         # DEFAULT DEVELOPMENT SHELL
@@ -186,6 +186,11 @@
           shellHook = ''
             export ZMK_BUILD_DIR=$(pwd)/.build;
             export ZMK_SRC_DIR=$(pwd)/zmk/app;
+            # Find and add keymap-drawer to PATH dynamically
+            KEYMAP_BIN=$(ls -d /nix/store/*keymap-drawer-0.22.1/bin 2>/dev/null | tail -1)
+            if [ -n "$KEYMAP_BIN" ]; then
+              export PATH="$KEYMAP_BIN:$PATH"
+            fi
             if [ -n "\${PS1:-}" ]; then
               export PS1="\n\[\033[1;32m\][zmk-shell:\w]\$\[\033[0m\] ";
             fi

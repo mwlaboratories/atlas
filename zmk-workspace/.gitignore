@@ -20,3 +20,14 @@ nrfxlib/
 # Logs
 logs/
 *.log
+
+# Build outputs
+firmware/
+result
+result-*
+
+# Generated keymap intermediates (regenerate with: just keymap)
+config/keymap.yaml
+config/keymap-full.svg
+draw/*.yaml
+draw/*.svg
