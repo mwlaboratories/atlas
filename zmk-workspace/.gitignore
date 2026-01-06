@@ -13,6 +13,9 @@ zephyr/
 modules/
 zmk-pmw3610-driver/
 kb_zmk_ps2_mouse_trackpoint_driver/
+zmk-feature-split-esb/
+nrf/
+nrfxlib/
 
 # Logs
 logs/
