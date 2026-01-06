@@ -7,6 +7,7 @@ config := absolute_path('config')
 build := absolute_path('.build')
 out := absolute_path('firmware')
 draw := absolute_path('draw')
+nix := absolute_path('nix')
 
 _parse_targets $expr:
     #!/usr/bin/env bash
@@ -58,24 +59,29 @@ keymap:
     #!/usr/bin/env bash
     set -euo pipefail
     echo "Parsing atlas.keymap..."
-    keymap -c "{{ config }}/keymap-drawer.yaml" parse -z "{{ config }}/atlas.keymap" -c 10 -o "{{ config }}/keymap.yaml"
+    keymap -c "{{ nix }}/keymap-drawer.yaml" parse -z "{{ config }}/atlas.keymap" -c 10 -o "{{ nix }}/keymap.yaml"
     echo "Drawing SVG (34-key split layout)..."
     # Include mouse layer (auto-activates for 1s on trackpoint/trackball movement)
-    keymap -c "{{ config }}/keymap-drawer.yaml" draw "{{ config }}/keymap.yaml" \
+    keymap -c "{{ nix }}/keymap-drawer.yaml" draw "{{ nix }}/keymap.yaml" \
         -n "33333+2 2+33333" \
         -s default sym num func game mouse \
-        -o "{{ config }}/keymap.svg"
-    echo "Generated: {{ config }}/keymap.svg"
+        -o "{{ nix }}/keymap.svg"
+    echo "Converting to PNG..."
+    rsvg-convert -o "{{ nix }}/keymap.png" "{{ nix }}/keymap.svg"
+    echo "Generated: {{ nix }}/keymap.svg"
+    echo "Generated: {{ nix }}/keymap.png"
 
 # Generate keymap with all layers including mouse/scroll
 keymap-full:
     #!/usr/bin/env bash
     set -euo pipefail
-    keymap -c "{{ config }}/keymap-drawer.yaml" parse -z "{{ config }}/atlas.keymap" -c 10 -o "{{ config }}/keymap.yaml"
-    keymap -c "{{ config }}/keymap-drawer.yaml" draw "{{ config }}/keymap.yaml" \
+    keymap -c "{{ nix }}/keymap-drawer.yaml" parse -z "{{ config }}/atlas.keymap" -c 10 -o "{{ nix }}/keymap.yaml"
+    keymap -c "{{ nix }}/keymap-drawer.yaml" draw "{{ nix }}/keymap.yaml" \
         -n "33333+2 2+33333" \
-        -o "{{ config }}/keymap-full.svg"
-    echo "Generated: {{ config }}/keymap-full.svg"
+        -o "{{ nix }}/keymap-full.svg"
+    rsvg-convert -o "{{ nix }}/keymap-full.png" "{{ nix }}/keymap-full.svg"
+    echo "Generated: {{ nix }}/keymap-full.svg"
+    echo "Generated: {{ nix }}/keymap-full.png"
 
 init:
     west init -l config
