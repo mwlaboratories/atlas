@@ -28,9 +28,6 @@ result-*
 
 # Generated keymap intermediates (regenerate with: just keymap)
 nix/keymap.yaml
-nix/keymap.svg
 nix/keymap.png
-nix/keymap-full.svg
-nix/keymap-full.png
 draw/*.yaml
 draw/*.svg
