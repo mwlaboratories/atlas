@@ -76,13 +76,13 @@
         compatible = "zmk,input-listener";
         status = "okay";
         device = <&trackpoint_split>;
-        /* Swap XY + 2x sensitivity + auto mouse layer */
-        input-processors = <&zip_xy_swap_mapper>, <&zip_xy_scaler 4 1>, <&zip_temp_layer 5 1000>;
+        /* Invert both axes (negative scaler) + 4x sensitivity + auto mouse layer */
+        input-processors = <&zip_xy_scaler (-4) 1>, <&zip_temp_layer 5 1000>;
 
-        /* Layer 6: Scroll mode - swap + reduced sensitivity */
+        /* Layer 6: Scroll mode - invert + reduced sensitivity */
         scroll {
             layers = <6>;
-            input-processors = <&zip_xy_swap_mapper>, <&zip_xy_scaler 1 4>, <&zip_xy_to_scroll>;
+            input-processors = <&zip_xy_scaler (-1) 4>, <&zip_xy_to_scroll>;
         };
     };
 
