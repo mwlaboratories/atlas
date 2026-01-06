@@ -153,6 +153,10 @@
               #   Converts ZMK keymap definitions into visual diagrams
               keymap_drawer
 
+              # librsvg: SVG rendering library with rsvg-convert CLI
+              #   Used to convert keymap SVG to PNG for sharing
+              pkgs.librsvg
+
               # ----------------------------------------------------------
               # OPTIONAL SYSTEM UTILITIES (currently commented out)
               # ----------------------------------------------------------
