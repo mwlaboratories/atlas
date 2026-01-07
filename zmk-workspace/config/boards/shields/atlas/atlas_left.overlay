@@ -136,11 +136,9 @@
         /* Reset pin on NFC1 (P0.09) - required for reliable init */
         rst-gpios = <&gpio0 9 GPIO_ACTIVE_HIGH>;
         sampling-rate = <100>;
-        tp-sensitivity = <255>;  /* Max value (0-255, default 128) */
-        tp-neg-inertia = <10>;
-        tp-val6-upper-speed = <255>;  /* Max speed (0-255, default 97) */
-        /* Press-to-select: tap trackpoint = left click */
-        tp-press-to-select;
-        tp-press-to-select-threshold = <2>;  /* Lower = more sensitive */
+        /* Max TP sensitivity - all values at maximum */
+        tp-sensitivity = <255>;
+        tp-neg-inertia = <255>;
+        tp-val6-upper-speed = <255>;
     };
 };
