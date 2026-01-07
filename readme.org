@@ -8,12 +8,11 @@
 * Atlas
 34-key split keyboard with TrackPoint and Trackball, using XIAO BLE controllers and a dongle.
 
-** Status (Dec 2025)
+** Status (Jan 2026)
 - Left side TrackPoint working (Sprintek all-in-one module)
 - Standalone PMW3610 trackball working as third peripheral
 - Mouse layer auto-activates on trackpoint/trackball movement
 - Scroll mode working
-- Press-to-select (tap trackpoint = left click) working
 
 ** Architecture
 #+begin_example
@@ -21,7 +20,7 @@ Dongle (central) <-- Left (trackpoint) + Right (trackpoint) + Trackball (PMW3610
 #+end_example
 
 ** Mouse Layer
-When moving trackpoint or trackball, layer 5 auto-activates for 1 second.
+When moving trackpoint or trackball, the mouse layer auto-activates + 1 second after last movement.
 
 #+begin_example
 Thumb keys:
@@ -31,7 +30,7 @@ Thumb keys:
 - *Scroll*: Hold to convert movement to scroll wheel
 
 ** Hardware Notes
-- TrackPoint: Still has stability issues with pullup resistors
+- TrackPoint: Still has stability issues with pullup resistors but 
 - Trackball: Uses 3-wire SPI (MOSI/MISO shared on D9)
 
 ** Build
