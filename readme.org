@@ -40,8 +40,3 @@ nix develop
 just build all
 #+end_src
 
-** Flashing After Config Changes
-If peripheral count changes, must re-pair all devices:
-1. Flash =settings_reset= to all devices
-2. Flash new firmware to all
-3. Power on dongle first, then peripherals
