@@ -20,6 +20,13 @@
 Dongle (central) <-- Left (trackpoint) + Right (trackpoint) + Trackball (PMW3610)
 #+end_example
 
+** Why ESB over Bluetooth
+With 3 pointing devices streaming mouse data, ESB wins over BLE:
+- Lower latency (no BLE connection interval scheduling)
+- No BLE bandwidth contention across multiple peripherals
+- Deterministic timing for continuous mouse input
+- Dongle is USB-only, simplifying the firmware
+
 ** Mouse Layer
 When moving trackpoint or trackball, the mouse layer auto-activates + 1 second after last movement.
 
