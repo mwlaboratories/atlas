@@ -7,7 +7,7 @@
 
 [[atlas_jan_small.jpg]]
 * Atlas
-34-key split keyboard with TrackPoint and Trackball, using XIAO BLE controllers and a dongle.
+34-key split keyboard with 2 TrackPoints and Trackball, using XIAO BLE controllers and a dongle.
 
 ** Status (Jan 2026)
 - Left side TrackPoint working (Sprintek all-in-one module)
