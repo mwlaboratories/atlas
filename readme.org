@@ -5,6 +5,7 @@
 
 [[zmk-workspace/nix/keymap.svg]]
 
+[[atlas_jan_small.jpg]]
 * Atlas
 34-key split keyboard with TrackPoint and Trackball, using XIAO BLE controllers and a dongle.
 
@@ -30,8 +31,8 @@ Thumb keys:
 - *Scroll*: Hold to convert movement to scroll wheel
 
 ** Hardware Notes
-- TrackPoint: Still has stability issues with pullup resistors but 
-- Trackball: Uses 3-wire SPI (MOSI/MISO shared on D9)
+- TrackPoint: Still has stability issues with pullup resistors but auto restarts with adjusted trackpoint driver
+- Trackball: Uses 3-wire SPI (MOSI/MISO shared on D9) 
 
 ** Build
 #+begin_src bash
