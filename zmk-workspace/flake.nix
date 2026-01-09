@@ -32,14 +32,14 @@
     # ----------------------------------------------------------------------
     # ZMK uses a modified version of the Zephyr real-time operating system.
     # This input pins the exact version of Zephyr that ZMK requires
-    # (v3.5.0 with ZMK-specific fixes applied).
+    # (v4.1.0 with ZMK-specific fixes applied).
     #
     # `flake = false` means this isn't a flake itself, just a regular git
     # repository. We only need the source code from here.
     #
     # This repository provides the requirements.txt file for Python dependencies.
     # ----------------------------------------------------------------------
-    zephyr.url = "github:zmkfirmware/zephyr/v3.5.0+zmk-fixes";
+    zephyr.url = "github:zmkfirmware/zephyr/v4.1.0+zmk-fixes";
     zephyr.flake = false;
 
     # ----------------------------------------------------------------------
