@@ -119,12 +119,12 @@
               # dependencies pre-installed. This includes West (Zephyr's
               # meta-tool), Python packages like PyYAML, and other tools.
               
-              # zephyr.sdk-0_16: Zephyr SDK version 0.16
+              # zephyr.sdk-0_17: Zephyr SDK version 0.17
               # Contains cross-compilation toolchains for embedded targets.
               # - arm-zephyr-eabi: ARM embedded application binary interface
               #   toolchain (the ARM architecture used by most ZMK keyboards)
               zephyr.pythonEnv
-              (zephyr.sdk-0_16.override {targets = ["arm-zephyr-eabi"];})
+              (zephyr.sdk-0_17.override {targets = ["arm-zephyr-eabi"];})
 
               # ----------------------------------------------------------
               # BUILD TOOLS
