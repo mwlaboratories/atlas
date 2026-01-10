@@ -8,11 +8,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1731952509,
-        "narHash": "sha256-p4gB3Rhw8R6Ak4eMl8pqjCPOLCZRqaehZxdZ/mbFClM=",
+        "lastModified": 1737420293,
+        "narHash": "sha256-F1G5ifvqTpJq7fdkT34e/Jy9VCyzd5XfJ9TO8fHhJWE=",
         "owner": "nix-community",
         "repo": "nix-github-actions",
-        "rev": "7b5f051df789b6b20d259924d349a9ba3319b226",
+        "rev": "f4158fa080ef4503c8f4c820967d946c2af31ec9",
         "type": "github"
       },
       "original": {
@@ -45,11 +45,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1736836246,
-        "narHash": "sha256-bFvBMziYvFtB/Hly+O4WtBGeiDoz7eb2dVQbOvIrHHM=",
+        "lastModified": 1758265079,
+        "narHash": "sha256-amLaLNwKSZPShQHzfgmc/9o76dU8xzN0743dWgvYlr8=",
         "owner": "nix-community",
         "repo": "pyproject.nix",
-        "rev": "3db43c7414fce4ce94ca67545233d251d306385a",
+        "rev": "02e9418fd4af638447dca4b17b1280da95527fc9",
         "type": "github"
       },
       "original": {
@@ -68,16 +68,16 @@
     "zephyr": {
       "flake": false,
       "locked": {
-        "lastModified": 1755558002,
-        "narHash": "sha256-7QpHcotCG+m16PvGdB+aZrU+5p/FSXhmkmtMoUkKqs4=",
+        "lastModified": 1767824654,
+        "narHash": "sha256-PsEv2r8bGUpJo9s4mgnS0N496ddad6OWT7/qBAprphg=",
         "owner": "zmkfirmware",
         "repo": "zephyr",
-        "rev": "dacab4875df72109b96cc8977547a0dc04875bcd",
+        "rev": "ec36516990d40355238db3049bc1709191f99b4e",
         "type": "github"
       },
       "original": {
         "owner": "zmkfirmware",
-        "ref": "v3.5.0+zmk-fixes",
+        "ref": "v4.1.0+zmk-fixes",
         "repo": "zephyr",
         "type": "github"
       }
@@ -94,11 +94,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1743611519,
-        "narHash": "sha256-K9cA1igLWVnqM703cM5lEXoGSgKBAaPUnnfFsJo+XLM=",
+        "lastModified": 1766008436,
+        "narHash": "sha256-rxsL4PELWWJm1jp2j3fQEatsbXVwf/P5KnESLflh84s=",
         "owner": "urob",
         "repo": "zephyr-nix",
-        "rev": "3069faffa3692fc54a555c986c3a0d647bf5d7d0",
+        "rev": "62288a26868d805935952a8cf8a77ffe5ec994f7",
         "type": "github"
       },
       "original": {
