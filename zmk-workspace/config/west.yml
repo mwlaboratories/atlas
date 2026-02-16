@@ -20,9 +20,10 @@ manifest:
     - name: zmk-pmw3610-driver
       remote: badjeff
       revision: main
-    - name: zmk-feature-split-esb
-      remote: badjeff
-      revision: main
+    # ESB module removed for BLE-only split
+    # - name: zmk-feature-split-esb
+    #   remote: badjeff
+    #   revision: main
     - name: sdk-nrf
       remote: badjeff
       revision: v3.1-branch+zmk-fixes
