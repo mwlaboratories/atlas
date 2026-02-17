@@ -1,22 +1,28 @@
 #include "atlas.dtsi"
 #include <dt-bindings/pinctrl/nrf-pinctrl.h>
 #include <zephyr/dt-bindings/input/input-event-codes.h>
-#include <input/processors/temp_layer.dtsi>
 #include <input/processors/scaler.dtsi>
 #include <input/processors/code_mapper.dtsi>
 
+/ {
+};
+
+&default_transform {
+    col-offset = <5>;
+};
+
 &kscan0 {
     col-gpios
-        = <&xiao_d 4 GPIO_ACTIVE_HIGH>
-        , <&xiao_d 5 GPIO_ACTIVE_HIGH>
-        , <&xiao_d 10 GPIO_ACTIVE_HIGH>
+        = <&xiao_d 8 GPIO_ACTIVE_HIGH>
         , <&xiao_d 9 GPIO_ACTIVE_HIGH>
-        , <&xiao_d 8 GPIO_ACTIVE_HIGH>
+        , <&xiao_d 10 GPIO_ACTIVE_HIGH>
+        , <&xiao_d 5 GPIO_ACTIVE_HIGH>
+        , <&xiao_d 4 GPIO_ACTIVE_HIGH>
         ;
 };
 
 /* PS/2 Trackpoint Configuration (UART-based driver)
- * Trackpoint wired to TX/RX on XIAO BLE:
+ * Trackpoint wired to TX/RX on XIAO BLE (same pins as left side):
  *   D6 = P1.11 -> PS/2 Clock (SCL)
  *   D7 = P1.12 -> PS/2 Data (SDA) - UART RX
  */
@@ -126,14 +132,6 @@
         tp-val6-upper-speed = <255>;
     };
 
-    /* Scroll mode processor - converts XY to scroll wheel */
-    zip_xy_to_scroll: zip_xy_to_scroll {
-        compatible = "zmk,input-processor-code-mapper";
-        #input-processor-cells = <0>;
-        type = <INPUT_EV_REL>;
-        map = <INPUT_REL_X INPUT_REL_HWHEEL>, <INPUT_REL_Y INPUT_REL_WHEEL>;
-    };
-
     /* Swap X and Y axes */
     zip_xy_swap: zip_xy_swap {
         compatible = "zmk,input-processor-code-mapper";
@@ -141,19 +139,11 @@
         type = <INPUT_EV_REL>;
         map = <INPUT_REL_X INPUT_REL_Y>, <INPUT_REL_Y INPUT_REL_X>;
     };
+};
 
-    /* Trackpoint listener - converts to HID mouse reports */
-    trackpoint_listener: trackpoint_listener {
-        compatible = "zmk,input-listener";
-        status = "okay";
-        device = <&mouse_ps2>;
-        /* Swap axes + 2x scaling + auto mouse layer */
-        input-processors = <&zip_xy_swap>, <&zip_xy_scaler 2 1>, <&zip_temp_layer 5 1000>;
-
-        /* Layer 6: Scroll mode - swap + reduced sensitivity */
-        scroll {
-            layers = <6>;
-            input-processors = <&zip_xy_swap>, <&zip_xy_scaler 1 4>, <&zip_xy_to_scroll>;
-        };
-    };
+/* Forward trackpoint input to central via input-split */
+&trackpoint_split_right {
+    device = <&mouse_ps2>;
+    /* Apply axis swap before sending to central */
+    input-processors = <&zip_xy_swap>;
 };

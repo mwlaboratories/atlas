@@ -3,32 +3,26 @@
 
 [[atlas-render.png]]
 
-[[zmk-workspace/nix/keymap.svg]]
+[[nix/keymap.svg]]
 
 [[atlas_jan_small.jpg]]
 * Atlas
-34-key split keyboard with 2 TrackPoints and Trackball, using XIAO BLE controllers and a dongle.
+34-key split keyboard with dual TrackPoints, using XIAO BLE controllers.
 
-** Status (Jan 2026)
+** Status (Feb 2026)
 - Left side TrackPoint working (Sprintek all-in-one module)
-- Standalone PMW3610 trackball working as third peripheral
-- Mouse layer auto-activates on trackpoint/trackball movement
+- Right side TrackPoint configured (same setup as left)
+- Mouse layer auto-activates on trackpoint movement
 - Scroll mode working
+- BLE split (no dongle)
 
 ** Architecture
 #+begin_example
-Dongle (central) <-- Left (trackpoint) + Right (trackpoint) + Trackball (PMW3610)
+Host <-- Left (central + trackpoint) <-- Right (peripheral + trackpoint)
 #+end_example
 
-** Why ESB over Bluetooth
-With 3 pointing devices streaming mouse data, ESB wins over BLE:
-- Lower latency (no BLE connection interval scheduling)
-- No BLE bandwidth contention across multiple peripherals
-- Deterministic timing for continuous mouse input
-- Dongle is USB-only, simplifying the firmware
-
 ** Mouse Layer
-When moving trackpoint or trackball, the mouse layer auto-activates + 1 second after last movement.
+When moving trackpoint, the mouse layer auto-activates for 1 second after last movement.
 
 #+begin_example
 Thumb keys:
@@ -38,12 +32,17 @@ Thumb keys:
 - *Scroll*: Hold to convert movement to scroll wheel
 
 ** Hardware Notes
-- TrackPoint: Still has stability issues with pullup resistors but auto restarts with adjusted trackpoint driver
-- Trackball: Uses 3-wire SPI (MOSI/MISO shared on D9) 
+- TrackPoint: Sprintek all-in-one module, PS/2 via UART
+- Pins: D6 (SCL), D7 (SDA), P0.09 (reset)
+- Both sides use identical wiring
 
 ** Build
 #+begin_src bash
 nix develop
-just build all
+just all      # build both sides
+just left     # build left only
+just right    # build right only
+just keymap   # generate keymap SVG
 #+end_src
 
+Firmware outputs to =zmk-workspace-ble/firmware/=.

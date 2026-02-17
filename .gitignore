@@ -1,40 +1,42 @@
-# Local documentation (not for GitHub)
-zmk-workspace/CLAUDE.md
-zmk-workspace/debug.sh
-
 # Build artifacts
-.build
-zmk-workspace/.build/
+.build/
+*.build/
+firmware/
 
-# West-managed modules (external repos)
-.west
-.direnv
-modules
+# Future: zmk-workspace-esb for ESB/dongle setup
+
+# West-managed dependencies (regenerate with: just init)
+.west/
 zmk/
 zephyr/
-zmk-workspace/zmk/
-zmk-workspace/zephyr/
-zmk-workspace/modules/
-zmk-workspace/zmk-pmw3610-driver/
-zmk-workspace/kb_zmk_ps2_mouse_trackpoint_driver/
-zmk-workspace/zmk-feature-split-esb/
-zmk-workspace/nrf/
-zmk-workspace/nrfxlib/
-kb_zmk_ps2_mouse_trackpoint_driver
+modules/
+nrf/
+nrfxlib/
+kb_zmk_ps2_mouse_trackpoint_driver/
+zmk-pmw3610-driver/
+
+# Nix
+.direnv/
+result
+result-*
+
+# Generated keymap files
+nix/keymap.yaml
+nix/keymap.png
 
 # Logs
-zmk-workspace/logs/
 *.log
+logs/
 
-# Build outputs
-firmware
-zmk-workspace/firmware/
-zmk-workspace/result
-zmk-workspace/result-*
+# Editor/IDE
+.vscode/
+.idea/
+*.swp
+*~
 
-# Generated keymap intermediates (regenerate with: just keymap)
-zmk-workspace/nix/keymap.yaml
-zmk-workspace/nix/keymap.png
-zmk-workspace/draw/*.yaml
-zmk-workspace/draw/*.svg
-draw/base.yaml
+# OS
+.DS_Store
+
+# Local dev notes
+CLAUDE.md
+debug.sh
