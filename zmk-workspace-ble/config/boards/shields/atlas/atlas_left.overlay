@@ -156,4 +156,19 @@
             input-processors = <&zip_xy_swap>, <&zip_xy_scaler 1 4>, <&zip_xy_to_scroll>;
         };
     };
+
+    /* Right side trackpoint listener - receives events from peripheral via input-split */
+    trackpoint_listener_right: trackpoint_listener_right {
+        compatible = "zmk,input-listener";
+        status = "okay";
+        device = <&trackpoint_split_right>;
+        /* Note: xy_swap already applied on peripheral side, just scale + auto layer */
+        input-processors = <&zip_xy_scaler 2 1>, <&zip_temp_layer 5 1000>;
+
+        /* Layer 6: Scroll mode */
+        scroll {
+            layers = <6>;
+            input-processors = <&zip_xy_scaler 1 4>, <&zip_xy_to_scroll>;
+        };
+    };
 };

@@ -6,6 +6,17 @@
         zmk,matrix_transform = &default_transform;
     };
 
+    /* Input split for right side trackpoint - forwards events to central */
+    split_inputs {
+        #address-cells = <1>;
+        #size-cells = <0>;
+
+        trackpoint_split_right: trackpoint_split@0 {
+            compatible = "zmk,input-split";
+            reg = <0>;
+        };
+    };
+
     default_transform: keymap_transform_0 {
         compatible = "zmk,matrix-transform";
         columns = <10>;
