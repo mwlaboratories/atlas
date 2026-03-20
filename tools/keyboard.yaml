@@ -140,7 +140,7 @@ trackpoint:
 # Physical case dimensions for future CAD generation.
 #
 case:
-  plate_padding: 3.0           # mm from switch edge to plate edge
+  plate_padding: 2.0           # mm from switch cutout edge to outline
   wall: 2.0                    # outer wall thickness (mm)
   lip: 1.5                     # top lip overhang (mm)
   depth: 10.0                  # interior depth below plate (mm)

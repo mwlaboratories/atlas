@@ -15,6 +15,7 @@ Usage:
     python3 tools/pcb_enhance.py -i output/keyboard/keyboard.kicad_pcb -l keyboard.yaml
 """
 import argparse
+import math
 import re
 import shutil
 import sys
@@ -131,23 +132,7 @@ NPTH_FOOTPRINT = """\t(footprint "Atlas:TrackpointHole_{name}"
 # ---------------------------------------------------------------------------
 
 
-def _parse_switches(pcb_text: str) -> list[tuple[str, float, float]]:
-    """Return list of (reference, x, y) for each switch footprint."""
-    switches = []
-    for m in re.finditer(
-        r'\(footprint\s+"(SW_[^"]+)"\s*\n\s*\(layer\s+"F\.Cu"\)\s*\n'
-        r'\s*\(uuid\s+"[^"]+"\)\s*\n\s*\(at\s+([\d.-]+)\s+([\d.-]+)',
-        pcb_text,
-    ):
-        x, y = float(m.group(2)), float(m.group(3))
-        # find reference in the next ~500 chars
-        ref_m = re.search(r'"Reference"\s+"(SW\d+)"', pcb_text[m.start() : m.start() + 500])
-        ref = ref_m.group(1) if ref_m else "?"
-        switches.append((ref, x, y))
-    return switches
-
-
-def _parse_switches_with_rotation(pcb_text: str) -> list[tuple[str, float, float, float]]:
+def _parse_switches(pcb_text: str) -> list[tuple[str, float, float, float]]:
     """Return list of (reference, x, y, rotation) for each switch footprint."""
     switches = []
     for m in re.finditer(
@@ -175,7 +160,7 @@ def _compute_trackpoint_centers(
       SW<n> where n = row * grid_cols + col + 1  (left half, 1-indexed)
       Right half continues from grid_cols + 1.
     """
-    ref_to_pos = {ref: (x, y) for ref, x, y in switches}
+    ref_to_pos = {ref: (x, y) for ref, x, y, _rot in switches}
 
     centers = []
     for half_offset in (0, grid_cols):  # 0 = left, grid_cols = right
@@ -376,9 +361,6 @@ def _convert_footprint_to_pcb(
     )
 
 
-# Switch footprint half-extent (Choc V1 hotswap courtyard ±9 mm from center)
-SWITCH_HALF_EXTENT = 9.0
-
 
 def patch_controller(pcb_text: str, layout: dict) -> str:
     """Insert XIAO BLE controller footprints above the outermost keys.
@@ -399,7 +381,6 @@ def patch_controller(pcb_text: str, layout: dict) -> str:
     if not ctrl_cfg:
         return pcb_text
 
-    standoff = ctrl_cfg.get("standoff", 4.0)
     grid_cols = layout.get("grid", {}).get("cols", 5)
 
     mod_text = _find_xiao_footprint()
@@ -412,7 +393,7 @@ def patch_controller(pcb_text: str, layout: dict) -> str:
         print("Warning: no switches found, skipping controller.")
         return pcb_text
 
-    ref_to_pos = {ref: (x, y) for ref, x, y in switches}
+    ref_to_pos = {ref: (x, y) for ref, x, y, _rot in switches}
 
     # Left half: above SW1 (top-left pinky key)
     # Right half: above SW<2*grid_cols> (top-right pinky key, mirrored)
@@ -530,62 +511,65 @@ def patch_trackpoint_holes(pcb_text: str, layout: dict) -> str:
 
 EDGE_CUTS_SENTINEL = "atlas-outline-"
 
-import math as _math
 
+def _switch_corners(
+    cx: float, cy: float, rot_deg: float, half_ext: float,
+) -> dict[str, tuple[float, float]]:
+    """Return TL/TR/BR/BL corners of a rotated switch rect.
 
-def _footprint_corners(x: float, y: float, rot: float, half_ext: float) -> list[tuple[float, float]]:
-    """Return 4 corners of a footprint at (x,y) with rotation and half-extent."""
-    r_rad = _math.radians(-rot)  # KiCad CW-positive → math CCW-positive
-    cos_r, sin_r = _math.cos(r_rad), _math.sin(r_rad)
-    corners = []
-    for dx, dy in [(-half_ext, -half_ext), (half_ext, -half_ext),
-                    (half_ext, half_ext), (-half_ext, half_ext)]:
-        cx = x + dx * cos_r - dy * sin_r
-        cy = y + dx * sin_r + dy * cos_r
-        corners.append((cx, cy))
-    return corners
-
-
-def _convex_hull(points: list[tuple[float, float]]) -> list[tuple[float, float]]:
-    """Convex hull using Andrew's monotone chain algorithm."""
-    points = sorted(set((round(x, 2), round(y, 2)) for x, y in points))
-    if len(points) <= 2:
-        return points
-
-    def cross(o, a, b):
-        return (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0])
-
-    lower = []
-    for p in points:
-        while len(lower) >= 2 and cross(lower[-2], lower[-1], p) <= 0:
-            lower.pop()
-        lower.append(p)
-    upper = []
-    for p in reversed(points):
-        while len(upper) >= 2 and cross(upper[-2], upper[-1], p) <= 0:
-            upper.pop()
-        upper.append(p)
-    return lower[:-1] + upper[:-1]
-
-
-def _half_outline(switches: list[tuple[str, float, float, float]],
-                  ctrl_pos: tuple[float, float] | None,
-                  margin: float, is_right: bool) -> list[tuple[float, float]]:
-    """Left half outline (right half is mirrored by caller).
-
-    Clockwise polygon wrapping tightly around keys + controller.
+    KiCad uses CW-positive rotation; Python math uses CCW-positive,
+    so the angle is negated before computing cos/sin.
     """
-    hw = 9.0   # switch half-width
-    hh = 8.5   # switch half-height
+    r = math.radians(-rot_deg)
+    c, s = math.cos(r), math.sin(r)
+    h = half_ext
+    return {
+        "TL": (cx - h * c + h * s, cy - h * s - h * c),  # local (-h, -h)
+        "TR": (cx + h * c + h * s, cy + h * s - h * c),  # local (+h, -h)
+        "BR": (cx + h * c - h * s, cy + h * s + h * c),  # local (+h, +h)
+        "BL": (cx - h * c - h * s, cy - h * s + h * c),  # local (-h, +h)
+    }
 
-    grid_sw = [(r, x, y, rot) for r, x, y, rot in switches if abs(rot) <= 1]
-    thumb_sw = [(r, x, y, rot) for r, x, y, rot in switches if abs(rot) > 1]
+
+def _line_x_intersect(
+    x_vert: float, p1: tuple[float, float], p2: tuple[float, float],
+) -> tuple[float, float]:
+    """Point where a vertical line at *x_vert* crosses the line through p1→p2."""
+    dx = p2[0] - p1[0]
+    if abs(dx) < 1e-9:
+        return (x_vert, p1[1])
+    t = (x_vert - p1[0]) / dx
+    return (x_vert, p1[1] + t * (p2[1] - p1[1]))
+
+
+def _half_outline(
+    switches: list[tuple[str, float, float, float]],
+    ctrl_pos: tuple[float, float] | None,
+    layout: dict,
+) -> list[tuple[float, float]]:
+    """Build the left-half Edge.Cuts outline (right half is mirrored by caller).
+
+    Returns a clockwise polygon.  The outline is derived from:
+      • Grid switch positions grouped into columns
+      • Rotated thumb-key bounding rects (outermost key only)
+      • BLE controller rect (if present)
+    All extents use ``cutout / 2 + plate_padding`` from *layout*.
+    """
+    # --- switch half-extent from layout ---
+    sw_cfg = layout.get("switch", {})
+    cutout = sw_cfg.get("cutout", 14.0)
+    pad = layout.get("case", {}).get("plate_padding", 2.0)
+    half = cutout / 2 + pad  # mm from center to rect edge (square)
+
+    # --- classify grid vs thumb ---
+    grid_sw = [(ref, x, y, rot) for ref, x, y, rot in switches if abs(rot) <= 1]
+    thumb_sw = [(ref, x, y, rot) for ref, x, y, rot in switches if abs(rot) > 1]
     if not grid_sw:
         return []
 
-    # Group grid switches into columns
+    # --- group grid switches into columns (sorted left → right) ---
     grid_sw.sort(key=lambda s: s[1])
-    columns = []
+    columns: list[list[tuple[str, float, float, float]]] = []
     cur = [grid_sw[0]]
     for sw in grid_sw[1:]:
         if abs(sw[1] - cur[-1][1]) < 2:
@@ -595,93 +579,99 @@ def _half_outline(switches: list[tuple[str, float, float, float]],
             cur = [sw]
     columns.append(cur)
 
-    col_data = []  # (avg_x, min_y, max_y)
+    # Per-column extents: (avg_x, top_y, bot_y)
+    col_ext = []
     for col in columns:
-        ax = sum(s[1] for s in col) / len(col)
-        col_data.append((ax, min(s[2] for s in col), max(s[2] for s in col)))
+        avg_x = sum(s[1] for s in col) / len(col)
+        top = min(s[2] for s in col) - half
+        bot = max(s[2] for s in col) + half
+        col_ext.append((avg_x, top, bot))
 
-    # Key edges
-    outer_left = col_data[0][0] - hw - margin
-    inner_right = col_data[-1][0] + hw + margin
-    pinky_bot = col_data[0][2] + hh + margin
-    inner_cols_bot = max(c[2] + hh + margin for c in col_data[1:]) if len(col_data) > 1 else pinky_bot
+    pinky = col_ext[0]  # outermost column
+    pinky_left = pinky[0] - half
+    inner_right = col_ext[-1][0] + half
+    pinky_bot = pinky[2]
 
-    # Top y per region: controller side vs grid side
-    grid_top = min(c[1] - hh - margin for c in col_data[1:]) if len(col_data) > 1 else col_data[0][1] - hh - margin
-    ctrl_top = grid_top
-    if ctrl_pos:
-        ctrl_top = min(ctrl_top, ctrl_pos[1] - XIAO_HALF_WIDTH - margin)
-    pinky_top = col_data[0][1] - hh - margin
-
-    # Step x between pinky (col 0) and ring (col 1)
-    step_x = (col_data[0][0] + col_data[1][0]) / 2 if len(col_data) > 1 else outer_left
-
-    # Controller right edge + margin (used for top step)
-    ctrl_step_x = step_x
-    if ctrl_pos:
-        ctrl_step_x = max(step_x, ctrl_pos[0] + XIAO_HALF_WIDTH + margin)
-
-    points = []
-
-    # === Top-left with controller step (clockwise) ===
-    points.append((outer_left, ctrl_top))              # 1. top-left corner
-    points.append((ctrl_step_x, ctrl_top))             # 2. controller step right
-    points.append((ctrl_step_x, grid_top))             # 3. controller step down
-    points.append((inner_right, grid_top))             # 4. top-right corner
-
-    # === Right side + thumb section ===
-    if thumb_sw:
-        # Sort thumb keys by x (inner first, outer last)
-        thumb_sw.sort(key=lambda s: s[1])
-
-        # Inner edge goes down to inner_cols_bot
-        points.append((inner_right, inner_cols_bot))   # 5. grid bottom-right
-
-        # Outermost thumb key (max x): miter corners for right + bottom edges
-        ot = max(thumb_sw, key=lambda s: s[1])
-        _ref, tx, ty, rot = ot
-        r = _math.radians(-rot)  # KiCad CW-positive → math CCW-positive
-        c, s = _math.cos(r), _math.sin(r)
-
-        # Miter at top-right corner: right normal (c,s) + top normal (s,-c)
-        edge_top = (tx + hw*c + hh*s, ty + hw*s - hh*c)  # local (+hw, -hh)
-        miter_tr = (edge_top[0] + margin*(c + s), edge_top[1] + margin*(s - c))
-
-        # Miter at bottom-right corner: right normal (c,s) + bottom normal (-s,c)
-        edge_bot = (tx + hw*c - hh*s, ty + hw*s + hh*c)  # local (+hw, +hh)
-        miter_br = (edge_bot[0] + margin*(c - s), edge_bot[1] + margin*(s + c))
-
-        points.append(miter_tr)                        # 6. thumb top-right miter
-        points.append(miter_br)                        # 7. thumb bottom-right miter (right edge)
-
-        # Bottom-left corners of each thumb key (outer first, then inner),
-        # offset by bottom normal (-s, c) for each key's rotation
-        for _, ttx, tty, trot in reversed(thumb_sw):
-            tr = _math.radians(-trot)
-            tc, ts = _math.cos(tr), _math.sin(tr)
-            key_bl = (ttx - hw*tc - hh*ts, tty - hw*ts + hh*tc)
-            off_bl = (key_bl[0] - margin*ts, key_bl[1] + margin*tc)
-            points.append(off_bl)                      # 8,9. bottom-left corners
-
-        # Back to grid: inner edge up to top
-        points.append((inner_right, grid_top))         # close inner edge (dedup will handle)
+    # non-pinky extents (columns[1:])
+    if len(col_ext) > 1:
+        grid_top = min(c[1] for c in col_ext[1:])
+        non_pinky_bot = max(c[2] for c in col_ext[1:])
     else:
-        points.append((inner_right, inner_cols_bot))
+        grid_top = pinky[1]
+        non_pinky_bot = pinky[2]
 
-    # === Bottom section ===
-    points.append((step_x, inner_cols_bot))            # 10. horizontal to step
-    points.append((step_x, pinky_bot))                 # 11. step down to pinky
-    points.append((outer_left, pinky_bot))             # 12. horizontal to outer edge
+    # step_x = gap between pinky and its neighbour (bottom staircase)
+    step_x = (col_ext[0][0] + col_ext[1][0]) / 2 if len(col_ext) > 1 else outer_left
 
-    # === Left edge up (close) ===
-    points.append((outer_left, ctrl_top))              # 13/14. close
+    # thumb_return_x = gap between the last two non-pinky columns
+    # (where the thumb outline rejoins the grid).  Falls back to step_x
+    # if fewer than 3 columns exist.
+    if len(col_ext) >= 3:
+        thumb_return_x = (col_ext[-2][0] + col_ext[-1][0]) / 2
+    else:
+        thumb_return_x = step_x
 
-    # Deduplicate consecutive points
-    cleaned = [points[0]]
-    for p in points[1:]:
+    # --- BLE controller rect ---
+    if ctrl_pos:
+        ble_top = ctrl_pos[1] - XIAO_HALF_WIDTH
+        ble_left = ctrl_pos[0] - XIAO_HALF_HEIGHT
+        ble_right = ctrl_pos[0] + XIAO_HALF_HEIGHT
+        outer_left = min(pinky_left, ble_left)
+    else:
+        ble_top = pinky[1]
+        ble_left = pinky_left
+        ble_right = step_x
+        outer_left = pinky_left
+
+    # --- outermost thumb key corners ---
+    if thumb_sw:
+        ot = max(thumb_sw, key=lambda s: s[1])
+        _, tx, ty, trot = ot
+        tc = _switch_corners(tx, ty, trot, half)
+
+    # ===================================================================
+    # Build clockwise polygon
+    # ===================================================================
+    pts: list[tuple[float, float]] = []
+
+    # -- top-left: BLE bump --
+    pts.append((outer_left, ble_top))          # P1  BLE top-left
+    pts.append((ble_right, ble_top))           # P2  BLE top-right
+    pts.append((ble_right, grid_top))          # P3  step down to grid top
+    pts.append((inner_right, grid_top))        # P4  grid top-right
+
+    # -- right side + thumb section --
+    if thumb_sw:
+        # P5: vertical at inner_right meets outermost thumb top edge
+        p5 = _line_x_intersect(inner_right, tc["TL"], tc["TR"])
+        pts.append(p5)                         # P5
+        pts.append(tc["TR"])                   # P6  thumb top-right
+        pts.append(tc["BR"])                   # P7  thumb bottom-right
+        # P8: vertical at thumb_return_x meets outermost thumb bottom edge
+        p8 = _line_x_intersect(thumb_return_x, tc["BR"], tc["BL"])
+        pts.append(p8)                         # P8
+        pts.append((thumb_return_x, non_pinky_bot))  # P9  straight up
+    else:
+        pts.append((inner_right, non_pinky_bot))
+
+    # -- bottom: step from non-pinky to pinky --
+    pts.append((step_x, non_pinky_bot))        # P10 horizontal left to step
+    if pinky_bot > non_pinky_bot:
+        pts.append((step_x, pinky_bot))        # P11 step down to pinky
+    pts.append((pinky_left, pinky_bot))        # P12 pinky left edge
+
+    # -- left side up, with step for BLE if it extends further left --
+    if outer_left < pinky_left - 0.1:
+        pts.append((pinky_left, pinky[1]))     # P13 up to pinky top
+        pts.append((outer_left, pinky[1]))     # P14 step left to BLE left
+    pts.append((outer_left, ble_top))          # close (dedup handles if same as P1)
+
+    # --- deduplicate consecutive points ---
+    cleaned = [pts[0]]
+    for p in pts[1:]:
         if abs(p[0] - cleaned[-1][0]) > 0.05 or abs(p[1] - cleaned[-1][1]) > 0.05:
             cleaned.append(p)
-    if len(cleaned) > 1 and abs(cleaned[-1][0]-cleaned[0][0]) < 0.05 and abs(cleaned[-1][1]-cleaned[0][1]) < 0.05:
+    if len(cleaned) > 1 and abs(cleaned[-1][0] - cleaned[0][0]) < 0.05 and abs(cleaned[-1][1] - cleaned[0][1]) < 0.05:
         cleaned.pop()
     return cleaned
 
@@ -705,15 +695,13 @@ def _outline_to_lines(outline: list[tuple[float, float]], sentinel_base: str) ->
 def patch_edge_cuts(pcb_text: str, layout: dict) -> str:
     """Add per-half Edge.Cuts outlines — two separate boards.
 
-    Each half gets its own tight convex hull outline around all switches
-    (including rotated thumb keys) and the controller footprint.
+    Outline geometry is driven by switch.cutout and case.plate_padding
+    in *layout* (keyboard.yaml).
     """
     if EDGE_CUTS_SENTINEL in pcb_text:
         return pcb_text
 
-    margin = 3.0  # mm beyond switch courtyard edge
-
-    switches = _parse_switches_with_rotation(pcb_text)
+    switches = _parse_switches(pcb_text)
     if not switches:
         print("Warning: no switches found, skipping edge cuts.")
         return pcb_text
@@ -738,7 +726,7 @@ def patch_edge_cuts(pcb_text: str, layout: dict) -> str:
     all_lines = []
 
     # Compute left half outline only, then mirror for right
-    left_outline = _half_outline(left_sw, ctrl_left, margin, False)
+    left_outline = _half_outline(left_sw, ctrl_left, layout)
     if left_outline:
         sentinel = f"atlas-outline-L-{uuid.uuid4()}"
         all_lines.extend(_outline_to_lines(left_outline, sentinel))
@@ -824,15 +812,13 @@ def main() -> None:
 
     out_path.write_text(patched)
 
-    # Copy 3dmodels/ into the KiCad project directory (next to .kicad_pcb)
+    # Symlink 3dmodels/ into the KiCad project directory (next to .kicad_pcb)
     # so ${KIPRJMOD}/3dmodels/... resolves correctly
-    repo_models = Path(__file__).resolve().parent.parent / "3dmodels"
+    repo_models = Path(__file__).resolve().parent / "3dmodels"
     proj_models = out_path.parent / "3dmodels"
-    if repo_models.is_dir():
-        if proj_models.exists():
-            shutil.rmtree(proj_models)
-        shutil.copytree(repo_models, proj_models)
-        print(f"Copied 3dmodels/ → {proj_models}")
+    if repo_models.is_dir() and not proj_models.exists():
+        proj_models.symlink_to(repo_models)
+        print(f"Linked 3dmodels/ → {proj_models}")
 
     # Count replacements
     hotswap_count = patched.count(NEW_HOTSWAP)
