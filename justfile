@@ -120,7 +120,7 @@ kle-stdout:
 # Copy KLE JSON to clipboard (xclip)
 [group('pcb')]
 kle-clip:
-    python3 tools/layout2kle.py -i {{ layout }} | xclip -selection clipboard
+    python3 tools/layout2kle.py -i {{ layout }} | wl-copy
     @echo "→ KLE JSON copied to clipboard"
 
 # Patch kbplacer PCB with 3D models, trackpoint holes, controller, edge cuts

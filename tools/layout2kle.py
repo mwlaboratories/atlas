@@ -3,6 +3,7 @@
 
 import argparse
 import json
+import math
 import sys
 from dataclasses import dataclass
 from itertools import groupby
@@ -15,6 +16,8 @@ import yaml
 class KleKey:
     x: float
     y: float
+    w: float
+    h: float
     label: str
     r: float = 0
     rx: float = 0
@@ -29,6 +32,7 @@ def load_layout(path: str) -> dict:
 def compute_half_keys(layout: dict) -> List[KleKey]:
     """Compute KLE positions for one half (grid + thumb). All in key units, Y-down."""
     spacing_x, spacing_y = layout["switch"]["spacing"]
+    keycap_w, keycap_h = layout["switch"].get("keycap", [1, 1])
     cols = layout["grid"]["cols"]
     rows = layout["grid"]["rows"]
     stagger = layout["grid"]["stagger"]
@@ -49,34 +53,40 @@ def compute_half_keys(layout: dict) -> List[KleKey]:
             r = rot_map.get((row, col), 0)
             if r != 0:
                 # Rotated around own center; rx/ry uses KLE's -1 y cursor shift
-                keys.append(KleKey(x=x, y=y, label=f"{row},{col}",
-                                   r=r, rx=x + 0.5, ry=y - 0.5))
+                keys.append(KleKey(x=x, y=y, w=keycap_w, h=keycap_h, label=f"{row},{col}",
+                                   r=r, rx=x + keycap_w/2, ry=y - 1 + keycap_h/2))
             else:
-                keys.append(KleKey(x=x, y=y, label=f"{row},{col}"))
+                keys.append(KleKey(x=x, y=y, w=keycap_w, h=keycap_h, label=f"{row},{col}"))
 
-    # Thumb keys
+    # Thumb keys — fan (arc) model
     thumb = layout["thumb"]
     # Anchor: inner column (last col), bottom row (row = rows - 1)
     anchor_col = cols - 1
     anchor_x = anchor_col * spacing_x
     anchor_y = (rows - 1) * spacing_y + stagger[anchor_col] - min_stagger
 
-    origin_dx, origin_dy = thumb["origin_offset"]
-    spread_dx, spread_dy = thumb["spread"]
-    rot_start = thumb["rotation_start"]
-    rot_step = thumb["rotation_step"]
+    pivot_dx, pivot_dy = thumb["pivot"]
+    pivot_x = anchor_x + pivot_dx
+    pivot_y = anchor_y + pivot_dy
+    radius = thumb["radius"]
+    start_angle = thumb["start_angle"]
+    angle_step = thumb["angle_step"]
 
     for i in range(thumb["keys"]):
-        tx = anchor_x + origin_dx + i * spread_dx
-        ty = anchor_y + origin_dy + i * spread_dy
-        r = rot_start + i * rot_step
+        angle_deg = start_angle + i * angle_step
+        angle_rad = math.radians(angle_deg)
+        # Position on circle (0°=up, positive=clockwise, Y-down coords)
+        tx = pivot_x + radius * math.sin(angle_rad)
+        ty = pivot_y - radius * math.cos(angle_rad)
+        # Key rotation matches its angle (faces outward from pivot)
+        r = angle_deg
         thumb_col = cols - thumb["keys"] + i
         # rx/ry must be the key center in the grid's coordinate frame.
         # Grid keys are serialized with a -1 y shift (KLE cursor model),
-        # so thumb ry also needs -1: ry = ty + 0.5 - 1 = ty - 0.5.
-        # This ensures rotation_reference == key_center in kbplacer,
-        # preventing rotation from translating the key.
-        keys.append(KleKey(x=tx, y=ty, label=f"3,{thumb_col}", r=r, rx=tx + 0.5, ry=ty - 0.5))
+        # so thumb ry also needs that offset.
+        keys.append(KleKey(x=tx, y=ty, w=keycap_w, h=keycap_h,
+                           label=f"3,{thumb_col}", r=r,
+                           rx=tx + keycap_w/2, ry=ty - 1 + keycap_h/2))
 
     return keys
 
@@ -96,14 +106,14 @@ def mirror_keys(
         right_col = grid_cols + (grid_cols - 1 - left_col)
 
         # Mirror x around grid extent, negate rotation
-        mx = grid_max_x + 1 + gap + (grid_max_x - k.x)
+        mx = grid_max_x + k.w + gap + (grid_max_x - k.x)
         r = -k.r
-        # rx/ry = key center; mirrored center = mirrored top-left + 0.5
-        mrx = mx + 0.5 if k.r != 0 else 0
+        # rx/ry = key center; mirrored center = mirrored top-left + w/2
+        mrx = mx + k.w/2 if k.r != 0 else 0
         mry = k.ry
 
         right_keys.append(
-            KleKey(x=mx, y=k.y, label=f"{row_str},{right_col}",
+            KleKey(x=mx, y=k.y, w=k.w, h=k.h, label=f"{row_str},{right_col}",
                    r=r, rx=mrx, ry=mry)
         )
 
@@ -125,6 +135,8 @@ def keys_to_kle(keys: List[KleKey]) -> list:
 
     kle_rows = []
     cursor_y = 0.0  # implicit y cursor (advances +1 per KLE row)
+    key_w = grid_keys[0].w if grid_keys else 1
+    key_h = grid_keys[0].h if grid_keys else 1
 
     for y_val, group in groupby(grid_keys, key=y_group_key):
         row_keys = sorted(group, key=lambda k: k.x)
@@ -134,6 +146,13 @@ def keys_to_kle(keys: List[KleKey]) -> list:
         for i, key in enumerate(row_keys):
             props = {}
 
+            # Set key size (only needed once per row if all same, but KLE
+            # requires it on every key if non-default)
+            if abs(key.w - 1) > 0.001:
+                props["w"] = _round(key.w)
+            if abs(key.h - 1) > 0.001:
+                props["h"] = _round(key.h)
+
             if i == 0:
                 # First key in row: set y offset relative to implicit +1 advance
                 y_offset = key.y - cursor_y - 1
@@ -142,7 +161,7 @@ def keys_to_kle(keys: List[KleKey]) -> list:
                 if abs(key.x) > 0.001:
                     props["x"] = _round(key.x)
             else:
-                # Subsequent keys: x offset from cursor (already advanced by prev key width)
+                # Subsequent keys: x offset from cursor (advanced by prev key width)
                 x_gap = key.x - cursor_x
                 if abs(x_gap) > 0.001:
                     props["x"] = _round(x_gap)
@@ -150,15 +169,14 @@ def keys_to_kle(keys: List[KleKey]) -> list:
             if props:
                 kle_row.append(props)
             kle_row.append(key.label)
-            cursor_x = key.x + 1  # key occupies 1u
+            cursor_x = key.x + key.w  # key occupies its width
 
         kle_rows.append(kle_row)
         cursor_y = row_keys[0].y
 
     # Thumb keys: each has unique rx/ry (key center), so KLE resets cursor
-    # each time. After reset, cursor is at (rx, ry). kbplacer's parse_kle
-    # does NOT add implicit +1 per row. We need the key center at (rx, ry),
-    # so key top-left at (rx-0.5, ry-0.5) => x=-0.5, y=-0.5.
+    # each time. After reset, cursor is at (rx, ry). We need the key center
+    # at (rx, ry), so key top-left at (rx - w/2, ry - h/2).
     thumb_keys.sort(key=lambda k: (k.rx, k.r))
 
     for key in thumb_keys:
@@ -166,9 +184,13 @@ def keys_to_kle(keys: List[KleKey]) -> list:
             "r": _round(key.r),
             "rx": _round(key.rx),
             "ry": _round(key.ry),
-            "x": -0.5,
-            "y": -0.5,
+            "x": _round(-key.w / 2),
+            "y": _round(-key.h / 2),
         }
+        if abs(key.w - 1) > 0.001:
+            props["w"] = _round(key.w)
+        if abs(key.h - 1) > 0.001:
+            props["h"] = _round(key.h)
         kle_rows.append([props, key.label])
 
     return kle_rows

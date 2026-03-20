@@ -1,173 +1,162 @@
 # ╔══════════════════════════════════════════════════════════════════════╗
-# ║  Atlas v0.2 — Declarative Keyboard Layout                         ║
+# ║  Atlas — Declarative Keyboard Layout                               ║
 # ╚══════════════════════════════════════════════════════════════════════╝
 #
-# Coordinate system
-# ─────────────────
-#   Origin (0,0) is the top-left of the pinky column (col 0) — the
-#   top-leftmost physical key.
-#   X increases rightward, Y increases downward (matches KLE convention).
-#
-#       (0,0) ──── +x →
-#         │
-#         +y
-#         ↓
+# This file defines the full keyboard geometry. Only the left half is
+# specified — the right half is automatically mirrored.
 #
 # Units
 # ─────
-#   Layout geometry:  key units (1u ≈ 19.05 mm center-to-center for MX)
-#   Physical parts:   millimetres (case walls, holes, PCB traces, etc.)
-#   Angles:           degrees (positive = clockwise)
+#   Layout:   key units (1u = 19.05 mm, the standard MX center-to-center)
+#   Physical: millimetres (mm)
+#   Angles:   degrees (0° = up, positive = clockwise)
 #
-# Common switch spacings (center-to-center):
-#   MX standard:   19.05 × 19.05 mm  →  1.000u × 1.000u
-#   Choc v1 tight: 18.00 × 17.00 mm  →  0.945u × 0.893u
-#   Atlas (below): 20.00 × 17.00 mm  →  1.050u × 0.890u
+# Coordinate system (matches KLE)
+# ────────────────────────────────
+#   Origin (0,0) = top-left of pinky column (col 0)
+#   X → rightward, Y ↓ downward
 #
 # ──────────────────────────────────────────────────────────────────────
 
 # --- Switch ---
+# The physical switch and keycap determine spacing and visual size.
+#
+#   spacing:  center-to-center distance between adjacent switches.
+#   keycap:   visible keycap footprint (affects overlap detection in KLE).
+#
+# Common values:
+#   MX:            spacing [1, 1]         keycap [1, 1]          (19.05 mm switch, 19.05 mm cap)
+#   Choc V1:       spacing [0.945, 0.893] keycap [0.92, 0.87]   (18 × 17 mm switch, 17.5 × 16.5 mm cap)
+#   Choc V2:       spacing [1, 1]         keycap [0.945, 0.945]  (19.05 mm switch, 18 mm MX-stem cap)
+#
 switch:
-  type: choc_v1
-  spacing: [1.05, 0.89]        # [x, y] center-to-center in key units
-  cutout: 13.8                  # switch plate hole side length (mm)
+  type: choc_v1                        # Kailh Choc V1 — Ambients Nocturnal
+  spacing: [0.945, 0.893]             # [x, y] center-to-center (key units) — Choc V1: 18 × 17 mm
+  keycap: [0.92, 0.87]               # [w, h] keycap size (key units) — Choc V1: 17.5 × 16.5 mm
+  cutout: 13.8                         # plate cutout side length (mm) — from Choc V1 datasheet
 
 # --- Grid ---
-# 5 columns × 3 rows per half, symmetric left/right.
-# Columns are numbered inside-out: pinky=0 … inner=4.
-# Rows are numbered top-down: top=0, home=1, bottom=2.  Row 3 = thumb.
+# 5 columns × 3 rows per half. Only the left half is defined.
 #
-# Column stagger (Y-down offset per column, in key units)
-# ────────────────────────────────────────────────────────
-# The stagger array shifts each column relative to the pinky baseline.
-# col 0 (pinky) = 0; negative values pull a column upward (higher
-# on the board).
+#   cols/rows:  grid dimensions per half.
+#   stagger:    vertical offset per column (key units, negative = higher).
+#               Measured from pinky (col 0) baseline.
 #
-#   stagger values:  0      -0.58  -0.74  -0.58  -0.48
-#                    pinky  ring   mid    index  inner
-#                    col 0  col 1  col 2  col 3  col 4
+# Columns: pinky=0, ring=1, middle=2, index=3, inner=4
+# Rows:    top=0, home=1, bottom=2
 #
-# Visual (left half, top row only, showing column stagger):
+# Stagger reference (approximate finger reach):
+#   pinky (col 0):   0      baseline
+#   ring (col 1):   -0.58   ~11 mm higher — ring finger is longer than pinky
+#   middle (col 2): -0.74   ~14 mm higher — middle finger is the longest
+#   index (col 3):  -0.58   ~11 mm higher — index ≈ ring length
+#   inner (col 4):  -0.48   ~9 mm higher  — slight reach inward
 #
-#   col0    col1    col2    col3    col4
-#   pinky   ring    middle  index   inner
-#   x=0     x=1.05  x=2.10  x=3.15  x=4.20
-#   │       │       │       │       │
-#   │       │       ┌───┐   │       │         stagger = -0.74  ← middle (highest)
-#   │       ┌───┐   │0,2│   ┌───┐   │         stagger = -0.58  ← ring & index
-#   │       │0,1│   └───┘   │0,3│   ┌───┐     stagger = -0.48  ← inner
-#   │       └───┘           └───┘   │0,4│
-#   ┌───┐                           └───┘     stagger = 0       ← pinky (baseline)
+# Visual (left half, top row, showing stagger):
+#
+#                   ┌───┐                              stagger = -0.74
+#           ┌───┐   │0,2│   ┌───┐                     stagger = -0.58
+#           │0,1│   └───┘   │0,3│   ┌───┐             stagger = -0.48
+#           └───┘           └───┘   │0,4│
+#   ┌───┐                           └───┘             stagger = 0
 #   │0,0│
 #   └───┘
-#
-# Full left half (all 3 rows + thumb cluster):
-#
-#                   ┌───┐                       row 0 (top)
-#           ┌───┐   │0,2│   ┌───┐
-#           │0,1│   └───┘   │0,3│   ┌───┐
-#           └───┘           └───┘   │0,4│
-#   ┌───┐                           └───┘
-#   │0,0│
-#   └───┘   ┌───┐   ┌───┐   ┌───┐              row 1 (home)
-#           │1,1│   │1,2│   │1,3│   ┌───┐
-#   ┌───┐   └───┘   └───┘   └───┘   │1,4│
-#   │1,0│                           └───┘
-#   └───┘   ┌───┐   ┌───┐   ┌───┐              row 2 (bottom)
-#           │2,1│   │2,2│   │2,3│   ┌───┐
-#   ┌───┐   └───┘   └───┘   └───┘   │2,4│ ← anchor
-#   │2,0│                           └───┘
-#   └───┘                             ╲
-#                                   ╭───╮  r=19°    thumb key 3,3
-#                                    ╲╭───╮  r=26°  thumb key 3,4
 #
 grid:
   cols: 5
   rows: 3
   stagger: [0, -0.58, -0.74, -0.58, -0.48]   # [pinky, ring, middle, index, inner]
 
-# --- Rotated keys ---
-# Keys rotated around their own center to clear the trackpoint module.
-# The trackpoint stick sits at the centroid of these four keys on each half.
-# Rotation is applied to the left half; the right half mirrors (negates) it.
-rotated_keys:
-  - { row: 1, col: 3, rotation: -180 }  # index, home    — 180° counter-clockwise
-  - { row: 0, col: 4, rotation: 90 }    # inner, top     — 90° clockwise
-  - { row: 1, col: 4, rotation: 90 }    # inner, home    — 90° clockwise
+# --- Rotated keys (disabled) ---
+# Rotate individual grid keys around their center (e.g. to clear a trackpoint).
+# Uncomment and adjust as needed. Rotation is negated on the mirrored right half.
+#
+# rotated_keys:
+#   - { row: 1, col: 3, rotation: -180 }  # index home
+#   - { row: 0, col: 4, rotation: 90 }    # inner top
+#   - { row: 1, col: 4, rotation: 90 }    # inner home
 
 # --- Thumb cluster ---
-# A fan of rotated keys anchored relative to the inner column's bottom key
-# (key 2,4 — the "anchor"). Each successive key steps further right/down
-# with increasing clockwise rotation.
+# Keys arranged in a fan (arc) around a pivot point.
+# Only the left half is specified; the right half is mirrored automatically.
 #
-#                    anchor (key 2,4)
-#                        │
-#                        ▼
-#                      ┌───┐
-#                      │2,4│
-#                      └───┘
-#                  dx=0.09 ↘
-#                  dy=1.02   ╭───╮  thumb 0  (r = 19°)
-#                             ╲
-#                   dx=1.01 →  ╭───╮  thumb 1  (r = 19° + 7° = 26°)
-#                   dy=0.43 ↓
+# Model:
+#   The pivot sits below the grid (think: where your wrist bends).
+#   Keys are placed on a circle of the given radius.
+#   Each key's angle determines both its position and rotation.
 #
-# origin_offset:  [dx, dy] from anchor center to first thumb key center.
-# spread:         [dx, dy] step between successive thumb key centers.
-# rotation_start: angle of the first thumb key (positive = clockwise).
-# rotation_step:  additional rotation added per subsequent key.
-# The right half mirrors these with negated angles.
+#   To adjust:
+#     - Move keys closer/further from grid → change pivot [y] or radius
+#     - Spread keys apart → increase angle_step
+#     - Rotate the whole fan → change start_angle
+#     - Add more thumb keys → increase keys count
+#
+#        ╭───╮             ╭───╮
+#        │3,3│  19°        │3,4│  26°
+#        ╰───╯             ╰───╯
+#            ╲               ╱
+#        9.0u ╲           ╱ 9.0u
+#               ╲       ╱
+#            pivot (X)  ← below grid, left of inner column
+#
+# Angles: 0° = straight up from pivot, positive = clockwise.
+# First key (3,3) is at start_angle, second (3,4) at start_angle + angle_step.
 #
 thumb:
   keys: 2
-  origin_offset: [0.09, 1.02]
-  spread: [1.01, 0.43]
-  rotation_start: 19
-  rotation_step: 7
+  pivot: [-2.87, 9.60]        # [x, y] relative to anchor key 2,4 — large Y = far below grid
+  radius: 9.0                 # distance from pivot to key center (key units)
+  start_angle: 19             # angle of first thumb key (degrees)
+  angle_step: 7               # angular spacing between thumb keys (degrees)
 
 # ──────────────────────────────────────────────────────────────────────
-# Physical dimensions below (mm). Not used by layout2kle.py but kept
-# for future PCB/case generation tooling.
+# Physical dimensions below (mm). Used by pcb_enhance.py for trackpoint
+# holes, controller placement, and edge cuts. Not used by layout2kle.py.
 # ──────────────────────────────────────────────────────────────────────
+
+# --- Controller ---
+# XIAO BLE (nRF52840) — placed above the outermost key by pcb_enhance.py.
+#
+controller:
+  model: xiao_ble              # Seeed XIAO nRF52840 — BLE 5.0, 256KB RAM
+  footprint: totem:xiao-ble-smd-cutout
+  placement: above             # above the grid (between grid and PCB edge)
+  edge_offset: -0.5           # shift along the edge (key units)
+  standoff: 4.0               # distance from grid edge (mm)
+
+# --- Trackpoint ---
+# Sprintek all-in-one module — PS/2 via UART.
+# Stick center = centroid of the 4 keys at the intersection of these cols/rows.
+# Both halves carry a trackpoint module.
+#
+trackpoint:
+  module: sprintek_aio         # Sprintek SK8707-01 all-in-one
+  between: { cols: [3, 4], rows: [0, 1] }   # centroid of these 4 keys
+  center_hole: 5.0             # stick hole diameter (mm) — from module datasheet
+  screw_holes:
+    diameter: 2.2              # M2 screw hole (mm)
+    offset: 10.0               # Y distance from center to each screw (mm) — from module datasheet
 
 # --- Case ---
+# Physical case dimensions for future CAD generation.
+#
 case:
-  plate_padding: 3.0            # mm from switch edge to plate edge
-  wall: 2.0                     # outer wall thickness (mm)
-  lip: 1.5                      # top lip overhang (mm)
-  depth: 10.0                   # interior depth below plate (mm)
-  corner_radius: 3.0            # fillet radius on outer corners (mm)
+  plate_padding: 3.0           # mm from switch edge to plate edge
+  wall: 2.0                    # outer wall thickness (mm)
+  lip: 1.5                     # top lip overhang (mm)
+  depth: 10.0                  # interior depth below plate (mm)
+  corner_radius: 3.0          # fillet radius on outer corners (mm)
   plate_thickness: 1.5
   bottom_thickness: 2.0
   pcb_thickness: 1.6
 
-# --- Controller ---
-controller:
-  model: xiao_ble
-  footprint: totem:xiao-ble-smd-cutout
-  placement: above              # above | below | left | right of grid
-  edge_offset: -0.5             # shift along the edge (key units)
-  standoff: 4.0                 # distance from grid edge (mm)
-
-# --- Trackpoint ---
-# Stick center is at the centroid of the four rotated keys (0,3 / 1,3 / 0,4 / 1,4).
-# Both halves carry a trackpoint module.
-trackpoint:
-  module: sprintek_aio
-  between: { cols: [3, 4], rows: [0, 1] }   # centroid of the rotated keys
-  center_hole: 5.0              # stick hole diameter (mm)
-  screw_holes:
-    diameter: 2.2
-    offset: 10.0                # Y distance from center to each screw (mm)
-
 # --- PCB ---
-# kbplacer settings (editor.keyboard-tools.xyz):
-#   Switch:  Hotswap Kailh Choc V1, rotation 0°
-#   Diode:   SOD-123F, position (-6, -4) mm, rotation 90°
-#   Routing: Switch-Diode only
+# Settings used by kbplacer (editor.keyboard-tools.xyz) when generating the PCB.
+# These are reminders for the manual web tool step, not consumed by scripts.
+#
 pcb:
-  trace_width: 0.25             # mm
-  clearance: 0.2                # mm
+  trace_width: 0.25            # mm
+  clearance: 0.2               # mm
 
 # --- Per-half overrides ---
 left:
@@ -180,4 +169,4 @@ right:
   trackpoint: true
   connectors:
     - { name: tp_bridge, footprint: totem:5pin, near: trackpoint, side: above }
-    - { name: battery,   footprint: totem:2pin, near: controller,  side: below, offset: -15 }
+    - { name: battery,   footprint: totem:2pin, near: controller, side: below, offset: -15 }
