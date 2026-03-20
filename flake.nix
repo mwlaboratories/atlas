@@ -31,6 +31,8 @@
           pkgs.yq
           keymap_drawer
           pkgs.librsvg
+          (pkgs.python312.withPackages (ps: [ ps.pyyaml ps.jinja2 ]))
+          pkgs.kicad
         ];
 
         shellHook = ''

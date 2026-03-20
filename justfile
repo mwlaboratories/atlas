@@ -1,13 +1,13 @@
-# Atlas Keyboard - ZMK Firmware Build System
+# Atlas Keyboard — Build System
 
 default:
     @just --list
 
 # Paths
-workspace := absolute_path('zmk-workspace-ble')
+workspace := absolute_path('firmware')
 config := workspace / 'config'
 build := workspace / '.build'
-out := workspace / 'firmware'
+out := workspace / 'out'
 modules := workspace / 'kb_zmk_ps2_mouse_trackpoint_driver'
 nix := absolute_path('nix')
 
@@ -85,3 +85,38 @@ rebuild-right:
 
 # Rebuild both (clean first)
 rebuild: clean all
+
+# ── PCB generation ──────────────────────────────────────────────────
+
+pcb_out := "output/keyboard"
+
+# Generate KLE-NG JSON from layout.yaml (paste into editor.keyboard-tools.xyz)
+kle:
+    @mkdir -p output
+    python3 tools/layout2kle.py -i layout.yaml -o output/layout.json
+    @echo "→ output/layout.json — paste into editor.keyboard-tools.xyz"
+
+# Print KLE JSON to stdout (for piping / clipboard)
+kle-stdout:
+    python3 tools/layout2kle.py -i layout.yaml
+
+# Copy KLE JSON to clipboard (xclip)
+kle-clip:
+    python3 tools/layout2kle.py -i layout.yaml | xclip -selection clipboard
+    @echo "→ KLE JSON copied to clipboard"
+
+# Patch kbplacer-generated PCB with 3D models, trackpoint holes, controller, edge cuts
+pcb-enhance:
+    python3 tools/pcb_enhance.py -i {{ pcb_out }}/keyboard.kicad_pcb
+    @echo "→ PCB patched"
+
+# Full PCB flow: generate KLE, remind to use editor, then enhance
+pcb:
+    just kle
+    @echo ""
+    @echo "Next steps:"
+    @echo "  1. Copy output/layout.json contents"
+    @echo "  2. Paste into editor.keyboard-tools.xyz"
+    @echo "  3. Configure: Choc V1 hotswap, SOD-123F diode at (-6,-4) 90°"
+    @echo "  4. Download .kicad_pcb to {{ pcb_out }}/keyboard.kicad_pcb"
+    @echo "  5. Run: just pcb-enhance"

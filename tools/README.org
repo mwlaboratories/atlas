@@ -1,0 +1,71 @@
+#+TITLE: Atlas PCB Generation Pipeline
+
+* Overview
+
+Declarative PCB generation from =layout.yaml= in three steps.
+
+* Pipeline
+
+#+begin_example
+  layout.yaml                      ← you edit this
+       │
+       │  Step 1: just kle
+       ▼
+  output/layout.json               ← KLE-NG JSON
+       │
+       │  Step 2: paste into editor.keyboard-tools.xyz
+       │          configure footprints (see below)
+       │          download .kicad_pcb
+       ▼
+  output/keyboard/keyboard.kicad_pcb   ← raw kbplacer output
+       │
+       │  Step 3: just pcb-enhance
+       ▼
+  output/keyboard/keyboard.kicad_pcb   ← patched, ready for KiCad
+#+end_example
+
+* Step 1 — Generate KLE JSON
+
+=layout2kle.py= converts =layout.yaml= into KLE-NG JSON format.
+
+#+begin_src bash
+just kle          # → output/layout.json
+just kle-clip     # → clipboard (xclip)
+just kle-stdout   # → stdout
+#+end_src
+
+* Step 2 — editor.keyboard-tools.xyz
+
+1. Open https://editor.keyboard-tools.xyz/
+2. Paste the KLE JSON
+3. Configure kbplacer settings:
+   - Switch: *Hotswap Kailh Choc V1*, rotation 0°
+   - Diode: *SOD-123F*, position =(-6, -4) mm=, rotation 90°
+   - Routing: Switch-Diode only
+4. Generate and download =keyboard.kicad_pcb=
+5. Save to =output/keyboard/keyboard.kicad_pcb=
+
+* Step 3 — Enhance PCB
+
+=pcb_enhance.py= patches the raw kbplacer output:
+
+- Fixes 3D model paths (hotswap socket, switch body, diode)
+- Adds trackpoint NPTH holes (stick + screw mounts)
+- Places XIAO BLE controller footprints
+- Adds Edge.Cuts bounding box
+
+#+begin_src bash
+just pcb-enhance  # patches output/keyboard/keyboard.kicad_pcb in place
+#+end_src
+
+Then open in KiCad for final routing and tweaks.
+
+* Files
+
+| File                        | Purpose                                  |
+|-----------------------------+------------------------------------------|
+| layout2kle.py               | Step 1: layout.yaml → KLE JSON           |
+| pcb_enhance.py              | Step 3: patch kbplacer PCB output        |
+| XIAO_BLE_custom.kicad_mod   | XIAO BLE controller footprint            |
+| xiao-ble-smd-cutout.kicad_mod | XIAO BLE SMD cutout variant           |
+| xiao-ble-tht.kicad_mod      | XIAO BLE through-hole variant            |
