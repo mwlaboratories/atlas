@@ -129,6 +129,11 @@ pcb-enhance:
     python3 tools/pcb_enhance.py -i {{ pcb_in }} -l {{ layout }}
     @echo "→ {{ pcb_in }} patched"
 
+# Calculate optimal thumb angle_step to match ortho grid gap
+[group('pcb')]
+thumb-calc:
+    python3 tools/thumb_calc.py -i {{ layout }}
+
 # Full PCB flow: generate KLE + show next steps
 [group('pcb')]
 pcb:

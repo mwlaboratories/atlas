@@ -58,32 +58,70 @@ def compute_half_keys(layout: dict) -> List[KleKey]:
             else:
                 keys.append(KleKey(x=x, y=y, w=keycap_w, h=keycap_h, label=f"{row},{col}"))
 
-    # Thumb keys — fan (arc) model
+    # Thumb keys — chain placement model
+    # First key's top-left corner aligns with anchor's bottom-right corner + gap.
+    # Subsequent keys chain from the previous key, maintaining the same gap.
     thumb = layout["thumb"]
-    # Anchor: inner column (last col), bottom row (row = rows - 1)
     anchor_col = cols - 1
     anchor_x = anchor_col * spacing_x
     anchor_y = (rows - 1) * spacing_y + stagger[anchor_col] - min_stagger
 
-    pivot_dx, pivot_dy = thumb["pivot"]
-    pivot_x = anchor_x + pivot_dx
-    pivot_y = anchor_y + pivot_dy
-    radius = thumb["radius"]
-    start_angle = thumb["start_angle"]
-    angle_step = thumb["angle_step"]
+    # Grid gap (space between adjacent keycap edges)
+    gap = min(spacing_x - keycap_w, spacing_y - keycap_h)
 
+    angle_start = thumb["angle"]
+    angle_step = thumb["angle_step"]
+    offset_dx, offset_dy = thumb.get("offset", [0, 0])
+
+    # Anchor key's bottom-left corner (unrotated grid key)
+    anchor_bl_x = anchor_x - keycap_w / 2
+    anchor_bl_y = anchor_y + keycap_h / 2
+
+    # First thumb key: top-left corner at anchor's bottom-left + gap downward
+    first_tl_x = anchor_bl_x
+    first_tl_y = anchor_bl_y + gap
+
+    prev_corners = None
     for i in range(thumb["keys"]):
-        angle_deg = start_angle + i * angle_step
-        angle_rad = math.radians(angle_deg)
-        # Position on circle (0°=up, positive=clockwise, Y-down coords)
-        tx = pivot_x + radius * math.sin(angle_rad)
-        ty = pivot_y - radius * math.cos(angle_rad)
-        # Key rotation matches its angle (faces outward from pivot)
-        r = angle_deg
+        r = angle_start + i * angle_step
+        r_rad = math.radians(r)
+        cos_r, sin_r = math.cos(r_rad), math.sin(r_rad)
         thumb_col = cols - thumb["keys"] + i
-        # rx/ry must be the key center in the grid's coordinate frame.
-        # Grid keys are serialized with a -1 y shift (KLE cursor model),
-        # so thumb ry also needs that offset.
+
+        if i == 0:
+            # Place center so that the rotated top-left corner lands at first_tl
+            # Rotated top-left offset from center: rotate (-w/2, -h/2) by r
+            tl_dx = (-keycap_w/2) * cos_r - (-keycap_h/2) * sin_r
+            tl_dy = (-keycap_w/2) * sin_r + (-keycap_h/2) * cos_r
+            tx = first_tl_x - tl_dx + offset_dx
+            ty = first_tl_y - tl_dy + offset_dy
+        else:
+            # Chain from previous key's bottom-right corner to this key's bottom-left corner
+            prev_br_x, prev_br_y = prev_corners[2]  # index 2 = bottom-right
+
+            # This key's bottom-left corner (rotated offset from center)
+            bl_dx = (-keycap_w/2) * cos_r - (keycap_h/2) * sin_r
+            bl_dy = (-keycap_w/2) * sin_r + (keycap_h/2) * cos_r
+
+            # Gap direction: perpendicular to the average bottom edge of both keys
+            avg_angle = math.radians(r - angle_step / 2)
+            gap_dx = gap * math.cos(avg_angle)
+            gap_dy = gap * math.sin(avg_angle)
+
+            tx = prev_br_x + gap_dx - bl_dx
+            ty = prev_br_y + gap_dy - bl_dy
+
+        # Compute corners for this key (for chaining to next)
+        corners = []
+        for dx, dy in [(-keycap_w/2, -keycap_h/2),   # top-left
+                        (keycap_w/2, -keycap_h/2),    # top-right
+                        (keycap_w/2, keycap_h/2),     # bottom-right
+                        (-keycap_w/2, keycap_h/2)]:   # bottom-left
+            cx = tx + dx * cos_r - dy * sin_r
+            cy = ty + dx * sin_r + dy * cos_r
+            corners.append((cx, cy))
+        prev_corners = corners
+
         keys.append(KleKey(x=tx, y=ty, w=keycap_w, h=keycap_h,
                            label=f"3,{thumb_col}", r=r,
                            rx=tx + keycap_w/2, ry=ty - 1 + keycap_h/2))

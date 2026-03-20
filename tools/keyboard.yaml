@@ -77,37 +77,36 @@ grid:
 #   - { row: 1, col: 4, rotation: 90 }    # inner home
 
 # --- Thumb cluster ---
-# Keys arranged in a fan (arc) around a pivot point.
-# Only the left half is specified; the right half is mirrored automatically.
+# Only the left half is defined; the right half is mirrored automatically.
 #
-# Model:
-#   The pivot sits below the grid (think: where your wrist bends).
-#   Keys are placed on a circle of the given radius.
-#   Each key's angle determines both its position and rotation.
+# Placement model:
+#   The first thumb key's top-left corner is placed at the bottom-right
+#   corner of the last ortho key (2,4) + the grid gap. Then it's rotated.
+#   Each subsequent key chains from the previous one, maintaining the
+#   same gap between adjacent keycap edges.
 #
-#   To adjust:
-#     - Move keys closer/further from grid → change pivot [y] or radius
-#     - Spread keys apart → increase angle_step
-#     - Rotate the whole fan → change start_angle
-#     - Add more thumb keys → increase keys count
+#   anchor (key 2,4)
+#     ┌───────┐
+#     │       │
+#     •───────┘
+#     ↓ gap
+#     •───────┐     ┌───────┐
+#  tl │  3,3  │     │  3,4  │
+#     └───────•─gap─•───────┘
 #
-#        ╭───╮             ╭───╮
-#        │3,3│  19°        │3,4│  26°
-#        ╰───╯             ╰───╯
-#            ╲               ╱
-#        9.0u ╲           ╱ 9.0u
-#               ╲       ╱
-#            pivot (X)  ← below grid, left of inner column
+# keys:        number of thumb keys per half.
+# angle:       rotation of the first thumb key (degrees CW).
+# angle_step:  additional rotation per subsequent key (degrees CW).
+# offset:      [dx, dy] optional shift of first key from default position.
 #
-# Angles: 0° = straight up from pivot, positive = clockwise.
-# First key (3,3) is at start_angle, second (3,4) at start_angle + angle_step.
+# Gap between keys is automatically matched to the ortho grid gap.
+# At angle=0 and angle_step=0, thumb keys align flush with ortho spacing.
 #
 thumb:
   keys: 2
-  pivot: [-2.87, 9.60]        # [x, y] relative to anchor key 2,4 — large Y = far below grid
-  radius: 9.0                 # distance from pivot to key center (key units)
-  start_angle: 19             # angle of first thumb key (degrees)
-  angle_step: 7               # angular spacing between thumb keys (degrees)
+  angle: 14                    # first key rotation (degrees CW)
+  angle_step: 7                # additional rotation per key (degrees CW)
+  offset: [0.23, 0]             # [dx, dy] shift of first key — ~1/4 keycap width right
 
 # ──────────────────────────────────────────────────────────────────────
 # Physical dimensions below (mm). Used by pcb_enhance.py for trackpoint
