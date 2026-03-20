@@ -16,11 +16,12 @@
 
 ** Status (Mar 2026)
 - BLE split working — direct host connection, no dongle
-- Both TrackPoints working (Sprintek AIO, PS/2 via UART)
+- Left TrackPoint working (Sprintek AIO, PS/2 via UART)
+- Right TrackPoint wired, testing in progress
 - Mouse layer auto-activates on trackpoint movement
 - Scroll mode on thumb key hold
-- PCBs fabricated (main board + trackball sensor)
-- 3D-printed case ready
+- PCBs: prototype fabricated, iterating
+- Case: wooden prototype
 
 ** Architecture
 #+begin_example
