@@ -5,35 +5,41 @@
 Everything for PCB generation lives in this directory.
 Edit =keyboard.yaml= here, run the pipeline from the repo root with =just=.
 
+* Directory
+
+#+begin_example
+tools/
+├── keyboard.yaml                ← INPUT: you edit this
+├── build/                       ← generated + downloaded files (gitignored)
+│   ├── layout.json              ← Step 1 output
+│   └── keyboard.kicad_pcb      ← Step 2 download → Step 3 patches in place
+├── footprints/                  ← KiCad footprints used by pcb_enhance
+│   ├── XIAO_BLE_custom.kicad_mod
+│   ├── xiao-ble-smd-cutout.kicad_mod
+│   └── xiao-ble-tht.kicad_mod
+├── layout2kle.py                ← Step 1 script
+├── pcb_enhance.py               ← Step 3 script
+└── readme.org
+#+end_example
+
 * Pipeline
 
 #+begin_example
-  tools/
-  ├── keyboard.yaml              ← INPUT: you edit this
-  ├── layout2kle.py            ← Step 1: layout → KLE JSON
-  ├── pcb_enhance.py           ← Step 3: patch kbplacer output
-  └── *.kicad_mod              ← controller footprints (used by Step 3)
-
-  output/                      ← OUTPUT: all generated files land here
-  ├── layout.json              ← Step 1 output (KLE JSON)
-  └── keyboard/
-      └── keyboard.kicad_pcb   ← Step 2 download → Step 3 patches in place
-
-  tools/keyboard.yaml
+  keyboard.yaml
        │
        │  Step 1: just kle
        ▼
-  output/layout.json
+  build/layout.json
        │
        │  Step 2: paste into editor.keyboard-tools.xyz
        │          configure footprints (see below)
        │          download .kicad_pcb
        ▼
-  output/keyboard/keyboard.kicad_pcb   ← raw kbplacer output
+  build/keyboard.kicad_pcb      ← raw kbplacer output
        │
        │  Step 3: just pcb-enhance
        ▼
-  output/keyboard/keyboard.kicad_pcb   ← patched, ready for KiCad
+  build/keyboard.kicad_pcb      ← patched, ready for KiCad
 #+end_example
 
 * Step 1 — Generate KLE JSON
@@ -41,7 +47,7 @@ Edit =keyboard.yaml= here, run the pipeline from the repo root with =just=.
 =layout2kle.py= converts =keyboard.yaml= into KLE-NG JSON format.
 
 #+begin_src bash
-just kle          # → output/layout.json
+just kle          # → tools/build/layout.json
 just kle-clip     # → clipboard (xclip)
 just kle-stdout   # → stdout
 #+end_src
@@ -55,11 +61,11 @@ just kle-stdout   # → stdout
    - Diode: *SOD-123F*, position =(-6, -4) mm=, rotation 90°
    - Routing: Switch-Diode only
 4. Generate and download =keyboard.kicad_pcb=
-5. Save to =output/keyboard/keyboard.kicad_pcb=
+5. Save to =tools/build/keyboard.kicad_pcb=
 
 * Step 3 — Enhance PCB
 
-=pcb_enhance.py= patches the raw kbplacer output:
+=pcb_enhance.py= patches the downloaded PCB in place:
 
 - Fixes 3D model paths (hotswap socket, switch body, diode)
 - Adds trackpoint NPTH holes (stick + screw mounts)
@@ -67,17 +73,7 @@ just kle-stdout   # → stdout
 - Adds Edge.Cuts bounding box
 
 #+begin_src bash
-just pcb-enhance  # patches output/keyboard/keyboard.kicad_pcb in place
+just pcb-enhance  # patches tools/build/keyboard.kicad_pcb in place
 #+end_src
 
 Then open in KiCad for final routing and tweaks.
-
-* Files
-
-| File                        | Purpose                                  |
-|-----------------------------+------------------------------------------|
-| layout2kle.py               | Step 1: keyboard.yaml → KLE JSON           |
-| pcb_enhance.py              | Step 3: patch kbplacer PCB output        |
-| XIAO_BLE_custom.kicad_mod   | XIAO BLE controller footprint            |
-| xiao-ble-smd-cutout.kicad_mod | XIAO BLE SMD cutout variant           |
-| xiao-ble-tht.kicad_mod      | XIAO BLE through-hole variant            |

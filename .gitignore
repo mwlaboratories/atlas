@@ -19,8 +19,10 @@ zmk-pmw3610-driver/
 result
 result-*
 
-# Generated output
-output/
+# Generated / downloaded PCB files
+tools/build/
+
+# Generated keymap files
 nix/keymap.yaml
 nix/keymap.png
 
