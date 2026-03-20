@@ -33,6 +33,7 @@
           pkgs.librsvg
           (pkgs.python312.withPackages (ps: [ ps.pyyaml ps.jinja2 ]))
           pkgs.kicad
+          pkgs.wl-clipboard
         ];
 
         shellHook = ''
