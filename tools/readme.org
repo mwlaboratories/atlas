@@ -18,7 +18,6 @@ tools/
 │   └── *.kicad_mod
 ├── layout2kle.py                ← Step 1 script
 ├── pcb_enhance.py               ← Step 3 script
-├── thumb_calc.py                ← helper: calculate thumb angle_step
 └── readme.org
 #+end_example
 
@@ -79,8 +78,3 @@ just pcb-enhance  # → tools/build/keyboard.kicad_pcb
 
 Then open in KiCad for final routing and tweaks.
 
-* Helpers
-
-#+begin_src bash
-just thumb-calc   # calculate optimal angle_step to match ortho grid gap
-#+end_src
