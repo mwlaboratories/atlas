@@ -1,5 +1,5 @@
 {
-  description = "Atlas keyboard ZMK firmware dev environment";
+  description = "Atlas keyboard dev environment (firmware + PCB)";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
@@ -36,8 +36,21 @@
         ];
 
         shellHook = ''
-          export PS1="\n\[\033[1;32m\][atlas:\w]\$\[\033[0m\] "
-          echo "Atlas ZMK dev shell. Run 'just' to see available commands."
+          export IN_NIX_SHELL="atlas-dev"
+          echo ""
+          echo "  Atlas Keyboard — dev shell"
+          echo ""
+          echo "  Firmware (ZMK BLE, XIAO nRF52840):"
+          echo "    just all           build both halves"
+          echo "    just left/right    build one side"
+          echo "    just keymap        generate keymap SVG"
+          echo "    just init          initialize west (first time)"
+          echo ""
+          echo "  PCB generation (see tools/readme.org):"
+          echo "    just pcb           full flow with instructions"
+          echo "    just kle-clip      KLE JSON → clipboard"
+          echo "    just pcb-enhance   patch kbplacer output"
+          echo ""
         '';
       };
     });

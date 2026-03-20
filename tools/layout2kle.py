@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Convert Atlas layout.yaml to KLE-NG JSON for editor.keyboard-tools.xyz"""
+"""Convert Atlas keyboard.yaml to KLE-NG JSON for editor.keyboard-tools.xyz"""
 
 import argparse
 import json
@@ -184,10 +184,10 @@ def _round(v: float) -> float:
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Convert layout.yaml to KLE-NG JSON"
+        description="Convert keyboard.yaml to KLE-NG JSON"
     )
     parser.add_argument(
-        "-i", "--input", default="layout.yaml", help="Input layout.yaml path"
+        "-i", "--input", default="keyboard.yaml", help="Input keyboard.yaml path"
     )
     parser.add_argument(
         "-o", "--output", default=None, help="Output JSON file (default: stdout)"
