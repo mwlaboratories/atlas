@@ -89,8 +89,8 @@ XIAO_3D_MODEL = "${KIPRJMOD}/3dmodels/XIAO-nRF52840 v15.step"
 XIAO_MODEL_ROTATE = (-90, 0, -90)
 XIAO_MODEL_OFFSET = (6.1, -1.75, 0)
 
-# XIAO BLE footprint filename (Totem keyboard footprint, in tools/)
-XIAO_FP_FILE = "XIAO_BLE_custom.kicad_mod"
+# XIAO BLE footprint filename (Totem keyboard footprint, matching prototype)
+XIAO_FP_FILE = "xiao-ble-smd-cutout.kicad_mod"
 
 # XIAO BLE board dimensions (origin at center)
 XIAO_HALF_HEIGHT = 10.5  # 21mm / 2 — along the long axis (USB-C to battery)
@@ -144,6 +144,22 @@ def _parse_switches(pcb_text: str) -> list[tuple[str, float, float]]:
         ref_m = re.search(r'"Reference"\s+"(SW\d+)"', pcb_text[m.start() : m.start() + 500])
         ref = ref_m.group(1) if ref_m else "?"
         switches.append((ref, x, y))
+    return switches
+
+
+def _parse_switches_with_rotation(pcb_text: str) -> list[tuple[str, float, float, float]]:
+    """Return list of (reference, x, y, rotation) for each switch footprint."""
+    switches = []
+    for m in re.finditer(
+        r'\(footprint\s+"(SW_[^"]+)"\s*\n\s*\(layer\s+"F\.Cu"\)\s*\n'
+        r'\s*\(uuid\s+"[^"]+"\)\s*\n\s*\(at\s+([\d.-]+)\s+([\d.-]+)(?:\s+([\d.-]+))?',
+        pcb_text,
+    ):
+        x, y = float(m.group(2)), float(m.group(3))
+        rot = float(m.group(4)) if m.group(4) else 0.0
+        ref_m = re.search(r'"Reference"\s+"(SW\d+)"', pcb_text[m.start() : m.start() + 500])
+        ref = ref_m.group(1) if ref_m else "?"
+        switches.append((ref, x, y, rot))
     return switches
 
 
@@ -417,15 +433,11 @@ def patch_controller(pcb_text: str, layout: dict) -> str:
             continue
 
         sx, sy = ref_to_pos[sw_ref]
-        # Place above the switch courtyard edge (not center)
-        # After ±90° rotation the short axis (17.78 mm) is vertical
-        switch_top_edge = sy - SWITCH_HALF_EXTENT
-        # Tight placement: minimal gap to keycaps
-        ctrl_y = switch_top_edge + 1.0 - XIAO_HALF_WIDTH  # snug fit
-        # Align XIAO outer edge with switch outer edge (for choc spacing compatibility)
-        # After 90° rotation, XIAO_HALF_HEIGHT is horizontal extent
-        edge_align = SWITCH_HALF_EXTENT - XIAO_HALF_HEIGHT  # -1.5mm
-        ctrl_x = sx + edge_align if half_label == "L" else sx - edge_align
+        # Place controller above the pinky column:
+        #   - 17.5mm above the pinky top switch center
+        #   - 3.5mm inward from pinky switch center
+        ctrl_y = sy - 17.5
+        ctrl_x = (sx - 1.5) if half_label == "L" else (sx + 1.5)
 
         fp = _convert_footprint_to_pcb(
             mod_text,
@@ -511,49 +523,146 @@ def patch_trackpoint_holes(pcb_text: str, layout: dict) -> str:
 # Edge.Cuts bounding box
 # ---------------------------------------------------------------------------
 
-EDGE_CUTS_SENTINEL = "atlas-bbox-"
+EDGE_CUTS_SENTINEL = "atlas-outline-"
+
+import math as _math
 
 
-def _compute_pcb_bounds(pcb_text: str, margin: float = 5.0) -> tuple[float, float, float, float]:
-    """Compute bounding box of all footprints in the PCB."""
-    min_x, min_y = float("inf"), float("inf")
-    max_x, max_y = float("-inf"), float("-inf")
-
-    # Find all footprint positions
-    for m in re.finditer(r'\(footprint\s+"[^"]+"\s*\n\s*\(layer\s+"F\.Cu"\)\s*\n'
-                         r'\s*\(uuid\s+"[^"]+"\)\s*\n\s*\(at\s+([\d.-]+)\s+([\d.-]+)', pcb_text):
-        x, y = float(m.group(1)), float(m.group(2))
-        min_x, min_y = min(min_x, x), min(min_y, y)
-        max_x, max_y = max(max_x, x), max(max_y, y)
-
-    # Add margin and account for typical footprint extent (~10mm for switches)
-    extent = 15.0  # Half-extent of largest components
-    return (min_x - extent - margin, min_y - extent - margin,
-            max_x + extent + margin, max_y + extent + margin)
+def _footprint_corners(x: float, y: float, rot: float, half_ext: float) -> list[tuple[float, float]]:
+    """Return 4 corners of a footprint at (x,y) with rotation and half-extent."""
+    r_rad = _math.radians(rot)
+    cos_r, sin_r = _math.cos(r_rad), _math.sin(r_rad)
+    corners = []
+    for dx, dy in [(-half_ext, -half_ext), (half_ext, -half_ext),
+                    (half_ext, half_ext), (-half_ext, half_ext)]:
+        cx = x + dx * cos_r - dy * sin_r
+        cy = y + dx * sin_r + dy * cos_r
+        corners.append((cx, cy))
+    return corners
 
 
-def patch_edge_cuts_box(pcb_text: str, margin: float = 5.0) -> str:
-    """Add a simple rectangular Edge.Cuts outline around all components."""
+def _convex_hull(points: list[tuple[float, float]]) -> list[tuple[float, float]]:
+    """Convex hull using Andrew's monotone chain algorithm."""
+    points = sorted(set((round(x, 2), round(y, 2)) for x, y in points))
+    if len(points) <= 2:
+        return points
+
+    def cross(o, a, b):
+        return (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0])
+
+    lower = []
+    for p in points:
+        while len(lower) >= 2 and cross(lower[-2], lower[-1], p) <= 0:
+            lower.pop()
+        lower.append(p)
+    upper = []
+    for p in reversed(points):
+        while len(upper) >= 2 and cross(upper[-2], upper[-1], p) <= 0:
+            upper.pop()
+        upper.append(p)
+    return lower[:-1] + upper[:-1]
+
+
+def _half_outline(switches: list[tuple[str, float, float, float]],
+                  ctrl_pos: tuple[float, float] | None,
+                  margin: float, is_right: bool) -> list[tuple[float, float]]:
+    """Compute tight convex hull outline for one half of the board.
+
+    Collects all component footprint corners (switches + controller) with
+    margin, then computes the convex hull — the tightest enclosing shape.
+    """
+    ext = SWITCH_HALF_EXTENT  # 9mm
+
+    points = []
+
+    # Switch footprint corners (handles rotation for thumb keys)
+    for _ref, x, y, rot in switches:
+        points.extend(_footprint_corners(x, y, rot, ext + margin))
+
+    # Controller corners (after ±90° rotation: height is horizontal, width is vertical)
+    if ctrl_pos:
+        cx, cy = ctrl_pos
+        hw = XIAO_HALF_HEIGHT + margin  # horizontal half-extent
+        hh = XIAO_HALF_WIDTH + margin   # vertical half-extent
+        points.extend([
+            (cx - hw, cy - hh), (cx + hw, cy - hh),
+            (cx + hw, cy + hh), (cx - hw, cy + hh),
+        ])
+
+    if not points:
+        return []
+
+    return _convex_hull(points)
+
+
+def _outline_to_lines(outline: list[tuple[float, float]], sentinel_base: str) -> list[str]:
+    """Convert outline points to KiCad gr_line s-expressions."""
+    lines = []
+    for i in range(len(outline)):
+        x1, y1 = outline[i]
+        x2, y2 = outline[(i + 1) % len(outline)]
+        lines.append(
+            f'\t(gr_line (start {x1:.4f} {y1:.4f}) (end {x2:.4f} {y2:.4f})\n'
+            f'\t\t(stroke (width 0.2) (type solid))\n'
+            f'\t\t(layer "Edge.Cuts")\n'
+            f'\t\t(uuid "{sentinel_base}-{i}")\n'
+            f'\t)'
+        )
+    return lines
+
+
+def patch_edge_cuts(pcb_text: str, layout: dict) -> str:
+    """Add per-half Edge.Cuts outlines — two separate boards.
+
+    Each half gets its own tight convex hull outline around all switches
+    (including rotated thumb keys) and the controller footprint.
+    """
     if EDGE_CUTS_SENTINEL in pcb_text:
-        return pcb_text  # already present
+        return pcb_text
 
-    x1, y1, x2, y2 = _compute_pcb_bounds(pcb_text, margin)
+    margin = 3.0  # mm beyond switch courtyard edge
 
-    # Create Edge.Cuts rectangle as gr_rect (use tstamp with sentinel prefix for idempotency)
-    sentinel_uuid = f"atlas-bbox-{uuid.uuid4()}"
-    rect_block = (
-        f'\t(gr_rect (start {x1:.4f} {y1:.4f}) (end {x2:.4f} {y2:.4f})\n'
-        f'\t\t(stroke (width 0.1) (type solid))\n'
-        f'\t\t(fill none)\n'
-        f'\t\t(layer "Edge.Cuts")\n'
-        f'\t\t(uuid "{sentinel_uuid}")\n'
-        f'\t)\n'
-    )
+    switches = _parse_switches_with_rotation(pcb_text)
+    if not switches:
+        print("Warning: no switches found, skipping edge cuts.")
+        return pcb_text
 
-    print(f"  Edge.Cuts box: ({x1:.1f}, {y1:.1f}) to ({x2:.1f}, {y2:.1f})")
+    # Split into left/right halves by x midpoint
+    all_xs = [x for _, x, _, _ in switches]
+    mid_x = (min(all_xs) + max(all_xs)) / 2
+    left_sw = [(r, x, y, rot) for r, x, y, rot in switches if x < mid_x]
+    right_sw = [(r, x, y, rot) for r, x, y, rot in switches if x >= mid_x]
 
+    # Find controller positions (already inserted by patch_controller)
+    ctrl_left = ctrl_right = None
+    for m in re.finditer(r'"Atlas:XIAO_BLE_(\w)"\s*\n\s*\(layer\s+"F\.Cu"\)\s*\n'
+                         r'\s*\(uuid\s+"[^"]+"\)\s*\n\s*\(at\s+([\d.-]+)\s+([\d.-]+)', pcb_text):
+        label = m.group(1)
+        cx, cy = float(m.group(2)), float(m.group(3))
+        if label == "L":
+            ctrl_left = (cx, cy)
+        elif label == "R":
+            ctrl_right = (cx, cy)
+
+    all_lines = []
+
+    for label, sw, ctrl, is_r in [("L", left_sw, ctrl_left, False), ("R", right_sw, ctrl_right, True)]:
+        outline = _half_outline(sw, ctrl, margin, is_r)
+        if not outline:
+            continue
+        sentinel = f"atlas-outline-{label}-{uuid.uuid4()}"
+        all_lines.extend(_outline_to_lines(outline, sentinel))
+        xs = [p[0] for p in outline]
+        ys = [p[1] for p in outline]
+        w, h = max(xs) - min(xs), max(ys) - min(ys)
+        print(f"  Edge.Cuts {label}: {len(outline)} points, {w:.1f} x {h:.1f} mm")
+
+    if not all_lines:
+        return pcb_text
+
+    insert_text = "\n".join(all_lines) + "\n"
     last_paren = pcb_text.rfind(")")
-    return pcb_text[:last_paren] + rect_block + pcb_text[last_paren:]
+    return pcb_text[:last_paren] + insert_text + pcb_text[last_paren:]
 
 
 # ---------------------------------------------------------------------------
@@ -605,7 +714,7 @@ def main() -> None:
     patched = patch_models(pcb_text)
     patched = patch_trackpoint_holes(patched, layout)
     patched = patch_controller(patched, layout)
-    patched = patch_edge_cuts_box(patched)
+    patched = patch_edge_cuts(patched, layout)
 
     if patched == pcb_text:
         print("No changes needed — PCB already patched.")
