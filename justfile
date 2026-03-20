@@ -149,10 +149,6 @@ pcb-enhance:
 pcb-open:
     pcbnew {{ pcb_out }} &
 
-# Calculate optimal thumb angle_step to match ortho grid gap
-[group('pcb')]
-thumb-calc:
-    python3 tools/thumb_calc.py -i {{ layout }}
 
 # Full PCB flow: generate KLE + show next steps
 [group('pcb')]
