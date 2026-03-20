@@ -19,7 +19,7 @@
       pkgs = nixpkgs.legacyPackages.${system};
       unstable = nixpkgs-unstable.legacyPackages.${system};
       zephyr = zephyr-nix.packages.${system};
-      keymap_drawer = pkgs.python312Packages.callPackage ./nix/keymap-drawer.nix {};
+      keymap_drawer = pkgs.python312Packages.callPackage ./keymapdrawer-nix/keymap-drawer.nix {};
     in {
       default = pkgs.mkShellNoCC {
         packages = [
