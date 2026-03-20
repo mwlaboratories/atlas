@@ -12,7 +12,7 @@ Idempotent — running twice produces the same result.
 
 Usage:
     python3 tools/pcb_enhance.py -i output/keyboard/keyboard.kicad_pcb
-    python3 tools/pcb_enhance.py -i output/keyboard/keyboard.kicad_pcb -l layout.yaml
+    python3 tools/pcb_enhance.py -i output/keyboard/keyboard.kicad_pcb -l keyboard.yaml
 """
 import argparse
 import re
@@ -578,7 +578,7 @@ def main() -> None:
         "--layout",
         type=Path,
         default=None,
-        help="layout.yaml (default: auto-detect from repo root)",
+        help="keyboard.yaml (default: auto-detect from repo root)",
     )
     args = parser.parse_args()
 
@@ -589,10 +589,10 @@ def main() -> None:
         print(f"Error: {pcb_path} not found", file=sys.stderr)
         sys.exit(1)
 
-    # Find layout.yaml
+    # Find keyboard.yaml
     layout_path = args.layout
     if layout_path is None:
-        layout_path = Path(__file__).resolve().parent.parent / "layout.yaml"
+        layout_path = Path(__file__).resolve().parent / "keyboard.yaml"
     if not layout_path.exists():
         print(f"Warning: {layout_path} not found, skipping trackpoint holes.", file=sys.stderr)
         layout = {}

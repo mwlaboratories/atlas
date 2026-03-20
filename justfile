@@ -3,6 +3,8 @@
 default:
     @just --list
 
+# ── Firmware (ZMK BLE) ─────────────────────────────────────────────
+
 # Paths
 workspace := absolute_path('firmware')
 config := workspace / 'config'
@@ -15,6 +17,7 @@ nix := absolute_path('nix')
 board := "xiao_ble"
 
 # Build left side firmware
+[group('firmware')]
 left *args:
     #!/usr/bin/env bash
     set -euo pipefail
@@ -27,6 +30,7 @@ left *args:
     echo "Built: {{ out }}/atlas_left.uf2"
 
 # Build right side firmware
+[group('firmware')]
 right *args:
     #!/usr/bin/env bash
     set -euo pipefail
@@ -39,31 +43,38 @@ right *args:
     echo "Built: {{ out }}/atlas_right.uf2"
 
 # Build both sides
+[group('firmware')]
 all: left right
 
-# Clean build artifacts
+# Clean firmware build artifacts
+[group('firmware')]
 clean:
     rm -rf {{ build }} {{ out }}
 
 # Initialize west workspace (run once after clone)
+[group('firmware')]
 init:
     cd {{ workspace }} && west init -l config && west update && west zephyr-export
 
 # Update west modules
+[group('firmware')]
 update:
     cd {{ workspace }} && west update
 
 # Flash left side (put in bootloader mode first)
+[group('firmware')]
 flash-left:
     @echo "Put left half in bootloader mode (double-tap reset)..."
     @echo "Then copy {{ out }}/atlas_left.uf2 to the mounted drive"
 
 # Flash right side (put in bootloader mode first)
+[group('firmware')]
 flash-right:
     @echo "Put right half in bootloader mode (double-tap reset)..."
     @echo "Then copy {{ out }}/atlas_right.uf2 to the mounted drive"
 
 # Generate keymap visualization
+[group('firmware')]
 keymap:
     #!/usr/bin/env bash
     set -euo pipefail
@@ -74,43 +85,52 @@ keymap:
     echo "Generated: {{ nix }}/keymap.svg"
 
 # Rebuild left (clean first)
+[group('firmware')]
 rebuild-left:
     rm -rf {{ build }}/left
     just left
 
 # Rebuild right (clean first)
+[group('firmware')]
 rebuild-right:
     rm -rf {{ build }}/right
     just right
 
 # Rebuild both (clean first)
+[group('firmware')]
 rebuild: clean all
 
-# ── PCB generation ──────────────────────────────────────────────────
+# ── PCB generation (see tools/readme.org) ──────────────────────────
 
 pcb_out := "output/keyboard"
+layout := "tools/keyboard.yaml"
 
-# Generate KLE-NG JSON from layout.yaml (paste into editor.keyboard-tools.xyz)
+# Generate KLE JSON from tools/keyboard.yaml → output/layout.json
+[group('pcb')]
 kle:
     @mkdir -p output
-    python3 tools/layout2kle.py -i layout.yaml -o output/layout.json
+    python3 tools/layout2kle.py -i {{ layout }} -o output/layout.json
     @echo "→ output/layout.json — paste into editor.keyboard-tools.xyz"
 
-# Print KLE JSON to stdout (for piping / clipboard)
+# Print KLE JSON to stdout
+[group('pcb')]
 kle-stdout:
-    python3 tools/layout2kle.py -i layout.yaml
+    python3 tools/layout2kle.py -i {{ layout }}
 
 # Copy KLE JSON to clipboard (xclip)
+[group('pcb')]
 kle-clip:
-    python3 tools/layout2kle.py -i layout.yaml | xclip -selection clipboard
+    python3 tools/layout2kle.py -i {{ layout }} | xclip -selection clipboard
     @echo "→ KLE JSON copied to clipboard"
 
-# Patch kbplacer-generated PCB with 3D models, trackpoint holes, controller, edge cuts
+# Patch kbplacer PCB with 3D models, trackpoint holes, controller, edge cuts
+[group('pcb')]
 pcb-enhance:
-    python3 tools/pcb_enhance.py -i {{ pcb_out }}/keyboard.kicad_pcb
+    python3 tools/pcb_enhance.py -i {{ pcb_out }}/keyboard.kicad_pcb -l {{ layout }}
     @echo "→ PCB patched"
 
-# Full PCB flow: generate KLE, remind to use editor, then enhance
+# Full PCB flow: generate KLE + show next steps
+[group('pcb')]
 pcb:
     just kle
     @echo ""

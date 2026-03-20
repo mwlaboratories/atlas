@@ -43,7 +43,7 @@ Thumb keys:
 - Both sides use identical wiring
 - Controller: Seeed XIAO nRF52840 (BLE)
 
-** Build (firmware)
+** Build
 #+begin_src bash
 nix develop
 just all      # build both sides
@@ -52,28 +52,17 @@ just right    # build right only
 just keymap   # generate keymap SVG
 #+end_src
 
-Firmware outputs to =firmware/=.
+Firmware outputs to =firmware/out/=.
 
-** Build (PCB)
-Generate a starter PCB from the declarative layout:
-#+begin_src bash
-nix develop
-just kle          # generate KLE JSON → output/layout.json
-just kle-clip     # or copy straight to clipboard
-# paste into editor.keyboard-tools.xyz
-# configure: Choc V1 hotswap, SOD-123F diode (-6,-4) 90°
-# download .kicad_pcb → output/keyboard/keyboard.kicad_pcb
-just pcb-enhance  # patch 3D models, trackpoint holes, controller, edge cuts
-#+end_src
+PCB generation pipeline is documented in =tools/readme.org=.
 
 ** Repo Structure
 #+begin_example
-layout.yaml          keyboard layout definition
 justfile             build commands (firmware + PCB)
 flake.nix            nix dev environment
 pcb/                 KiCad projects (main + trackball sensor)
 stl/                 3D-printable case parts
-tools/               PCB generation scripts + footprints
+tools/               PCB generation pipeline (see tools/readme.org)
 firmware/            ZMK workspace (shields, keymap, config)
 nix/                 nix package defs, keymap drawer
 images/              project photos + renders

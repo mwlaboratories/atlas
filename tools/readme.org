@@ -2,16 +2,28 @@
 
 * Overview
 
-Declarative PCB generation from =layout.yaml= in three steps.
+Everything for PCB generation lives in this directory.
+Edit =keyboard.yaml= here, run the pipeline from the repo root with =just=.
 
 * Pipeline
 
 #+begin_example
-  layout.yaml                      ← you edit this
+  tools/
+  ├── keyboard.yaml              ← INPUT: you edit this
+  ├── layout2kle.py            ← Step 1: layout → KLE JSON
+  ├── pcb_enhance.py           ← Step 3: patch kbplacer output
+  └── *.kicad_mod              ← controller footprints (used by Step 3)
+
+  output/                      ← OUTPUT: all generated files land here
+  ├── layout.json              ← Step 1 output (KLE JSON)
+  └── keyboard/
+      └── keyboard.kicad_pcb   ← Step 2 download → Step 3 patches in place
+
+  tools/keyboard.yaml
        │
        │  Step 1: just kle
        ▼
-  output/layout.json               ← KLE-NG JSON
+  output/layout.json
        │
        │  Step 2: paste into editor.keyboard-tools.xyz
        │          configure footprints (see below)
@@ -26,7 +38,7 @@ Declarative PCB generation from =layout.yaml= in three steps.
 
 * Step 1 — Generate KLE JSON
 
-=layout2kle.py= converts =layout.yaml= into KLE-NG JSON format.
+=layout2kle.py= converts =keyboard.yaml= into KLE-NG JSON format.
 
 #+begin_src bash
 just kle          # → output/layout.json
@@ -64,7 +76,7 @@ Then open in KiCad for final routing and tweaks.
 
 | File                        | Purpose                                  |
 |-----------------------------+------------------------------------------|
-| layout2kle.py               | Step 1: layout.yaml → KLE JSON           |
+| layout2kle.py               | Step 1: keyboard.yaml → KLE JSON           |
 | pcb_enhance.py              | Step 3: patch kbplacer PCB output        |
 | XIAO_BLE_custom.kicad_mod   | XIAO BLE controller footprint            |
 | xiao-ble-smd-cutout.kicad_mod | XIAO BLE SMD cutout variant           |
