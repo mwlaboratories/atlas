@@ -1,24 +1,30 @@
 #+TITLE: Atlas Keyboard
 #+OPTIONS: toc:nil num:nil
 
-[[atlas-render.png]]
+[[images/atlas-render.png]]
 
 [[nix/keymap.svg]]
 
-[[atlas_jan_small.jpg]]
+[[images/atlas_jan_small.jpg]]
 * Atlas
-34-key split keyboard with dual TrackPoints, using XIAO BLE controllers.
+34-key split ergonomic keyboard with dual TrackPoints and BLE wireless (no dongle).
 
-** Status (Feb 2026)
-- Left side TrackPoint working (Sprintek all-in-one module)
-- Right side TrackPoint configured (same setup as left)
+- Choc V1 hotswap switches
+- XIAO BLE (nRF52840) controllers
+- Sprintek all-in-one TrackPoint modules on both halves
+- ZMK firmware, BLE split — no dongle needed
+
+** Status (Mar 2026)
+- BLE split working — direct host connection, no dongle
+- Both TrackPoints working (Sprintek AIO, PS/2 via UART)
 - Mouse layer auto-activates on trackpoint movement
-- Scroll mode working
-- BLE split (no dongle)
+- Scroll mode on thumb key hold
+- PCBs fabricated (main board + trackball sensor)
+- 3D-printed case ready
 
 ** Architecture
 #+begin_example
-Host <-- Left (central + trackpoint) <-- Right (peripheral + trackpoint)
+Host <--BLE-- Left (central + trackpoint) <--BLE-- Right (peripheral + trackpoint)
 #+end_example
 
 ** Mouse Layer
@@ -31,12 +37,13 @@ Thumb keys:
 
 - *Scroll*: Hold to convert movement to scroll wheel
 
-** Hardware Notes
+** Hardware
 - TrackPoint: Sprintek all-in-one module, PS/2 via UART
 - Pins: D6 (SCL), D7 (SDA), P0.09 (reset)
 - Both sides use identical wiring
+- Controller: Seeed XIAO nRF52840 (BLE)
 
-** Build
+** Build (firmware)
 #+begin_src bash
 nix develop
 just all      # build both sides
@@ -45,4 +52,29 @@ just right    # build right only
 just keymap   # generate keymap SVG
 #+end_src
 
-Firmware outputs to =zmk-workspace-ble/firmware/=.
+Firmware outputs to =firmware/=.
+
+** Build (PCB)
+Generate a starter PCB from the declarative layout:
+#+begin_src bash
+nix develop
+just kle          # generate KLE JSON → output/layout.json
+just kle-clip     # or copy straight to clipboard
+# paste into editor.keyboard-tools.xyz
+# configure: Choc V1 hotswap, SOD-123F diode (-6,-4) 90°
+# download .kicad_pcb → output/keyboard/keyboard.kicad_pcb
+just pcb-enhance  # patch 3D models, trackpoint holes, controller, edge cuts
+#+end_src
+
+** Repo Structure
+#+begin_example
+layout.yaml          keyboard layout definition
+justfile             build commands (firmware + PCB)
+flake.nix            nix dev environment
+pcb/                 KiCad projects (main + trackball sensor)
+stl/                 3D-printable case parts
+tools/               PCB generation scripts + footprints
+firmware/            ZMK workspace (shields, keymap, config)
+nix/                 nix package defs, keymap drawer
+images/              project photos + renders
+#+end_example

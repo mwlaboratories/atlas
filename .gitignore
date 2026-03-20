@@ -1,9 +1,7 @@
 # Build artifacts
 .build/
 *.build/
-firmware/
-
-# Future: zmk-workspace-esb for ESB/dongle setup
+firmware/out/
 
 # West-managed dependencies (regenerate with: just init)
 .west/
@@ -17,10 +15,12 @@ zmk-pmw3610-driver/
 
 # Nix
 .direnv/
+.nix-kbplacer/
 result
 result-*
 
-# Generated keymap files
+# Generated output
+output/
 nix/keymap.yaml
 nix/keymap.png
 
