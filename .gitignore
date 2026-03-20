@@ -23,8 +23,8 @@ result-*
 tools/build/
 
 # Generated keymap files
-nix/keymap.yaml
-nix/keymap.png
+firmware/keymap/keymap.yaml
+firmware/keymap/keymap.png
 
 # Logs
 *.log

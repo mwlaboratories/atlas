@@ -3,7 +3,7 @@
 
 [[images/atlas-render.png]]
 
-[[nix/keymap.svg]]
+[[firmware/keymap/keymap.svg]]
 
 [[images/atlas_jan_small.jpg]]
 * Atlas

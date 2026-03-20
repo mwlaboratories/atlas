@@ -11,7 +11,7 @@ config := workspace / 'config'
 build := workspace / '.build'
 out := workspace / 'out'
 modules := workspace / 'kb_zmk_ps2_mouse_trackpoint_driver'
-nix := absolute_path('nix')
+keymap_dir := absolute_path('keymapdrawer-nix')
 
 # Board name
 board := "xiao_ble"
@@ -78,11 +78,11 @@ flash-right:
 keymap:
     #!/usr/bin/env bash
     set -euo pipefail
-    python -m keymap_drawer -c {{ nix }}/keymap-drawer.yaml parse -z {{ config }}/atlas.keymap -c 10 -o {{ nix }}/keymap.yaml
-    python -m keymap_drawer -c {{ nix }}/keymap-drawer.yaml draw {{ nix }}/keymap.yaml \
+    python -m keymap_drawer -c {{ keymap_dir }}/keymap-drawer.yaml parse -z {{ config }}/atlas.keymap -c 10 -o {{ keymap_dir }}/keymap.yaml
+    python -m keymap_drawer -c {{ keymap_dir }}/keymap-drawer.yaml draw {{ keymap_dir }}/keymap.yaml \
         -n "33333+2 2+33333" \
-        -o {{ nix }}/keymap.svg
-    echo "Generated: {{ nix }}/keymap.svg"
+        -o {{ keymap_dir }}/keymap.svg
+    echo "Generated: {{ keymap_dir }}/keymap.svg"
 
 # Rebuild left (clean first)
 [group('firmware')]
