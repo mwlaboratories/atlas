@@ -102,15 +102,15 @@ rebuild: clean all
 
 # ── PCB generation (see tools/readme.org) ──────────────────────────
 
-pcb_out := "output/keyboard"
 layout := "tools/keyboard.yaml"
+kle_json := "tools/build/layout.json"
+pcb_in := "tools/build/keyboard.kicad_pcb"
 
-# Generate KLE JSON from tools/keyboard.yaml → output/layout.json
+# Generate KLE JSON from tools/keyboard.yaml
 [group('pcb')]
 kle:
-    @mkdir -p output
-    python3 tools/layout2kle.py -i {{ layout }} -o output/layout.json
-    @echo "→ output/layout.json — paste into editor.keyboard-tools.xyz"
+    python3 tools/layout2kle.py -i {{ layout }} -o {{ kle_json }}
+    @echo "→ {{ kle_json }}"
 
 # Print KLE JSON to stdout
 [group('pcb')]
@@ -126,8 +126,8 @@ kle-clip:
 # Patch kbplacer PCB with 3D models, trackpoint holes, controller, edge cuts
 [group('pcb')]
 pcb-enhance:
-    python3 tools/pcb_enhance.py -i {{ pcb_out }}/keyboard.kicad_pcb -l {{ layout }}
-    @echo "→ PCB patched"
+    python3 tools/pcb_enhance.py -i {{ pcb_in }} -l {{ layout }}
+    @echo "→ {{ pcb_in }} patched"
 
 # Full PCB flow: generate KLE + show next steps
 [group('pcb')]
@@ -135,8 +135,7 @@ pcb:
     just kle
     @echo ""
     @echo "Next steps:"
-    @echo "  1. Copy output/layout.json contents"
-    @echo "  2. Paste into editor.keyboard-tools.xyz"
-    @echo "  3. Configure: Choc V1 hotswap, SOD-123F diode at (-6,-4) 90°"
-    @echo "  4. Download .kicad_pcb to {{ pcb_out }}/keyboard.kicad_pcb"
-    @echo "  5. Run: just pcb-enhance"
+    @echo "  1. Paste {{ kle_json }} into editor.keyboard-tools.xyz"
+    @echo "  2. Configure: Choc V1 hotswap, SOD-123F diode at (-6,-4) 90°"
+    @echo "  3. Download .kicad_pcb → {{ pcb_in }}"
+    @echo "  4. Run: just pcb-enhance"

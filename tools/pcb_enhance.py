@@ -232,7 +232,7 @@ def _make_holes(
 
 def _find_xiao_footprint() -> str | None:
     """Find the XIAO BLE .kicad_mod file in tools/ next to this script."""
-    fp_path = Path(__file__).resolve().parent / XIAO_FP_FILE
+    fp_path = Path(__file__).resolve().parent / "footprints" / XIAO_FP_FILE
     if fp_path.exists():
         return fp_path.read_text()
     return None
