@@ -144,6 +144,16 @@ pcb-enhance:
     python3 tools/pcb_enhance.py -i {{ pcb_out }} -l {{ layout }}
     echo "→ {{ pcb_out }}"
 
+# Open patched PCB in KiCad
+[group('pcb')]
+pcb-view:
+    kicad-cli pcb render --output tools/build/pcb-render.png {{ pcb_out }} && xdg-open tools/build/pcb-render.png || kicad {{ pcb_out }}
+
+# Open patched PCB in KiCad editor
+[group('pcb')]
+pcb-edit:
+    kicad {{ pcb_out }}
+
 # Calculate optimal thumb angle_step to match ortho grid gap
 [group('pcb')]
 thumb-calc:
