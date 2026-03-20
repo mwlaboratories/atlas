@@ -33,7 +33,7 @@ switch:
   type: choc_v1                        # Kailh Choc V1 — Ambients Nocturnal
   spacing: [0.945, 0.893]             # [x, y] center-to-center (key units) — Choc V1: 18 × 17 mm
   keycap: [0.92, 0.87]               # [w, h] keycap size (key units) — Choc V1: 17.5 × 16.5 mm
-  cutout: 13.8                         # plate cutout side length (mm) — from Choc V1 datasheet
+  cutout: 14.0                         # plate cutout side length (mm) — Choc V1 / Ambients: 14×14mm
 
 # --- Grid ---
 # 5 columns × 3 rows per half. Only the left half is defined.
