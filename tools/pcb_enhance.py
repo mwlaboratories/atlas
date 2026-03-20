@@ -433,11 +433,16 @@ def patch_controller(pcb_text: str, layout: dict) -> str:
             continue
 
         sx, sy = ref_to_pos[sw_ref]
-        # Place controller above the pinky column:
-        #   - 17.5mm above the pinky top switch center
-        #   - 3.5mm inward from pinky switch center
-        ctrl_y = sy - 17.5
-        ctrl_x = (sx - 1.5) if half_label == "L" else (sx + 1.5)
+        # Place controller above the pinky column, derived from layout:
+        #   - BLE bottom edge flush with key top edge (cutout/2 + padding)
+        #   - BLE right edge flush with key right edge (left half)
+        sw_cfg = layout.get("switch", {})
+        cutout = sw_cfg.get("cutout", 14.0)
+        case_padding = layout.get("case", {}).get("plate_padding", 2.0)
+        sw_half = cutout / 2 + case_padding
+        ctrl_y = sy - sw_half - XIAO_HALF_WIDTH
+        x_offset = XIAO_HALF_HEIGHT - sw_half
+        ctrl_x = (sx - x_offset) if half_label == "L" else (sx + x_offset)
 
         fp = _convert_footprint_to_pcb(
             mod_text,
@@ -530,7 +535,7 @@ import math as _math
 
 def _footprint_corners(x: float, y: float, rot: float, half_ext: float) -> list[tuple[float, float]]:
     """Return 4 corners of a footprint at (x,y) with rotation and half-extent."""
-    r_rad = _math.radians(rot)
+    r_rad = _math.radians(-rot)  # KiCad CW-positive → math CCW-positive
     cos_r, sin_r = _math.cos(r_rad), _math.sin(r_rad)
     corners = []
     for dx, dy in [(-half_ext, -half_ext), (half_ext, -half_ext),
@@ -566,33 +571,119 @@ def _convex_hull(points: list[tuple[float, float]]) -> list[tuple[float, float]]
 def _half_outline(switches: list[tuple[str, float, float, float]],
                   ctrl_pos: tuple[float, float] | None,
                   margin: float, is_right: bool) -> list[tuple[float, float]]:
-    """Compute tight convex hull outline for one half of the board.
+    """Left half outline (right half is mirrored by caller).
 
-    Collects all component footprint corners (switches + controller) with
-    margin, then computes the convex hull — the tightest enclosing shape.
+    Clockwise polygon wrapping tightly around keys + controller.
     """
-    ext = SWITCH_HALF_EXTENT  # 9mm
+    hw = 9.0   # switch half-width
+    hh = 8.5   # switch half-height
+
+    grid_sw = [(r, x, y, rot) for r, x, y, rot in switches if abs(rot) <= 1]
+    thumb_sw = [(r, x, y, rot) for r, x, y, rot in switches if abs(rot) > 1]
+    if not grid_sw:
+        return []
+
+    # Group grid switches into columns
+    grid_sw.sort(key=lambda s: s[1])
+    columns = []
+    cur = [grid_sw[0]]
+    for sw in grid_sw[1:]:
+        if abs(sw[1] - cur[-1][1]) < 2:
+            cur.append(sw)
+        else:
+            columns.append(cur)
+            cur = [sw]
+    columns.append(cur)
+
+    col_data = []  # (avg_x, min_y, max_y)
+    for col in columns:
+        ax = sum(s[1] for s in col) / len(col)
+        col_data.append((ax, min(s[2] for s in col), max(s[2] for s in col)))
+
+    # Key edges
+    outer_left = col_data[0][0] - hw - margin
+    inner_right = col_data[-1][0] + hw + margin
+    pinky_bot = col_data[0][2] + hh + margin
+    inner_cols_bot = max(c[2] + hh + margin for c in col_data[1:]) if len(col_data) > 1 else pinky_bot
+
+    # Top y per region: controller side vs grid side
+    grid_top = min(c[1] - hh - margin for c in col_data[1:]) if len(col_data) > 1 else col_data[0][1] - hh - margin
+    ctrl_top = grid_top
+    if ctrl_pos:
+        ctrl_top = min(ctrl_top, ctrl_pos[1] - XIAO_HALF_WIDTH - margin)
+    pinky_top = col_data[0][1] - hh - margin
+
+    # Step x between pinky (col 0) and ring (col 1)
+    step_x = (col_data[0][0] + col_data[1][0]) / 2 if len(col_data) > 1 else outer_left
+
+    # Controller right edge + margin (used for top step)
+    ctrl_step_x = step_x
+    if ctrl_pos:
+        ctrl_step_x = max(step_x, ctrl_pos[0] + XIAO_HALF_WIDTH + margin)
 
     points = []
 
-    # Switch footprint corners (handles rotation for thumb keys)
-    for _ref, x, y, rot in switches:
-        points.extend(_footprint_corners(x, y, rot, ext + margin))
+    # === Top-left with controller step (clockwise) ===
+    points.append((outer_left, ctrl_top))              # 1. top-left corner
+    points.append((ctrl_step_x, ctrl_top))             # 2. controller step right
+    points.append((ctrl_step_x, grid_top))             # 3. controller step down
+    points.append((inner_right, grid_top))             # 4. top-right corner
 
-    # Controller corners (after ±90° rotation: height is horizontal, width is vertical)
-    if ctrl_pos:
-        cx, cy = ctrl_pos
-        hw = XIAO_HALF_HEIGHT + margin  # horizontal half-extent
-        hh = XIAO_HALF_WIDTH + margin   # vertical half-extent
-        points.extend([
-            (cx - hw, cy - hh), (cx + hw, cy - hh),
-            (cx + hw, cy + hh), (cx - hw, cy + hh),
-        ])
+    # === Right side + thumb section ===
+    if thumb_sw:
+        # Sort thumb keys by x (inner first, outer last)
+        thumb_sw.sort(key=lambda s: s[1])
 
-    if not points:
-        return []
+        # Inner edge goes down to inner_cols_bot
+        points.append((inner_right, inner_cols_bot))   # 5. grid bottom-right
 
-    return _convex_hull(points)
+        # Outermost thumb key (max x): miter corners for right + bottom edges
+        ot = max(thumb_sw, key=lambda s: s[1])
+        _ref, tx, ty, rot = ot
+        r = _math.radians(-rot)  # KiCad CW-positive → math CCW-positive
+        c, s = _math.cos(r), _math.sin(r)
+
+        # Miter at top-right corner: right normal (c,s) + top normal (s,-c)
+        edge_top = (tx + hw*c + hh*s, ty + hw*s - hh*c)  # local (+hw, -hh)
+        miter_tr = (edge_top[0] + margin*(c + s), edge_top[1] + margin*(s - c))
+
+        # Miter at bottom-right corner: right normal (c,s) + bottom normal (-s,c)
+        edge_bot = (tx + hw*c - hh*s, ty + hw*s + hh*c)  # local (+hw, +hh)
+        miter_br = (edge_bot[0] + margin*(c - s), edge_bot[1] + margin*(s + c))
+
+        points.append(miter_tr)                        # 6. thumb top-right miter
+        points.append(miter_br)                        # 7. thumb bottom-right miter (right edge)
+
+        # Bottom-left corners of each thumb key (outer first, then inner),
+        # offset by bottom normal (-s, c) for each key's rotation
+        for _, ttx, tty, trot in reversed(thumb_sw):
+            tr = _math.radians(-trot)
+            tc, ts = _math.cos(tr), _math.sin(tr)
+            key_bl = (ttx - hw*tc - hh*ts, tty - hw*ts + hh*tc)
+            off_bl = (key_bl[0] - margin*ts, key_bl[1] + margin*tc)
+            points.append(off_bl)                      # 8,9. bottom-left corners
+
+        # Back to grid: inner edge up to top
+        points.append((inner_right, grid_top))         # close inner edge (dedup will handle)
+    else:
+        points.append((inner_right, inner_cols_bot))
+
+    # === Bottom section ===
+    points.append((step_x, inner_cols_bot))            # 10. horizontal to step
+    points.append((step_x, pinky_bot))                 # 11. step down to pinky
+    points.append((outer_left, pinky_bot))             # 12. horizontal to outer edge
+
+    # === Left edge up (close) ===
+    points.append((outer_left, ctrl_top))              # 13/14. close
+
+    # Deduplicate consecutive points
+    cleaned = [points[0]]
+    for p in points[1:]:
+        if abs(p[0] - cleaned[-1][0]) > 0.05 or abs(p[1] - cleaned[-1][1]) > 0.05:
+            cleaned.append(p)
+    if len(cleaned) > 1 and abs(cleaned[-1][0]-cleaned[0][0]) < 0.05 and abs(cleaned[-1][1]-cleaned[0][1]) < 0.05:
+        cleaned.pop()
+    return cleaned
 
 
 def _outline_to_lines(outline: list[tuple[float, float]], sentinel_base: str) -> list[str]:
@@ -646,16 +737,27 @@ def patch_edge_cuts(pcb_text: str, layout: dict) -> str:
 
     all_lines = []
 
-    for label, sw, ctrl, is_r in [("L", left_sw, ctrl_left, False), ("R", right_sw, ctrl_right, True)]:
-        outline = _half_outline(sw, ctrl, margin, is_r)
-        if not outline:
-            continue
-        sentinel = f"atlas-outline-{label}-{uuid.uuid4()}"
-        all_lines.extend(_outline_to_lines(outline, sentinel))
-        xs = [p[0] for p in outline]
-        ys = [p[1] for p in outline]
+    # Compute left half outline only, then mirror for right
+    left_outline = _half_outline(left_sw, ctrl_left, margin, False)
+    if left_outline:
+        sentinel = f"atlas-outline-L-{uuid.uuid4()}"
+        all_lines.extend(_outline_to_lines(left_outline, sentinel))
+        xs = [p[0] for p in left_outline]
+        ys = [p[1] for p in left_outline]
         w, h = max(xs) - min(xs), max(ys) - min(ys)
-        print(f"  Edge.Cuts {label}: {len(outline)} points, {w:.1f} x {h:.1f} mm")
+        print(f"  Edge.Cuts L: {len(left_outline)} points, {w:.1f} x {h:.1f} mm")
+
+        # Mirror left outline to create right outline
+        # Mirror axis = midpoint of all switch x positions
+        mirror_x = mid_x
+        right_outline = [(2 * mirror_x - x, y) for x, y in left_outline]
+        # Reverse winding order so the outline goes the right direction
+        right_outline.reverse()
+        sentinel = f"atlas-outline-R-{uuid.uuid4()}"
+        all_lines.extend(_outline_to_lines(right_outline, sentinel))
+        xs = [p[0] for p in right_outline]
+        w = max(xs) - min(xs)
+        print(f"  Edge.Cuts R: {len(right_outline)} points, {w:.1f} x {h:.1f} mm")
 
     if not all_lines:
         return pcb_text
