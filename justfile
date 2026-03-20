@@ -104,7 +104,7 @@ rebuild: clean all
 
 layout := "tools/keyboard.yaml"
 kle_json := "tools/build/layout.json"
-pcb_in := "tools/build/keyboard.kicad_pcb"
+pcb_out := "tools/build/keyboard.kicad_pcb"
 
 # Generate KLE JSON from tools/keyboard.yaml
 [group('pcb')]
@@ -123,11 +123,26 @@ kle-clip:
     python3 tools/layout2kle.py -i {{ layout }} | wl-copy
     @echo "→ KLE JSON copied to clipboard"
 
-# Patch kbplacer PCB with 3D models, trackpoint holes, controller, edge cuts
+# Unzip latest .zip in build/ + patch PCB
 [group('pcb')]
 pcb-enhance:
-    python3 tools/pcb_enhance.py -i {{ pcb_in }} -l {{ layout }}
-    @echo "→ {{ pcb_in }} patched"
+    #!/usr/bin/env bash
+    set -euo pipefail
+    zip=$(ls -t tools/build/*.zip 2>/dev/null | head -1)
+    if [ -z "$zip" ]; then
+        echo "Error: no .zip found in tools/build/" >&2
+        exit 1
+    fi
+    echo "Extracting: $zip"
+    unzip -o -j "$zip" "*.kicad_pcb" -d tools/build/
+    # rename to keyboard.kicad_pcb
+    for f in tools/build/*.kicad_pcb; do
+        if [ "$f" != "{{ pcb_out }}" ]; then
+            mv "$f" {{ pcb_out }}
+        fi
+    done
+    python3 tools/pcb_enhance.py -i {{ pcb_out }} -l {{ layout }}
+    echo "→ {{ pcb_out }}"
 
 # Calculate optimal thumb angle_step to match ortho grid gap
 [group('pcb')]
@@ -142,5 +157,5 @@ pcb:
     @echo "Next steps:"
     @echo "  1. Paste {{ kle_json }} into editor.keyboard-tools.xyz"
     @echo "  2. Configure: Choc V1 hotswap, SOD-123F diode at (-6,-4) 90°"
-    @echo "  3. Download .kicad_pcb → {{ pcb_in }}"
+    @echo "  3. Download zip → tools/build/"
     @echo "  4. Run: just pcb-enhance"

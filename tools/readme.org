@@ -12,13 +12,13 @@ tools/
 ├── keyboard.yaml                ← INPUT: you edit this
 ├── build/                       ← generated + downloaded files (gitignored)
 │   ├── layout.json              ← Step 1 output
-│   └── keyboard.kicad_pcb      ← Step 2 download → Step 3 patches in place
+│   ├── *.zip                    ← Step 2 download (from editor)
+│   └── keyboard.kicad_pcb      ← Step 3 output (patched)
 ├── footprints/                  ← KiCad footprints used by pcb_enhance
-│   ├── XIAO_BLE_custom.kicad_mod
-│   ├── xiao-ble-smd-cutout.kicad_mod
-│   └── xiao-ble-tht.kicad_mod
+│   └── *.kicad_mod
 ├── layout2kle.py                ← Step 1 script
 ├── pcb_enhance.py               ← Step 3 script
+├── thumb_calc.py                ← helper: calculate thumb angle_step
 └── readme.org
 #+end_example
 
@@ -33,11 +33,12 @@ tools/
        │
        │  Step 2: paste into editor.keyboard-tools.xyz
        │          configure footprints (see below)
-       │          download .kicad_pcb
+       │          download .zip
        ▼
-  build/keyboard.kicad_pcb      ← raw kbplacer output
+  build/*.zip                   ← raw kbplacer output
        │
        │  Step 3: just pcb-enhance
+       │          (finds latest .zip, extracts, patches)
        ▼
   build/keyboard.kicad_pcb      ← patched, ready for KiCad
 #+end_example
@@ -48,7 +49,7 @@ tools/
 
 #+begin_src bash
 just kle          # → tools/build/layout.json
-just kle-clip     # → clipboard (xclip)
+just kle-clip     # → clipboard (wl-copy)
 just kle-stdout   # → stdout
 #+end_src
 
@@ -60,12 +61,12 @@ just kle-stdout   # → stdout
    - Switch: *Hotswap Kailh Choc V1*, rotation 0°
    - Diode: *SOD-123F*, position =(-6, -4) mm=, rotation 90°
    - Routing: Switch-Diode only
-4. Generate and download =keyboard.kicad_pcb=
-5. Save to =tools/build/keyboard.kicad_pcb=
+4. Generate and download zip
+5. Save to =tools/build/=
 
 * Step 3 — Enhance PCB
 
-=pcb_enhance.py= patches the downloaded PCB in place:
+=just pcb-enhance= finds the latest =.zip= in =build/=, extracts the =.kicad_pcb=, and patches it:
 
 - Fixes 3D model paths (hotswap socket, switch body, diode)
 - Adds trackpoint NPTH holes (stick + screw mounts)
@@ -73,7 +74,13 @@ just kle-stdout   # → stdout
 - Adds Edge.Cuts bounding box
 
 #+begin_src bash
-just pcb-enhance  # patches tools/build/keyboard.kicad_pcb in place
+just pcb-enhance  # → tools/build/keyboard.kicad_pcb
 #+end_src
 
 Then open in KiCad for final routing and tweaks.
+
+* Helpers
+
+#+begin_src bash
+just thumb-calc   # calculate optimal angle_step to match ortho grid gap
+#+end_src
