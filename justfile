@@ -141,6 +141,32 @@ pcb-enhance:
 pcb-open:
     pcbnew {{ pcb_out }} &
 
+# Export PCB + 3D models + footprints to a directory for manufacturing/STEP export
+[group('pcb')]
+pcb-export dir="tools/build/export":
+    #!/usr/bin/env bash
+    set -euo pipefail
+    mkdir -p {{ dir }}
+    cp {{ pcb_out }} {{ dir }}/
+    # Copy project files if they exist
+    for ext in kicad_pro kicad_prl; do
+        src="tools/build/keyboard.$ext"
+        [ -f "$src" ] && cp "$src" {{ dir }}/
+    done
+    # Copy 3D models (not symlink, so it works standalone)
+    rm -rf {{ dir }}/3dmodels
+    cp -r tools/3dmodels {{ dir }}/3dmodels
+    # Copy footprints
+    rm -rf {{ dir }}/footprints
+    cp -r tools/footprints {{ dir }}/footprints
+    echo "→ Exported to {{ dir }}/"
+
+# Export STEP 3D model from the exported PCB
+[group('pcb')]
+pcb-step dir="tools/build/export":
+    kicad-cli pcb export step --subst-models -f -o {{ dir }}/keyboard.step {{ dir }}/keyboard.kicad_pcb
+    @echo "→ {{ dir }}/keyboard.step"
+
 # Full PCB flow: YAML → KLE → kbplacer → enhance → KiCad (fully automated)
 [group('pcb')]
 pcb:
@@ -177,8 +203,8 @@ pcb:
         --diode-footprint "$KICAD9_FOOTPRINT_DIR/Diode_SMD.pretty:D_SOD-123F" \
         --layout {{ kle_json }} \
         --route-switches-with-diodes \
-        --switch "SW{} 0 FRONT" \
-        --diode "D{} CUSTOM -6.0 -4.0 90 BACK" \
+        --switch "SW{} 180 FRONT" \
+        --diode "D{} CUSTOM 6.0 4.0 270 BACK" \
         --log-level WARNING
     echo "✓ kbplacer generated PCB"
 
@@ -197,8 +223,8 @@ pcb:
             --switch-footprint "{{ kiswitch_dir }}/${SOLDER_LIB}.pretty:${SOLDER_NAME}_1.00u" \
             --diode-footprint "$KICAD9_FOOTPRINT_DIR/Diode_SMD.pretty:D_SOD-123F" \
             --layout {{ kle_json }} \
-            --switch "SW{} 0 FRONT" \
-            --diode "D{} CUSTOM -6.0 -4.0 90 BACK" \
+            --switch "SW{} 180 FRONT" \
+            --diode "D{} CUSTOM 6.0 4.0 270 BACK" \
             --log-level WARNING
         echo "✓ Solder reference generated"
     fi
@@ -209,7 +235,23 @@ pcb:
     python3 tools/pcb_enhance.py -i {{ pcb_out }} -l {{ layout }} $SOLDER_ARG
     echo "✓ Enhanced PCB"
 
-    # Step 4: Open in KiCad
+    # Step 4: Export + open in KiCad for manual XIAO flip
+    just pcb-export
+
+    EXPORT_DIR="tools/build/export"
     echo ""
-    echo "→ {{ pcb_out }}"
-    pcbnew {{ pcb_out }} &
+    echo "┌─────────────────────────────────────────────────────┐"
+    echo "│  Opening PCB in KiCad for manual edits:             │"
+    echo "│    1. Select both XIAO BLE controllers (U_L, U_R)   │"
+    echo "│    2. Press F to flip them to the back side          │"
+    echo "│    3. Save (Ctrl+S)                                  │"
+    echo "│    4. Close KiCad                                    │"
+    echo "└─────────────────────────────────────────────────────┘"
+    pcbnew "$EXPORT_DIR/keyboard.kicad_pcb"
+
+    # Step 5: STEP export
+    echo ""
+    read -p "Export STEP model? [Y/n] " answer
+    if [ "${answer:-y}" != "n" ]; then
+        just pcb-step
+    fi

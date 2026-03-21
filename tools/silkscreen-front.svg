@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="116mm" height="88mm" viewBox="0 0 116 88">
+  <!-- Atlas Keyboard — Front Silkscreen (Left Half)
+       Topographic/cartographic theme
+       All strokes 0.15mm+ for PCB silkscreen compatibility
+       Coordinate system: origin at top-left of board outline -->
+
+  <defs>
+    <!-- No fills — silkscreen is lines only -->
+  </defs>
+
+  <g fill="none" stroke="white" stroke-linecap="round" stroke-linejoin="round">
+
+    <!-- ═══════════════════════════════════════════════════════
+         TOPOGRAPHIC CONTOUR LINES
+         Flowing curves that suggest terrain, wrapping around
+         the key positions. The trackpoint area is the "summit".
+         ═══════════════════════════════════════════════════════ -->
+
+    <!-- Outer contours — large sweeping curves across the board -->
+    <path d="M 4,78 C 8,72 12,68 18,65 C 26,61 35,58 42,54 C 48,51 52,46 55,40
+             C 57,36 58,30 60,26 C 62,22 66,18 72,16 C 78,14 84,14 90,16"
+          stroke-width="0.18" opacity="0.3"/>
+
+    <path d="M 2,72 C 6,66 14,60 22,56 C 30,52 38,48 44,43
+             C 49,39 52,34 56,28 C 59,23 64,19 70,17
+             C 76,15 82,15 88,17 C 94,19 100,23 106,28"
+          stroke-width="0.18" opacity="0.25"/>
+
+    <path d="M 6,84 C 10,78 16,74 24,70 C 32,66 40,62 48,57
+             C 54,53 58,48 62,42 C 65,37 68,32 74,28
+             C 80,24 88,22 96,22 C 102,22 108,24 112,28"
+          stroke-width="0.18" opacity="0.2"/>
+
+    <!-- Mid contours — tighter curves near the trackpoint "summit" -->
+    <path d="M 38,52 C 42,48 46,44 50,38 C 53,33 56,28 60,24
+             C 64,20 70,18 76,18 C 82,18 86,22 88,26"
+          stroke-width="0.20" opacity="0.4"/>
+
+    <path d="M 42,46 C 46,42 50,38 54,32 C 57,27 62,22 68,20
+             C 74,18 80,20 84,24"
+          stroke-width="0.20" opacity="0.35"/>
+
+    <path d="M 46,40 C 50,36 54,30 58,26 C 62,22 68,20 74,20"
+          stroke-width="0.22" opacity="0.45"/>
+
+    <!-- Inner contours — tight rings around trackpoint area -->
+    <path d="M 52,34 C 54,30 58,26 62,24 C 66,22 70,22 72,24"
+          stroke-width="0.22" opacity="0.5"/>
+
+    <path d="M 56,30 C 58,27 62,24 66,23"
+          stroke-width="0.25" opacity="0.55"/>
+
+    <!-- Secondary contour set — flowing from bottom-right -->
+    <path d="M 110,70 C 104,64 96,58 88,54 C 80,50 72,48 64,48
+             C 56,48 48,50 40,54 C 32,58 26,64 22,70"
+          stroke-width="0.18" opacity="0.2"/>
+
+    <path d="M 108,62 C 102,56 94,50 86,46 C 78,42 70,40 62,40
+             C 54,40 46,42 38,46"
+          stroke-width="0.18" opacity="0.25"/>
+
+    <path d="M 104,56 C 98,50 90,44 82,40 C 74,36 66,34 58,36"
+          stroke-width="0.18" opacity="0.3"/>
+
+    <!-- Contours wrapping the thumb cluster area -->
+    <path d="M 70,60 C 74,58 80,58 86,60 C 92,62 96,66 98,72
+             C 100,78 98,82 94,84"
+          stroke-width="0.18" opacity="0.3"/>
+
+    <path d="M 74,64 C 78,62 84,62 90,66 C 94,70 96,76 94,80"
+          stroke-width="0.18" opacity="0.25"/>
+
+    <!-- ═══════════════════════════════════════════════════════
+         TRACKPOINT SUMMIT MARKER
+         Cartographic peak symbol — concentric rings + crosshair
+         Positioned at approximate trackpoint location
+         ═══════════════════════════════════════════════════════ -->
+    <g transform="translate(63, 22)">
+      <!-- Summit triangle marker -->
+      <polygon points="0,-2.5 2.2,1.5 -2.2,1.5" stroke-width="0.2" opacity="0.7"/>
+      <!-- Tiny elevation ring -->
+      <circle r="4.5" stroke-width="0.15" opacity="0.35"/>
+    </g>
+
+    <!-- ═══════════════════════════════════════════════════════
+         COORDINATE GRID TICKS
+         Subtle cartographic reference marks along edges
+         ═══════════════════════════════════════════════════════ -->
+
+    <!-- Top edge ticks -->
+    <line x1="20" y1="2" x2="20" y2="5" stroke-width="0.15" opacity="0.3"/>
+    <line x1="40" y1="2" x2="40" y2="5" stroke-width="0.15" opacity="0.3"/>
+    <line x1="60" y1="2" x2="60" y2="5" stroke-width="0.15" opacity="0.3"/>
+    <line x1="80" y1="2" x2="80" y2="5" stroke-width="0.15" opacity="0.3"/>
+    <line x1="100" y1="2" x2="100" y2="5" stroke-width="0.15" opacity="0.3"/>
+
+    <!-- Left edge ticks -->
+    <line x1="2" y1="20" x2="5" y2="20" stroke-width="0.15" opacity="0.3"/>
+    <line x1="2" y1="40" x2="5" y2="40" stroke-width="0.15" opacity="0.3"/>
+    <line x1="2" y1="60" x2="5" y2="60" stroke-width="0.15" opacity="0.3"/>
+    <line x1="2" y1="80" x2="5" y2="80" stroke-width="0.15" opacity="0.3"/>
+
+    <!-- Bottom edge ticks -->
+    <line x1="20" y1="86" x2="20" y2="83" stroke-width="0.15" opacity="0.3"/>
+    <line x1="40" y1="86" x2="40" y2="83" stroke-width="0.15" opacity="0.3"/>
+    <line x1="60" y1="86" x2="60" y2="83" stroke-width="0.15" opacity="0.3"/>
+    <line x1="80" y1="86" x2="80" y2="83" stroke-width="0.15" opacity="0.3"/>
+    <line x1="100" y1="86" x2="100" y2="83" stroke-width="0.15" opacity="0.3"/>
+
+    <!-- Right edge ticks -->
+    <line x1="114" y1="20" x2="111" y2="20" stroke-width="0.15" opacity="0.3"/>
+    <line x1="114" y1="40" x2="111" y2="40" stroke-width="0.15" opacity="0.3"/>
+    <line x1="114" y1="60" x2="111" y2="60" stroke-width="0.15" opacity="0.3"/>
+    <line x1="114" y1="80" x2="111" y2="80" stroke-width="0.15" opacity="0.3"/>
+
+    <!-- ═══════════════════════════════════════════════════════
+         ELEVATION NUMBERS
+         Small numbers along contour lines, cartographic style
+         ═══════════════════════════════════════════════════════ -->
+    <text x="8" y="76" font-family="monospace" font-size="2" fill="white"
+          stroke="none" opacity="0.35" letter-spacing="0.3">120</text>
+    <text x="14" y="62" font-family="monospace" font-size="2" fill="white"
+          stroke="none" opacity="0.35" letter-spacing="0.3">240</text>
+    <text x="40" y="50" font-family="monospace" font-size="2" fill="white"
+          stroke="none" opacity="0.35" letter-spacing="0.3">360</text>
+    <text x="50" y="36" font-family="monospace" font-size="2" fill="white"
+          stroke="none" opacity="0.35" letter-spacing="0.3">480</text>
+    <text x="56" y="28" font-family="monospace" font-size="2" fill="white"
+          stroke="none" opacity="0.35" letter-spacing="0.3">600</text>
+
+    <!-- ═══════════════════════════════════════════════════════
+         ATLAS WORDMARK
+         Bottom area, cartographic map title style
+         ═══════════════════════════════════════════════════════ -->
+    <text x="8" y="85" font-family="monospace" font-size="3.2" fill="white"
+          stroke="none" opacity="0.5" letter-spacing="2">ATLAS</text>
+
+    <!-- Coordinate label -->
+    <text x="92" y="85" font-family="monospace" font-size="1.8" fill="white"
+          stroke="none" opacity="0.25" letter-spacing="0.5">34K SPLIT</text>
+
+    <!-- Subtle latitude/longitude style labels -->
+    <text x="20" y="4" font-family="monospace" font-size="1.4" fill="white"
+          stroke="none" opacity="0.2" text-anchor="middle">20</text>
+    <text x="40" y="4" font-family="monospace" font-size="1.4" fill="white"
+          stroke="none" opacity="0.2" text-anchor="middle">40</text>
+    <text x="60" y="4" font-family="monospace" font-size="1.4" fill="white"
+          stroke="none" opacity="0.2" text-anchor="middle">60</text>
+    <text x="80" y="4" font-family="monospace" font-size="1.4" fill="white"
+          stroke="none" opacity="0.2" text-anchor="middle">80</text>
+
+    <!-- ═══════════════════════════════════════════════════════
+         DECORATIVE DETAILS
+         Fine cartographic flourishes
+         ═══════════════════════════════════════════════════════ -->
+
+    <!-- Scale bar -->
+    <line x1="8" y1="82" x2="28" y2="82" stroke-width="0.18" opacity="0.3"/>
+    <line x1="8" y1="81" x2="8" y2="83" stroke-width="0.15" opacity="0.3"/>
+    <line x1="18" y1="81" x2="18" y2="83" stroke-width="0.15" opacity="0.3"/>
+    <line x1="28" y1="81" x2="28" y2="83" stroke-width="0.15" opacity="0.3"/>
+    <text x="8" y="80.5" font-family="monospace" font-size="1.2" fill="white"
+          stroke="none" opacity="0.2">0</text>
+    <text x="16.5" y="80.5" font-family="monospace" font-size="1.2" fill="white"
+          stroke="none" opacity="0.2">10</text>
+    <text x="26" y="80.5" font-family="monospace" font-size="1.2" fill="white"
+          stroke="none" opacity="0.2">20</text>
+    <text x="30" y="80.5" font-family="monospace" font-size="1.2" fill="white"
+          stroke="none" opacity="0.2">mm</text>
+
+    <!-- North arrow (tiny, cartographic) -->
+    <g transform="translate(110, 8)" opacity="0.35">
+      <line x1="0" y1="4" x2="0" y2="-4" stroke-width="0.2"/>
+      <polygon points="0,-4 -1,-1.5 1,-1.5" stroke-width="0.15" fill="white"/>
+      <text x="0" y="-5" font-family="monospace" font-size="1.6" fill="white"
+            stroke="none" text-anchor="middle">N</text>
+    </g>
+
+    <!-- Dotted path — trail/route line weaving between keys -->
+    <path d="M 6,14 L 10,12 L 16,10 L 22,8 L 28,6 L 34,5 L 40,6 L 46,8"
+          stroke-width="0.15" stroke-dasharray="0.8,1.2" opacity="0.25"/>
+
+    <path d="M 46,8 L 52,10 L 58,14 L 62,18"
+          stroke-width="0.15" stroke-dasharray="0.8,1.2" opacity="0.25"/>
+
+  </g>
+</svg>

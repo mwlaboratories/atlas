@@ -157,6 +157,12 @@ trackpoint:
   # This avoids the hotswap socket bulk that interferes with the trackpoint module.
   solder_keys: true
   solder_footprint: "Switch_Keyboard_Kailh:SW_Kailh_Choc_V1"
+  # FFC connector for trackpoint flat cable — placed on B.Cu near middle finger column
+  ffc:
+    footprint: "Connector_FFC-FPC:Hirose_FH12-10S-0.5SH_1x10-1MP_P0.50mm_Horizontal"
+    near_col: 2                  # middle finger column
+    side: below                  # below the trackpoint center (toward bottom row)
+    offset: [-6.0, 16.0]         # [x, y] mm offset from [column center, trackpoint center]
 
 # --- Case ---
 # Physical case dimensions for future CAD generation.
