@@ -34,6 +34,7 @@ switch:
   spacing: [0.945, 0.893]             # [x, y] center-to-center (key units) — Choc V1: 18 × 17 mm
   keycap: [0.92, 0.87]               # [w, h] keycap size (key units) — Choc V1: 17.5 × 16.5 mm
   cutout: 14.0                         # plate cutout side length (mm) — Choc V1 / Ambients: 14×14mm
+  box: [18.0, 17.0]                   # [w, h] footprint box (mm) — from Dwgs.User in kiswitch footprint
   # Footprint used by kbplacer (kiswitch library).
   # Available options (library:footprint):
   #
@@ -137,9 +138,10 @@ thumb:
 controller:
   model: xiao_ble              # Seeed XIAO nRF52840 — BLE 5.0, 256KB RAM
   footprint: totem:xiao-ble-smd-cutout
+  box: [17.78, 21.0]          # [w, h] board dimensions (mm) — from Dwgs.User in footprint
   placement: above             # above the grid (between grid and PCB edge)
   edge_offset: -0.5           # shift along the edge (key units)
-  standoff: 4.0               # distance from grid edge (mm)
+  standoff: 0.0               # distance from grid edge (mm) — 0 = flush with key box
 
 # --- Trackpoint ---
 # Sprintek all-in-one module — PS/2 via UART.
@@ -161,7 +163,7 @@ trackpoint:
   ffc:
     footprint: "Connector_FFC-FPC:Hirose_FH12-10S-0.5SH_1x10-1MP_P0.50mm_Horizontal"
     placement: trackpoint_center  # place relative to trackpoint center
-    offset: [-18.0, -3.0]        # [x, y] mm offset from trackpoint center (left & up)
+    offset: [-36.5, -18.5]       # [x, y] mm offset from trackpoint center — next to power switch
     rotation: 180                 # cable exits upward toward trackpoint
 
 # --- Power switch ---
@@ -170,7 +172,7 @@ trackpoint:
 power_switch:
   footprint: "Button_Switch_SMD:SW_SP3T_PCM13"
   placement: controller          # place near the XIAO controller
-  offset: [18.0, -3.5]           # [x, y] mm offset from controller center (right & slightly up)
+  offset: [17.5, -4.0]           # [x, y] mm offset from controller center (right & slightly up)
   rotation: 0
 
 # --- Case ---
