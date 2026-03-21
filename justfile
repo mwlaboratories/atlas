@@ -130,13 +130,7 @@ kle-clip:
 pcb-setup:
     bash tools/kbplacer-setup.sh
 
-# Patch PCB with 3D models, trackpoint holes, controllers, edge cuts
-[group('pcb')]
-pcb-enhance:
-    python3 tools/pcb_enhance.py -i {{ pcb_out }} -l {{ layout }}
-    @echo "→ {{ pcb_out }}"
-
-# Open patched PCB in KiCad
+# Open PCB in KiCad
 [group('pcb')]
 pcb-open:
     pcbnew {{ pcb_out }} &
@@ -167,7 +161,7 @@ pcb-step dir="tools/build/export":
     kicad-cli pcb export step --subst-models -f -o {{ dir }}/keyboard.step {{ dir }}/keyboard.kicad_pcb
     @echo "→ {{ dir }}/keyboard.step"
 
-# Full PCB flow: YAML → KLE → kbplacer → enhance → KiCad (fully automated)
+# Full PCB flow: YAML → KLE → kbplacer → build → export (single pipeline)
 [group('pcb')]
 pcb:
     #!/usr/bin/env bash
@@ -179,77 +173,22 @@ pcb:
         bash tools/kbplacer-setup.sh
     fi
 
-    # Step 1: Generate KLE JSON
+    # Generate KLE JSON
     python3 tools/layout2kle.py -i {{ layout }} -o {{ kle_json }}
     echo "✓ Generated KLE layout"
 
-    # Clean previous kbplacer output (kbplacer refuses to overwrite)
-    rm -f {{ pcb_out }} tools/build/keyboard.kicad_pro tools/build/keyboard.kicad_prl
-
-    # Step 2: Run kbplacer locally (no browser needed)
-    # Source KiCad's env vars (PYTHONPATH, KICAD9_FOOTPRINT_DIR) from pcbnew wrapper
+    # Source KiCad's env vars (PYTHONPATH, KICAD9_FOOTPRINT_DIR)
     eval "$(grep '^export ' "$(which pcbnew)" | head -30)"
 
-    # Read footprint settings from keyboard.yaml
-    SWITCH_FP="$(python3 -c "import yaml; y=yaml.safe_load(open('{{ layout }}')); print(y['switch'].get('footprint', 'Switch_Keyboard_Hotswap_Kailh:SW_Hotswap_Kailh_Choc_V1'))")"
-    SWITCH_LIB="${SWITCH_FP%%:*}"
-    SWITCH_NAME="${SWITCH_FP##*:}"
+    # Build PCB: kbplacer (switches + diodes) → enhancements → save
+    {{ kbplacer_venv }}/bin/python3 tools/pcb_build.py \
+        -l {{ layout }} -o {{ pcb_out }} --kle-json {{ kle_json }}
+    echo "✓ PCB built"
 
-    echo "Running kbplacer (${SWITCH_NAME})..."
-    {{ kbplacer_venv }}/bin/python3 -m kbplacer \
-        --pcb-file {{ pcb_out }} \
-        --create-pcb-file \
-        --switch-footprint "{{ kiswitch_dir }}/${SWITCH_LIB}.pretty:${SWITCH_NAME}_1.00u" \
-        --diode-footprint "$KICAD9_FOOTPRINT_DIR/Diode_SMD.pretty:D_SOD-123F" \
-        --layout {{ kle_json }} \
-        --route-switches-with-diodes \
-        --switch "SW{} 180 FRONT" \
-        --diode "D{} CUSTOM -6.0 -4.0 90 BACK" \
-        --log-level WARNING
-    echo "✓ kbplacer generated PCB"
-
-    # Generate solder reference PCB for trackpoint keys (if needed)
-    SOLDER_FP="$(python3 -c "import yaml; y=yaml.safe_load(open('{{ layout }}')); tp=y.get('trackpoint',{}); print(tp.get('solder_footprint','')) if tp.get('solder_keys') else print('')")"
-    SOLDER_REF=""
-    if [ -n "$SOLDER_FP" ]; then
-        SOLDER_LIB="${SOLDER_FP%%:*}"
-        SOLDER_NAME="${SOLDER_FP##*:}"
-        SOLDER_REF="tools/build/.solder-ref.kicad_pcb"
-        rm -f "$SOLDER_REF"
-        echo "Generating solder reference (${SOLDER_NAME})..."
-        {{ kbplacer_venv }}/bin/python3 -m kbplacer \
-            --pcb-file "$SOLDER_REF" \
-            --create-pcb-file \
-            --switch-footprint "{{ kiswitch_dir }}/${SOLDER_LIB}.pretty:${SOLDER_NAME}_1.00u" \
-            --diode-footprint "$KICAD9_FOOTPRINT_DIR/Diode_SMD.pretty:D_SOD-123F" \
-            --layout {{ kle_json }} \
-            --switch "SW{} 180 FRONT" \
-            --diode "D{} CUSTOM -6.0 -4.0 90 BACK" \
-            --log-level WARNING
-        echo "✓ Solder reference generated"
-    fi
-
-    # Step 3: Enhance (3D models, trackpoint holes, controllers, edge cuts, solder swap)
-    SOLDER_ARG=""
-    [ -n "$SOLDER_REF" ] && SOLDER_ARG="--solder-ref $SOLDER_REF"
-    python3 tools/pcb_enhance.py -i {{ pcb_out }} -l {{ layout }} $SOLDER_ARG
-    echo "✓ Enhanced PCB"
-
-    # Step 4: Export + open in KiCad for manual XIAO flip
+    # Export
     just pcb-export
 
-    EXPORT_DIR="tools/build/export"
-    echo ""
-    echo "┌─────────────────────────────────────────────────────┐"
-    echo "│  Opening PCB in KiCad for manual edits:             │"
-    echo "│    1. Select both XIAO BLE controllers (U_L, U_R)   │"
-    echo "│    2. Press F to flip them to the back side          │"
-    echo "│    3. Save (Ctrl+S)                                  │"
-    echo "│    4. Close KiCad                                    │"
-    echo "└─────────────────────────────────────────────────────┘"
-    pcbnew "$EXPORT_DIR/keyboard.kicad_pcb"
-
-    # Step 5: STEP export
+    # STEP export
     echo ""
     read -p "Export STEP model? [Y/n] " answer
     if [ "${answer:-y}" != "n" ]; then

@@ -170,7 +170,7 @@ trackpoint:
 power_switch:
   footprint: "Button_Switch_SMD:SW_SP3T_PCM13"
   placement: controller          # place near the XIAO controller
-  offset: [18.0, -6.0]           # [x, y] mm offset from controller center (right & up, above col 1)
+  offset: [18.0, -3.5]           # [x, y] mm offset from controller center (right & slightly up)
   rotation: 0
 
 # --- Case ---

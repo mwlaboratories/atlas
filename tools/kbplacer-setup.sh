@@ -34,7 +34,7 @@ mkdir -p "$BUILD_DIR"
 if [ ! -d "$VENV_DIR" ]; then
     echo "Creating virtualenv..."
     "$KICAD_PYTHON" -m venv --system-site-packages "$VENV_DIR"
-    "$VENV_DIR/bin/pip" install --quiet kbplacer
+    "$VENV_DIR/bin/pip" install --quiet kbplacer pyyaml
     echo "Installed kbplacer"
 else
     echo "Virtualenv exists: $VENV_DIR"
