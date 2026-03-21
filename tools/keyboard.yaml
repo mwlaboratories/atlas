@@ -34,6 +34,24 @@ switch:
   spacing: [0.945, 0.893]             # [x, y] center-to-center (key units) — Choc V1: 18 × 17 mm
   keycap: [0.92, 0.87]               # [w, h] keycap size (key units) — Choc V1: 17.5 × 16.5 mm
   cutout: 14.0                         # plate cutout side length (mm) — Choc V1 / Ambients: 14×14mm
+  # Footprint used by kbplacer (kiswitch library).
+  # Available options (library:footprint):
+  #
+  #   Hotswap:
+  #     Switch_Keyboard_Hotswap_Kailh:SW_Hotswap_Kailh_Choc_V1          (standard)
+  #     Switch_Keyboard_Hotswap_Kailh:SW_Hotswap_Kailh_Choc_V1_plated   (plated holes)
+  #     Switch_Keyboard_Hotswap_Kailh:SW_Hotswap_Kailh_Choc_V1V2        (V1/V2 combo)
+  #     Switch_Keyboard_Hotswap_Kailh:SW_Hotswap_Kailh_MX               (MX hotswap)
+  #
+  #   Solder (through-hole):
+  #     Switch_Keyboard_Kailh:SW_Kailh_Choc_V1                          (standard)
+  #     Switch_Keyboard_Kailh:SW_Kailh_Choc_V1V2                        (V1/V2 combo)
+  #     Switch_Keyboard_Kailh:SW_Kailh_Choc_V2                          (V2 only)
+  #     Switch_Keyboard_Cherry_MX:SW_Cherry_MX_PCB                      (MX PCB mount)
+  #     Switch_Keyboard_Cherry_MX:SW_Cherry_MX_Plate                    (MX plate mount)
+  #
+  #   Size suffix _1.00u is appended automatically by kbplacer.
+  footprint: "Switch_Keyboard_Hotswap_Kailh:SW_Hotswap_Kailh_Choc_V1"
 
 # --- Grid ---
 # 5 columns × 3 rows per half. Only the left half is defined.
@@ -135,6 +153,10 @@ trackpoint:
   screw_holes:
     diameter: 2.2              # M2 screw hole (mm)
     offset: 10.0               # Y distance from center to each screw (mm) — from module datasheet
+  # Use solder (THT) footprint for the 4 keys surrounding the trackpoint.
+  # This avoids the hotswap socket bulk that interferes with the trackpoint module.
+  solder_keys: true
+  solder_footprint: "Switch_Keyboard_Kailh:SW_Kailh_Choc_V1"
 
 # --- Case ---
 # Physical case dimensions for future CAD generation.

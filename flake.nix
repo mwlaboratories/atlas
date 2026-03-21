@@ -37,6 +37,7 @@
           unstable.kicad              # KiCad 9 (PCB format 20241229)
           pkgs.wl-clipboard
           pkgs.unzip
+          pkgs.curl
         ];
 
         shellHook = ''
@@ -50,10 +51,10 @@
           echo "    just keymap        generate keymap SVG"
           echo "    just init          initialize west (first time)"
           echo ""
-          echo "  PCB generation (see tools/readme.org):"
-          echo "    just pcb           full flow with instructions"
-          echo "    just kle-clip      KLE JSON → clipboard"
-          echo "    just pcb-enhance   patch kbplacer output"
+          echo "  PCB generation:"
+          echo "    just pcb           full auto: YAML → KLE → kbplacer → enhance → KiCad"
+          echo "    just pcb-setup     bootstrap kbplacer venv (first time)"
+          echo "    just pcb-enhance   re-run enhancements only"
           echo "    just pcb-open      open PCB in KiCad"
           echo ""
         '';

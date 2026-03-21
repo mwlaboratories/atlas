@@ -28,16 +28,33 @@ import yaml
 # Model path replacements
 # ---------------------------------------------------------------------------
 
-# Broken kiswitch PCM path → project-local hotswap socket
-OLD_HOTSWAP = (
+# Broken kiswitch PCM paths → project-local hotswap socket
+# The web tool uses .wrl with uppercase V1; local kbplacer uses .stp with lowercase v1
+OLD_HOTSWAP_PATTERNS = [
     "${KICAD6_3RD_PARTY}/3dmodels/"
     "com_github_perigoso_keyswitch-kicad-library/"
-    "3d-library.3dshapes/SW_Hotswap_Kailh_Choc_V1.wrl"
-)
+    "3d-library.3dshapes/SW_Hotswap_Kailh_Choc_V1.wrl",
+    "${KICAD6_3RD_PARTY}/3dmodels/"
+    "com_github_perigoso_keyswitch-kicad-library/"
+    "3d-library.3dshapes/SW_Hotswap_Kailh_Choc_v1.stp",
+]
+
+# Solder variant model paths → replace with switch body only (no hotswap socket)
+OLD_SOLDER_PATTERNS = [
+    "${KICAD6_3RD_PARTY}/3dmodels/"
+    "com_github_perigoso_keyswitch-kicad-library/"
+    "3d-library.3dshapes/SW_Kailh_Choc_V1.wrl",
+    "${KICAD6_3RD_PARTY}/3dmodels/"
+    "com_github_perigoso_keyswitch-kicad-library/"
+    "3d-library.3dshapes/SW_Kailh_Choc_v1.stp",
+]
 NEW_HOTSWAP = "${KIPRJMOD}/3dmodels/Choc_V1_Hotswap.step"
 
 # Diode: nix packages3d has .stpZ/.wrl not .step → use project-local .wrl
-OLD_DIODE = "${KICAD9_3DMODEL_DIR}/Diode_SMD.3dshapes/D_SOD-123F.step"
+OLD_DIODE_PATTERNS = [
+    "${KICAD9_3DMODEL_DIR}/Diode_SMD.3dshapes/D_SOD-123F.step",
+    "${KICAD9_3DMODEL_DIR}/Diode_SMD.3dshapes/D_SOD-123F.wrl",
+]
 NEW_DIODE = "${KIPRJMOD}/3dmodels/D_SOD-123F.wrl"
 
 # Switch body model to inject alongside each hotswap socket
@@ -67,6 +84,7 @@ def _model_block(path: str, *, offset=(0, 0, 0), rotate=(0, 0, 0)) -> str:
     )
 
 # Regex matching a full (model "...Choc_V1_Hotswap...") block (after path replacement)
+# Used to inject the switch body model alongside each hotswap socket model
 HOTSWAP_MODEL_RE = re.compile(
     r'\(model\s+"[^"]*Choc_V1_Hotswap[^"]*"'
     r"\s*\(offset\s*\(xyz[^)]*\)\s*\)"
@@ -454,17 +472,120 @@ def patch_controller(pcb_text: str, layout: dict) -> str:
 
 def patch_models(pcb_text: str) -> str:
     """Apply 3D model path patches."""
-    patched = pcb_text.replace(OLD_HOTSWAP, NEW_HOTSWAP)
-    patched = patched.replace(OLD_DIODE, NEW_DIODE)
+    patched = pcb_text
+    for old in OLD_HOTSWAP_PATTERNS:
+        patched = patched.replace(old, NEW_HOTSWAP)
+    # Solder keys get only the switch body (no hotswap socket underneath)
+    for old in OLD_SOLDER_PATTERNS:
+        patched = patched.replace(old, SWITCH_BODY)
+    for old in OLD_DIODE_PATTERNS:
+        patched = patched.replace(old, NEW_DIODE)
 
-    if not SWITCH_BODY_RE.search(patched):
-        switch_block = _model_block(SWITCH_BODY)
+    # Inject switch body model alongside each hotswap socket model
+    # (only if the specific hotswap model block doesn't already have a switch body nearby)
+    switch_block = _model_block(SWITCH_BODY)
 
-        def _inject(match: re.Match) -> str:
-            return match.group(0) + "\n" + switch_block
+    def _inject(match: re.Match) -> str:
+        # Check if switch body is already present near this hotswap model
+        end = match.end()
+        nearby = patched[end:end + 200]
+        if SWITCH_BODY in nearby:
+            return match.group(0)
+        return match.group(0) + "\n" + switch_block
 
-        patched = HOTSWAP_MODEL_RE.sub(_inject, patched)
+    patched = HOTSWAP_MODEL_RE.sub(_inject, patched)
 
+    return patched
+
+
+# ---------------------------------------------------------------------------
+# Solder key swap (trackpoint surrounding keys)
+# ---------------------------------------------------------------------------
+
+# Regex to match an entire switch footprint block by reference
+# Captures from (footprint "SW_... through the matching closing paren
+def _footprint_block_re(ref: str) -> re.Pattern:
+    """Build a regex that matches a full switch footprint block for a given reference."""
+    return re.compile(
+        r'(\t\(footprint\s+"SW_[^"]+"\s*\n'
+        r'(?:.*?\n)*?'
+        r'.*?"Reference"\s+"' + re.escape(ref) + r'"'
+        r'(?:.*?\n)*?'
+        r'\t\))',
+        re.DOTALL,
+    )
+
+
+def _extract_footprint_block(pcb_text: str, ref: str) -> str | None:
+    """Extract the full footprint block for a switch by reference."""
+    # Find the footprint block containing this reference
+    pattern = re.compile(
+        r'(\t\(footprint\s+"SW_[^"]*".*?(?=\n\t\(footprint\s|\n\t\(gr_|\n\)$))',
+        re.DOTALL,
+    )
+    for m in pattern.finditer(pcb_text):
+        block = m.group(1)
+        if f'"Reference" "{ref}"' in block:
+            return block
+    return None
+
+
+def _get_trackpoint_switch_refs(
+    layout: dict,
+) -> list[str]:
+    """Return SW references for the keys surrounding each trackpoint."""
+    tp_cfg = layout.get("trackpoint", {})
+    between = tp_cfg.get("between", {})
+    tp_cols = between.get("cols", [3, 4])
+    tp_rows = between.get("rows", [0, 1])
+    grid_cols = layout.get("grid", {}).get("cols", 5)
+
+    refs = []
+    for half_offset in (0, grid_cols):  # 0 = left, grid_cols = right
+        for row in tp_rows:
+            for col in tp_cols:
+                if half_offset == 0:
+                    ref_num = row * 10 + col + 1
+                else:
+                    right_col = grid_cols + (grid_cols - 1 - col)
+                    ref_num = row * 10 + right_col + 1
+                refs.append(f"SW{ref_num}")
+    return refs
+
+
+def patch_solder_keys(pcb_text: str, layout: dict, solder_ref_path: Path | None) -> str:
+    """Replace hotswap footprints with solder footprints for trackpoint keys."""
+    tp_cfg = layout.get("trackpoint", {})
+    if not tp_cfg.get("solder_keys") or solder_ref_path is None:
+        return pcb_text
+
+    if not solder_ref_path.exists():
+        print(f"Warning: solder reference PCB not found: {solder_ref_path}")
+        return pcb_text
+
+    solder_pcb = solder_ref_path.read_text()
+    target_refs = _get_trackpoint_switch_refs(layout)
+
+    patched = pcb_text
+    count = 0
+    for ref in target_refs:
+        # Extract the solder footprint block from reference PCB
+        solder_block = _extract_footprint_block(solder_pcb, ref)
+        if not solder_block:
+            print(f"  Warning: {ref} not found in solder reference PCB")
+            continue
+
+        # Extract the hotswap footprint block from main PCB
+        hotswap_block = _extract_footprint_block(patched, ref)
+        if not hotswap_block:
+            print(f"  Warning: {ref} not found in main PCB")
+            continue
+
+        # Swap the block
+        patched = patched.replace(hotswap_block, solder_block)
+        count += 1
+
+    print(f"Swapped {count} keys to solder footprint ({', '.join(target_refs)}).")
     return patched
 
 
@@ -779,6 +900,12 @@ def main() -> None:
         default=None,
         help="keyboard.yaml (default: auto-detect from repo root)",
     )
+    parser.add_argument(
+        "--solder-ref",
+        type=Path,
+        default=None,
+        help="Solder-variant .kicad_pcb for trackpoint key footprint swap",
+    )
     args = parser.parse_args()
 
     pcb_path: Path = args.input
@@ -801,7 +928,8 @@ def main() -> None:
     pcb_text = pcb_path.read_text()
 
     # Apply patches
-    patched = patch_models(pcb_text)
+    patched = patch_solder_keys(pcb_text, layout, args.solder_ref)
+    patched = patch_models(patched)
     patched = patch_trackpoint_holes(patched, layout)
     patched = patch_controller(patched, layout)
     patched = patch_edge_cuts(patched, layout)

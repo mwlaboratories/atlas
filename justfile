@@ -100,11 +100,13 @@ rebuild-right:
 [group('firmware')]
 rebuild: clean all
 
-# ── PCB generation (see tools/readme.org) ──────────────────────────
+# ── PCB generation ───────────────────────────────────────────────
 
 layout := "tools/keyboard.yaml"
 kle_json := "tools/build/layout.json"
 pcb_out := "tools/build/keyboard.kicad_pcb"
+kbplacer_venv := "tools/build/.kbplacer-venv"
+kiswitch_dir := "tools/build/.kiswitch/footprints"
 
 # Generate KLE JSON from tools/keyboard.yaml
 [group('pcb')]
@@ -117,46 +119,97 @@ kle:
 kle-stdout:
     python3 tools/layout2kle.py -i {{ layout }}
 
-# Copy KLE JSON to clipboard (xclip)
+# Copy KLE JSON to clipboard
 [group('pcb')]
 kle-clip:
     python3 tools/layout2kle.py -i {{ layout }} | wl-copy
     @echo "→ KLE JSON copied to clipboard"
 
-# Unzip latest .zip in build/ + patch PCB
+# Bootstrap kbplacer venv + kiswitch footprints (run once)
+[group('pcb')]
+pcb-setup:
+    bash tools/kbplacer-setup.sh
+
+# Patch PCB with 3D models, trackpoint holes, controllers, edge cuts
 [group('pcb')]
 pcb-enhance:
-    #!/usr/bin/env bash
-    set -euo pipefail
-    zip=$(ls -t tools/build/*.zip 2>/dev/null | head -1)
-    if [ -z "$zip" ]; then
-        echo "Error: no .zip found in tools/build/" >&2
-        exit 1
-    fi
-    echo "Extracting: $zip"
-    unzip -o -j "$zip" "*.kicad_pcb" -d tools/build/
-    # rename to keyboard.kicad_pcb
-    for f in tools/build/*.kicad_pcb; do
-        if [ "$f" != "{{ pcb_out }}" ]; then
-            mv "$f" {{ pcb_out }}
-        fi
-    done
     python3 tools/pcb_enhance.py -i {{ pcb_out }} -l {{ layout }}
-    echo "→ {{ pcb_out }}"
+    @echo "→ {{ pcb_out }}"
 
 # Open patched PCB in KiCad
 [group('pcb')]
 pcb-open:
     pcbnew {{ pcb_out }} &
 
-
-# Full PCB flow: generate KLE + show next steps
+# Full PCB flow: YAML → KLE → kbplacer → enhance → KiCad (fully automated)
 [group('pcb')]
 pcb:
-    just kle
-    @echo ""
-    @echo "Next steps:"
-    @echo "  1. Paste {{ kle_json }} into editor.keyboard-tools.xyz"
-    @echo "  2. Configure: Choc V1 hotswap, SOD-123F diode at (-6,-4) 90°"
-    @echo "  3. Download zip → tools/build/"
-    @echo "  4. Run: just pcb-enhance"
+    #!/usr/bin/env bash
+    set -euo pipefail
+
+    # Ensure kbplacer venv exists
+    if [ ! -d "{{ kbplacer_venv }}" ]; then
+        echo "First run — setting up kbplacer..."
+        bash tools/kbplacer-setup.sh
+    fi
+
+    # Step 1: Generate KLE JSON
+    python3 tools/layout2kle.py -i {{ layout }} -o {{ kle_json }}
+    echo "✓ Generated KLE layout"
+
+    # Clean previous kbplacer output (kbplacer refuses to overwrite)
+    rm -f {{ pcb_out }} tools/build/keyboard.kicad_pro tools/build/keyboard.kicad_prl
+
+    # Step 2: Run kbplacer locally (no browser needed)
+    # Source KiCad's env vars (PYTHONPATH, KICAD9_FOOTPRINT_DIR) from pcbnew wrapper
+    eval "$(grep '^export ' "$(which pcbnew)" | head -30)"
+
+    # Read footprint settings from keyboard.yaml
+    SWITCH_FP="$(python3 -c "import yaml; y=yaml.safe_load(open('{{ layout }}')); print(y['switch'].get('footprint', 'Switch_Keyboard_Hotswap_Kailh:SW_Hotswap_Kailh_Choc_V1'))")"
+    SWITCH_LIB="${SWITCH_FP%%:*}"
+    SWITCH_NAME="${SWITCH_FP##*:}"
+
+    echo "Running kbplacer (${SWITCH_NAME})..."
+    {{ kbplacer_venv }}/bin/python3 -m kbplacer \
+        --pcb-file {{ pcb_out }} \
+        --create-pcb-file \
+        --switch-footprint "{{ kiswitch_dir }}/${SWITCH_LIB}.pretty:${SWITCH_NAME}_1.00u" \
+        --diode-footprint "$KICAD9_FOOTPRINT_DIR/Diode_SMD.pretty:D_SOD-123F" \
+        --layout {{ kle_json }} \
+        --route-switches-with-diodes \
+        --switch "SW{} 0 FRONT" \
+        --diode "D{} CUSTOM -6.0 -4.0 90 BACK" \
+        --log-level WARNING
+    echo "✓ kbplacer generated PCB"
+
+    # Generate solder reference PCB for trackpoint keys (if needed)
+    SOLDER_FP="$(python3 -c "import yaml; y=yaml.safe_load(open('{{ layout }}')); tp=y.get('trackpoint',{}); print(tp.get('solder_footprint','')) if tp.get('solder_keys') else print('')")"
+    SOLDER_REF=""
+    if [ -n "$SOLDER_FP" ]; then
+        SOLDER_LIB="${SOLDER_FP%%:*}"
+        SOLDER_NAME="${SOLDER_FP##*:}"
+        SOLDER_REF="tools/build/.solder-ref.kicad_pcb"
+        rm -f "$SOLDER_REF"
+        echo "Generating solder reference (${SOLDER_NAME})..."
+        {{ kbplacer_venv }}/bin/python3 -m kbplacer \
+            --pcb-file "$SOLDER_REF" \
+            --create-pcb-file \
+            --switch-footprint "{{ kiswitch_dir }}/${SOLDER_LIB}.pretty:${SOLDER_NAME}_1.00u" \
+            --diode-footprint "$KICAD9_FOOTPRINT_DIR/Diode_SMD.pretty:D_SOD-123F" \
+            --layout {{ kle_json }} \
+            --switch "SW{} 0 FRONT" \
+            --diode "D{} CUSTOM -6.0 -4.0 90 BACK" \
+            --log-level WARNING
+        echo "✓ Solder reference generated"
+    fi
+
+    # Step 3: Enhance (3D models, trackpoint holes, controllers, edge cuts, solder swap)
+    SOLDER_ARG=""
+    [ -n "$SOLDER_REF" ] && SOLDER_ARG="--solder-ref $SOLDER_REF"
+    python3 tools/pcb_enhance.py -i {{ pcb_out }} -l {{ layout }} $SOLDER_ARG
+    echo "✓ Enhanced PCB"
+
+    # Step 4: Open in KiCad
+    echo ""
+    echo "→ {{ pcb_out }}"
+    pcbnew {{ pcb_out }} &
