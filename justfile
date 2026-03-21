@@ -194,3 +194,15 @@ pcb:
     if [ "${answer:-y}" != "n" ]; then
         just pcb-step
     fi
+
+# ── Case generation (CadQuery) ───────────────────────────────────
+
+# Generate case parts from keyboard.yaml
+[group('case')]
+case part="all":
+    python3 tools/case/case_build.py -l {{ layout }} --part {{ part }}
+
+# Generate trackpoint spacer only
+[group('case')]
+case-spacer:
+    just case spacer
