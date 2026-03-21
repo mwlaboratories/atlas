@@ -52,9 +52,8 @@
           echo "    just init          initialize west (first time)"
           echo ""
           echo "  PCB generation:"
-          echo "    just pcb           full auto: YAML → KLE → kbplacer → enhance → KiCad"
+          echo "    just pcb           full auto: YAML → KLE → build → export"
           echo "    just pcb-setup     bootstrap kbplacer venv (first time)"
-          echo "    just pcb-enhance   re-run enhancements only"
           echo "    just pcb-open      open PCB in KiCad"
           echo ""
         '';
