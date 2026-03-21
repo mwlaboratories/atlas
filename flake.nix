@@ -1,5 +1,5 @@
 {
-  description = "Atlas keyboard dev environment (firmware + PCB)";
+  description = "Atlas keyboard dev environment (firmware + PCB + case)";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
@@ -9,16 +9,18 @@
     zephyr-nix.url = "github:urob/zephyr-nix";
     zephyr-nix.inputs.zephyr.follows = "zephyr";
     zephyr-nix.inputs.nixpkgs.follows = "nixpkgs";
+    cq-flake.url = "github:vinszent/cq-flake";
   };
 
-  outputs = { nixpkgs, nixpkgs-unstable, zephyr-nix, ... }: let
-    systems = ["x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin"];
+  outputs = { nixpkgs, nixpkgs-unstable, zephyr-nix, cq-flake, ... }: let
+    systems = ["x86_64-linux" "aarch64-linux"];
     forAllSystems = nixpkgs.lib.genAttrs systems;
   in {
     devShells = forAllSystems (system: let
       pkgs = nixpkgs.legacyPackages.${system};
       unstable = nixpkgs-unstable.legacyPackages.${system};
       zephyr = zephyr-nix.packages.${system};
+      cq = cq-flake.packages.${system};
       keymap_drawer = pkgs.python312Packages.callPackage ./keymapdrawer-nix/keymap-drawer.nix {};
     in {
       default = pkgs.mkShellNoCC {
@@ -35,6 +37,8 @@
           pkgs.librsvg
           (pkgs.python312.withPackages (ps: [ ps.pyyaml ps.jinja2 ]))
           unstable.kicad              # KiCad 9 (PCB format 20241229)
+          cq.cadquery                 # CadQuery (parametric CAD)
+          pkgs.f3d                    # lightweight 3D viewer (STEP/STL/OBJ)
           pkgs.wl-clipboard
           pkgs.unzip
           pkgs.curl
@@ -55,6 +59,9 @@
           echo "    just pcb           full auto: YAML → KLE → build → export"
           echo "    just pcb-setup     bootstrap kbplacer venv (first time)"
           echo "    just pcb-open      open PCB in KiCad"
+          echo ""
+          echo "  Case design:"
+          echo "    just case          generate case parts (CadQuery)"
           echo ""
         '';
       };
