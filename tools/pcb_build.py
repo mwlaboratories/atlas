@@ -738,16 +738,17 @@ def _half_outline(switches, ctrl_pos, layout):
         ble_right = step_x
         outer_left = pinky_left
 
-    # Outermost thumb key corners
-    tc = None
+    # All thumb key corners, sorted inner → outer (by x position)
+    thumb_keys = []
     if thumb_sw:
-        ot = max(thumb_sw, key=lambda s: s[1])
-        _, tx, ty, trot = ot
-        raw = _switch_corners(tx, ty, trot, half)
-        all_c = sorted(raw.values(), key=lambda p: p[1])
-        top2 = sorted(all_c[:2], key=lambda p: p[0])
-        bot2 = sorted(all_c[2:], key=lambda p: p[0])
-        tc = {"TL": top2[0], "TR": top2[1], "BL": bot2[0], "BR": bot2[1]}
+        for _, tx, ty, trot in sorted(thumb_sw, key=lambda s: s[1]):
+            raw = _switch_corners(tx, ty, trot, half)
+            all_c = sorted(raw.values(), key=lambda p: p[1])
+            top2 = sorted(all_c[:2], key=lambda p: p[0])
+            bot2 = sorted(all_c[2:], key=lambda p: p[0])
+            thumb_keys.append({
+                "TL": top2[0], "TR": top2[1], "BL": bot2[0], "BR": bot2[1]
+            })
 
     # Build clockwise polygon
     pts = []
@@ -756,11 +757,29 @@ def _half_outline(switches, ctrl_pos, layout):
     pts.append((ble_right, grid_top))
     pts.append((inner_right, grid_top))
 
-    if thumb_sw and tc:
-        pts.append(_line_x_intersect(inner_right, tc["TL"], tc["TR"]))
-        pts.append(tc["TR"])
-        pts.append(tc["BR"])
-        pts.append(_line_x_intersect(thumb_return_x, tc["BR"], tc["BL"]))
+    if thumb_keys:
+        first = thumb_keys[0]
+        last = thumb_keys[-1]
+
+        # Top: drop from grid to intersection on first key's top edge, then TR
+        pts.append(_line_x_intersect(inner_right, first["TL"], first["TR"]))
+        pts.append(first["TR"])
+        # Subsequent keys: TL→TR
+        for tk in thumb_keys[1:]:
+            pts.append(tk["TL"])
+            pts.append(tk["TR"])
+
+        # Right side of outermost key: TR→BR (TR already added above)
+        pts.append(last["BR"])
+
+        # Bottom: BL of each key, outer to inner (BR already added above)
+        pts.append(last["BL"])
+        for tk in list(reversed(thumb_keys))[1:]:
+            pts.append(tk["BR"])
+            pts.append(tk["BL"])
+
+        # Connect to vertical line at thumb_return_x
+        pts.append((thumb_return_x, first["BL"][1]))
         pts.append((thumb_return_x, non_pinky_bot))
     else:
         pts.append((inner_right, non_pinky_bot))
