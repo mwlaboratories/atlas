@@ -160,9 +160,18 @@ trackpoint:
   # FFC connector for trackpoint flat cable — placed on B.Cu near middle finger column
   ffc:
     footprint: "Connector_FFC-FPC:Hirose_FH12-10S-0.5SH_1x10-1MP_P0.50mm_Horizontal"
-    near_col: 2                  # middle finger column
-    side: below                  # below the trackpoint center (toward bottom row)
-    offset: [-6.0, 16.0]         # [x, y] mm offset from [column center, trackpoint center]
+    placement: trackpoint_center  # place relative to trackpoint center
+    offset: [-18.0, -3.0]        # [x, y] mm offset from trackpoint center (left & up)
+    rotation: 180                 # cable exits upward toward trackpoint
+
+# --- Power switch ---
+# C&K PCM13 — SP3T ultra-miniature slide switch (off / xiao / xiao+trackpoint)
+# Placed on B.Cu near the controller area
+power_switch:
+  footprint: "Button_Switch_SMD:SW_SP3T_PCM13"
+  placement: controller          # place near the XIAO controller
+  offset: [18.0, -6.0]           # [x, y] mm offset from controller center (right & up, above col 1)
+  rotation: 0
 
 # --- Case ---
 # Physical case dimensions for future CAD generation.

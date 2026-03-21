@@ -204,7 +204,7 @@ pcb:
         --layout {{ kle_json }} \
         --route-switches-with-diodes \
         --switch "SW{} 180 FRONT" \
-        --diode "D{} CUSTOM 6.0 4.0 270 BACK" \
+        --diode "D{} CUSTOM -6.0 -4.0 90 BACK" \
         --log-level WARNING
     echo "✓ kbplacer generated PCB"
 
@@ -224,7 +224,7 @@ pcb:
             --diode-footprint "$KICAD9_FOOTPRINT_DIR/Diode_SMD.pretty:D_SOD-123F" \
             --layout {{ kle_json }} \
             --switch "SW{} 180 FRONT" \
-            --diode "D{} CUSTOM 6.0 4.0 270 BACK" \
+            --diode "D{} CUSTOM -6.0 -4.0 90 BACK" \
             --log-level WARNING
         echo "✓ Solder reference generated"
     fi

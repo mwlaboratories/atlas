@@ -486,6 +486,7 @@ def patch_controller(pcb_text: str, layout: dict) -> str:
             model_path=XIAO_3D_MODEL,
             model_offset=XIAO_MODEL_OFFSET,
             model_rotate=XIAO_MODEL_ROTATE,
+            back_side=True,
         )
         blocks.append(fp)
         print(f"  Controller {half_label}: ({ctrl_x:.2f}, {ctrl_y:.2f}) rot={rotation}°")
@@ -551,20 +552,18 @@ def patch_ffc(pcb_text: str, layout: dict) -> str:
         return pcb_text
 
     grid_cols = layout.get("grid", {}).get("cols", 5)
-    near_col = ffc_cfg.get("near_col", 2)
     offset_raw = ffc_cfg.get("offset", [0.0, 3.0])
     if isinstance(offset_raw, (int, float)):
         x_offset, y_offset = 0.0, float(offset_raw)
     else:
         x_offset, y_offset = float(offset_raw[0]), float(offset_raw[1])
+    ffc_rotation = float(ffc_cfg.get("rotation", 0.0))
 
     switches = _parse_switches(pcb_text)
     if not switches:
         return pcb_text
 
-    ref_to_pos = {ref: (x, y) for ref, x, y, _rot in switches}
-
-    # Compute trackpoint centers to get Y position
+    # Compute trackpoint centers
     tp_cols = tp_cfg.get("between", {}).get("cols", [3, 4])
     tp_rows = tp_cfg.get("between", {}).get("rows", [0, 1])
     centers = _compute_trackpoint_centers(switches, tp_cols, tp_rows, grid_cols)
@@ -573,21 +572,12 @@ def patch_ffc(pcb_text: str, layout: dict) -> str:
     for i, tp_center in enumerate(centers):
         half_label = "L" if i == 0 else "R"
 
-        # X = middle finger column position for this half
-        if half_label == "L":
-            col_ref = f"SW{near_col + 1}"  # row 0, near_col (0-indexed)
-        else:
-            right_col = grid_cols + (grid_cols - 1 - near_col)
-            col_ref = f"SW{right_col + 1}"
-        if col_ref not in ref_to_pos:
-            print(f"  Warning: {col_ref} not found, skipping FFC {half_label}")
-            continue
-
-        ffc_x = ref_to_pos[col_ref][0] + (x_offset if half_label == "L" else -x_offset)
+        # Place relative to trackpoint center
+        ffc_x = tp_center[0] + (x_offset if half_label == "L" else -x_offset)
         ffc_y = tp_center[1] + y_offset
 
-        # Rotation: 0° = cable exits toward bottom, 180° = toward top
-        rotation = 0.0
+        # Mirror rotation for right half
+        rotation = ffc_rotation if half_label == "L" else -ffc_rotation
 
         fp = _convert_footprint_to_pcb(
             mod_text,
@@ -601,6 +591,73 @@ def patch_ffc(pcb_text: str, layout: dict) -> str:
         )
         blocks.append(fp)
         print(f"  FFC {half_label}: ({ffc_x:.2f}, {ffc_y:.2f}) on B.Cu")
+
+    if not blocks:
+        return pcb_text
+
+    insert_text = "\n".join(blocks) + "\n"
+    last_paren = pcb_text.rfind(")")
+    return pcb_text[:last_paren] + insert_text + pcb_text[last_paren:]
+
+
+# ---------------------------------------------------------------------------
+# Power switch placement
+# ---------------------------------------------------------------------------
+
+PWR_SENTINEL = '"Atlas:PWR_'
+
+
+def patch_power_switch(pcb_text: str, layout: dict) -> str:
+    """Place SP3T power switch on B.Cu near each controller."""
+    if PWR_SENTINEL in pcb_text:
+        return pcb_text
+
+    pwr_cfg = layout.get("power_switch")
+    if not pwr_cfg:
+        return pcb_text
+
+    fp_id = pwr_cfg.get("footprint", "")
+    if not fp_id:
+        return pcb_text
+
+    mod_text = _find_kicad_footprint(fp_id)
+    if not mod_text:
+        print(f"Warning: power switch footprint {fp_id} not found, skipping.")
+        return pcb_text
+
+    offset_raw = pwr_cfg.get("offset", [0.0, 0.0])
+    if isinstance(offset_raw, (int, float)):
+        x_offset, y_offset = 0.0, float(offset_raw)
+    else:
+        x_offset, y_offset = float(offset_raw[0]), float(offset_raw[1])
+    pwr_rotation = float(pwr_cfg.get("rotation", 0.0))
+
+    # Find controller positions
+    blocks = []
+    for m in re.finditer(
+        r'"Atlas:XIAO_BLE_(\w)"\s*\n\s*\(layer\s+"F\.Cu"\)\s*\n'
+        r'\s*\(uuid\s+"[^"]+"\)\s*\n\s*\(at\s+([\d.-]+)\s+([\d.-]+)',
+        pcb_text,
+    ):
+        label = m.group(1)
+        cx, cy = float(m.group(2)), float(m.group(3))
+
+        pwr_x = cx + (x_offset if label == "L" else -x_offset)
+        pwr_y = cy + y_offset
+        rotation = pwr_rotation if label == "L" else -pwr_rotation
+
+        fp = _convert_footprint_to_pcb(
+            mod_text,
+            fp_name=f"Atlas:PWR_{label}",
+            x=pwr_x,
+            y=pwr_y,
+            rotation=rotation,
+            ref=f"SW_PWR_{label}",
+            model_path="${KICAD9_3DMODEL_DIR}/Button_Switch_SMD.3dshapes/SW_SP3T_PCM13.stpZ",
+            back_side=True,
+        )
+        blocks.append(fp)
+        print(f"  Power switch {label}: ({pwr_x:.2f}, {pwr_y:.2f}) on B.Cu")
 
     if not blocks:
         return pcb_text
@@ -1101,6 +1158,7 @@ def main() -> None:
     patched = patch_trackpoint_holes(patched, layout)
     patched = patch_controller(patched, layout)
     patched = patch_ffc(patched, layout)
+    patched = patch_power_switch(patched, layout)
     patched = patch_edge_cuts(patched, layout)
 
     if patched == pcb_text:
