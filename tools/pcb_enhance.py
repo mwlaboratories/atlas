@@ -267,6 +267,7 @@ def _convert_footprint_to_pcb(
     model_path: str,
     model_offset: tuple[float, float, float] = (0, 0, 0),
     model_rotate: tuple[float, float, float] = (0, 0, 0),
+    back_side: bool = False,
 ) -> str:
     """Convert a .kicad_mod file to an embedded PCB footprint s-expression.
 
@@ -291,6 +292,9 @@ def _convert_footprint_to_pcb(
             if any(s.startswith(p) for p in skip_toplevel):
                 continue
         filtered.append(line)
+
+    # Remove Edge.Cuts elements from footprints (they break the board outline)
+    filtered = [line for line in filtered if '"Edge.Cuts"' not in line]
 
     inner = "\n".join(filtered)
 
@@ -368,9 +372,38 @@ def _convert_footprint_to_pcb(
     rot_str = f" {rotation:.0f}" if rotation else ""
     model = _model_block(model_path, offset=model_offset, rotate=model_rotate)
 
+    layer = "F.Cu"
+    # If placing on back side, flip layer references
+    if back_side:
+        layer = "B.Cu"
+        # Flip copper layers
+        inner_text = inner_text.replace('"F.Cu"', '"__BCu__"')
+        inner_text = inner_text.replace('"B.Cu"', '"F.Cu"')
+        inner_text = inner_text.replace('"__BCu__"', '"B.Cu"')
+        # Flip silk layers
+        inner_text = inner_text.replace('"F.SilkS"', '"__BSilk__"')
+        inner_text = inner_text.replace('"B.SilkS"', '"F.SilkS"')
+        inner_text = inner_text.replace('"__BSilk__"', '"B.SilkS"')
+        # Flip mask layers
+        inner_text = inner_text.replace('"F.Mask"', '"__BMask__"')
+        inner_text = inner_text.replace('"B.Mask"', '"F.Mask"')
+        inner_text = inner_text.replace('"__BMask__"', '"B.Mask"')
+        # Flip paste layers
+        inner_text = inner_text.replace('"F.Paste"', '"__BPaste__"')
+        inner_text = inner_text.replace('"B.Paste"', '"F.Paste"')
+        inner_text = inner_text.replace('"__BPaste__"', '"B.Paste"')
+        # Flip courtyard layers
+        inner_text = inner_text.replace('"F.CrtYd"', '"__BCrtYd__"')
+        inner_text = inner_text.replace('"B.CrtYd"', '"F.CrtYd"')
+        inner_text = inner_text.replace('"__BCrtYd__"', '"B.CrtYd"')
+        # Flip fab layers
+        inner_text = inner_text.replace('"F.Fab"', '"__BFab__"')
+        inner_text = inner_text.replace('"B.Fab"', '"F.Fab"')
+        inner_text = inner_text.replace('"__BFab__"', '"B.Fab"')
+
     return (
         f'\t(footprint "{fp_name}"\n'
-        f'\t\t(layer "F.Cu")\n'
+        f'\t\t(layer "{layer}")\n'
         f'\t\t(uuid "{uuid.uuid4()}")\n'
         f"\t\t(at {x:.4f} {y:.4f}{rot_str})\n"
         f"{inner_text}\n"
@@ -466,6 +499,118 @@ def patch_controller(pcb_text: str, layout: dict) -> str:
 
 
 # ---------------------------------------------------------------------------
+# FFC connector placement
+# ---------------------------------------------------------------------------
+
+FFC_SENTINEL = '"Atlas:FFC_'
+
+
+def _find_kicad_footprint(footprint_id: str) -> str | None:
+    """Load a footprint from KiCad's installed footprint libraries.
+
+    footprint_id format: "Library:Footprint" e.g.
+    "Connector_FFC-FPC:Hirose_FH12-10S-0.5SH_1x10-1MP_P0.50mm_Horizontal"
+    """
+    lib, fp_name = footprint_id.split(":", 1)
+    # Try KICAD9_FOOTPRINT_DIR env var first, fall back to extracting from pcbnew wrapper
+    import os
+    fp_dir = os.environ.get("KICAD9_FOOTPRINT_DIR")
+    if not fp_dir:
+        # Try to find it from pcbnew wrapper
+        pcbnew_bin = shutil.which("pcbnew")
+        if pcbnew_bin:
+            wrapper = Path(pcbnew_bin).read_text()
+            m = re.search(r"KICAD9_FOOTPRINT_DIR[^']*'([^']+)'", wrapper)
+            if m:
+                fp_dir = m.group(1)
+    if not fp_dir:
+        return None
+    fp_path = Path(fp_dir) / f"{lib}.pretty" / f"{fp_name}.kicad_mod"
+    if fp_path.exists():
+        return fp_path.read_text()
+    return None
+
+
+def patch_ffc(pcb_text: str, layout: dict) -> str:
+    """Place FFC connectors on B.Cu near each trackpoint."""
+    if FFC_SENTINEL in pcb_text:
+        return pcb_text
+
+    tp_cfg = layout.get("trackpoint", {})
+    ffc_cfg = tp_cfg.get("ffc")
+    if not ffc_cfg:
+        return pcb_text
+
+    fp_id = ffc_cfg.get("footprint", "")
+    if not fp_id:
+        return pcb_text
+
+    mod_text = _find_kicad_footprint(fp_id)
+    if not mod_text:
+        print(f"Warning: FFC footprint {fp_id} not found, skipping.")
+        return pcb_text
+
+    grid_cols = layout.get("grid", {}).get("cols", 5)
+    near_col = ffc_cfg.get("near_col", 2)
+    offset_raw = ffc_cfg.get("offset", [0.0, 3.0])
+    if isinstance(offset_raw, (int, float)):
+        x_offset, y_offset = 0.0, float(offset_raw)
+    else:
+        x_offset, y_offset = float(offset_raw[0]), float(offset_raw[1])
+
+    switches = _parse_switches(pcb_text)
+    if not switches:
+        return pcb_text
+
+    ref_to_pos = {ref: (x, y) for ref, x, y, _rot in switches}
+
+    # Compute trackpoint centers to get Y position
+    tp_cols = tp_cfg.get("between", {}).get("cols", [3, 4])
+    tp_rows = tp_cfg.get("between", {}).get("rows", [0, 1])
+    centers = _compute_trackpoint_centers(switches, tp_cols, tp_rows, grid_cols)
+
+    blocks = []
+    for i, tp_center in enumerate(centers):
+        half_label = "L" if i == 0 else "R"
+
+        # X = middle finger column position for this half
+        if half_label == "L":
+            col_ref = f"SW{near_col + 1}"  # row 0, near_col (0-indexed)
+        else:
+            right_col = grid_cols + (grid_cols - 1 - near_col)
+            col_ref = f"SW{right_col + 1}"
+        if col_ref not in ref_to_pos:
+            print(f"  Warning: {col_ref} not found, skipping FFC {half_label}")
+            continue
+
+        ffc_x = ref_to_pos[col_ref][0] + (x_offset if half_label == "L" else -x_offset)
+        ffc_y = tp_center[1] + y_offset
+
+        # Rotation: 0° = cable exits toward bottom, 180° = toward top
+        rotation = 0.0
+
+        fp = _convert_footprint_to_pcb(
+            mod_text,
+            fp_name=f"Atlas:FFC_{half_label}",
+            x=ffc_x,
+            y=ffc_y,
+            rotation=rotation,
+            ref=f"J_{half_label}",
+            model_path="",  # no 3D model available from KiCad
+            back_side=True,
+        )
+        blocks.append(fp)
+        print(f"  FFC {half_label}: ({ffc_x:.2f}, {ffc_y:.2f}) on B.Cu")
+
+    if not blocks:
+        return pcb_text
+
+    insert_text = "\n".join(blocks) + "\n"
+    last_paren = pcb_text.rfind(")")
+    return pcb_text[:last_paren] + insert_text + pcb_text[last_paren:]
+
+
+# ---------------------------------------------------------------------------
 # Main patch logic
 # ---------------------------------------------------------------------------
 
@@ -494,6 +639,20 @@ def patch_models(pcb_text: str) -> str:
         return match.group(0) + "\n" + switch_block
 
     patched = HOTSWAP_MODEL_RE.sub(_inject, patched)
+
+    # Remove hotswap socket locating pin holes (-5.22, 4.2) 1.3mm
+    # Present in kiswitch library but not in the web tool output
+    patched = re.sub(
+        r'\t\t\(pad "" np_thru_hole circle\n'
+        r'\t\t\t\(at -5\.22 4\.2[^)]*\)\n'
+        r'\t\t\t\(size 1\.3 1\.3\)\n'
+        r'\t\t\t\(drill 1\.3\)\n'
+        r'\t\t\t\(layers "\*\.Cu" "\*\.Mask"\)\n'
+        r'\t\t\t\(uuid "[^"]*"\)\n'
+        r'\t\t\)\n',
+        "",
+        patched,
+    )
 
     return patched
 
@@ -683,8 +842,11 @@ def _half_outline(
     half = cutout / 2 + pad  # mm from center to rect edge (square)
 
     # --- classify grid vs thumb ---
-    grid_sw = [(ref, x, y, rot) for ref, x, y, rot in switches if abs(rot) <= 1]
-    thumb_sw = [(ref, x, y, rot) for ref, x, y, rot in switches if abs(rot) > 1]
+    # Classify switches: grid keys are at 0° or 180°, thumb keys have other angles
+    grid_sw = [(ref, x, y, rot) for ref, x, y, rot in switches
+               if abs(rot % 180) <= 1]
+    thumb_sw = [(ref, x, y, rot) for ref, x, y, rot in switches
+                if abs(rot % 180) > 1]
     if not grid_sw:
         return []
 
@@ -748,7 +910,13 @@ def _half_outline(
     if thumb_sw:
         ot = max(thumb_sw, key=lambda s: s[1])
         _, tx, ty, trot = ot
-        tc = _switch_corners(tx, ty, trot, half)
+        raw_corners = _switch_corners(tx, ty, trot, half)
+        # Re-assign corners by actual geometric position (rotation may swap them)
+        all_c = list(raw_corners.values())
+        all_c.sort(key=lambda p: p[1])  # sort by Y (top first)
+        top2 = sorted(all_c[:2], key=lambda p: p[0])  # top pair sorted by X
+        bot2 = sorted(all_c[2:], key=lambda p: p[0])  # bottom pair sorted by X
+        tc = {"TL": top2[0], "TR": top2[1], "BL": bot2[0], "BR": bot2[1]}
 
     # ===================================================================
     # Build clockwise polygon
@@ -932,6 +1100,7 @@ def main() -> None:
     patched = patch_models(patched)
     patched = patch_trackpoint_holes(patched, layout)
     patched = patch_controller(patched, layout)
+    patched = patch_ffc(patched, layout)
     patched = patch_edge_cuts(patched, layout)
 
     if patched == pcb_text:
@@ -954,10 +1123,11 @@ def main() -> None:
     diode_count = patched.count(NEW_DIODE)
     hole_count = patched.count(TP_HOLE_SENTINEL)
     ctrl_count = patched.count(CTRL_SENTINEL)
+    ffc_count = patched.count(FFC_SENTINEL)
     has_edge_box = EDGE_CUTS_SENTINEL in patched
     print(f"Patched {hotswap_count} hotswap + {switch_count} switch + {diode_count} diode model entries.")
     print(f"Added {hole_count} trackpoint holes.")
-    print(f"Added {ctrl_count} controller footprint(s).")
+    print(f"Added {ctrl_count} controller + {ffc_count} FFC connector footprint(s).")
     print(f"Added Edge.Cuts bounding box: {has_edge_box}")
     print(f"Written to {out_path}")
 
