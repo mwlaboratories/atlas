@@ -151,13 +151,20 @@ controller:
 trackpoint:
   module: sprintek_aio         # Sprintek SK8707-01 all-in-one
   between: { cols: [3, 4], rows: [0, 1] }   # centroid of these 4 keys
-  center_hole: 5.0             # stick hole diameter (mm) — from module datasheet
+  center_hole: 6.0             # stick hole diameter (mm) — 1mm clearance over module spec
   screw_holes:
     diameter: 2.2              # M2 screw hole (mm)
-    offset: 10.0               # Y distance from center to each screw (mm) — from module datasheet
+    offset: 9.5                # Y distance from center to each screw (mm) — 19mm apart per datasheet
+  # 3D model + physical assembly dimensions (for case/spacer design)
+  sensor_step: "SK8707-01-005 SENSOR.step"   # sensor STEP in 3dmodels/
+  stick_offset_y: 1.70         # stick center Y offset from sensor bbox center (mm)
+  companion_board:
+    width: 23.0                # mm
+    height: 14.5               # mm
+    thickness: 0.3             # mm (flex PCB)
   # Use solder (THT) footprint for the 4 keys surrounding the trackpoint.
   # This avoids the hotswap socket bulk that interferes with the trackpoint module.
-  solder_keys: true
+  solder_keys: false
   solder_footprint: "Switch_Keyboard_Kailh:SW_Kailh_Choc_V1"
   # FFC connector for trackpoint flat cable — placed on B.Cu near middle finger column
   ffc:

@@ -202,7 +202,7 @@ pcb:
 case part="all":
     python3 tools/case/case_build.py -l {{ layout }} --part {{ part }}
 
-# Generate trackpoint spacer only
+# View assembly in f3d
 [group('case')]
-case-spacer:
-    just case spacer
+case-view:
+    f3d --light-intensity=2 -q tools/build/case/assembly.step &
