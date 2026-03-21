@@ -45,12 +45,9 @@ SWITCH_BODY_MODEL = "${KIPRJMOD}/3dmodels/Choc_V1_Switch.step"
 DIODE_MODEL = "${KIPRJMOD}/3dmodels/D_SOD-123F.wrl"
 XIAO_3D_MODEL = "${KIPRJMOD}/3dmodels/XIAO-nRF52840 v15.step"
 
+
 XIAO_MODEL_ROTATE = (-90, 0, -90)
 XIAO_MODEL_OFFSET = (6.1, -1.75, 0)
-
-# XIAO BLE board dimensions (origin at center)
-XIAO_HALF_HEIGHT = 10.5  # 21mm / 2
-XIAO_HALF_WIDTH = 8.89  # 17.78mm / 2
 
 
 # ---------------------------------------------------------------------------
@@ -59,19 +56,48 @@ XIAO_HALF_WIDTH = 8.89  # 17.78mm / 2
 
 
 def _mm(val: float) -> int:
+    """Convert mm to KiCad internal units."""
     return pcbnew.FromMM(val)
 
 
 def _vec(x_mm: float, y_mm: float) -> pcbnew.VECTOR2I:
+    """Create VECTOR2I from mm coordinates."""
     return pcbnew.VECTOR2I(_mm(x_mm), _mm(y_mm))
 
 
 def _pos_mm(fp: pcbnew.FOOTPRINT) -> tuple[float, float]:
+    """Get footprint center position in mm."""
     p = fp.GetPosition()
     return (pcbnew.ToMM(p.x), pcbnew.ToMM(p.y))
 
 
+def _bbox_mm(fp: pcbnew.FOOTPRINT) -> tuple[float, float, float, float]:
+    """Get footprint bounding box as (left, top, right, bottom) in mm.
+
+    This reflects the ACTUAL extent after rotation/flip — no hardcoded dimensions.
+    """
+    bb = fp.GetBoundingBox(False, False)  # exclude text
+    return (
+        pcbnew.ToMM(bb.GetLeft()),
+        pcbnew.ToMM(bb.GetTop()),
+        pcbnew.ToMM(bb.GetRight()),
+        pcbnew.ToMM(bb.GetBottom()),
+    )
+
+
+def _bbox_half_extents(fp: pcbnew.FOOTPRINT) -> tuple[float, float, float, float]:
+    """Get (center_to_left, center_to_top, center_to_right, center_to_bottom) in mm.
+
+    Measures from footprint center to each edge of bounding box.
+    Accounts for rotation and flip — always accurate.
+    """
+    cx, cy = _pos_mm(fp)
+    l, t, r, b = _bbox_mm(fp)
+    return (cx - l, cy - t, r - cx, b - cy)
+
+
 def _add_model(fp, path: str, offset=(0, 0, 0), rotation=(0, 0, 0)):
+    """Add a 3D model to a footprint."""
     m = pcbnew.FP_3DMODEL()
     m.m_Filename = path
     m.m_Scale.x = m.m_Scale.y = m.m_Scale.z = 1.0
@@ -81,7 +107,23 @@ def _add_model(fp, path: str, offset=(0, 0, 0), rotation=(0, 0, 0)):
     fp.Models().push_back(m)
 
 
+def _box_halves(layout: dict, component: str) -> tuple[float, float]:
+    """Read component box half-extents from keyboard.yaml.
+
+    Components define their physical extent as 'box: [w, h]' in mm.
+    Returns (half_w, half_h) before rotation.
+    """
+    if component == "switch":
+        box = layout.get("switch", {}).get("box", [18.0, 17.0])
+    elif component == "controller":
+        box = layout.get("controller", {}).get("box", [17.78, 21.0])
+    else:
+        return (0, 0)
+    return (box[0] / 2, box[1] / 2)
+
+
 def _strip_edge_cuts(fp: pcbnew.FOOTPRINT):
+    """Remove all Edge.Cuts graphical items from a footprint."""
     to_remove = [
         item for item in fp.GraphicalItems() if item.GetLayer() == pcbnew.Edge_Cuts
     ]
@@ -90,15 +132,43 @@ def _strip_edge_cuts(fp: pcbnew.FOOTPRINT):
 
 
 def _kicad_footprint_dir() -> str:
+    """Get KICAD9_FOOTPRINT_DIR from environment."""
     return os.environ.get("KICAD9_FOOTPRINT_DIR", "")
 
 
 def _find_fp(board: pcbnew.BOARD, ref: str) -> pcbnew.FOOTPRINT | None:
-    """Find footprint by reference via iteration (avoids SWIG corruption bugs)."""
+    """Find footprint by reference via iteration (avoids pcbnew SWIG bugs)."""
     for fp in board.GetFootprints():
         if fp.GetReference() == ref:
             return fp
     return None
+
+
+def _load_and_place(
+    board: pcbnew.BOARD,
+    lib_path: str,
+    fp_name: str,
+    ref: str,
+    x: float, y: float,
+    rotation: float = 0,
+    back: bool = False,
+) -> pcbnew.FOOTPRINT:
+    """Load a footprint, add to board, position, flip, rotate.
+
+    Must add to board BEFORE flip — pcbnew segfaults on Flip without a parent board.
+    Returns the placed footprint so caller can query its actual bbox.
+    """
+    fp = pcbnew.FootprintLoad(lib_path, fp_name)
+    fp.SetReference(ref)
+    _strip_edge_cuts(fp)
+    fp.SetExcludedFromBOM(True)
+    fp.SetExcludedFromPosFiles(True)
+    board.Add(fp)  # must be on board before Flip
+    set_position(fp, _vec(x, y))
+    if back:
+        set_side(fp, Side.BACK)
+    set_rotation(fp, rotation)
+    return fp
 
 
 def _get_trackpoint_switch_refs(layout: dict) -> list[str]:
@@ -361,46 +431,67 @@ def add_trackpoint_holes(board: pcbnew.BOARD, layout: dict) -> None:
 
 
 def add_controller(board: pcbnew.BOARD, layout: dict) -> None:
+    """Place XIAO BLE controllers on B.Cu, above the outermost key column.
+
+    Box sizes from keyboard.yaml (Dwgs.User layer in footprints):
+      switch.box: [18, 17] mm → half: 9.0 × 8.5
+      controller.box: [17.78, 21] mm → half: 8.89 × 10.5
+
+    After ±90° rotation, XIAO axes swap:
+      Vertical half  = xiao_half_w = 8.89 mm
+      Horizontal half = xiao_half_h = 10.5 mm
+
+    Placement (left half, right is mirrored):
+      Y: XIAO bottom edge flush with key top edge
+      X: XIAO inner edge aligned with key inner edge (extends outward)
+    """
     ctrl_cfg = layout.get("controller", {})
     if not ctrl_cfg:
         return
 
     grid_cols = layout.get("grid", {}).get("cols", 5)
-    sw_cfg = layout.get("switch", {})
-    cutout = sw_cfg.get("cutout", 14.0)
-    case_padding = layout.get("case", {}).get("plate_padding", 2.0)
-    sw_half = cutout / 2 + case_padding
+    standoff = ctrl_cfg.get("standoff", 0.0)
 
-    # After set_side(BACK) flips the footprint, rotations are mirrored:
-    # Left half: -90° → USB-C points left (outward)
-    # Right half: 90° → USB-C points right (outward)
+    sw_half_w, sw_half_h = _box_halves(layout, "switch")
+    xiao_half_w, xiao_half_h = _box_halves(layout, "controller")
+
+    # After ±90° rotation, XIAO axes swap
+    xiao_v = xiao_half_w   # 8.89mm — vertical half-extent after rotation
+    xiao_h = xiao_half_h   # 10.5mm — horizontal half-extent after rotation
+
+    # After set_side(BACK) mirrors the footprint, rotations are mirrored:
+    #   Left half: -90° → USB-C points left (outward)
+    #   Right half: 90° → USB-C points right (outward)
     halves = [("SW1", "L", -90), (f"SW{grid_cols * 2}", "R", 90)]
 
     for sw_ref, half_label, rotation in halves:
-        anchor = _find_fp(board,sw_ref)
+        anchor = _find_fp(board, sw_ref)
         if not anchor:
             print(f"  Warning: {sw_ref} not found, skipping {half_label} controller")
             continue
 
         sx, sy = _pos_mm(anchor)
-        ctrl_y = sy - sw_half - XIAO_HALF_WIDTH
-        x_offset = XIAO_HALF_HEIGHT - sw_half
-        ctrl_x = (sx - x_offset) if half_label == "L" else (sx + x_offset)
 
-        fp = pcbnew.FootprintLoad(str(FOOTPRINTS_DIR), "xiao-ble-smd-cutout")
-        fp.SetReference(f"U_{half_label}")
-        _strip_edge_cuts(fp)
+        # Y: XIAO bottom flush with key top, separated by standoff
+        ctrl_y = sy - sw_half_h - xiao_v - standoff
+
+        # X: XIAO inner edge aligned with key inner edge (extends outward)
+        # Left half: right edges align, XIAO extends left
+        # Right half: left edges align, XIAO extends right
+        if half_label == "L":
+            ctrl_x = sx + sw_half_w - xiao_h
+        else:
+            ctrl_x = sx - sw_half_w + xiao_h
+
+        fp = _load_and_place(
+            board, str(FOOTPRINTS_DIR), "xiao-ble-smd-cutout",
+            ref=f"U_{half_label}", x=ctrl_x, y=ctrl_y,
+            rotation=rotation, back=True,
+        )
         fp.Models().clear()
         _add_model(fp, XIAO_3D_MODEL, offset=XIAO_MODEL_OFFSET, rotation=XIAO_MODEL_ROTATE)
-        fp.SetExcludedFromBOM(True)
-        fp.SetExcludedFromPosFiles(True)
 
-        # Must add to board before Flip (set_side) — pcbnew segfaults otherwise
-        board.Add(fp)
-        set_position(fp, _vec(ctrl_x, ctrl_y))
-        set_side(fp, Side.BACK)
-        set_rotation(fp, rotation)
-        print(f"  Controller {half_label}: ({ctrl_x:.2f}, {ctrl_y:.2f}) rot={rotation}")
+        print(f"  Controller {half_label}: ({ctrl_x:.2f}, {ctrl_y:.2f})")
 
 
 # ---------------------------------------------------------------------------
@@ -537,11 +628,13 @@ def add_pullup_resistors(board: pcbnew.BOARD, layout: dict) -> None:
         cx, cy = _pos_mm(ctrl)
 
         # Two resistors stacked vertically, to the right of controller (rotated 90°)
-        # Left half: right side; Right half: left side (mirrored)
-        x_off = (XIAO_HALF_HEIGHT + 3.0) if hl == "L" else -(XIAO_HALF_HEIGHT + 3.0)
+        # Controller horizontal half-extent after ±90° rotation = long axis
+        _, ctrl_hh = _box_halves(layout, "controller")
+        ctrl_h_extent = ctrl_hh  # long axis goes horizontal after rotation
+        x_off = (ctrl_h_extent + 3.0) if hl == "L" else -(ctrl_h_extent + 3.0)
         for i in range(2):
             ref = f"R_{hl}{i + 1}"
-            ry = cy + (i - 0.5) * 2.5  # 2.5mm apart vertically
+            ry = cy - 1.0 + i * 2.5  # near controller center, 2.5mm apart
 
             fp = pcbnew.FootprintLoad(lib_path, fp_name)
             fp.SetReference(ref)
@@ -562,6 +655,7 @@ def add_pullup_resistors(board: pcbnew.BOARD, layout: dict) -> None:
 
 
 def _switch_corners(cx, cy, rot_deg, half_ext):
+    """Return TL/TR/BR/BL corners of a rotated switch rect."""
     r = math.radians(-rot_deg)
     c, s = math.cos(r), math.sin(r)
     h = half_ext
@@ -574,6 +668,7 @@ def _switch_corners(cx, cy, rot_deg, half_ext):
 
 
 def _line_x_intersect(x_vert, p1, p2):
+    """Point where a vertical line at x_vert crosses line p1→p2."""
     dx = p2[0] - p1[0]
     if abs(dx) < 1e-9:
         return (x_vert, p1[1])
@@ -582,6 +677,10 @@ def _line_x_intersect(x_vert, p1, p2):
 
 
 def _half_outline(switches, ctrl_pos, layout):
+    """Build left-half Edge.Cuts outline as a clockwise polygon.
+
+    Uses switch Dwgs.User extents (read dynamically) for the half-extent.
+    """
     sw_cfg = layout.get("switch", {})
     cutout = sw_cfg.get("cutout", 14.0)
     pad = layout.get("case", {}).get("plate_padding", 2.0)
@@ -592,6 +691,7 @@ def _half_outline(switches, ctrl_pos, layout):
     if not grid_sw:
         return []
 
+    # Group grid switches into columns
     grid_sw.sort(key=lambda s: s[1])
     columns: list[list] = []
     cur = [grid_sw[0]]
@@ -622,24 +722,23 @@ def _half_outline(switches, ctrl_pos, layout):
         grid_top = pinky[1]
         non_pinky_bot = pinky[2]
 
-    step_x = (
-        (col_ext[0][0] + col_ext[1][0]) / 2 if len(col_ext) > 1 else pinky_left
-    )
-    thumb_return_x = (
-        (col_ext[-2][0] + col_ext[-1][0]) / 2 if len(col_ext) >= 3 else step_x
-    )
+    step_x = (col_ext[0][0] + col_ext[1][0]) / 2 if len(col_ext) > 1 else pinky_left
+    thumb_return_x = (col_ext[-2][0] + col_ext[-1][0]) / 2 if len(col_ext) >= 3 else step_x
 
+    # BLE controller rect
     if ctrl_pos:
-        ble_top = ctrl_pos[1] - XIAO_HALF_WIDTH
-        ble_left = ctrl_pos[0] - XIAO_HALF_HEIGHT
-        ble_right = ctrl_pos[0] + XIAO_HALF_HEIGHT
+        ctrl_hw, ctrl_hh = ctrl_pos[2], ctrl_pos[3]  # half-extents after rotation
+        ble_top = ctrl_pos[1] - ctrl_hh
+        ble_left = ctrl_pos[0] - ctrl_hw
+        ble_right = ctrl_pos[0] + ctrl_hw
+        ble_bottom = ctrl_pos[1] + ctrl_hh + 1.0  # 1mm clearance below BLE pads
         outer_left = min(pinky_left, ble_left)
     else:
         ble_top = pinky[1]
-        ble_left = pinky_left
         ble_right = step_x
         outer_left = pinky_left
 
+    # Outermost thumb key corners
     tc = None
     if thumb_sw:
         ot = max(thumb_sw, key=lambda s: s[1])
@@ -650,6 +749,7 @@ def _half_outline(switches, ctrl_pos, layout):
         bot2 = sorted(all_c[2:], key=lambda p: p[0])
         tc = {"TL": top2[0], "TR": top2[1], "BL": bot2[0], "BR": bot2[1]}
 
+    # Build clockwise polygon
     pts = []
     pts.append((outer_left, ble_top))
     pts.append((ble_right, ble_top))
@@ -671,24 +771,26 @@ def _half_outline(switches, ctrl_pos, layout):
     pts.append((pinky_left, pinky_bot))
 
     if outer_left < pinky_left - 0.1:
-        pts.append((pinky_left, pinky[1]))
-        pts.append((outer_left, pinky[1]))
+        # Step from pinky column to BLE left edge, going low enough to clear BLE bottom
+        step_y = ble_bottom if ctrl_pos else pinky[1]
+        pts.append((pinky_left, step_y))
+        pts.append((outer_left, step_y))
     pts.append((outer_left, ble_top))
 
+    # Deduplicate consecutive points
     cleaned = [pts[0]]
     for p in pts[1:]:
         if abs(p[0] - cleaned[-1][0]) > 0.05 or abs(p[1] - cleaned[-1][1]) > 0.05:
             cleaned.append(p)
-    if (
-        len(cleaned) > 1
-        and abs(cleaned[-1][0] - cleaned[0][0]) < 0.05
-        and abs(cleaned[-1][1] - cleaned[0][1]) < 0.05
-    ):
+    if (len(cleaned) > 1
+            and abs(cleaned[-1][0] - cleaned[0][0]) < 0.05
+            and abs(cleaned[-1][1] - cleaned[0][1]) < 0.05):
         cleaned.pop()
     return cleaned
 
 
 def add_edge_cuts(board: pcbnew.BOARD, layout: dict) -> None:
+    """Add per-half Edge.Cuts outlines — two separate boards."""
     switches = []
     for fp in board.GetFootprints():
         ref = fp.GetReference()
@@ -704,13 +806,21 @@ def add_edge_cuts(board: pcbnew.BOARD, layout: dict) -> None:
     mid_x = (min(all_xs) + max(all_xs)) / 2
     left_sw = [(r, x, y, rot) for r, x, y, rot in switches if x < mid_x]
 
+    # Get controller positions + their rotated half-extents for outline
     ctrl_left = ctrl_right = None
-    u_l = _find_fp(board,"U_L")
-    u_r = _find_fp(board,"U_R")
-    if u_l:
-        ctrl_left = _pos_mm(u_l)
-    if u_r:
-        ctrl_right = _pos_mm(u_r)
+    xiao_hw, xiao_hh = _box_halves(layout, "controller")
+    # After ±90° rotation: horizontal = long axis, vertical = short axis
+    xiao_h_rot = max(xiao_hw, xiao_hh)  # horizontal half after rotation
+    xiao_v_rot = min(xiao_hw, xiao_hh)  # vertical half after rotation
+
+    for hl in ("L", "R"):
+        ctrl = _find_fp(board, f"U_{hl}")
+        if ctrl:
+            cx, cy = _pos_mm(ctrl)
+            if hl == "L":
+                ctrl_left = (cx, cy, xiao_h_rot, xiao_v_rot)
+            else:
+                ctrl_right = (cx, cy, xiao_h_rot, xiao_v_rot)
 
     def _emit(outline):
         for i in range(len(outline)):
@@ -732,17 +842,69 @@ def add_edge_cuts(board: pcbnew.BOARD, layout: dict) -> None:
         w, h = max(xs) - min(xs), max(ys) - min(ys)
         print(f"  Edge.Cuts L: {len(left_outline)} pts, {w:.1f} x {h:.1f} mm")
 
+        # Mirror left outline for right half
         right_outline = [(2 * mid_x - x, y) for x, y in left_outline]
         right_outline.reverse()
         _emit(right_outline)
         xs = [p[0] for p in right_outline]
-        print(
-            f"  Edge.Cuts R: {len(right_outline)} pts, {max(xs) - min(xs):.1f} x {h:.1f} mm"
-        )
+        print(f"  Edge.Cuts R: {len(right_outline)} pts, {max(xs) - min(xs):.1f} x {h:.1f} mm")
 
 
 # ---------------------------------------------------------------------------
-# Step 8: Silkscreen — hide labels + geometric pattern
+# Center on sheet
+# ---------------------------------------------------------------------------
+
+
+def center_on_sheet(board: pcbnew.BOARD) -> None:
+    """Shift all board items so the design is centered on the A4 sheet.
+
+    A4 = 297 × 210 mm. Computes the bounding box of all footprints + drawings
+    and translates everything so the center lands at (148.5, 105).
+    """
+    # Compute bounding box of all footprints
+    xs, ys = [], []
+    for fp in board.GetFootprints():
+        x, y = _pos_mm(fp)
+        xs.append(x)
+        ys.append(y)
+    for d in board.GetDrawings():
+        if d.GetLayer() == pcbnew.Edge_Cuts:
+            shape = pcbnew.Cast_to_PCB_SHAPE(d)
+            s, e = shape.GetStart(), shape.GetEnd()
+            xs.extend([pcbnew.ToMM(s.x), pcbnew.ToMM(e.x)])
+            ys.extend([pcbnew.ToMM(s.y), pcbnew.ToMM(e.y)])
+
+    if not xs:
+        return
+
+    # Current center
+    cur_cx = (min(xs) + max(xs)) / 2
+    cur_cy = (min(ys) + max(ys)) / 2
+
+    # Target center (A4 sheet)
+    target_cx, target_cy = 148.5, 105.0
+
+    dx = _mm(target_cx - cur_cx)
+    dy = _mm(target_cy - cur_cy)
+    offset = pcbnew.VECTOR2I(dx, dy)
+
+    # Move all footprints
+    for fp in board.GetFootprints():
+        fp.Move(offset)
+
+    # Move all drawings (Edge.Cuts, silkscreen, etc.)
+    for d in board.GetDrawings():
+        d.Move(offset)
+
+    # Move all tracks
+    for t in board.GetTracks():
+        t.Move(offset)
+
+    print(f"  Centered: shifted ({target_cx - cur_cx:+.1f}, {target_cy - cur_cy:+.1f}) mm")
+
+
+# ---------------------------------------------------------------------------
+# Step 9: Silkscreen — hide labels + geometric pattern
 # ---------------------------------------------------------------------------
 
 
@@ -1006,6 +1168,8 @@ def add_silkscreen(board: pcbnew.BOARD, layout: dict) -> None:
     for fp in board.GetFootprints():
         fp.Reference().SetVisible(False)
         fp.Value().SetVisible(False)
+        # Only move silk/fab to hidden layer (for our custom silkscreen pattern)
+        # Keep CrtYd and Dwgs_User — they define component extents for outline planning
         for item in fp.GraphicalItems():
             layer = item.GetLayer()
             if layer in (pcbnew.F_SilkS, pcbnew.B_SilkS,
@@ -1191,6 +1355,10 @@ def main() -> None:
     # Step 7: Edge cuts
     print("Adding edge cuts...")
     add_edge_cuts(board, layout)
+
+    # Center on A4 sheet (before silkscreen so contours clip correctly)
+    print("Centering on sheet...")
+    center_on_sheet(board)
 
     # Step 8: Silkscreen
     print("Adding silkscreen...")
