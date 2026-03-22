@@ -7,10 +7,10 @@ controller, FFC connector, power switch, and Edge.Cuts outlines.
 
 No file patching — everything operates on the same pcbnew.BOARD object.
 
-Run with the kbplacer venv Python (has pcbnew + kbplacer on sys.path).
+Run inside `nix develop` (provides pcbnew, kbplacer, and KISWITCH_DIR).
 
 Usage:
-    python3 tools/pcb_build.py -l tools/keyboard.yaml -o tools/build/keyboard.kicad_pcb
+    python3 tools/pcb_build.py -l tools/keyboard.yaml -o tools/build/atlas.kicad_pcb
 """
 import argparse
 import math
@@ -35,9 +35,9 @@ from kbplacer.kbplacer_plugin import PluginSettings, run_board
 # ---------------------------------------------------------------------------
 
 TOOLS_DIR = Path(__file__).resolve().parent
-FOOTPRINTS_DIR = TOOLS_DIR / "footprints"
-MODELS_DIR = TOOLS_DIR / "3dmodels"
-KISWITCH_DIR = TOOLS_DIR / "build" / ".kiswitch" / "footprints"
+FOOTPRINTS_DIR = TOOLS_DIR / "kicad" / "footprints"
+MODELS_DIR = TOOLS_DIR / "kicad" / "3dmodels"
+KISWITCH_DIR = Path(os.environ["KISWITCH_DIR"])
 
 # 3D model paths (${KIPRJMOD} resolved by KiCad relative to .kicad_pcb)
 HOTSWAP_MODEL = "${KIPRJMOD}/3dmodels/Choc_V1_Hotswap.step"
@@ -1314,7 +1314,7 @@ def main() -> None:
         help="keyboard.yaml config",
     )
     parser.add_argument(
-        "-o", "--output", type=Path, default=TOOLS_DIR / "build" / "keyboard.kicad_pcb",
+        "-o", "--output", type=Path, default=TOOLS_DIR / "build" / "atlas.kicad_pcb",
         help="Output .kicad_pcb path",
     )
     parser.add_argument(
@@ -1387,11 +1387,11 @@ def main() -> None:
     pcbnew.SaveBoard(str(out_path), board)
     print(f"Saved: {out_path} ({len(board.GetFootprints())} footprints)")
 
-    # Symlink 3dmodels/
-    proj_models = out_path.parent / "3dmodels"
-    if MODELS_DIR.is_dir() and not proj_models.exists():
-        proj_models.symlink_to(MODELS_DIR)
-        print(f"Linked 3dmodels/ → {proj_models}")
+    # Symlink 3dmodels/ and footprints/ so KiCad resolves ${KIPRJMOD} paths
+    for name, src in [("3dmodels", MODELS_DIR), ("footprints", FOOTPRINTS_DIR)]:
+        link = out_path.parent / name
+        if src.is_dir() and not link.exists():
+            link.symlink_to(src)
 
 
 if __name__ == "__main__":

@@ -128,12 +128,12 @@ thumb:
   offset: [0.23, 0]             # [dx, dy] shift of first key — ~1/4 keycap width right
 
 # ──────────────────────────────────────────────────────────────────────
-# Physical dimensions below (mm). Used by pcb_enhance.py for trackpoint
+# Physical dimensions below (mm). Used by pcb_build.py for trackpoint
 # holes, controller placement, and edge cuts. Not used by layout2kle.py.
 # ──────────────────────────────────────────────────────────────────────
 
 # --- Controller ---
-# XIAO BLE (nRF52840) — placed above the outermost key by pcb_enhance.py.
+# XIAO BLE (nRF52840) — placed above the outermost key by pcb_build.py.
 #
 controller:
   model: xiao_ble              # Seeed XIAO nRF52840 — BLE 5.0, 256KB RAM
@@ -156,7 +156,7 @@ trackpoint:
     diameter: 2.2              # M2 screw hole (mm)
     offset: 9.5                # Y distance from center to each screw (mm) — 19mm apart per datasheet
   # 3D model + physical assembly dimensions (for case/spacer design)
-  sensor_step: "SK8707-01-005 SENSOR.step"   # sensor STEP in 3dmodels/
+  assembled_step: "assembled_trackpoint.step"  # complete module STEP in 3dmodels/
   stick_offset_y: 1.70         # stick center Y offset from sensor bbox center (mm)
   companion_board:
     width: 23.0                # mm

@@ -10,14 +10,20 @@ Edit =keyboard.yaml= here, run the pipeline from the repo root with =just=.
 #+begin_example
 tools/
 ├── keyboard.yaml                ← INPUT: you edit this
-├── build/                       ← generated + downloaded files (gitignored)
-│   ├── layout.json              ← Step 1 output
-│   ├── *.zip                    ← Step 2 download (from editor)
-│   └── keyboard.kicad_pcb      ← Step 3 output (patched)
-├── footprints/                  ← KiCad footprints used by pcb_enhance
-│   └── *.kicad_mod
-├── layout2kle.py                ← Step 1 script
-├── pcb_enhance.py               ← Step 3 script
+├── layout2kle.py                ← YAML → KLE JSON
+├── pcb_build.py                 ← unified PCB generator (kbplacer + enhancements)
+├── step_build.py                ← STEP assembly (bare PCB + trackpoint modules)
+├── kicad/                       ← KiCad input files
+│   ├── 3dmodels/                ← 3D models (switches, diodes, assembled trackpoint)
+│   │   └── *.step / *.wrl
+│   └── footprints/              ← custom footprints (connectors, controller)
+│       └── *.kicad_mod
+├── build/                       ← all generated output (gitignored)
+│   ├── layout.json              ← KLE intermediate
+│   ├── atlas.kicad_pcb          ← generated PCB
+│   ├── atlas.step               ← PCB + trackpoint modules (after pcb-step)
+│   ├── 3dmodels → ../kicad/3dmodels   (symlink for KiCad)
+│   └── footprints → ../kicad/footprints
 └── readme.org
 #+end_example
 
@@ -26,55 +32,29 @@ tools/
 #+begin_example
   keyboard.yaml
        │
-       │  Step 1: just kle
-       ▼
-  build/layout.json
+       │  just pcb
        │
-       │  Step 2: paste into editor.keyboard-tools.xyz
-       │          configure footprints (see below)
-       │          download .zip
-       ▼
-  build/*.zip                   ← raw kbplacer output
+       ├─ 1. layout2kle.py → build/layout.json (KLE JSON)
        │
-       │  Step 3: just pcb-enhance
-       │          (finds latest .zip, extracts, patches)
-       ▼
-  build/keyboard.kicad_pcb      ← patched, ready for KiCad
+       └─ 2. pcb_build.py  → build/atlas.kicad_pcb
+             • kbplacer: switch + diode placement
+             • 3D models, trackpoint holes, controller, edge cuts
+             • symlinks kicad/3dmodels + kicad/footprints into build/
+
+  just pcb-step  (after pcb)
+       │
+       ├─ 1. kicad-cli → build/pcb_bare.step
+       ├─ 2. step_build.py places assembled_trackpoint.step modules
+       └─ 3. → build/atlas.step + opens f3d viewer
 #+end_example
 
-* Step 1 — Generate KLE JSON
-
-=layout2kle.py= converts =keyboard.yaml= into KLE-NG JSON format.
+* Build PCB
 
 #+begin_src bash
-just kle          # → tools/build/layout.json
-just kle-clip     # → clipboard (wl-copy)
-just kle-stdout   # → stdout
+nix develop          # enter dev shell
+just pcb             # YAML → build/atlas.kicad_pcb
+just pcb-step        # STEP assembly: bare PCB + trackpoint modules
 #+end_src
 
-* Step 2 — editor.keyboard-tools.xyz
-
-1. Open https://editor.keyboard-tools.xyz/
-2. Paste the KLE JSON
-3. Configure kbplacer settings:
-   - Switch: *Hotswap Kailh Choc V1*, rotation 0°
-   - Diode: *SOD-123F*, position =(-6, -4) mm=, rotation 90°
-   - Routing: Switch-Diode only
-4. Generate and download zip
-5. Save to =tools/build/=
-
-* Step 3 — Enhance PCB
-
-=just pcb-enhance= finds the latest =.zip= in =build/=, extracts the =.kicad_pcb=, and patches it:
-
-- Fixes 3D model paths (hotswap socket, switch body, diode)
-- Adds trackpoint NPTH holes (stick + screw mounts)
-- Places XIAO BLE controller footprints
-- Adds Edge.Cuts bounding box
-
-#+begin_src bash
-just pcb-enhance  # → tools/build/keyboard.kicad_pcb
-#+end_src
-
-Then open in KiCad for final routing and tweaks.
-
+Dependencies (kbplacer, kiswitch footprint library) are managed by Nix.
+No manual setup step required.
