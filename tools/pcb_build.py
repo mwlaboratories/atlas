@@ -1028,20 +1028,6 @@ def _point_inside_with_margin(
     return _dist_to_polygon_edge(x, y, poly) >= margin
 
 
-def _intersect_horizontal(y: float, poly: list[tuple[float, float]]) -> list[float]:
-    """Find all x-coordinates where a horizontal line at y intersects the polygon edges."""
-    xs = []
-    n = len(poly)
-    for i in range(n):
-        x1, y1 = poly[i]
-        x2, y2 = poly[(i + 1) % n]
-        if (y1 <= y < y2) or (y2 <= y < y1):
-            if abs(y2 - y1) > 1e-9:
-                t = (y - y1) / (y2 - y1)
-                xs.append(x1 + t * (x2 - x1))
-    xs.sort()
-    return xs
-
 
 def _noise2d(x: float, y: float, seed: int = 42) -> float:
     """Simple value noise with smooth interpolation. Returns 0..1."""
