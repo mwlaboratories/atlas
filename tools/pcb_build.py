@@ -1080,109 +1080,34 @@ def _fbm(x: float, y: float, octaves: int = 4, seed: int = 42) -> float:
     return val
 
 
-def _marching_squares_contour(
-    grid: list[list[float]],
+def _contourpy_lines(
+    grid,
     threshold: float,
     x_min: float, y_min: float,
     cell_size: float,
-    poly: list[tuple[float, float]],
-) -> list[tuple[tuple[float, float], tuple[float, float]]]:
-    """Extract contour line segments at a threshold using marching squares."""
-    rows = len(grid)
-    cols = len(grid[0])
-    segments = []
+) -> list[list[tuple[float, float]]]:
+    """Extract contour polylines using contourpy (matplotlib's contour engine)."""
+    import contourpy
+    import numpy as np
 
-    for iy in range(rows - 1):
-        for ix in range(cols - 1):
-            # Four corners: TL, TR, BR, BL
-            v0 = grid[iy][ix]       # TL
-            v1 = grid[iy][ix + 1]   # TR
-            v2 = grid[iy + 1][ix + 1]  # BR
-            v3 = grid[iy + 1][ix]   # BL
+    z = np.asarray(grid, dtype=np.float64)
+    rows, cols = z.shape
+    x = np.linspace(x_min, x_min + (cols - 1) * cell_size, cols)
+    y = np.linspace(y_min, y_min + (rows - 1) * cell_size, rows)
 
-            # Classification bits
-            case = 0
-            if v0 >= threshold: case |= 1
-            if v1 >= threshold: case |= 2
-            if v2 >= threshold: case |= 4
-            if v3 >= threshold: case |= 8
+    gen = contourpy.contour_generator(x, y, z, line_type=contourpy.LineType.SeparateCode)
+    vertices_list, _ = gen.lines(threshold)
 
-            if case == 0 or case == 15:
-                continue
-
-            # Interpolation helpers
-            def _lerp_x(va, vb, y_off):
-                if abs(vb - va) < 1e-9:
-                    t = 0.5
-                else:
-                    t = (threshold - va) / (vb - va)
-                return (x_min + (ix + t) * cell_size,
-                        y_min + (iy + y_off) * cell_size)
-
-            def _lerp_y(va, vb, x_off):
-                if abs(vb - va) < 1e-9:
-                    t = 0.5
-                else:
-                    t = (threshold - va) / (vb - va)
-                return (x_min + (ix + x_off) * cell_size,
-                        y_min + (iy + t) * cell_size)
-
-            # Edge midpoints: top, right, bottom, left
-            top = _lerp_x(v0, v1, 0)
-            right = _lerp_y(v1, v2, 1)
-            bottom = _lerp_x(v3, v2, 1)
-            left = _lerp_y(v0, v3, 0)
-
-            # Saddle disambiguation: use center value
-            center = (v0 + v1 + v2 + v3) / 4.0
-
-            if case == 5:
-                if center >= threshold:
-                    case_segs = [(left, bottom), (top, right)]
-                else:
-                    case_segs = [(left, top), (bottom, right)]
-            elif case == 10:
-                if center >= threshold:
-                    case_segs = [(top, left), (bottom, right)]
-                else:
-                    case_segs = [(top, right), (bottom, left)]
-            else:
-                case_table = {
-                    1:  [(left, top)],
-                    2:  [(top, right)],
-                    3:  [(left, right)],
-                    4:  [(right, bottom)],
-                    6:  [(top, bottom)],
-                    7:  [(left, bottom)],
-                    8:  [(bottom, left)],
-                    9:  [(bottom, top)],
-                    11: [(bottom, right)],
-                    12: [(right, left)],
-                    13: [(right, top)],
-                    14: [(bottom, top)],
-                }
-                case_segs = case_table.get(case, [])
-
-            max_len = cell_size * 1.5  # max legitimate segment length
-            for p1, p2 in case_segs:
-                # Skip degenerate or impossibly long segments
-                dx = p2[0] - p1[0]
-                dy = p2[1] - p1[1]
-                seg_len = math.sqrt(dx * dx + dy * dy)
-                if seg_len < 0.01 or seg_len > max_len:
-                    continue
-                # Clip: both endpoints + midpoint must be inside with margin
-                mx, my = (p1[0] + p2[0]) / 2, (p1[1] + p2[1]) / 2
-                if (_point_inside_with_margin(p1[0], p1[1], poly, 0.5) and
-                        _point_inside_with_margin(p2[0], p2[1], poly, 0.5) and
-                        _point_inside_with_margin(mx, my, poly, 0.3)):
-                    segments.append((p1, p2))
-
-    return segments
+    polylines = []
+    for verts in vertices_list:
+        pts = [(float(verts[i, 0]), float(verts[i, 1])) for i in range(verts.shape[0])]
+        if len(pts) >= 2:
+            polylines.append(pts)
+    return polylines
 
 
 def add_silkscreen(board: pcbnew.BOARD, layout: dict) -> None:
-    """Hide labels and add topographic contour lines from a noise heightmap."""
+    """Hide labels and add topographic contour lines from a terrain heightmap."""
     # Hide all reference/value text and footprint silk/fab drawings
     for fp in board.GetFootprints():
         fp.Reference().SetVisible(False)
@@ -1203,8 +1128,8 @@ def add_silkscreen(board: pcbnew.BOARD, layout: dict) -> None:
     cell_size = 0.35    # mm grid resolution (smaller = smoother curves)
     n_levels = 20       # number of contour levels
 
-    # Load real terrain data (Swiss Alps near Matterhorn) if available
-    terrain_path = TOOLS_DIR / "build" / "terrain.json"
+    # Load terrain data (Matterhorn heightmap) for contour lines
+    terrain_path = TOOLS_DIR / "kicad" / "terrain.json"
     terrain_data = None
     if terrain_path.exists():
         import json
@@ -1266,20 +1191,33 @@ def add_silkscreen(board: pcbnew.BOARD, layout: dict) -> None:
                     row.append(h)
                 grid.append(row)
 
-        # Extract contour lines at evenly spaced levels
+        # Trace contour polylines and clip against board outline
         h_min = min(min(row) for row in grid)
         h_max = max(max(row) for row in grid)
         margin = (h_max - h_min) * 0.05
+        clip_margin = 0.3  # mm from board edge
+
+        def _emit_run(run):
+            nonlocal total_segs
+            for j in range(len(run) - 1):
+                _add_seg(run[j][0], run[j][1], run[j+1][0], run[j+1][1], pcbnew.B_SilkS)
+                _add_seg(run[j][0], run[j][1], run[j+1][0], run[j+1][1], pcbnew.F_SilkS)
+                total_segs += 2
 
         for i in range(n_levels):
             level = h_min + margin + (h_max - h_min - 2 * margin) * i / (n_levels - 1)
-            segments = _marching_squares_contour(
-                grid, level, x_min, y_min, cell_size, poly
-            )
-            for (x1, y1), (x2, y2) in segments:
-                _add_seg(x1, y1, x2, y2, pcbnew.B_SilkS)
-                _add_seg(x1, y1, x2, y2, pcbnew.F_SilkS)
-                total_segs += 2
+            polylines = _contourpy_lines(grid, level, x_min, y_min, cell_size)
+
+            for pline in polylines:
+                # Clip: split polyline at points outside the board outline
+                run = []
+                for pt in pline:
+                    if _point_inside_with_margin(pt[0], pt[1], poly, clip_margin):
+                        run.append(pt)
+                    else:
+                        _emit_run(run)
+                        run = []
+                _emit_run(run)
 
     print(f"  Silkscreen: {total_segs} segments ({n_levels} contour levels)")
 
