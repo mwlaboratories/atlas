@@ -29,6 +29,8 @@
       kbplacer = unstable.python313Packages.callPackage ./nix/kbplacer.nix {};
       pcbPython = unstable.python313.withPackages (ps: [
         ps.pyyaml
+        ps.contourpy
+        ps.numpy
         kbplacer
       ]);
 
