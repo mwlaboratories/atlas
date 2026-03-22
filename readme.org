@@ -3,7 +3,7 @@
 
 [[images/atlas-render.png]]
 
-[[keymapdrawer-nix/keymap.svg]]
+[[firmware/keymap.svg]]
 
 [[images/atlas_jan_small.jpg]]
 * Atlas
@@ -47,10 +47,9 @@ Thumb keys:
 ** Build
 #+begin_src bash
 nix develop
-just all      # build both sides
-just left     # build left only
-just right    # build right only
-just keymap   # generate keymap SVG
+just build      # build both sides
+just build-left # build left only
+just keymap     # generate keymap SVG
 #+end_src
 
 Firmware outputs to =firmware/out/=.
@@ -61,10 +60,8 @@ PCB generation pipeline is documented in =tools/readme.org=.
 #+begin_example
 justfile             build commands (firmware + PCB)
 flake.nix            nix dev environment
-pcb/                 KiCad projects (main + trackball sensor)
-stl/                 3D-printable case parts
+nix/                 nix package defs (kbplacer, kiswitch, keymap-drawer)
 tools/               PCB generation pipeline (see tools/readme.org)
 firmware/            ZMK workspace (shields, keymap, config)
-nix/                 nix package defs, keymap drawer
 images/              project photos + renders
 #+end_example
