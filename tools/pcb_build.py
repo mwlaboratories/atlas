@@ -3,7 +3,7 @@
 
 Calls kbplacer as a library for switch/diode placement, then enhances
 the board object directly: solder key swap, 3D models, trackpoint holes,
-controller, FFC connector, power switch, and Edge.Cuts outlines.
+controller, power switch, ADS1220 ADC + passives, and Edge.Cuts outlines.
 
 No file patching — everything operates on the same pcbnew.BOARD object.
 
@@ -44,6 +44,7 @@ HOTSWAP_MODEL = "${KIPRJMOD}/3dmodels/Choc_V1_Hotswap.step"
 SWITCH_BODY_MODEL = "${KIPRJMOD}/3dmodels/Choc_V1_Switch.step"
 DIODE_MODEL = "${KIPRJMOD}/3dmodels/D_SOD-123F.wrl"
 XIAO_3D_MODEL = "${KIPRJMOD}/3dmodels/XIAO-nRF52840 v15.step"
+ADS1220_3D_MODEL = "${KICAD9_3DMODEL_DIR}/Package_SO.3dshapes/TSSOP-16_4.4x5mm_P0.65mm.stpZ"
 
 
 XIAO_MODEL_ROTATE = (-90, 0, -90)
@@ -495,58 +496,6 @@ def add_controller(board: pcbnew.BOARD, layout: dict) -> None:
 
 
 # ---------------------------------------------------------------------------
-# Step 5: FFC connector
-# ---------------------------------------------------------------------------
-
-
-def add_ffc(board: pcbnew.BOARD, layout: dict) -> None:
-    tp_cfg = layout.get("trackpoint", {})
-    ffc_cfg = tp_cfg.get("ffc")
-    if not ffc_cfg:
-        return
-
-    fp_id = ffc_cfg.get("footprint", "")
-    if not fp_id:
-        return
-
-    lib_name, fp_name = fp_id.split(":", 1)
-    fp_dir = _kicad_footprint_dir()
-    if not fp_dir:
-        print("  Warning: KICAD9_FOOTPRINT_DIR not set, skipping FFC")
-        return
-    lib_path = str(Path(fp_dir) / f"{lib_name}.pretty")
-
-    offset_raw = ffc_cfg.get("offset", [0.0, 3.0])
-    if isinstance(offset_raw, (int, float)):
-        x_off, y_off = 0.0, float(offset_raw)
-    else:
-        x_off, y_off = float(offset_raw[0]), float(offset_raw[1])
-    ffc_rot = float(ffc_cfg.get("rotation", 0.0))
-
-    grid_cols = layout.get("grid", {}).get("cols", 5)
-    tp_cols = tp_cfg.get("between", {}).get("cols", [3, 4])
-    tp_rows = tp_cfg.get("between", {}).get("rows", [0, 1])
-    centers = _compute_trackpoint_centers(board, tp_cols, tp_rows, grid_cols)
-
-    for i, tc in enumerate(centers):
-        hl = "L" if i == 0 else "R"
-        ffc_x = tc[0] + (x_off if hl == "L" else -x_off)
-        ffc_y = tc[1] + y_off
-        rot = ffc_rot if hl == "L" else -ffc_rot
-
-        fp = pcbnew.FootprintLoad(lib_path, fp_name)
-        fp.SetReference(f"J_{hl}")
-        _strip_edge_cuts(fp)
-        fp.SetExcludedFromBOM(True)
-        fp.SetExcludedFromPosFiles(True)
-        board.Add(fp)
-        set_position(fp, _vec(ffc_x, ffc_y))
-        set_side(fp, Side.BACK)
-        set_rotation(fp, rot)
-        print(f"  FFC {hl}: ({ffc_x:.2f}, {ffc_y:.2f})")
-
-
-# ---------------------------------------------------------------------------
 # Step 6: Power switch
 # ---------------------------------------------------------------------------
 
@@ -601,52 +550,140 @@ def add_power_switch(board: pcbnew.BOARD, layout: dict) -> None:
 
 
 # ---------------------------------------------------------------------------
-# Step 6b: Trackpoint pullup resistors
+# Step 6b: ADS1220 strain-gauge ADC + passives
 # ---------------------------------------------------------------------------
 
 
-def add_pullup_resistors(board: pcbnew.BOARD, layout: dict) -> None:
-    """Place two 4.7kΩ 0402 pullup resistors per half on B.Cu near XIAO."""
+def add_ads1220(board: pcbnew.BOARD, layout: dict) -> None:
+    """Place ADS1220 (TSSOP-16) on B.Cu near each trackpoint sensor.
+
+    Strain-gauge sensor's [x][y][a][b] pads are hand-soldered directly to
+    AIN0/AIN1/REFP0/REFN0. SPI lines route to the XIAO across the board.
+    """
     tp_cfg = layout.get("trackpoint", {})
-    if not tp_cfg:
+    adc_cfg = tp_cfg.get("adc")
+    if not adc_cfg or adc_cfg.get("type") != "ads1220":
+        return
+
+    fp_id = adc_cfg.get("footprint", "")
+    if not fp_id:
+        return
+
+    lib_name, fp_name = fp_id.split(":", 1)
+    fp_dir = _kicad_footprint_dir()
+    if not fp_dir:
+        print("  Warning: KICAD9_FOOTPRINT_DIR not set, skipping ADS1220")
+        return
+    lib_path = str(Path(fp_dir) / f"{lib_name}.pretty")
+
+    offset_raw = adc_cfg.get("offset", [0.0, 13.0])
+    if isinstance(offset_raw, (int, float)):
+        x_off, y_off = 0.0, float(offset_raw)
+    else:
+        x_off, y_off = float(offset_raw[0]), float(offset_raw[1])
+    adc_rot = float(adc_cfg.get("rotation", 0.0))
+
+    grid_cols = layout.get("grid", {}).get("cols", 5)
+    tp_cols = tp_cfg.get("between", {}).get("cols", [3, 4])
+    tp_rows = tp_cfg.get("between", {}).get("rows", [0, 1])
+    centers = _compute_trackpoint_centers(board, tp_cols, tp_rows, grid_cols)
+
+    for i, tc in enumerate(centers):
+        hl = "L" if i == 0 else "R"
+        adc_x = tc[0] + (x_off if hl == "L" else -x_off)
+        adc_y = tc[1] + y_off
+        rot = adc_rot if hl == "L" else -adc_rot
+
+        fp = pcbnew.FootprintLoad(lib_path, fp_name)
+        if fp is None:
+            print(f"  Warning: failed to load {lib_path}:{fp_name}, skipping ADS1220 {hl}")
+            continue
+        fp.SetReference(f"U_ADC_{hl}")
+        fp.SetValue("ADS1220")
+        _strip_edge_cuts(fp)
+        fp.Models().clear()
+        _add_model(fp, ADS1220_3D_MODEL)
+        fp.SetExcludedFromBOM(True)
+        fp.SetExcludedFromPosFiles(True)
+        board.Add(fp)
+        set_position(fp, _vec(adc_x, adc_y))
+        set_side(fp, Side.BACK)
+        set_rotation(fp, rot)
+        print(f"  ADS1220 {hl}: ({adc_x:.2f}, {adc_y:.2f})")
+
+
+def add_ads1220_passives(board: pcbnew.BOARD, layout: dict) -> None:
+    """Place ADS1220 required passives next to each ADC.
+
+    2× reference resistors (REFP0/REFN0 → AIN2 divider, sets ADC reference
+    via IDAC × R_ref), plus 100 nF + 10 µF AVDD decoupling and 100 nF DVDD.
+    """
+    tp_cfg = layout.get("trackpoint", {})
+    adc_cfg = tp_cfg.get("adc")
+    if not adc_cfg or adc_cfg.get("type") != "ads1220":
         return
 
     fp_dir = _kicad_footprint_dir()
     if not fp_dir:
-        print("  Warning: KICAD9_FOOTPRINT_DIR not set, skipping resistors")
+        print("  Warning: KICAD9_FOOTPRINT_DIR not set, skipping ADS1220 passives")
         return
-    lib_path = str(Path(fp_dir) / "Resistor_SMD.pretty")
-    fp_name = "R_0402_1005Metric_Pad0.72x0.64mm_HandSolder"
+    res_lib = str(Path(fp_dir) / "Resistor_SMD.pretty")
+    cap_lib = str(Path(fp_dir) / "Capacitor_SMD.pretty")
 
-    # Place near each controller, offset to the side
+    ref_value = adc_cfg.get("ref_resistor", 2400)
+    res_fp = "R_0402_1005Metric_Pad0.72x0.64mm_HandSolder"
+    cap_0402_fp = "C_0402_1005Metric_Pad0.74x0.62mm_HandSolder"
+    cap_0603_fp = "C_0603_1608Metric_Pad1.08x0.95mm_HandSolder"
+
+    # 5 passives stacked vertically next to the chip
+    passives_spec = [
+        ("R_REF_{}1", str(ref_value), res_lib, res_fp),
+        ("R_REF_{}2", str(ref_value), res_lib, res_fp),
+        ("C_AVDD_{}1", "100n", cap_lib, cap_0402_fp),
+        ("C_AVDD_{}2", "10u", cap_lib, cap_0603_fp),
+        ("C_DVDD_{}1", "100n", cap_lib, cap_0402_fp),
+    ]
+
+    spacing = 3.0  # mm between passives — safe for 0402+0603 mix with DRC clearance
+    side_gap = 5.0  # mm from ADS1220 center to passives column
+
+    # Functional grouping: resistors (indices 0..1) on outer side, caps (indices 2..4) on inner side
+    # Refs sit near REFP0/REFN0/AIN2 pin cluster; caps cluster near AVDD/DVDD power pins.
+    n_outer = 2  # resistors
+    n_inner = 3  # caps
+
     for hl in ("L", "R"):
-        ctrl = _find_fp(board, f"U_{hl}")
-        if not ctrl:
-            print(f"  Warning: U_{hl} not found, skipping resistors {hl}")
+        adc = _find_fp(board, f"U_ADC_{hl}")
+        if not adc:
+            print(f"  Warning: U_ADC_{hl} not found, skipping passives {hl}")
             continue
 
-        cx, cy = _pos_mm(ctrl)
+        cx, cy = _pos_mm(adc)
+        inner_x = cx + (side_gap if hl == "L" else -side_gap)
+        outer_x = cx - (side_gap if hl == "L" else -side_gap)
+        inner_y0 = cy - (n_inner - 1) * spacing / 2
+        outer_y0 = cy - (n_outer - 1) * spacing / 2
 
-        # Two resistors stacked vertically, to the right of controller (rotated 90°)
-        # Controller horizontal half-extent after ±90° rotation = long axis
-        _, ctrl_hh = _box_halves(layout, "controller")
-        ctrl_h_extent = ctrl_hh  # long axis goes horizontal after rotation
-        x_off = (ctrl_h_extent + 3.0) if hl == "L" else -(ctrl_h_extent + 3.0)
-        for i in range(2):
-            ref = f"R_{hl}{i + 1}"
-            ry = cy - 1.0 + i * 2.5  # near controller center, 2.5mm apart
-
-            fp = pcbnew.FootprintLoad(lib_path, fp_name)
-            fp.SetReference(ref)
-            fp.SetValue("4.7k")
+        for i, (ref_tpl, value, lib, fp_name) in enumerate(passives_spec):
+            fp = pcbnew.FootprintLoad(lib, fp_name)
+            if fp is None:
+                print(f"  Warning: failed to load {lib}:{fp_name}, skipping passive {ref_tpl.format(hl)}")
+                continue
+            fp.SetReference(ref_tpl.format(hl))
+            fp.SetValue(value)
             fp.SetExcludedFromBOM(True)
             fp.SetExcludedFromPosFiles(True)
             board.Add(fp)
-            set_position(fp, _vec(cx + x_off, ry))
+
+            if i < 2:  # resistor → outer side
+                px, py = outer_x, outer_y0 + i * spacing
+            else:  # cap → inner side
+                px, py = inner_x, inner_y0 + (i - 2) * spacing
+            set_position(fp, _vec(px, py))
             set_side(fp, Side.BACK)
             set_rotation(fp, 90)
 
-        print(f"  Resistors {hl}: 2x 4.7kΩ 0402 near U_{hl}")
+        print(f"  ADS1220 {hl} passives: 2× {ref_value}Ω (outer), 100n+10µ+100n (inner)")
 
 
 # ---------------------------------------------------------------------------
@@ -1283,17 +1320,15 @@ def main() -> None:
     print("Adding controllers...")
     add_controller(board, layout)
 
-    # Step 5: FFC connector
-    print("Adding FFC connectors...")
-    add_ffc(board, layout)
-
     # Step 6: Power switch
     print("Adding power switches...")
     add_power_switch(board, layout)
 
-    # Step 6b: Pullup resistors
-    print("Adding pullup resistors...")
-    add_pullup_resistors(board, layout)
+    # Step 6b: ADS1220 ADC + passives (close to trackpoint sensor)
+    print("Adding ADS1220...")
+    add_ads1220(board, layout)
+    print("Adding ADS1220 passives...")
+    add_ads1220_passives(board, layout)
 
     # Step 7: Edge cuts
     print("Adding edge cuts...")

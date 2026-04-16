@@ -46,3 +46,7 @@ __pycache__/
 # Local dev notes
 CLAUDE.md
 debug.sh
+
+# Local-only planning + harness state (not public)
+docs/
+.claude/
