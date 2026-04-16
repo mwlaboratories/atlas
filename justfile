@@ -1,81 +1,50 @@
 # Atlas Keyboard — Build System
+#
+# Five recipes total:
+#   build-fw       — build firmware (.uf2) for both halves
+#   build-keymap   — render keymap.svg from atlas.keymap
+#   init-west      — one-time west workspace init (after clone)
+#   gen-kicad      — YAML → tools/build/{atlas.kicad_pcb, atlas.kicad_sch, atlas.step}
+#   open-step      — open tools/build/atlas.step in f3d (3D viewer)
 
 default:
     @just --list
 
-# ── Firmware (ZMK BLE) ─────────────────────────────────────────────
+# ── Paths ─────────────────────────────────────────────────────────
 
-# Paths
-workspace := absolute_path('firmware')
-config := workspace / 'config'
-fw_build := workspace / '.build'
-out := workspace / 'out'
-modules := workspace / 'kb_zmk_ps2_mouse_trackpoint_driver'
-keymap_dir := absolute_path('firmware')
+workspace      := absolute_path('firmware')
+config         := workspace / 'config'
+fw_build       := workspace / '.build'
+fw_out         := workspace / 'out'
+fw_modules     := workspace / 'kb_zmk_ps2_mouse_trackpoint_driver'
+keymap_dir     := absolute_path('firmware')
+board          := "xiao_ble"
 
-# Board name
-board := "xiao_ble"
+layout         := "tools/keyboard.yaml"
+kle_json       := "tools/build/layout.json"
+pcb_out        := "tools/build/atlas.kicad_pcb"
+sch_out        := "tools/build/atlas.kicad_sch"
+step_out       := "tools/build/atlas.step"
+pcb_bare_step  := "tools/build/pcb_bare.step"
 
-# Build both sides firmware (.uf2)
-[group('firmware')]
-build: build-left build-right
+# ── Firmware ──────────────────────────────────────────────────────
 
-# Build left side
-[group('firmware')]
-build-left *args:
+# Build firmware for both halves (left + right .uf2)
+build-fw *args:
     #!/usr/bin/env bash
     set -euo pipefail
     cd {{ workspace }}
-    west build -s zmk/app -d {{ fw_build }}/left -b {{ board }} {{ args }} -- \
-        -DSHIELD=atlas_left \
-        -DZMK_CONFIG={{ config }} \
-        -DZMK_EXTRA_MODULES={{ modules }}
-    mkdir -p {{ out }} && cp {{ fw_build }}/left/zephyr/zmk.uf2 {{ out }}/atlas_left.uf2
-    echo "Built: {{ out }}/atlas_left.uf2"
+    for half in left right; do
+        west build -s zmk/app -d {{ fw_build }}/$half -b {{ board }} {{ args }} -- \
+            -DSHIELD=atlas_$half \
+            -DZMK_CONFIG={{ config }} \
+            -DZMK_EXTRA_MODULES={{ fw_modules }}
+        mkdir -p {{ fw_out }} && cp {{ fw_build }}/$half/zephyr/zmk.uf2 {{ fw_out }}/atlas_$half.uf2
+        echo "Built: {{ fw_out }}/atlas_$half.uf2"
+    done
 
-# Build right side
-[group('firmware')]
-build-right *args:
-    #!/usr/bin/env bash
-    set -euo pipefail
-    cd {{ workspace }}
-    west build -s zmk/app -d {{ fw_build }}/right -b {{ board }} {{ args }} -- \
-        -DSHIELD=atlas_right \
-        -DZMK_CONFIG={{ config }} \
-        -DZMK_EXTRA_MODULES={{ modules }}
-    mkdir -p {{ out }} && cp {{ fw_build }}/right/zephyr/zmk.uf2 {{ out }}/atlas_right.uf2
-    echo "Built: {{ out }}/atlas_right.uf2"
-
-# Clean firmware build artifacts
-[group('firmware')]
-clean:
-    rm -rf {{ fw_build }} {{ out }}
-
-# Initialize west workspace (run once after clone)
-[group('firmware')]
-init:
-    cd {{ workspace }} && west init -l config && west update && west zephyr-export
-
-# Update west modules
-[group('firmware')]
-update:
-    cd {{ workspace }} && west update
-
-# Flash left side (put in bootloader mode first)
-[group('firmware')]
-flash-left:
-    @echo "Put left half in bootloader mode (double-tap reset)..."
-    @echo "Then copy {{ out }}/atlas_left.uf2 to the mounted drive"
-
-# Flash right side (put in bootloader mode first)
-[group('firmware')]
-flash-right:
-    @echo "Put right half in bootloader mode (double-tap reset)..."
-    @echo "Then copy {{ out }}/atlas_right.uf2 to the mounted drive"
-
-# Generate keymap visualization
-[group('firmware')]
-keymap:
+# Render firmware/keymap.svg from atlas.keymap
+build-keymap:
     #!/usr/bin/env bash
     set -euo pipefail
     python -m keymap_drawer -c {{ keymap_dir }}/keymap-drawer.yaml parse -z {{ config }}/atlas.keymap -c 10 -o {{ keymap_dir }}/keymap.yaml
@@ -84,48 +53,43 @@ keymap:
         -o {{ keymap_dir }}/keymap.svg
     echo "Generated: {{ keymap_dir }}/keymap.svg"
 
-# ── PCB generation ───────────────────────────────────────────────
+# Initialize west workspace (run once after clone)
+init-west:
+    cd {{ workspace }} && west init -l config && west update && west zephyr-export
 
-layout := "tools/keyboard.yaml"
-kle_json := "tools/build/layout.json"
-pcb_out := "tools/build/atlas.kicad_pcb"
+# ── KiCad project generation ─────────────────────────────────────
 
-# YAML → tools/build/atlas.kicad_pcb
-[group('pcb')]
-pcb:
+# YAML → KiCad project (PCB + schematic + STEP) under tools/build/
+gen-kicad:
     #!/usr/bin/env bash
     set -euo pipefail
     mkdir -p tools/build
 
-    # Generate KLE JSON
+    # Layout JSON for kbplacer
     pcb-python tools/layout2kle.py -i {{ layout }} -o {{ kle_json }}
-    echo "✓ Generated KLE layout"
+    echo "✓ KLE layout"
 
-    # Build PCB: kbplacer (switches + diodes) → enhancements → save
-    # pcb_build.py symlinks 3dmodels/ and footprints/ into build/ for KiCad
+    # PCB: footprints + nets
     pcb-python tools/pcb_build.py \
         -l {{ layout }} -o {{ pcb_out }} --kle-json {{ kle_json }}
     echo "✓ {{ pcb_out }}"
 
-# Export tools/build/atlas.step (PCB + trackpoint modules) + open viewer
-[group('pcb')]
-pcb-step:
-    #!/usr/bin/env bash
-    set -euo pipefail
+    # Schematic: symbols + labels (parallel to PCB; same source of truth)
+    pcb-python tools/sch_build.py \
+        -l {{ layout }} --pcb {{ pcb_out }} -o {{ sch_out }}
+    echo "✓ {{ sch_out }}"
 
-    # Export bare PCB STEP
+    # 3D STEP assembly (bare PCB STEP + sensor modules)
     # kicad-cli returns 2 on warnings (missing 3D models) — treat as success
     kicad-cli pcb export step --subst-models -f \
-        -o tools/build/pcb_bare.step \
-        {{ pcb_out }} \
+        -o {{ pcb_bare_step }} {{ pcb_out }} \
         || [ $? -eq 2 ]
-    echo "✓ Bare PCB STEP exported"
-
-    # Assemble: bare PCB + trackpoint modules → atlas.step
     cq-python tools/step_build.py \
         -l {{ layout }} \
-        --pcb-step tools/build/pcb_bare.step \
-        -o tools/build/atlas.step
-    echo "✓ tools/build/atlas.step"
+        --pcb-step {{ pcb_bare_step }} \
+        -o {{ step_out }}
+    echo "✓ {{ step_out }}"
 
-    f3d --light-intensity=2 -q tools/build/atlas.step &
+# Open the 3D STEP assembly in f3d
+open-step:
+    f3d --light-intensity=2 -q {{ step_out }}
