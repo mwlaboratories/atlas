@@ -155,31 +155,46 @@ def main() -> None:
 
     placed_components: dict[str, tuple[str, tuple[int, int]]] = {}
 
-    # Auto-layout: each group gets a row; refs flow left-to-right within the row.
-    # Grid units (1 unit = 1.27mm); ksa.use_grid_units(True) handles the scaling.
+    # Per-group layout: each group gets its own zone. Wide symbols (XIAO Plus,
+    # ADS1220) get wider cells; matrix/diode/passive symbols are compact.
+    # Multi-row wrapping when a group has too many refs to fit horizontally.
+    # Units = KiCad schematic grid (1 unit = 1.27 mm).
+    GROUP_LAYOUT = {
+        "controller":   {"cell_w": 40, "cell_h": 50, "cols":  2},
+        "adc":          {"cell_w": 28, "cell_h": 45, "cols":  2},
+        "passive":      {"cell_w":  8, "cell_h": 12, "cols": 12},
+        "sensor_pad":   {"cell_w":  8, "cell_h": 12, "cols":  8},
+        "power_switch": {"cell_w": 16, "cell_h": 20, "cols":  2},
+        "switch":       {"cell_w":  8, "cell_h": 12, "cols": 12},
+        "diode":        {"cell_w":  8, "cell_h": 12, "cols": 12},
+    }
+
     row_y = 5
-    cell_w = 12
-    for group_name, refs in groups.items():
+    for group_name in ("controller", "adc", "passive", "sensor_pad", "power_switch", "switch", "diode"):
+        refs = groups.get(group_name, [])
         if not refs:
             continue
-        # Group label position
-        x = 5
-        for ref in refs:
+        spec = GROUP_LAYOUT[group_name]
+        cell_w, cell_h, cols = spec["cell_w"], spec["cell_h"], spec["cols"]
+        for i, ref in enumerate(refs):
             sym_id = lookup_symbol(ref, layout)
             info = placed[ref]
+            x = 5 + (i % cols) * cell_w
+            y = row_y + (i // cols) * cell_h
             try:
                 sch.components.add(
                     lib_id=sym_id,
                     reference=ref,
                     value=info["value"] or ref,
-                    position=(x, row_y),
+                    position=(x, y),
                     footprint=info["footprint"],
                 )
-                placed_components[ref] = (sym_id, (x, row_y))
-                x += cell_w
+                placed_components[ref] = (sym_id, (x, y))
             except Exception as e:
                 print(f"  Warning: failed to add {ref} ({sym_id}): {e}", file=sys.stderr)
-        row_y += 20  # next group row
+        # Advance row_y past this group's used rows + gap
+        rows_used = (len(refs) + cols - 1) // cols
+        row_y += rows_used * cell_h + 5  # 5-unit gap between groups
 
     print(f"  Symbols: {len(placed_components)} placed, {skipped} non-electrical refs skipped")
 
