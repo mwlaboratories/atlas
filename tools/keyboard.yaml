@@ -202,6 +202,104 @@ pcb:
   trace_width: 0.25            # mm
   clearance: 0.2               # mm
 
+# --- Nets ---
+# Electrical nets attached to placed footprint pads after kbplacer runs.
+# kbplacer already creates COL*/Net-(D*-A) for the matrix; this section covers
+# everything else: power, SPI, ADC analog, and decoupling.
+#
+# Schema:
+#   NET_NAME:
+#     <FOOTPRINT_REF>: [<pad_name_or_index>, ...]
+#
+# Pad keys may be strings (looked up via FindPadByName, e.g. "AVDD", "9", "D11")
+# or integers (looked up positionally via Pads()[i]).
+#
+# Mirror rule: any net whose name ends in "_L" is auto-mirrored to "_R" by
+# replacing every "_L" footprint reference with the "_R" equivalent.
+# Override the mirror by writing an explicit "_R" entry alongside the "_L" one.
+#
+# Notes:
+# - Re-running `just pcb` overwrites tools/build/atlas.kicad_pcb, so manual
+#   routing in pcbnew is lost on rebuild. Route after the design is stable.
+# - The legacy pcb/atlas/atlas.kicad_sch is no longer maintained — this YAML
+#   is the source of truth for non-matrix nets.
+# - Populated incrementally; add nets here as components and wiring stabilize.
+#
+nets:
+  # ─── Power ─────────────────────────────────────────────────────────
+  # XIAO BLE pinout: pad 12 = 3V3 out, pad 13 = GND, pad 14 = 5V (VBUS)
+  # ADS1220 TSSOP-16 (per TI datasheet): AVSS=8, AVDD=9, DGND=10, DVDD=11
+  # All decouplers + sensor pads tie to VCC / GND single nets.
+  VCC:
+    U_L:        ["12"]                           # 3V3 from XIAO BLE
+    U_R:        ["12"]
+    U_ADC_L:    ["9", "11"]                      # AVDD + DVDD
+    U_ADC_R:    ["9", "11"]
+    C_AVDD_L1:  ["1"]                            # AVDD 100nF
+    C_AVDD_L2:  ["1"]                            # AVDD 10µF bulk
+    C_DVDD_L1:  ["1"]                            # DVDD 100nF
+    C_AVDD_R1:  ["1"]
+    C_AVDD_R2:  ["1"]
+    C_DVDD_R1:  ["1"]
+  GND:
+    U_L:        ["13"]
+    U_R:        ["13"]
+    U_ADC_L:    ["8", "10"]                      # AVSS + DGND (single-point star at chip)
+    U_ADC_R:    ["8", "10"]
+    C_AVDD_L1:  ["2"]
+    C_AVDD_L2:  ["2"]
+    C_DVDD_L1:  ["2"]
+    C_AVDD_R1:  ["2"]
+    C_AVDD_R2:  ["2"]
+    C_DVDD_R1:  ["2"]
+
+  # ─── ADS1220 reference voltage divider ────────────────────────────
+  # IDAC1 (current source) routes internally to REFP0; current returns through
+  # the bridge to REFN0=AVSS. Reference voltage is 500µA × 2400Ω = 1.2V across
+  # the divider AIN2 ↔ REFP0/REFN0. AIN2 is the midpoint of the two ref resistors.
+  REFP0_L:
+    U_ADC_L:    ["6"]                            # REFP0 — also internally driven by IDAC1
+    R_REF_L1:   ["1"]                            # one side of first ref resistor
+    TP_L_pad_a: ["1"]                            # sensor "[a]" excitation high
+  REFN0_L:
+    U_ADC_L:    ["7"]                            # REFN0 (tied to AVSS via sensor [b])
+    R_REF_L2:   ["1"]                            # one side of second ref resistor
+    TP_L_pad_b: ["1"]                            # sensor "[b]" excitation low (also = AVSS)
+  AIN2_L:
+    U_ADC_L:    ["3"]                            # AIN2 — midpoint of ref divider
+    R_REF_L1:   ["2"]                            # other side of first ref resistor
+    R_REF_L2:   ["2"]                            # other side of second ref resistor
+
+  # ─── ADS1220 strain-gauge inputs ──────────────────────────────────
+  AIN0_L:
+    U_ADC_L:    ["5"]                            # AIN0 (also REFP1, unused as ref here)
+    TP_L_pad_x: ["1"]                            # sensor "[x]" — X-axis strain output
+  AIN1_L:
+    U_ADC_L:    ["4"]                            # AIN1
+    TP_L_pad_y: ["1"]                            # sensor "[y]" — Y-axis strain output
+
+  # ─── ADS1220 SPI bus (TODO: XIAO Plus pin assignments) ────────────
+  # Currently on XIAO BLE — D4/D5/D8/D9/D10 are matrix columns, no SPI pins free.
+  # These nets will activate once the XIAO Plus footprint with D11–D19 lands
+  # (per docs/plans/2026-04-15-001-feat-ads1220-trackpoint-rgb-migration-plan.md
+  # Unit 2). For now, the ADS1220 side is wired but the XIAO side is left blank
+  # so wire_nets warns about unwired SPI rather than wiring to wrong pins.
+  SPI_SCK_L:
+    U_ADC_L:    ["15"]                           # SCLK
+    # U_L:      ["TBD_D11_pad"]                  # XIAO Plus SPI clock
+  SPI_MOSI_L:
+    U_ADC_L:    ["14"]                           # DIN
+    # U_L:      ["TBD_D12_pad"]
+  SPI_MISO_L:
+    U_ADC_L:    ["13"]                           # DOUT
+    # U_L:      ["TBD_D13_pad"]
+  SPI_CS_L:
+    U_ADC_L:    ["16"]                           # CS
+    # U_L:      ["TBD_D14_pad"]
+  SPI_DRDY_L:
+    U_ADC_L:    ["12"]                           # DRDY
+    # U_L:      ["TBD_D15_pad"]
+
 # --- Per-half overrides ---
 left:
   trackpoint: true
