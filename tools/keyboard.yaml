@@ -144,34 +144,33 @@ controller:
   standoff: 0.0               # distance from grid edge (mm) — 0 = flush with key box
 
 # --- Trackpoint ---
-# Sprintek all-in-one module — PS/2 via UART.
+# Strain-gauge sensor (Sprintek SK8707-01 sensor only) read via external ADS1220 ADC over SPI.
 # Stick center = centroid of the 4 keys at the intersection of these cols/rows.
 # Both halves carry a trackpoint module.
 #
 trackpoint:
-  module: sprintek_aio         # Sprintek SK8707-01 all-in-one
+  module: sk8707_sensor        # Sprintek SK8707 strain-gauge sensor (no companion PCB)
   between: { cols: [3, 4], rows: [0, 1] }   # centroid of these 4 keys
   center_hole: 6.0             # stick hole diameter (mm) — 1mm clearance over module spec
   screw_holes:
     diameter: 2.2              # M2 screw hole (mm)
     offset: 9.5                # Y distance from center to each screw (mm) — 19mm apart per datasheet
-  # 3D model + physical assembly dimensions (for case/spacer design)
-  assembled_step: "assembled_trackpoint.step"  # complete module STEP in 3dmodels/
+  # 3D model — sensor only (latest design has no companion flex PCB)
+  assembled_step: "SK8707.STEP"  # sensor module STEP in 3dmodels/
   stick_offset_y: 1.70         # stick center Y offset from sensor bbox center (mm)
-  companion_board:
-    width: 23.0                # mm
-    height: 14.5               # mm
-    thickness: 0.3             # mm (flex PCB)
   # Use solder (THT) footprint for the 4 keys surrounding the trackpoint.
   # This avoids the hotswap socket bulk that interferes with the trackpoint module.
   solder_keys: false
   solder_footprint: "Switch_Keyboard_Kailh:SW_Kailh_Choc_V1"
-  # FFC connector for trackpoint flat cable — placed on B.Cu near middle finger column
-  ffc:
-    footprint: "Connector_FFC-FPC:Hirose_FH12-10S-0.5SH_1x10-1MP_P0.50mm_Horizontal"
-    placement: trackpoint_center  # place relative to trackpoint center
-    offset: [-36.5, -18.5]       # [x, y] mm offset from trackpoint center — next to power switch
-    rotation: 180                 # cable exits upward toward trackpoint
+  # ADS1220 strain-gauge ADC — placed on B.Cu close to the trackpoint sensor.
+  # Sensor's 4 pads ([x][y][a][b]) hand-soldered directly to AIN0/AIN1/REFP0/REFN0.
+  # SPI (SCK/MOSI/MISO/CS) and DRDY route to the XIAO across the board (digital, length-tolerant).
+  adc:
+    type: ads1220
+    footprint: "Package_SO:TSSOP-16_4.4x5mm_P0.65mm"
+    offset: [0.0, -15.0]         # [x, y] mm from trackpoint center — above top screw hole, X-aligned with stick
+    rotation: 0                   # rotation in degrees
+    ref_resistor: 2400            # ohms, 0.1% — sets ADC reference via IDAC × R
 
 # --- Power switch ---
 # C&K PCM13 — SP3T ultra-miniature slide switch (off / xiao / xiao+trackpoint)
