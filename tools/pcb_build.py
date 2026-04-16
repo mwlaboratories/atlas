@@ -145,6 +145,91 @@ def _find_fp(board: pcbnew.BOARD, ref: str) -> pcbnew.FOOTPRINT | None:
     return None
 
 
+def _get_or_create_net(board: pcbnew.BOARD, name: str) -> pcbnew.NETINFO_ITEM:
+    """Return existing net by name, or create+register a new one.
+
+    Reusing nets by name is what lets our YAML-driven walker coexist with
+    kbplacer's auto-created COL*/Net-(D*-A) nets without duplicating them.
+    """
+    nets = board.GetNetsByName()
+    if name in nets:
+        return nets[name]
+    net = pcbnew.NETINFO_ITEM(board, name)
+    board.Add(net)
+    return net
+
+
+def _find_pad(fp: pcbnew.FOOTPRINT, key) -> "pcbnew.PAD | None":
+    """Find a pad by name (str) or by zero-based index (int).
+
+    Prints the available pad names on miss so misconfiguration is loud.
+    """
+    if isinstance(key, int):
+        pads = list(fp.Pads())
+        if 0 <= key < len(pads):
+            return pads[key]
+        print(f"  Warning: pad index {key} out of range on {fp.GetReference()} (has {len(pads)} pads)")
+        return None
+    pad = fp.FindPadByNumber(str(key))
+    if pad is None:
+        names = sorted({p.GetNumber() for p in fp.Pads()})
+        print(f"  Warning: pad '{key}' not found on {fp.GetReference()}; available: {names}")
+    return pad
+
+
+def _mirror_lr_ref(ref: str) -> str:
+    """Replace trailing/embedded '_L' with '_R' in a footprint reference."""
+    if ref.endswith("_L"):
+        return ref[:-2] + "_R"
+    if "_L" in ref:
+        # E.g. R_REF_L1 → R_REF_R1
+        return ref.replace("_L", "_R")
+    return ref
+
+
+def wire_nets(board: pcbnew.BOARD, layout: dict) -> None:
+    """Apply YAML-defined nets to placed footprint pads.
+
+    Schema (per nets entry):
+        NET_NAME: { FP_REF: [pad_name_or_index, ...], ... }
+
+    Mirror rule: a net whose name ends in '_L' is auto-mirrored to '_R' by
+    swapping every footprint ref's '_L' to '_R'. Override by writing an
+    explicit '_R' entry alongside.
+    """
+    nets_spec = layout.get("nets") or {}
+    if not nets_spec:
+        return
+
+    # Materialize the L/R mirror so we can iterate uniformly.
+    materialized: dict[str, dict[str, list]] = {}
+    for net_name, fp_map in nets_spec.items():
+        materialized[net_name] = dict(fp_map)
+        if net_name.endswith("_L"):
+            mirror_name = net_name[:-2] + "_R"
+            if mirror_name not in nets_spec:
+                materialized[mirror_name] = {
+                    _mirror_lr_ref(ref): list(pads) for ref, pads in fp_map.items()
+                }
+
+    applied = 0
+    for net_name in sorted(materialized):
+        net = _get_or_create_net(board, net_name)
+        for fp_ref, pad_keys in materialized[net_name].items():
+            fp = _find_fp(board, fp_ref)
+            if fp is None:
+                print(f"  Warning: footprint {fp_ref} not found for net {net_name}")
+                continue
+            for key in pad_keys:
+                pad = _find_pad(fp, key)
+                if pad is None:
+                    continue
+                pad.SetNet(net)
+                applied += 1
+
+    print(f"  Nets: {len(materialized)} nets, {applied} pad assignments")
+
+
 def _load_and_place(
     board: pcbnew.BOARD,
     lib_path: str,
@@ -684,6 +769,64 @@ def add_ads1220_passives(board: pcbnew.BOARD, layout: dict) -> None:
             set_rotation(fp, 90)
 
         print(f"  ADS1220 {hl} passives: 2× {ref_value}Ω (outer), 100n+10µ+100n (inner)")
+
+
+# ---------------------------------------------------------------------------
+# Step 6c: Sensor solder pads (where strain-gauge wires terminate)
+# ---------------------------------------------------------------------------
+
+
+def add_sensor_pads(board: pcbnew.BOARD, layout: dict) -> None:
+    """Place 4 SMD solder pads per half for the trackpoint sensor wires.
+
+    The strain-gauge sensor's [x][y][a][b] pads are hand-soldered to these
+    pads via short wires; nets then route to the ADS1220's AIN0/AIN1/REFP0/REFN0.
+
+    References: TP_{L,R}_pad_{x,y,a,b}.
+    """
+    tp_cfg = layout.get("trackpoint", {})
+    if not tp_cfg.get("adc"):
+        return  # only relevant when an ADC is in the design
+
+    grid_cols = layout.get("grid", {}).get("cols", 5)
+    tp_cols = tp_cfg.get("between", {}).get("cols", [3, 4])
+    tp_rows = tp_cfg.get("between", {}).get("rows", [0, 1])
+    centers = _compute_trackpoint_centers(board, tp_cols, tp_rows, grid_cols)
+
+    pad_size = (1.5, 1.0)        # mm — wide enough for hand soldering 28 AWG wire
+    pad_pitch = 1.8              # mm — center-to-center horizontal spacing
+    pad_y_off = -7.0             # mm above trackpoint center (above top screw hole)
+    pad_labels = ["x", "y", "a", "b"]
+
+    for i, (cx, cy) in enumerate(centers):
+        hl = "L" if i == 0 else "R"
+        # Center the row of 4 pads on the trackpoint X
+        row_x0 = cx - (len(pad_labels) - 1) * pad_pitch / 2
+        for j, label in enumerate(pad_labels):
+            ref = f"TP_{hl}_pad_{label}"
+            fp = pcbnew.FOOTPRINT(board)
+            fp.SetReference(ref)
+            fp.SetExcludedFromBOM(True)
+            fp.SetExcludedFromPosFiles(True)
+            fp.Reference().SetVisible(True)
+
+            pad = pcbnew.PAD(fp)
+            pad.SetShape(pcbnew.PAD_SHAPE_RECT)
+            pad.SetAttribute(pcbnew.PAD_ATTRIB_SMD)
+            pad.SetSize(_vec(pad_size[0], pad_size[1]))
+            lset = pcbnew.LSET()
+            lset.AddLayer(pcbnew.B_Cu)
+            lset.AddLayer(pcbnew.B_Mask)
+            lset.AddLayer(pcbnew.B_Paste)
+            pad.SetLayerSet(lset)
+            pad.SetNumber("1")
+            fp.Add(pad)
+            board.Add(fp)
+
+            set_position(fp, _vec(row_x0 + j * pad_pitch, cy + pad_y_off))
+            set_side(fp, Side.BACK)
+
+        print(f"  Sensor pads {hl}: 4 SMD pads ({', '.join(pad_labels)}) at y={cy + pad_y_off:.2f}")
 
 
 # ---------------------------------------------------------------------------
@@ -1329,6 +1472,14 @@ def main() -> None:
     add_ads1220(board, layout)
     print("Adding ADS1220 passives...")
     add_ads1220_passives(board, layout)
+
+    # Step 6c: Sensor solder pads (where trackpoint wires terminate)
+    print("Adding sensor pads...")
+    add_sensor_pads(board, layout)
+
+    # Step 6d: Apply YAML-defined nets to placed pads
+    print("Wiring nets...")
+    wire_nets(board, layout)
 
     # Step 7: Edge cuts
     print("Adding edge cuts...")
