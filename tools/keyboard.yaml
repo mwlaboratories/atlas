@@ -53,6 +53,7 @@ switch:
   #
   #   Size suffix _1.00u is appended automatically by kbplacer.
   footprint: "Switch_Keyboard_Hotswap_Kailh:SW_Hotswap_Kailh_Choc_V1"
+  symbol: "Switch:SW_Push"     # generic momentary switch — used by sch_build.py
 
 # --- Grid ---
 # 5 columns × 3 rows per half. Only the left half is defined.
@@ -136,9 +137,10 @@ thumb:
 # XIAO BLE (nRF52840) — placed above the outermost key by pcb_build.py.
 #
 controller:
-  model: xiao_ble              # Seeed XIAO nRF52840 — BLE 5.0, 256KB RAM
-  footprint: totem:xiao-ble-smd-cutout
-  box: [17.78, 21.0]          # [w, h] board dimensions (mm) — from Dwgs.User in footprint
+  model: xiao_ble_plus         # Seeed XIAO nRF52840 Plus — same chip as BLE Sense, 9 added bottom pads (D11–D19)
+  footprint: "Seeed_XIAO:XIAO-nRF52840-Plus-SMD"
+  symbol: "Seeed_Studio_XIAO_Series:XIAO-nRF52840_Plus_SMD"
+  box: [17.78, 21.0]           # [w, h] body dimensions (mm) — Plus body identical to regular XIAO BLE (only adds bottom pads)
   placement: above             # above the grid (between grid and PCB edge)
   edge_offset: -0.5           # shift along the edge (key units)
   standoff: 0.0               # distance from grid edge (mm) — 0 = flush with key box
@@ -168,6 +170,7 @@ trackpoint:
   adc:
     type: ads1220
     footprint: "Package_SO:TSSOP-16_4.4x5mm_P0.65mm"
+    symbol: "Analog_ADC:ADS1220xPW"  # TSSOP-16 variant — pin numbers match the footprint
     offset: [0.0, -15.0]         # [x, y] mm from trackpoint center — above top screw hole, X-aligned with stick
     rotation: 0                   # rotation in degrees
     ref_resistor: 2400            # ohms, 0.1% — sets ADC reference via IDAC × R
@@ -177,6 +180,7 @@ trackpoint:
 # Placed on B.Cu near the controller area
 power_switch:
   footprint: "Button_Switch_SMD:SW_SP3T_PCM13"
+  symbol: "Switch:SW_SP3T"
   placement: controller          # place near the XIAO controller
   offset: [17.5, -4.0]           # [x, y] mm offset from controller center (right & slightly up)
   rotation: 0
@@ -227,14 +231,16 @@ pcb:
 #
 nets:
   # ─── Power ─────────────────────────────────────────────────────────
-  # XIAO BLE pinout: pad 12 = 3V3 out, pad 13 = GND, pad 14 = 5V (VBUS)
-  # ADS1220 TSSOP-16 (per TI datasheet): AVSS=8, AVDD=9, DGND=10, DVDD=11
+  # XIAO BLE Plus pinout: pad 12 = 3V3 out, pad 13 = GND, pad 14 = 5V (VBUS)
+  # ADS1220 TSSOP-16 (per TI ADS1220 datasheet, matches KiCad ADS1220xPW symbol):
+  #   pin 1=SCLK 2=~CS 3=CLK 4=DGND 5=AVSS 6=AIN3 7=AIN2 8=REFN0 9=REFP0
+  #   pin 10=AIN1 11=AIN0 12=AVDD 13=DVDD 14=~DRDY 15=DOUT 16=DIN
   # All decouplers + sensor pads tie to VCC / GND single nets.
   VCC:
-    U_L:        ["12"]                           # 3V3 from XIAO BLE
+    U_L:        ["12"]                           # 3V3 from XIAO BLE Plus
     U_R:        ["12"]
-    U_ADC_L:    ["9", "11"]                      # AVDD + DVDD
-    U_ADC_R:    ["9", "11"]
+    U_ADC_L:    ["12", "13"]                     # AVDD + DVDD
+    U_ADC_R:    ["12", "13"]
     C_AVDD_L1:  ["1"]                            # AVDD 100nF
     C_AVDD_L2:  ["1"]                            # AVDD 10µF bulk
     C_DVDD_L1:  ["1"]                            # DVDD 100nF
@@ -244,8 +250,8 @@ nets:
   GND:
     U_L:        ["13"]
     U_R:        ["13"]
-    U_ADC_L:    ["8", "10"]                      # AVSS + DGND (single-point star at chip)
-    U_ADC_R:    ["8", "10"]
+    U_ADC_L:    ["4", "5"]                       # DGND + AVSS (single-point star at chip)
+    U_ADC_R:    ["4", "5"]
     C_AVDD_L1:  ["2"]
     C_AVDD_L2:  ["2"]
     C_DVDD_L1:  ["2"]
@@ -258,47 +264,50 @@ nets:
   # the bridge to REFN0=AVSS. Reference voltage is 500µA × 2400Ω = 1.2V across
   # the divider AIN2 ↔ REFP0/REFN0. AIN2 is the midpoint of the two ref resistors.
   REFP0_L:
-    U_ADC_L:    ["6"]                            # REFP0 — also internally driven by IDAC1
+    U_ADC_L:    ["9"]                            # REFP0 — also internally driven by IDAC1
     R_REF_L1:   ["1"]                            # one side of first ref resistor
     TP_L_pad_a: ["1"]                            # sensor "[a]" excitation high
   REFN0_L:
-    U_ADC_L:    ["7"]                            # REFN0 (tied to AVSS via sensor [b])
+    U_ADC_L:    ["8"]                            # REFN0 (tied to AVSS via sensor [b])
     R_REF_L2:   ["1"]                            # one side of second ref resistor
     TP_L_pad_b: ["1"]                            # sensor "[b]" excitation low (also = AVSS)
   AIN2_L:
-    U_ADC_L:    ["3"]                            # AIN2 — midpoint of ref divider
+    U_ADC_L:    ["7"]                            # AIN2 — midpoint of ref divider
     R_REF_L1:   ["2"]                            # other side of first ref resistor
     R_REF_L2:   ["2"]                            # other side of second ref resistor
 
   # ─── ADS1220 strain-gauge inputs ──────────────────────────────────
   AIN0_L:
-    U_ADC_L:    ["5"]                            # AIN0 (also REFP1, unused as ref here)
+    U_ADC_L:    ["11"]                           # AIN0 (also REFP1, unused as ref here)
     TP_L_pad_x: ["1"]                            # sensor "[x]" — X-axis strain output
   AIN1_L:
-    U_ADC_L:    ["4"]                            # AIN1
+    U_ADC_L:    ["10"]                           # AIN1
     TP_L_pad_y: ["1"]                            # sensor "[y]" — Y-axis strain output
 
-  # ─── ADS1220 SPI bus (TODO: XIAO Plus pin assignments) ────────────
-  # Currently on XIAO BLE — D4/D5/D8/D9/D10 are matrix columns, no SPI pins free.
-  # These nets will activate once the XIAO Plus footprint with D11–D19 lands
-  # (per docs/plans/2026-04-15-001-feat-ads1220-trackpoint-rgb-migration-plan.md
-  # Unit 2). For now, the ADS1220 side is wired but the XIAO side is left blank
-  # so wire_nets warns about unwired SPI rather than wiring to wrong pins.
+  # ─── ADS1220 SPI bus (XIAO Plus secondary SPI peripheral) ────────
+  # Per reference_xiao_ble_plus_pinout.md (memory):
+  #   pad 21 = D17 = P1.03 = SCK1   (secondary SPI clock)
+  #   pad 22 = D18 = P1.05 = MISO1  (DOUT)
+  #   pad 23 = D19 = P1.07 = MOSI1  (DIN)
+  #   pad 15 = D11 = P0.15          (free, used here for CS)
+  #   pad 16 = D12 = P0.19          (free, used here for DRDY)
+  # Primary SPI (D8/D9/D10) is reserved for matrix columns; secondary SPI keeps
+  # them free.
   SPI_SCK_L:
-    U_ADC_L:    ["15"]                           # SCLK
-    # U_L:      ["TBD_D11_pad"]                  # XIAO Plus SPI clock
+    U_ADC_L:    ["1"]                            # ADS1220 SCLK
+    U_L:        ["21"]                           # XIAO Plus pad 21 = D17 = SCK1
   SPI_MOSI_L:
-    U_ADC_L:    ["14"]                           # DIN
-    # U_L:      ["TBD_D12_pad"]
+    U_ADC_L:    ["16"]                           # ADS1220 DIN
+    U_L:        ["23"]                           # XIAO Plus pad 23 = D19 = MOSI1
   SPI_MISO_L:
-    U_ADC_L:    ["13"]                           # DOUT
-    # U_L:      ["TBD_D13_pad"]
+    U_ADC_L:    ["15"]                           # ADS1220 DOUT
+    U_L:        ["22"]                           # XIAO Plus pad 22 = D18 = MISO1
   SPI_CS_L:
-    U_ADC_L:    ["16"]                           # CS
-    # U_L:      ["TBD_D14_pad"]
+    U_ADC_L:    ["2"]                            # ADS1220 ~CS
+    U_L:        ["15"]                           # XIAO Plus pad 15 = D11 = P0.15
   SPI_DRDY_L:
-    U_ADC_L:    ["12"]                           # DRDY
-    # U_L:      ["TBD_D15_pad"]
+    U_ADC_L:    ["14"]                           # ADS1220 ~DRDY
+    U_L:        ["16"]                           # XIAO Plus pad 16 = D12 = P0.19
 
 # --- Per-half overrides ---
 left:

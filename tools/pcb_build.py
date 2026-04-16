@@ -137,6 +137,32 @@ def _kicad_footprint_dir() -> str:
     return os.environ.get("KICAD9_FOOTPRINT_DIR", "")
 
 
+def _resolve_lib_path(lib_id: str) -> tuple[str, str]:
+    """Resolve a 'lib:name' footprint id to (lib_path, fp_name).
+
+    Project-local libraries (e.g., 'Seeed_XIAO') resolve to a sibling .pretty
+    directory under FOOTPRINTS_DIR. Other libs fall back to KiCad's stdlib via
+    KICAD9_FOOTPRINT_DIR. The legacy 'totem:' prefix is treated as informational
+    and the footprint is loaded from FOOTPRINTS_DIR directly.
+    """
+    if ":" in lib_id:
+        lib, fp_name = lib_id.split(":", 1)
+    else:
+        lib, fp_name = "", lib_id
+
+    project_lib = FOOTPRINTS_DIR / f"{lib}.pretty"
+    if project_lib.is_dir():
+        return str(project_lib), fp_name
+    # Legacy: footprint files sitting loose at the top of FOOTPRINTS_DIR
+    if (FOOTPRINTS_DIR / f"{fp_name}.kicad_mod").exists():
+        return str(FOOTPRINTS_DIR), fp_name
+    # Fallback to KiCad stdlib
+    fp_dir = _kicad_footprint_dir()
+    if fp_dir:
+        return str(Path(fp_dir) / f"{lib}.pretty"), fp_name
+    return str(FOOTPRINTS_DIR), fp_name
+
+
 def _find_fp(board: pcbnew.BOARD, ref: str) -> pcbnew.FOOTPRINT | None:
     """Find footprint by reference via iteration (avoids pcbnew SWIG bugs)."""
     for fp in board.GetFootprints():
@@ -569,8 +595,10 @@ def add_controller(board: pcbnew.BOARD, layout: dict) -> None:
         else:
             ctrl_x = sx - sw_half_w + xiao_h
 
+        ctrl_fp_id = ctrl_cfg.get("footprint", "Seeed_XIAO:XIAO-nRF52840-Plus-SMD")
+        ctrl_lib_path, ctrl_fp_name = _resolve_lib_path(ctrl_fp_id)
         fp = _load_and_place(
-            board, str(FOOTPRINTS_DIR), "xiao-ble-smd-cutout",
+            board, ctrl_lib_path, ctrl_fp_name,
             ref=f"U_{half_label}", x=ctrl_x, y=ctrl_y,
             rotation=rotation, back=True,
         )

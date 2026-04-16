@@ -27,11 +27,13 @@
       # PCB Python — must match KiCad's Python (3.13 from unstable).
       # pcbnew is added via PYTHONPATH in shellHook.
       kbplacer = unstable.python313Packages.callPackage ./nix/kbplacer.nix {};
+      kicad-sch-api = unstable.python313Packages.callPackage ./nix/kicad-sch-api.nix {};
       pcbPython = unstable.python313.withPackages (ps: [
         ps.pyyaml
         ps.contourpy
         ps.numpy
         kbplacer
+        kicad-sch-api
       ]);
 
       # CadQuery Python — must use cq-flake's own Python (3.12.9) since cadquery's
@@ -80,16 +82,11 @@
           echo ""
           echo "  Atlas Keyboard — dev shell"
           echo ""
-          echo "  Firmware:"
-          echo "    just build         build both halves (.uf2)"
-          echo "    just build-left    build left side"
-          echo "    just build-right   build right side"
-          echo "    just keymap        generate keymap SVG"
-          echo "    just init          initialize west (first time)"
-          echo ""
-          echo "  PCB:"
-          echo "    just pcb           YAML → tools/build/atlas.kicad_pcb"
-          echo "    just pcb-step      export tools/build/atlas.step + open viewer"
+          echo "  just build-fw       build firmware (.uf2) for both halves"
+          echo "  just build-keymap   render firmware/keymap.svg from atlas.keymap"
+          echo "  just init-west      initialize west workspace (one-time)"
+          echo "  just gen-kicad      YAML → tools/build/{atlas.kicad_pcb,.kicad_sch,.step}"
+          echo "  just open-step      open tools/build/atlas.step in f3d viewer"
           echo ""
         '';
       };
