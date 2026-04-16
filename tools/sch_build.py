@@ -229,6 +229,7 @@ def main() -> None:
     skipped_labels = 0
     pin_lookup_failures = 0
     GRID_MM = 1.27  # 1 grid unit = 1.27 mm in KiCad schematic space
+    used_label_positions: set[tuple[int, int]] = set()  # prevent multi-net collisions
     for net_name, fp_map in sorted(materialized.items()):
         for fp_ref, pads in fp_map.items():
             if fp_ref not in placed_components:
@@ -245,13 +246,59 @@ def main() -> None:
                     continue
                 lx = round(pin_pos.x / GRID_MM)
                 ly = round(pin_pos.y / GRID_MM)
+                # Avoid label collisions — offset vertically if position is taken
+                while (lx, ly) in used_label_positions:
+                    ly += 1
                 try:
                     sch.add_label(net_name, position=(lx, ly))
+                    used_label_positions.add((lx, ly))
                     label_count += 1
                 except Exception as e:
                     print(f"  Warning: label '{net_name}' on {fp_ref}.{pad}: {e}", file=sys.stderr)
 
     print(f"  Net labels: {label_count} placed (pin-precise), {skipped_labels} on missing footprints skipped, {pin_lookup_failures} pin lookups failed")
+
+    # PCB-level net labels — pick up kbplacer's matrix nets (COL*, ROW*, Net-(D*-A))
+    # and any other pad-net assignments not covered by the YAML spec.
+    pcb_label_count = 0
+    already_labeled = set()  # (ref, pad) pairs we already handled from YAML nets
+    for net_name, fp_map in materialized.items():
+        for fp_ref, pads in fp_map.items():
+            for pad in pads:
+                already_labeled.add((fp_ref, str(pad)))
+
+    pcb_text = args.pcb.read_text()
+    for chunk in re.split(r"(?=\(footprint\b)", pcb_text):
+        if not chunk.startswith("(footprint"):
+            continue
+        ref_m = re.search(r'"Reference"\s+"([^"]+)"', chunk)
+        if not ref_m:
+            continue
+        fp_ref = ref_m.group(1)
+        if fp_ref not in placed_components:
+            continue
+        for pm in re.finditer(r'\(pad\s+"([^"]+)".*?\(net\s+\d+\s+"([^"]*)"', chunk, re.DOTALL):
+            pad_num, net_name = pm.group(1), pm.group(2)
+            if not net_name or (fp_ref, pad_num) in already_labeled:
+                continue
+            try:
+                pin_pos = sch.get_component_pin_position(fp_ref, pad_num)
+            except Exception:
+                continue
+            if pin_pos is None:
+                continue
+            lx = round(pin_pos.x / GRID_MM)
+            ly = round(pin_pos.y / GRID_MM)
+            while (lx, ly) in used_label_positions:
+                ly += 1
+            try:
+                sch.add_label(net_name, position=(lx, ly))
+                used_label_positions.add((lx, ly))
+                pcb_label_count += 1
+            except Exception:
+                pass
+
+    print(f"  PCB-level net labels: {pcb_label_count} placed (matrix + other kbplacer nets)")
 
     args.output.parent.mkdir(parents=True, exist_ok=True)
     sch.save(str(args.output))
