@@ -93,3 +93,26 @@ gen-kicad:
 # Open the 3D STEP assembly in f3d
 open-step:
     f3d --light-intensity=2 -q {{ step_out }}
+
+# ── PCB autorouting ──────────────────────────────────────────────
+
+dsn_out       := "tools/build/atlas.dsn"
+ses_out       := "tools/build/atlas.ses"
+
+# Export PCB to Specctra DSN, autoroute with freerouting, import result
+route-pcb:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    echo "Exporting DSN..."
+    pcb-python tools/route_pcb.py --export-dsn \
+        --pcb {{ pcb_out }} --dsn {{ dsn_out }}
+    echo "✓ {{ dsn_out }}"
+
+    echo "Running freerouting autorouter..."
+    freerouting -de {{ dsn_out }} -do {{ ses_out }} -mp 20
+    echo "✓ {{ ses_out }}"
+
+    echo "Importing routed SES back into PCB..."
+    pcb-python tools/route_pcb.py --import-ses \
+        --pcb {{ pcb_out }} --ses {{ ses_out }}
+    echo "✓ {{ pcb_out }} (routed)"

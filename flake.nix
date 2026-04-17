@@ -73,6 +73,7 @@
           unstable.kicad                # KiCad 9 (kicad-cli, pcbnew)
           pkgs.f3d                      # lightweight 3D viewer (STEP/STL/OBJ)
           pkgs.wl-clipboard
+          pkgs.freerouting              # PCB autorouter (DSN → SES)
         ];
 
         KISWITCH_DIR = "${kiswitch}/footprints";
