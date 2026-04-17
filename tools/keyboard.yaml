@@ -171,7 +171,7 @@ trackpoint:
     type: ads1220
     footprint: "Package_SO:TSSOP-16_4.4x5mm_P0.65mm"
     symbol: "Analog_ADC:ADS1220xPW"  # TSSOP-16 variant — pin numbers match the footprint
-    offset: [0.0, -15.0]         # [x, y] mm from trackpoint center — above top screw hole, X-aligned with stick
+    offset: [-21.0, -0.6]        # [x, y] mm from trackpoint center — left of stick, near-centered vertically
     rotation: 0                   # rotation in degrees
     ref_resistor: 2400            # ohms, 0.1% — sets ADC reference via IDAC × R
 
