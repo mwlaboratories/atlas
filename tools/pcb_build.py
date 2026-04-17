@@ -755,13 +755,16 @@ def add_ads1220_passives(board: pcbnew.BOARD, layout: dict) -> None:
         ("C_DVDD_{}1", "100n", cap_lib, cap_0402_fp),
     ]
 
-    spacing = 3.0  # mm between passives — safe for 0402+0603 mix with DRC clearance
-    side_gap = 5.0  # mm from ADS1220 center to passives column
-
-    # Functional grouping: resistors (indices 0..1) on outer side, caps (indices 2..4) on inner side
-    # Refs sit near REFP0/REFN0/AIN2 pin cluster; caps cluster near AVDD/DVDD power pins.
-    n_outer = 2  # resistors
-    n_inner = 3  # caps
+    # Offsets from ADS1220 center, measured from user-tuned left-half placement.
+    # Resistors on outer (left) side near REFP0/REFN0; caps on inner (right)
+    # side near AVDD/DVDD.  X offsets are negated for the right half.
+    passives_offsets = [
+        (-4.45, -1.52),   # R_REF 1
+        (-4.45,  1.48),   # R_REF 2
+        ( 4.63, -1.94),   # C_AVDD 100nF
+        ( 4.63,  1.06),   # C_AVDD 10µF
+        ( 4.63,  4.06),   # C_DVDD 100nF
+    ]
 
     for hl in ("L", "R"):
         adc = _find_fp(board, f"U_ADC_{hl}")
@@ -770,12 +773,9 @@ def add_ads1220_passives(board: pcbnew.BOARD, layout: dict) -> None:
             continue
 
         cx, cy = _pos_mm(adc)
-        inner_x = cx + (side_gap if hl == "L" else -side_gap)
-        outer_x = cx - (side_gap if hl == "L" else -side_gap)
-        inner_y0 = cy - (n_inner - 1) * spacing / 2
-        outer_y0 = cy - (n_outer - 1) * spacing / 2
+        sign = 1 if hl == "L" else -1
 
-        for i, (ref_tpl, value, lib, fp_name) in enumerate(passives_spec):
+        for (ref_tpl, value, lib, fp_name), (dx, dy) in zip(passives_spec, passives_offsets):
             fp = pcbnew.FootprintLoad(lib, fp_name)
             if fp is None:
                 print(f"  Warning: failed to load {lib}:{fp_name}, skipping passive {ref_tpl.format(hl)}")
@@ -786,11 +786,7 @@ def add_ads1220_passives(board: pcbnew.BOARD, layout: dict) -> None:
             fp.SetExcludedFromPosFiles(True)
             board.Add(fp)
 
-            if i < 2:  # resistor → outer side
-                px, py = outer_x, outer_y0 + i * spacing
-            else:  # cap → inner side
-                px, py = inner_x, inner_y0 + (i - 2) * spacing
-            set_position(fp, _vec(px, py))
+            set_position(fp, _vec(cx + dx * sign, cy + dy))
             set_side(fp, Side.BACK)
             set_rotation(fp, 90)
 
@@ -820,15 +816,19 @@ def add_sensor_pads(board: pcbnew.BOARD, layout: dict) -> None:
     centers = _compute_trackpoint_centers(board, tp_cols, tp_rows, grid_cols)
 
     pad_size = (1.5, 1.0)        # mm — wide enough for hand soldering 28 AWG wire
-    pad_pitch = 1.8              # mm — center-to-center horizontal spacing
-    pad_y_off = 7.0              # mm below trackpoint center (below bottom screw hole)
-    pad_labels = ["x", "y", "a", "b"]
+    # Offsets from trackpoint center, measured from user-tuned left-half placement.
+    # Pads arranged vertically (rot=90°), X offset negated for right half.
+    pad_offsets = [
+        ("x", -14.58,  5.05),
+        ("y", -14.58,  3.25),
+        ("a", -14.58,  1.45),
+        ("b", -14.58, -0.35),
+    ]
 
     for i, (cx, cy) in enumerate(centers):
         hl = "L" if i == 0 else "R"
-        # Center the row of 4 pads on the trackpoint X
-        row_x0 = cx - (len(pad_labels) - 1) * pad_pitch / 2
-        for j, label in enumerate(pad_labels):
+        sign = 1 if hl == "L" else -1
+        for label, dx, dy in pad_offsets:
             ref = f"TP_{hl}_pad_{label}"
             fp = pcbnew.FOOTPRINT(board)
             fp.SetReference(ref)
@@ -849,10 +849,11 @@ def add_sensor_pads(board: pcbnew.BOARD, layout: dict) -> None:
             fp.Add(pad)
             board.Add(fp)
 
-            set_position(fp, _vec(row_x0 + j * pad_pitch, cy + pad_y_off))
+            set_position(fp, _vec(cx + dx * sign, cy + dy))
+            set_rotation(fp, 90)
             # No flip — pad layers are already set to B.Cu directly
 
-        print(f"  Sensor pads {hl}: 4 SMD pads ({', '.join(pad_labels)}) at y={cy + pad_y_off:.2f}")
+        print(f"  Sensor pads {hl}: 4 SMD pads (x, y, a, b)")
 
 
 # ---------------------------------------------------------------------------
