@@ -42,7 +42,7 @@ KISWITCH_DIR = Path(os.environ["KISWITCH_DIR"])
 # 3D model paths (${KIPRJMOD} resolved by KiCad relative to .kicad_pcb)
 HOTSWAP_MODEL = "${KIPRJMOD}/3dmodels/Choc_V1_Hotswap.step"
 SWITCH_BODY_MODEL = "${KIPRJMOD}/3dmodels/Choc_V1_Switch.step"
-DIODE_MODEL = "${KIPRJMOD}/3dmodels/D_SOD-123F.wrl"
+DIODE_MODEL = "${KIPRJMOD}/3dmodels/D_SOD-123F.step"
 XIAO_3D_MODEL = "${KIPRJMOD}/3dmodels/XIAO-nRF52840 v15.step"
 ADS1220_3D_MODEL = "${KICAD9_3DMODEL_DIR}/Package_SO.3dshapes/TSSOP-16_4.4x5mm_P0.65mm.stpZ"
 

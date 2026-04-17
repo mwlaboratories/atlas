@@ -72,7 +72,7 @@ def build_assembly(pcb_step: Path, tp_module_step: Path, pcb_path: Path) -> cq.W
     # +90° around X lays it flat (thickness → +Z); +90° around Z rotates body in-plane.
     # Z offset separates sensor PCB from keyboard PCB (standoff for hotswap socket clearance).
     pcb_bottom_z = -1.6
-    sensor_standoff = 3.0
+    sensor_standoff = 2.5
 
     parts = [pcb.val()]
 
@@ -80,9 +80,13 @@ def build_assembly(pcb_step: Path, tp_module_step: Path, pcb_path: Path) -> cq.W
         print(f"  Error: expected 2 trackpoint positions, got {len(tp_positions)}")
         sys.exit(1)
 
+    # Z rotation per half: tab points inward (toward PCB center) so screw
+    # holes align with the PCB holes and the flex cable has room.
+    z_rot = {"L": -90, "R": 90}
+
     for half, (tx, ty) in zip(["L", "R"], tp_positions):
         m = tp_module.rotate((0, 0, 0), (1, 0, 0), 90)
-        m = m.rotate((0, 0, 0), (0, 0, 1), 180)  # pads point up (toward ADS1220) on both halves
+        m = m.rotate((0, 0, 0), (0, 0, 1), z_rot[half])
         m = m.translate((tx, ty, pcb_bottom_z - sensor_standoff))
         parts.append(m.val())
 
