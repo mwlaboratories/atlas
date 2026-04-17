@@ -182,7 +182,7 @@ power_switch:
   footprint: "Button_Switch_SMD:SW_SP3T_PCM13"
   symbol: "Switch:SW_SP3T"
   placement: controller          # place near the XIAO controller
-  offset: [17.5, -4.0]           # [x, y] mm offset from controller center (right & slightly up)
+  offset: [20.8, -2.3]           # [x, y] mm offset from controller center (right & slightly up)
   rotation: 0
 
 # --- Case ---
