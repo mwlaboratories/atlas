@@ -47,8 +47,8 @@ XIAO_3D_MODEL = "${KIPRJMOD}/3dmodels/XIAO-nRF52840 v15.step"
 ADS1220_3D_MODEL = "${KICAD9_3DMODEL_DIR}/Package_SO.3dshapes/TSSOP-16_4.4x5mm_P0.65mm.stpZ"
 
 
-XIAO_MODEL_ROTATE = (-90, 0, -90)
-XIAO_MODEL_OFFSET = (6.1, -1.75, 0)
+XIAO_MODEL_ROTATE = (-90, 0, 0)
+XIAO_MODEL_OFFSET = (-1.75, -6.1, 0)
 
 
 # ---------------------------------------------------------------------------
@@ -549,9 +549,10 @@ def add_controller(board: pcbnew.BOARD, layout: dict) -> None:
       switch.box: [18, 17] mm → half: 9.0 × 8.5
       controller.box: [17.78, 21] mm → half: 8.89 × 10.5
 
-    After ±90° rotation, XIAO axes swap:
-      Vertical half  = xiao_half_w = 8.89 mm
-      Horizontal half = xiao_half_h = 10.5 mm
+    No rotation — XIAO is placed upright (USB-C at top, pointing away
+    from keys).  Box dimensions are used directly:
+      Horizontal half = xiao_half_w = 8.89 mm
+      Vertical half   = xiao_half_h = 10.5 mm
 
     Placement (left half, right is mirrored):
       Y: XIAO bottom edge flush with key top edge
@@ -567,14 +568,11 @@ def add_controller(board: pcbnew.BOARD, layout: dict) -> None:
     sw_half_w, sw_half_h = _box_halves(layout, "switch")
     xiao_half_w, xiao_half_h = _box_halves(layout, "controller")
 
-    # After ±90° rotation, XIAO axes swap
-    xiao_v = xiao_half_w   # 8.89mm — vertical half-extent after rotation
-    xiao_h = xiao_half_h   # 10.5mm — horizontal half-extent after rotation
+    # No rotation — box dimensions used as-is (w=horizontal, h=vertical)
+    xiao_v = xiao_half_h   # 10.5mm — vertical half-extent
+    xiao_h = xiao_half_w   # 8.89mm — horizontal half-extent
 
-    # After set_side(BACK) mirrors the footprint, rotations are mirrored:
-    #   Left half: -90° → USB-C points left (outward)
-    #   Right half: 90° → USB-C points right (outward)
-    halves = [("SW1", "L", -90), (f"SW{grid_cols * 2}", "R", 90)]
+    halves = [("SW1", "L", 180), (f"SW{grid_cols * 2}", "R", 0)]
 
     for sw_ref, half_label, rotation in halves:
         anchor = _find_fp(board, sw_ref)
@@ -823,7 +821,7 @@ def add_sensor_pads(board: pcbnew.BOARD, layout: dict) -> None:
 
     pad_size = (1.5, 1.0)        # mm — wide enough for hand soldering 28 AWG wire
     pad_pitch = 1.8              # mm — center-to-center horizontal spacing
-    pad_y_off = -7.0             # mm above trackpoint center (above top screw hole)
+    pad_y_off = 7.0              # mm below trackpoint center (below bottom screw hole)
     pad_labels = ["x", "y", "a", "b"]
 
     for i, (cx, cy) in enumerate(centers):
@@ -852,7 +850,7 @@ def add_sensor_pads(board: pcbnew.BOARD, layout: dict) -> None:
             board.Add(fp)
 
             set_position(fp, _vec(row_x0 + j * pad_pitch, cy + pad_y_off))
-            set_side(fp, Side.BACK)
+            # No flip — pad layers are already set to B.Cu directly
 
         print(f"  Sensor pads {hl}: 4 SMD pads ({', '.join(pad_labels)}) at y={cy + pad_y_off:.2f}")
 
@@ -1033,21 +1031,20 @@ def add_edge_cuts(board: pcbnew.BOARD, layout: dict) -> None:
     mid_x = (min(all_xs) + max(all_xs)) / 2
     left_sw = [(r, x, y, rot) for r, x, y, rot in switches if x < mid_x]
 
-    # Get controller positions + their rotated half-extents for outline
+    # Get controller positions + half-extents from actual placed footprint bbox
     ctrl_left = ctrl_right = None
-    xiao_hw, xiao_hh = _box_halves(layout, "controller")
-    # After ±90° rotation: horizontal = long axis, vertical = short axis
-    xiao_h_rot = max(xiao_hw, xiao_hh)  # horizontal half after rotation
-    xiao_v_rot = min(xiao_hw, xiao_hh)  # vertical half after rotation
 
     for hl in ("L", "R"):
         ctrl = _find_fp(board, f"U_{hl}")
         if ctrl:
             cx, cy = _pos_mm(ctrl)
+            bb = ctrl.GetBoundingBox(False, False)
+            hw = pcbnew.ToMM(bb.GetWidth()) / 2
+            hh = pcbnew.ToMM(bb.GetHeight()) / 2
             if hl == "L":
-                ctrl_left = (cx, cy, xiao_h_rot, xiao_v_rot)
+                ctrl_left = (cx, cy, hw, hh)
             else:
-                ctrl_right = (cx, cy, xiao_h_rot, xiao_v_rot)
+                ctrl_right = (cx, cy, hw, hh)
 
     def _emit(outline):
         for i in range(len(outline)):
