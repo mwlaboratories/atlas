@@ -190,6 +190,7 @@ power_switch:
 #
 case:
   plate_padding: 2.0           # mm from switch cutout edge to outline
+  grid_bottom_trim: 2.4        # mm to trim off non-pinky bottom edge — hand-tuned so cols 2–4 align at Y≈120
   wall: 2.0                    # outer wall thickness (mm)
   lip: 1.5                     # top lip overhang (mm)
   depth: 10.0                  # interior depth below plate (mm)
@@ -293,20 +294,32 @@ nets:
   #   pad 16 = D12 = P0.19          (free, used here for DRDY)
   # Primary SPI (D8/D9/D10) is reserved for matrix columns; secondary SPI keeps
   # them free.
+  # SCK, MOSI, CS each have a 24Ω series resistor (matches CJMCU-1220 / badjeff).
+  # ADC-side net connects ADC pin to resistor pad 1; XIAO-side net connects
+  # resistor pad 2 to the controller.  MISO and DRDY are outputs — no series R.
+  SPI_SCK_ADC_L:
+    U_ADC_L:        ["1"]                        # ADS1220 SCLK
+    R_SPI_SCK_L:    ["1"]                        # series resistor ADC side
   SPI_SCK_L:
-    U_ADC_L:    ["1"]                            # ADS1220 SCLK
-    U_L:        ["21"]                           # XIAO Plus pad 21 = D17 = SCK1
+    R_SPI_SCK_L:    ["2"]                        # series resistor XIAO side
+    U_L:            ["21"]                       # XIAO Plus pad 21 = D17 = SCK1
+  SPI_MOSI_ADC_L:
+    U_ADC_L:        ["16"]                       # ADS1220 DIN
+    R_SPI_MOSI_L:   ["1"]                        # series resistor ADC side
   SPI_MOSI_L:
-    U_ADC_L:    ["16"]                           # ADS1220 DIN
-    U_L:        ["23"]                           # XIAO Plus pad 23 = D19 = MOSI1
+    R_SPI_MOSI_L:   ["2"]                        # series resistor XIAO side
+    U_L:            ["23"]                       # XIAO Plus pad 23 = D19 = MOSI1
   SPI_MISO_L:
-    U_ADC_L:    ["15"]                           # ADS1220 DOUT
+    U_ADC_L:    ["15"]                           # ADS1220 DOUT (no series R — output)
     U_L:        ["22"]                           # XIAO Plus pad 22 = D18 = MISO1
+  SPI_CS_ADC_L:
+    U_ADC_L:        ["2"]                        # ADS1220 ~CS
+    R_SPI_CS_L:     ["1"]                        # series resistor ADC side
   SPI_CS_L:
-    U_ADC_L:    ["2"]                            # ADS1220 ~CS
-    U_L:        ["15"]                           # XIAO Plus pad 15 = D11 = P0.15
+    R_SPI_CS_L:     ["2"]                        # series resistor XIAO side
+    U_L:            ["15"]                       # XIAO Plus pad 15 = D11 = P0.15
   SPI_DRDY_L:
-    U_ADC_L:    ["14"]                           # ADS1220 ~DRDY
+    U_ADC_L:    ["14"]                           # ADS1220 ~DRDY (no series R — output)
     U_L:        ["16"]                           # XIAO Plus pad 16 = D12 = P0.19
 
 # --- Per-half overrides ---
