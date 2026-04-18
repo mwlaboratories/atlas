@@ -746,24 +746,31 @@ def add_ads1220_passives(board: pcbnew.BOARD, layout: dict) -> None:
     cap_0402_fp = "C_0402_1005Metric_Pad0.74x0.62mm_HandSolder"
     cap_0603_fp = "C_0603_1608Metric_Pad1.08x0.95mm_HandSolder"
 
-    # 5 passives stacked vertically next to the chip
+    # 8 passives around the chip: ref resistors, decoupling caps, SPI series resistors
     passives_spec = [
         ("R_REF_{}1", str(ref_value), res_lib, res_fp),
         ("R_REF_{}2", str(ref_value), res_lib, res_fp),
         ("C_AVDD_{}1", "100n", cap_lib, cap_0402_fp),
         ("C_AVDD_{}2", "10u", cap_lib, cap_0603_fp),
         ("C_DVDD_{}1", "100n", cap_lib, cap_0402_fp),
+        ("R_SPI_SCK_{}",  "24", res_lib, res_fp),
+        ("R_SPI_MOSI_{}", "24", res_lib, res_fp),
+        ("R_SPI_CS_{}",   "24", res_lib, res_fp),
     ]
 
     # Offsets from ADS1220 center, measured from user-tuned left-half placement.
-    # Resistors on outer (left) side near REFP0/REFN0; caps on inner (right)
-    # side near AVDD/DVDD.  X offsets are negated for the right half.
+    # Ref resistors on outer (left) side near REFP0/REFN0; caps on inner (right)
+    # side near AVDD/DVDD; SPI resistors above chip near digital pins.
+    # X offsets are negated for the right half.
     passives_offsets = [
         (-4.45, -1.52),   # R_REF 1
-        (-4.45,  1.48),   # R_REF 2
-        ( 4.63, -1.94),   # C_AVDD 100nF
-        ( 4.63,  1.06),   # C_AVDD 10µF
-        ( 4.63,  4.06),   # C_DVDD 100nF
+        (-4.48,  1.00),   # R_REF 2
+        (-6.74,  0.95),   # C_AVDD 100nF
+        (-8.07, -0.80),   # C_AVDD 10µF
+        (-7.82,  2.05),   # C_DVDD 100nF
+        (-5.60,  0.98),   # R_SPI_SCK
+        (-5.64, -1.47),   # R_SPI_MOSI
+        (-6.76, -1.46),   # R_SPI_CS
     ]
 
     for hl in ("L", "R"):
@@ -790,7 +797,7 @@ def add_ads1220_passives(board: pcbnew.BOARD, layout: dict) -> None:
             set_side(fp, Side.BACK)
             set_rotation(fp, 90)
 
-        print(f"  ADS1220 {hl} passives: 2× {ref_value}Ω (outer), 100n+10µ+100n (inner)")
+        print(f"  ADS1220 {hl} passives: 2× {ref_value}Ω ref, 100n+10µ+100n decoupling, 3× 24Ω SPI series")
 
 
 # ---------------------------------------------------------------------------
@@ -928,6 +935,11 @@ def _half_outline(switches, ctrl_pos, layout):
     else:
         grid_top = pinky[1]
         non_pinky_bot = pinky[2]
+
+    # Trim non-pinky bottom edge inward (hand-tuned so cols 2–4 align flush)
+    bottom_trim = layout.get("case", {}).get("grid_bottom_trim", 0.0)
+    if bottom_trim:
+        non_pinky_bot -= bottom_trim
 
     step_x = (col_ext[0][0] + col_ext[1][0]) / 2 if len(col_ext) > 1 else pinky_left
     thumb_return_x = (col_ext[-2][0] + col_ext[-1][0]) / 2 if len(col_ext) >= 3 else step_x

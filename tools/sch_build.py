@@ -198,23 +198,15 @@ def _make_no_connect(x_mm: float, y_mm: float) -> str:
 """
 
 
-def pin_label_rotation(comp_x_grid, pin_x_mm, comp_y_grid, pin_y_mm, comp_rot=0):
-    """Determine the global-label rotation so it points away from the component.
-
-    Returns 0 (pointing right), 90 (pointing up), 180 (pointing left), 270 (pointing down).
-    """
-    cx_mm = comp_x_grid * GRID_MM
-    cy_mm = comp_y_grid * GRID_MM
-    dx = pin_x_mm - cx_mm
-    dy = pin_y_mm - cy_mm
-    # For vertical components or very small dx
-    if abs(dx) < 0.5 and abs(dy) > 0.5:
-        return 270 if dy > 0 else 90  # pin below → label points down; pin above → up
-    if dx > 0.5:
-        return 0    # pin to right → label points right
-    if dx < -0.5:
-        return 180  # pin to left → label points left
-    return 0
+def _make_junction(x_mm: float, y_mm: float) -> str:
+    uid = str(uuid.uuid4())
+    return f"""\t(junction
+\t\t(at {x_mm:.2f} {y_mm:.2f})
+\t\t(diameter 0)
+\t\t(color 0 0 0 0)
+\t\t(uuid "{uid}")
+\t)
+"""
 
 
 # ── Section drawing helpers ──────────────────────────────────────────────────
@@ -269,8 +261,33 @@ def main() -> None:
     pending_labels: list[tuple[str, float, float, int]] = []
     # Deferred no-connects: [(x_mm, y_mm)]
     pending_nc: list[tuple[float, float]] = []
+    # Deferred junctions: [(x_mm, y_mm)] — emitted at col/row-wire ↔ pin crossings
+    pending_junctions: list[tuple[float, float]] = []
     # Track which (ref, pad) pairs already have labels
     labeled_pins: set[tuple[str, str]] = set()
+    # Cache of per-symbol pin bounding-box in mm (min_x, min_y, max_x, max_y).
+    # Pin-label rotation is determined by which edge of this bbox the pin is
+    # nearest — robust for corner pins and for symbols whose placement origin
+    # isn't their body centre (e.g. the XIAO, whose origin is at a corner).
+    _bbox_cache: dict[str, tuple[float, float, float, float]] = {}
+
+    def get_pin_bbox_mm(ref):
+        if ref in _bbox_cache:
+            return _bbox_cache[ref]
+        try:
+            pins = sch.list_component_pins(ref)
+        except Exception:
+            pins = []
+        if not pins:
+            _, (cx, cy) = placed_components[ref]
+            cxm, cym = cx * GRID_MM, cy * GRID_MM
+            bbox = (cxm, cym, cxm, cym)
+        else:
+            xs = [p.x for _, p in pins]
+            ys = [p.y for _, p in pins]
+            bbox = (min(xs), min(ys), max(xs), max(ys))
+        _bbox_cache[ref] = bbox
+        return bbox
 
     def place(ref, sym_id, x, y, rot=0, value=None, pcb_ref=None):
         lookup = pcb_ref or ref
@@ -299,77 +316,93 @@ def main() -> None:
             return False
         if pin_pos is None:
             return False
-        _, (cx, cy) = placed_components[ref]
-        rot = pin_label_rotation(cx, pin_pos.x, cy, pin_pos.y)
+        # Pick the bbox edge the pin sits closest to.  Horizontal (left/right)
+        # wins on ties so corner pins get a side label, not a top/bottom one.
+        # Convention per user-edited reference: vertical labels always use
+        # rot 90 (arrow points down into pin, text reads upward) regardless of
+        # whether the pin sits on the top or bottom edge.  Horizontal labels
+        # use rot 180 on the left edge and rot 0 on the right edge.
+        # Skip L/R candidates on purely-vertical bboxes (e.g. 2-pin caps/resistors)
+        # and T/B on purely-horizontal bboxes so labels always point outward along
+        # the component's long axis.
+        min_x, min_y, max_x, max_y = get_pin_bbox_mm(ref)
+        sides = []
+        if max_x - min_x > 0.1:
+            sides.append((pin_pos.x - min_x, 0, 180))
+            sides.append((max_x - pin_pos.x, 0, 0))
+        if max_y - min_y > 0.1:
+            sides.append((pin_pos.y - min_y, 1, 90))
+            sides.append((max_y - pin_pos.y, 1, 90))
+        if sides:
+            sides.sort(key=lambda s: (s[0], s[1]))
+            rot = sides[0][2]
+        else:
+            # Single-pin connector (Conn_01x01): bbox is zero-extent on both
+            # axes, so fall back to pin position vs stored placement origin.
+            # The pin sits on one side of the origin — the label extends in
+            # that same direction, pointing away from the body.
+            _, (cx_g, cy_g) = placed_components[ref]
+            dx = pin_pos.x - cx_g * GRID_MM
+            dy = pin_pos.y - cy_g * GRID_MM
+            if abs(dy) > abs(dx):
+                rot = 90 if dy < 0 else 270
+            else:
+                rot = 0 if dx > 0 else 180
         pending_labels.append((net_name, pin_pos.x, pin_pos.y, rot))
         labeled_pins.add((ref, pad))
         return True
 
     # ── Section 1: Controllers ───────────────────────────────────────────────
-    CTRL_Y = 31
-    CTRL_L_X = 99
-    CTRL_R_X = 315
+    # L-half / R-half base positions hand-tuned per user-edited reference
+    # (2026-04-18, v3).  Each half has its own X and Y so we can place the
+    # R-half as a mirror where the ADC ends up on the outside edge.
+    CTRL_L_X, CTRL_L_Y = 122, 51
+    CTRL_R_X, CTRL_R_Y = 274, 55
+    # Controller frame margins relative to placement origin (XIAO top-left).
+    CTRL_FRAME_DX = -19
+    CTRL_FRAME_DY = -4
+    CTRL_FRAME_W = 72
+    CTRL_FRAME_H = 68
+    CTRL_TITLE_DX = 36
+    CTRL_TITLE_DY = -9
+    # Power switch sits to the right of the XIAO body, inside the controller
+    # frame.  Text label is left of the switch, aligned on the same Y.
+    PWR_TITLE_DX = 19
+    PWR_TITLE_DY = 56
+    PWR_SW_DX = 36
+    PWR_SW_DY = 56
 
-    # "LEFT" / "RIGHT" headers
-    sch.add_text("L E F T", position=(CTRL_L_X + 20, CTRL_Y - 15),
+    # "LEFT" / "RIGHT" headers — above the controller frames
+    sch.add_text("L E F T",
+                 position=(CTRL_L_X + CTRL_FRAME_DX + 3, CTRL_L_Y - 10),
                  size=3.5, bold=True, color=FRAME_COLOR)
-    sch.add_text("R I G H T", position=(CTRL_R_X + 20, CTRL_Y - 15),
+    sch.add_text("R I G H T",
+                 position=(CTRL_R_X + CTRL_FRAME_DX + 3, CTRL_R_Y - 10),
                  size=3.5, bold=True, color=FRAME_COLOR)
 
-    # Section title
-    sch.add_text("M I C R O\nC O N T R O L L E R",
-                 position=(CTRL_L_X + 45, CTRL_Y - 6),
-                 size=TITLE_SIZE, bold=True, color=FRAME_COLOR)
-    add_section_frame(sch, CTRL_L_X - 10, CTRL_Y - 10, 72, 68, "")
-    place("U_L", lookup_symbol("U_L", layout), CTRL_L_X, CTRL_Y)
-
-    sch.add_text("M I C R O\nC O N T R O L L E R",
-                 position=(CTRL_R_X + 45, CTRL_Y - 6),
-                 size=TITLE_SIZE, bold=True, color=FRAME_COLOR)
-    add_section_frame(sch, CTRL_R_X - 10, CTRL_Y - 10, 72, 68, "")
-    place("U_R", lookup_symbol("U_R", layout), CTRL_R_X, CTRL_Y)
-
-    # ── Section 2: Power switch — split per half, TOTEM style ───────────────
-    # Each half gets: power switch (SW_SP3T) with BAT+/VBAT labels,
-    # plus a section title.
-    pwr_num = 1
-    for half, pwr_x, pwr_y in [
-        ("L", CTRL_L_X - 30, CTRL_Y + 40),
-        ("R", CTRL_R_X - 30, CTRL_Y + 40),
-    ]:
+    for half, ctrl_x, ctrl_y in [("L", CTRL_L_X, CTRL_L_Y),
+                                 ("R", CTRL_R_X, CTRL_R_Y)]:
         suffix = f"_{half}"
 
-        # Section title
+        sch.add_text("M I C R O\nC O N T R O L L E R",
+                     position=(ctrl_x + CTRL_TITLE_DX, ctrl_y + CTRL_TITLE_DY),
+                     size=TITLE_SIZE, bold=True, color=FRAME_COLOR)
+        add_section_frame(sch, ctrl_x + CTRL_FRAME_DX, ctrl_y + CTRL_FRAME_DY,
+                          CTRL_FRAME_W, CTRL_FRAME_H, "")
+        place(f"U{suffix}", lookup_symbol(f"U{suffix}", layout), ctrl_x, ctrl_y)
+
+        # Power switch (inside the controller frame, right of the XIAO body)
         sch.add_text(
             f"P O W E R\nS W I T C H",
-            position=(pwr_x + 3, pwr_y + 15),
+            position=(ctrl_x + PWR_TITLE_DX, ctrl_y + PWR_TITLE_DY),
             size=TITLE_SIZE, bold=True, color=FRAME_COLOR,
         )
-
-        # Power switch
-        ref = f"SW_PWR_{half}"
+        ref = f"SW_PWR{suffix}"
         if ref in placed:
-            place(ref, lookup_symbol(ref, layout), pwr_x + 5, pwr_y + 5)
-            # Labels on switch pins — BAT+ on input, VBAT on output
+            place(ref, lookup_symbol(ref, layout),
+                  ctrl_x + PWR_SW_DX, ctrl_y + PWR_SW_DY)
             queue_label_at_pin(f"BAT+{suffix}", ref, "1")
             queue_label_at_pin(f"VBAT{suffix}", ref, "4")
-
-        # Power flags (VCC/GND) near the controller, not in the power switch area
-        for i, (power_net, power_lib_id) in enumerate([("VCC", "power:VCC"), ("GND", "power:GND")]):
-            pf_ref = f"#PWR{pwr_num:02d}"
-            pwr_num += 1
-            # Place near the controller, above it
-            pf_x = CTRL_L_X - 18 if half == "L" else CTRL_R_X - 18
-            pf_y = CTRL_Y + 2 + i * 8
-            try:
-                sch.components.add(
-                    lib_id=power_lib_id,
-                    reference=pf_ref,
-                    value=power_net,
-                    position=(pf_x, pf_y),
-                )
-            except Exception as e:
-                print(f"  Warning: power flag {pf_ref}: {e}", file=sys.stderr)
 
     # ── Controller matrix pin labels ────────────────────────────────────────
     # XIAO BLE Plus pin→matrix mapping (from reference_xiao_ble_plus_pinout):
@@ -389,45 +422,78 @@ def main() -> None:
             queue_label_at_pin(net_name, ctrl_ref, pad)
 
     # ── Section 3: ADC Front-End ─────────────────────────────────────────────
-    ADC_L_X = 93
-    ADC_L_Y = 118
-    ADC_R_X = 308
-    ADC_R_Y = 118
+    # Layout hand-tuned per user-edited reference (2026-04-18, v3).  The
+    # ADC chip is placed directly at (adc_x, adc_y); every other component's
+    # offset is relative to that placement.  The bench places the ADC on the
+    # *outer* edge of each half: ADC_L is left of the L-controller, ADC_R is
+    # right of the R-controller.
+    ADC_L_X = 99
+    ADC_L_Y = 164
+    ADC_R_X = 314
+    ADC_R_Y = 164
+    # Frame offsets from (adc_x, adc_y) — 135×70 box with the chip on the
+    # right side and R_REF/R_SPI/caps filling the left/bottom.
+    ADC_FRAME_DX = -59
+    ADC_FRAME_DY = -34
+    ADC_FRAME_W = 135
+    ADC_FRAME_H = 70
+    # Component offsets from the chip placement.  Spacings are deliberately
+    # non-uniform to keep labels from colliding.
+    CAP_DX = [-16, 1, 20]      # AVDD-100n, AVDD-10µ, DVDD-100n
+    CAP_DY = -25
+    R_REF_DX = -34
+    R_REF_DY0 = -14            # first R_REF; second is +22
+    R_SPI_DX = [-21, 14, 48]   # CS, MOSI, SCK
+    R_SPI_DY = 23
+    TP_PAD_DX = 55
+    TP_PAD_DY0 = -23           # first pad; stride +12
+    ADC_TITLE_DX = 55
+    ADC_TITLE_DY = -38
 
     for half, adc_x, adc_y in [("L", ADC_L_X, ADC_L_Y), ("R", ADC_R_X, ADC_R_Y)]:
-        add_section_frame(sch, adc_x - 15, adc_y - 8, 100, 70, "")
+        add_section_frame(sch, adc_x + ADC_FRAME_DX, adc_y + ADC_FRAME_DY,
+                          ADC_FRAME_W, ADC_FRAME_H, "")
         sch.add_text(
             f"A D C  F R O N T - E N D",
-            position=(adc_x + 20, adc_y - 4),
+            position=(adc_x + ADC_TITLE_DX, adc_y + ADC_TITLE_DY),
             size=TITLE_SIZE, bold=True, color=FRAME_COLOR,
         )
 
         adc_ref = f"U_ADC_{half}"
-        adc_cx = adc_x + 25
-        adc_cy = adc_y + 18
         if adc_ref in placed:
-            place(adc_ref, lookup_symbol(adc_ref, layout), adc_cx, adc_cy)
+            place(adc_ref, lookup_symbol(adc_ref, layout), adc_x, adc_y)
 
         cap_refs = sorted(
             r for r in placed
             if r.startswith("C_") and re.search(rf"_{half}\d", r)
         )
         for ci, cref in enumerate(cap_refs):
-            place(cref, "Device:C", adc_x + 8 + ci * 14, adc_y + 3)
+            dx = CAP_DX[ci] if ci < len(CAP_DX) else CAP_DX[-1] + (ci - len(CAP_DX) + 1) * 18
+            place(cref, "Device:C", adc_x + dx, adc_y + CAP_DY)
 
         r_refs = sorted(
             r for r in placed
             if r.startswith("R_REF_") and re.search(rf"_{half}\d", r)
         )
         for ri, rref in enumerate(r_refs):
-            place(rref, "Device:R", adc_x - 5, adc_y + 15 + ri * 22)
+            place(rref, "Device:R", adc_x + R_REF_DX, adc_y + R_REF_DY0 + ri * 22)
+
+        # SPI series resistors (24 Ω on SCK/MOSI/CS) — horizontal row below the
+        # chip, rotated 90° so pin-1/pin-2 labels extend left/right.
+        r_spi_refs = sorted(
+            r for r in placed
+            if r.startswith("R_SPI_") and r.endswith(f"_{half}")
+        )
+        for si, sref in enumerate(r_spi_refs):
+            dx = R_SPI_DX[si] if si < len(R_SPI_DX) else R_SPI_DX[-1] + (si - len(R_SPI_DX) + 1) * 35
+            place(sref, "Device:R", adc_x + dx, adc_y + R_SPI_DY, rot=90)
 
         tp_refs = sorted([r for r in placed if r.startswith(f"TP_{half}_pad_")])
         for ti, tref in enumerate(tp_refs):
             # Use short value (pad letter) to avoid double-naming overlap
             pad_letter = tref.split("_")[-1]  # 'a', 'b', 'x', 'y'
             place(tref, "Connector_Generic:Conn_01x01",
-                  adc_x + 65, adc_y + 3 + ti * 12,
+                  adc_x + TP_PAD_DX, adc_y + TP_PAD_DY0 + ti * 12,
                   value=f"pad_{pad_letter}")
 
     # ── Section 4: Key Matrix ────────────────────────────────────────────────
@@ -445,15 +511,15 @@ def main() -> None:
     # Column wire at x=cx-2 (through pin1), vertical.
     # ROW wire at y=ry+SW_CY+6 (at cathode), horizontal.
     # Column wire crosses ROW wire without connecting (different X).
-    MATRIX_Y = 200
+    MATRIX_Y = 224
     COL_SPACING = 10    # TOTEM uses ~8 grid spacing between columns
     ROW_SPACING = 14    # TOTEM uses ~12 grid spacing between rows
     SW_CY = 6           # switch centre Y offset
     ROW_WIRE_DY = 12    # row wire Y = ry + SW_CY + 6 = ry + 12
     COL_LABEL_DY = -2   # col label above first switch
     SPLIT_COL = 5
-    LEFT_X = 75
-    RIGHT_X = 290
+    LEFT_X = 119
+    RIGHT_X = 263
 
     n_rows = max(r for r, c in matrix_map.values()) + 1 if matrix_map else 4
     n_cols = max(c for r, c in matrix_map.values()) + 1 if matrix_map else 10
@@ -547,8 +613,9 @@ def main() -> None:
         labeled_pins.add((sw_ref, "2"))
         labeled_pins.add((d_ref, "2"))
 
-    # Column wires: one continuous vertical wire per column at x=cx-2
-    # (through SW pin 1). No endpoints at row wire crossings → no connection.
+    # Column wires: segmented at each SW pin-1 crossing with a junction so
+    # KiCad actually ties the column net to each switch (a continuous wire
+    # passing through a pin without a junction does *not* connect).
     for col in range(n_cols):
         if col not in rows_in_col:
             continue
@@ -556,21 +623,34 @@ def main() -> None:
         col_wx = cx - 2  # pin 1 X for SW_Push_45deg
         rows_sorted = sorted(rows_in_col[col])
 
-        # Wire from COL label above row 0 all the way past last row wire
         top_y = MATRIX_Y + rows_sorted[0] * ROW_SPACING + SW_CY - 2 + COL_LABEL_DY
         bot_y = MATRIX_Y + rows_sorted[-1] * ROW_SPACING + ROW_WIRE_DY + 2
-        try:
-            sch.add_wire(start=(col_wx, top_y), end=(col_wx, bot_y))
-        except Exception:
-            pass
+        # SW pin-1 y for each row in this column
+        sw_pin_ys = [MATRIX_Y + r * ROW_SPACING + SW_CY - 2 for r in rows_sorted]
 
-        # Single COL label at top — rotation=270 (pointing down)
+        prev_y = top_y
+        for sw_y in sw_pin_ys:
+            try:
+                sch.add_wire(start=(col_wx, prev_y), end=(col_wx, sw_y))
+            except Exception:
+                pass
+            pending_junctions.append((col_wx * GRID_MM, sw_y * GRID_MM))
+            prev_y = sw_y
+        # Final segment past last switch down to row-wire level
+        if bot_y > prev_y:
+            try:
+                sch.add_wire(start=(col_wx, prev_y), end=(col_wx, bot_y))
+            except Exception:
+                pass
+
+        # Single COL label at the top of the wire — body extends upward (rot 90),
+        # so the arrow points down into the matrix.
         half_suffix = "_L" if col < SPLIT_COL else "_R"
         col_in_half = col if col < SPLIT_COL else col - SPLIT_COL
         col_net = f"COL{col_in_half}{half_suffix}"
-        pending_labels.append((col_net, col_wx * GRID_MM, top_y * GRID_MM, 270))
+        pending_labels.append((col_net, col_wx * GRID_MM, top_y * GRID_MM, 90))
 
-    # Row wires + ROW labels (per half)
+    # Row wires: segmented at each D pin-2 crossing with a junction.
     for half_label, cols_in_row_half, hx in [
         ("L", cols_in_row_left, LEFT_X),
         ("R", cols_in_row_right, RIGHT_X),
@@ -581,15 +661,28 @@ def main() -> None:
 
             left_cx = col_x(cols_sorted[0])
             right_cx = col_x(cols_sorted[-1])
-            # ROW wire from label to past rightmost cathode (at cx+2)
-            try:
-                sch.add_wire(start=(left_cx - 5, wire_y), end=(right_cx + 5, wire_y))
-            except Exception:
-                pass
+            left_end = left_cx - 5  # where the ROW label anchors
+            right_end = right_cx + 5
+            # D pin-2 x for each column in this row (D placed at col_x(c)+2)
+            d_pin_xs = [col_x(c) + 2 for c in cols_sorted]
+
+            prev_x = left_end
+            for dp_x in d_pin_xs:
+                try:
+                    sch.add_wire(start=(prev_x, wire_y), end=(dp_x, wire_y))
+                except Exception:
+                    pass
+                pending_junctions.append((dp_x * GRID_MM, wire_y * GRID_MM))
+                prev_x = dp_x
+            if right_end > prev_x:
+                try:
+                    sch.add_wire(start=(prev_x, wire_y), end=(right_end, wire_y))
+                except Exception:
+                    pass
 
             row_suffix = "_L" if half_label == "L" else "_R"
             row_net = f"ROW{row}{row_suffix}"
-            pending_labels.append((row_net, (left_cx - 5) * GRID_MM, wire_y * GRID_MM, 180))
+            pending_labels.append((row_net, left_end * GRID_MM, wire_y * GRID_MM, 180))
 
             for c in cols_sorted:
                 sw_num = [s for s, (r, cc) in matrix_map.items() if r == row and cc == c][0]
@@ -620,29 +713,30 @@ def main() -> None:
                 pcb_label_count += 1
     print(f"  PCB net labels: {pcb_label_count} placed")
 
-    # ── No-connects on unused XIAO pins ──────────────────────────────────────
-    for ctrl_ref in ["U_L", "U_R"]:
-        if ctrl_ref not in placed_components:
+    # ── No-connects on unused XIAO pins + SP3T unused throws ────────────────
+    for sweep_ref in ["U_L", "U_R", "SW_PWR_L", "SW_PWR_R"]:
+        if sweep_ref not in placed_components:
             continue
         try:
-            pins = sch.list_component_pins(ctrl_ref)
+            pins = sch.list_component_pins(sweep_ref)
         except Exception:
             continue
         for pin_num, pin_pos in pins:
-            if (ctrl_ref, str(pin_num)) not in labeled_pins:
+            if (sweep_ref, str(pin_num)) not in labeled_pins:
                 pending_nc.append((pin_pos.x, pin_pos.y))
 
     # ── Save & post-process ──────────────────────────────────────────────────
     print(f"  Symbols: {len(placed_components)} placed")
     print(f"  Global labels to inject: {len(pending_labels)}")
     print(f"  No-connect markers: {len(pending_nc)}")
+    print(f"  Junctions: {len(pending_junctions)}")
 
     args.output.parent.mkdir(parents=True, exist_ok=True)
     sch.save(str(args.output))
 
-    # Post-process: inject global labels and no-connects into the saved file.
-    # The kicad-sch-api doesn't support rotation on global labels, so we write
-    # them directly as s-expressions before the final closing paren.
+    # Post-process: inject global labels, no-connects, and junctions.
+    # The kicad-sch-api doesn't expose rotation on global labels or junction
+    # creation, so we write them directly as s-expressions.
     text = args.output.read_text()
 
     extra_blocks = []
@@ -650,6 +744,8 @@ def main() -> None:
         extra_blocks.append(_make_global_label(net_name, x_mm, y_mm, rot))
     for x_mm, y_mm in pending_nc:
         extra_blocks.append(_make_no_connect(x_mm, y_mm))
+    for x_mm, y_mm in pending_junctions:
+        extra_blocks.append(_make_junction(x_mm, y_mm))
 
     # Also remove any regular labels the API may have generated
     text = re.sub(r'\t\(label\s+"[^"]*".*?\n\t\)\n', '', text, flags=re.DOTALL)
