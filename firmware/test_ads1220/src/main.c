@@ -27,6 +27,8 @@
  *   blue flicker          — activity above threshold (stick deflected)
  */
 
+#include <math.h>
+
 #include <zephyr/kernel.h>
 #include <zephyr/drivers/gpio.h>
 #include <zephyr/drivers/spi.h>
@@ -69,8 +71,11 @@ LOG_MODULE_REGISTER(ads1220_test, LOG_LEVEL_INF);
 #define BASELINE_SAMPLES    32        /* per-axis samples to average for zero */
 #define ACTIVITY_THRESHOLD  20000     /* |centered x| or |y| > this → blue LED */
 
-/* Mouse motion mapping. Tuned for gain=64. */
-#define MOUSE_DEADZONE      20000     /* ignore noise below this on either axis */
+/* Mouse motion mapping. Tuned for gain=64. Deadzone is *radial* — the
+ * dead region is a disc of radius MOUSE_DEADZONE in (cx, cy) space, not
+ * a per-axis band. That makes diagonals respond identically to cardinal
+ * pushes at the same magnitude. */
+#define MOUSE_DEADZONE      20000     /* radius (LSB) of the dead disc */
 #define MOUSE_DIVISOR       4000      /* full HID speed (±127) at ~530k deflection */
 
 /* ---- USB HID mouse ---- */
@@ -108,17 +113,35 @@ static const uint8_t hid_report_desc[] = {
 
 static const struct device *hid_dev;
 
-static int8_t map_mouse_delta(int32_t centered)
+static void map_mouse_xy(int32_t cx, int32_t cy, int8_t *dx_out, int8_t *dy_out)
 {
-	if (centered > MOUSE_DEADZONE) {
-		int32_t v = (centered - MOUSE_DEADZONE) / MOUSE_DIVISOR;
-		return v > 127 ? 127 : (int8_t)v;
+	float fx = (float)cx;
+	float fy = (float)cy;
+	float r2 = fx * fx + fy * fy;
+	float dz = (float)MOUSE_DEADZONE;
+
+	if (r2 < dz * dz) {
+		*dx_out = 0;
+		*dy_out = 0;
+		return;
 	}
-	if (centered < -MOUSE_DEADZONE) {
-		int32_t v = (centered + MOUSE_DEADZONE) / MOUSE_DIVISOR;
-		return v < -127 ? -127 : (int8_t)v;
-	}
-	return 0;
+
+	float r = sqrtf(r2);
+	/* Subtract the dead radius from the magnitude, then scale by the
+	 * divisor. Direction is preserved by multiplying back through
+	 * (cx/r, cy/r). */
+	float scale = (r - dz) / (r * (float)MOUSE_DIVISOR);
+
+	float fdx = fx * scale;
+	float fdy = fy * scale;
+
+	if (fdx >  127.0f) fdx =  127.0f;
+	if (fdx < -127.0f) fdx = -127.0f;
+	if (fdy >  127.0f) fdy =  127.0f;
+	if (fdy < -127.0f) fdy = -127.0f;
+
+	*dx_out = (int8_t)fdx;
+	*dy_out = (int8_t)fdy;
 }
 
 static void hid_send(int8_t dx, int8_t dy)
@@ -398,9 +421,9 @@ int main(void)
 		int32_t cx = x - base_x;
 		int32_t cy = y - base_y;
 
-		/* HID mouse report. dx/dy mapping with deadzone + linear scale. */
-		int8_t dx = map_mouse_delta(cx);
-		int8_t dy = map_mouse_delta(cy);
+		/* HID mouse report. Radial deadzone + linear scale. */
+		int8_t dx, dy;
+		map_mouse_xy(cx, cy, &dx, &dy);
 		if (dx || dy) {
 			hid_send(dx, dy);
 		}
