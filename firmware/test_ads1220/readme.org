@@ -1,0 +1,67 @@
+#+TITLE: Phase 1 ADS1220 bench test
+#+OPTIONS: toc:nil num:nil
+
+Standalone Zephyr app for the XIAO nRF52840 Plus that proves power +
+SPI + DRDY against a hand-soldered ADS1220 breakout. Not ZMK — runs
+its own =main()= for fast iteration.
+
+* Bench-rig caveat
+
+The XIAO Plus this firmware targets has a *broken MISO1 (D18 / P1.05)
+side-edge tab*. =app.overlay= reroutes MISO to *D13 (I2S_WS /
+P1.01)* — the pin otherwise reserved for the future WS2812 RGB chain.
+
+The PCB design in =tools/keyboard.yaml= still names D18 as the
+canonical PCB MISO; this override is bench-only. Replace this XIAO
+before assembling the PCB, or accept losing the RGB option on this
+specific unit.
+
+* What it does
+
+1. Boot — brief blue LED to confirm firmware loaded
+2. Init SPI1 (1 MHz, mode 1) and DRDY GPIO interrupt
+3. Send =RESET= to the ADS1220, then read config registers R0..R3
+4. Compare against the reset defaults (all =0x00=)
+5. Send =START= — DRDY should now pulse ~every 50 ms (20 SPS default)
+
+* LED verdict (on-board RGB, active-LOW)
+
+| LED state                   | Meaning                                          |
+|-----------------------------+--------------------------------------------------|
+| brief blue on boot          | firmware loaded                                  |
+| solid red                   | SPI init or RESET command failed                 |
+| red blink                   | register read failed mid-flight                  |
+| yellow (red + green)        | registers readable but values ≠ reset defaults   |
+| solid green                 | SPI proven, registers match reset                |
+| solid green + blue flicker  | DRDY firing — chip producing samples             |
+
+* Build + flash
+
+#+begin_src bash
+just build-test-fw
+# → firmware/out/test_ads1220.uf2
+#+end_src
+
+Put the XIAO into bootloader mode (double-tap RESET) and drag-drop the
+=.uf2= onto the =XIAO-SENSE= drive that mounts.
+
+* Serial output
+
+After enumeration the host sees =/dev/ttyACM0=. Open with =screen= or
+=picocom=:
+
+#+begin_src bash
+screen /dev/ttyACM0 115200
+#+end_src
+
+The firmware logs the four register values and a periodic DRDY count.
+
+* Pin map (this build)
+
+| Signal | nRF52840 | XIAO label                         |
+|--------+----------+------------------------------------|
+| SCLK   | P1.03    | SCK1 (D17)                         |
+| MOSI   | P1.07    | MOSI1 (D19)                        |
+| MISO   | P1.01    | I2S_WS (D13) ← bench override      |
+| CS     | P0.15    | I2S_SD (D11)                       |
+| DRDY   | P0.19    | I2S_SCK (D12)                      |
