@@ -1,11 +1,13 @@
 # Atlas Keyboard — Build System
 #
-# Five recipes total:
+# Recipes:
 #   build-fw       — build firmware (.uf2) for both halves
 #   build-keymap   — render keymap.svg from atlas.keymap
 #   init-west      — one-time west workspace init (after clone)
-#   gen-kicad      — YAML → tools/build/{atlas.kicad_pcb, atlas.kicad_sch, atlas.step}
+#   gen-kicad      — YAML → tools/build/{atlas.kicad_pcb, atlas.kicad_sch, atlas.step, outline.json}
+#   build-case     — outline.json → tools/build/case.step (programmatic CAD)
 #   open-step      — open tools/build/atlas.step in f3d (3D viewer)
+#   open-case      — open tools/build/case.step in f3d
 
 default:
     @just --list
@@ -26,6 +28,8 @@ pcb_out        := "tools/build/atlas.kicad_pcb"
 sch_out        := "tools/build/atlas.kicad_sch"
 step_out       := "tools/build/atlas.step"
 pcb_bare_step  := "tools/build/pcb_bare.step"
+outline_json   := "tools/build/outline.json"
+case_step      := "tools/build/case.step"
 
 # ── Firmware ──────────────────────────────────────────────────────
 
@@ -93,3 +97,19 @@ gen-kicad:
 # Open the 3D STEP assembly in f3d
 open-step:
     f3d --light-intensity=2 -q {{ step_out }}
+
+# ── Case generation ──────────────────────────────────────────────
+
+# outline.json → case.step (programmatic CAD with cadquery)
+build-case:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    test -f {{ outline_json }} || { echo "Run 'just gen-kicad' first (outline.json missing)"; exit 1; }
+    cq-python tools/case_build.py \
+        -l {{ layout }} \
+        --outline {{ outline_json }} \
+        -o {{ case_step }}
+
+# Open the case STEP in f3d
+open-case:
+    f3d --light-intensity=2 -q {{ case_step }}
