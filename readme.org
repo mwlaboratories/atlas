@@ -15,19 +15,29 @@ ZMK firmware, in-tree PCB and case generators, wooden enclosure.
 
 * Status (May 2026)
 
-On branch =feat/ads1220-integration=, mid-bench-bring-up of a new
-trackpoint architecture.
+On branch =feat/ads1220-integration=. The ADS1220 strain-gauge
+trackpoint path is *proven on the bench*. PCB design is the active
+workstream.
 
 - BLE split working — direct host connection, no dongle.
-- Migrating from Sprintek AIO (PS/2 over UART) to a bare *Sprintek
-  joystick module* read by an external *TI ADS1220* 24-bit ΔΣ ADC over
-  SPI. The PS/2 path retires once the ADS1220 path lands.
-- Migrating MCU footprint from XIAO BLE to *XIAO nRF52840 Plus* to
-  free GPIO for the ADC and a future per-key RGB chain.
+- *ADS1220 trackpoint path proven, end-to-end.* Hand-soldered
+  ADS1220 breakout + XIAO nRF52840 Plus + bare Sprintek strain-gauge
+  stick: strain bridge → ratiometric 24-bit ADC → USB HID cursor
+  on a host PC. Standalone Zephyr test app lives at
+  =firmware/test_ads1220/= and drives the sensor for visual /
+  cursor-feel validation.
+- *PCB design next.* =tools/keyboard.yaml= already encodes the
+  full net list (SPI, IDAC reference divider, decoupling, ZMK
+  matrix). Pending before send-to-fab: footprint check against the
+  physical Sprintek module (the bench unit has 4 bridge + 2
+  case-ground tabs) and confirmation of the case-shield connection.
+- *ZMK integration of the ADS1220 driver* — replacing the legacy
+  PS/2 path and forwarding the right half's events over BLE-split —
+  is the remaining firmware task. Doesn't block PCB fab.
+- MCU footprint migrated XIAO BLE → *XIAO nRF52840 Plus* in the PCB
+  design, awaiting first run.
 - Mouse layer auto-activates on trackpoint movement; scroll mode on
   thumb-key hold.
-- PCBs: previous-architecture prototype fabricated; ADS1220 variant in
-  design.
 - Case: wooden prototype + cadquery generator stub
   (=tools/case_build.py=) fed from PCB outline export.
 
@@ -101,6 +111,7 @@ scheme), lives in =tools/keyboard.yaml= under the =nets:= block.
 nix develop
 just init-west       # one-time after clone
 just build-fw        # firmware (.uf2) for both halves
+just build-test-fw   # standalone ADS1220 bench-test firmware (HID mouse)
 just build-keymap    # render firmware/keymap.svg from atlas.keymap
 just gen-kicad       # YAML → KiCad PCB + schematic + STEP + outline.json
 just build-case      # outline.json → case.step (cadquery)
@@ -127,5 +138,7 @@ tools/               PCB + case generation pipeline
   case_build.py      outline.json → case.step
   kicad/             vendored symbols, footprints, 3D models
 firmware/            ZMK workspace (shields, keymap, config)
+  test_ads1220/      standalone Zephyr app — strain bridge → HID cursor
+                     for ADS1220 bench bring-up
 images/              project photos, renders, pinout references
 #+end_example
