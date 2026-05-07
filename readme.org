@@ -13,28 +13,6 @@
 no dongle. Choc V1 hotswap switches, XIAO nRF52840 Plus controllers,
 ZMK firmware, in-tree PCB and case generators, wooden enclosure.
 
-* Why
-
-Atlas is not a product. It is a refusal — a refusal of the soft, beige,
-committee-shaped slabs that the world calls keyboards and asks one to
-be grateful for. It was begun in the conviction that a man's hands are
-the instrument of his mind, and the surface his fingers strike a
-thousand times a day deserves to be shaped by the same intelligence
-that drives the work above it.
-
-Every choice in Atlas was made by a person, not a department.
-Thirty-four keys, because that is what the hand requires — not what a
-marketing chart will defend. A TrackPoint at each thumb's threshold,
-because the cursor should not exile the fingers from the home row. A
-wireless split with no dongle, no broker, no kindly intermediary,
-because two halves of one keyboard speaking directly to a host is the
-simplest description of the truth, and simplicity is an act of
-respect.
-
-The case is wood, cut at the bench. The PCB is generated from code in
-this repo. The firmware is open, the schematic is open, the bill of
-materials is a list a person can hold in his head.
-
 * Status (May 2026)
 
 On branch =feat/ads1220-integration=, mid-bench-bring-up of a new
