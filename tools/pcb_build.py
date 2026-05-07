@@ -13,6 +13,7 @@ Usage:
     python3 tools/pcb_build.py -l tools/keyboard.yaml -o tools/build/atlas.kicad_pcb
 """
 import argparse
+import json
 import math
 import os
 import subprocess
@@ -1027,8 +1028,12 @@ def _half_outline(switches, ctrl_pos, layout):
     return cleaned
 
 
-def add_edge_cuts(board: pcbnew.BOARD, layout: dict) -> None:
-    """Add per-half Edge.Cuts outlines — two separate boards."""
+def add_edge_cuts(board: pcbnew.BOARD, layout: dict, out_dir: Path | None = None) -> None:
+    """Add per-half Edge.Cuts outlines — two separate boards.
+
+    Also writes `outline.json` in `out_dir` (if given) so downstream CAD
+    (case_build.py) can reference the raw polygon points.
+    """
     switches = []
     for fp in board.GetFootprints():
         ref = fp.GetReference()
@@ -1085,6 +1090,19 @@ def add_edge_cuts(board: pcbnew.BOARD, layout: dict) -> None:
         _emit(right_outline)
         xs = [p[0] for p in right_outline]
         print(f"  Edge.Cuts R: {len(right_outline)} pts, {max(xs) - min(xs):.1f} x {h:.1f} mm")
+
+        # Dump polygons for downstream CAD (case_build.py)
+        if out_dir is not None:
+            out_dir.mkdir(parents=True, exist_ok=True)
+            outline_json = out_dir / "outline.json"
+            outline_json.write_text(json.dumps({
+                "units": "mm",
+                "coords": "kicad",
+                "mid_x": mid_x,
+                "left": [[x, y] for x, y in left_outline],
+                "right": [[x, y] for x, y in right_outline],
+            }, indent=2))
+            print(f"  outline.json: {outline_json}")
 
 
 # ---------------------------------------------------------------------------
@@ -1521,7 +1539,7 @@ def main() -> None:
 
     # Step 7: Edge cuts
     print("Adding edge cuts...")
-    add_edge_cuts(board, layout)
+    add_edge_cuts(board, layout, out_dir=out_path.parent)
 
     # Center on A4 sheet (before silkscreen so contours clip correctly)
     print("Centering on sheet...")
