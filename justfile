@@ -2,6 +2,7 @@
 #
 # Recipes:
 #   build-fw       — build firmware (.uf2) for both halves
+#   build-test-fw  — build the Phase 1 ADS1220 bench test firmware
 #   build-keymap   — render keymap.svg from atlas.keymap
 #   init-west      — one-time west workspace init (after clone)
 #   gen-kicad      — YAML → tools/build/{atlas.kicad_pcb, atlas.kicad_sch, atlas.step, outline.json}
@@ -46,6 +47,16 @@ build-fw *args:
         mkdir -p {{ fw_out }} && cp {{ fw_build }}/$half/zephyr/zmk.uf2 {{ fw_out }}/atlas_$half.uf2
         echo "Built: {{ fw_out }}/atlas_$half.uf2"
     done
+
+# Build the Phase 1 ADS1220 bench-test firmware (standalone, not ZMK)
+build-test-fw *args:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    cd {{ workspace }}
+    west build -s test_ads1220 -d {{ fw_build }}/test -b {{ board }} {{ args }}
+    mkdir -p {{ fw_out }}
+    cp {{ fw_build }}/test/zephyr/zephyr.uf2 {{ fw_out }}/test_ads1220.uf2
+    echo "Built: {{ fw_out }}/test_ads1220.uf2"
 
 # Render firmware/keymap.svg from atlas.keymap
 build-keymap:
