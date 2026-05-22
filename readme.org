@@ -1,0 +1,7 @@
+#+title: Atlas
+
+Split ergonomic keyboard. Fresh start — building back up from the ADS1220
+strain-gauge ADC direction.
+
+Old history is on =main=. This branch (=fresh=) restarts from zero and will be
+merged into =main= once it's in a good place.

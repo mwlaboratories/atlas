@@ -1,0 +1,17 @@
+# Devenv / direnv
+.devenv/
+.direnv/
+devenv.local.nix
+
+# Local Claude harness
+.claude/
+CLAUDE.md
+
+# OS / editor
+.DS_Store
+*.swp
+*~
+
+# Build / output (placeholders for later)
+build/
+out/
