@@ -5,7 +5,7 @@ Useful after you manually edit the outline on one side and add controller /
 power / signal-conditioning footprints. Switches and SK6812 LEDs are already
 placed on both halves by kbplacer + add_leds.py, so they're skipped.
 
-Two different mirror strategies are used:
+Three passes:
 
  1. **Centerline mirror** for Edge.Cuts and "free" footprints (MCU, regulators,
     connectors, etc.) that the user placed by hand on the left half:
@@ -19,6 +19,16 @@ Two different mirror strategies are used:
     both halves often want to live on the SAME side of their switch in the
     switch's local frame (e.g. "to the right of the switch") — a centerline
     mirror would flip that to the wrong side.
+
+ 3. **Net-split** for the right half. Atlas is a wireless split — each half
+    has its own controller and its own matrix, so they MUST NOT share nets.
+    kbplacer ships a single shared matrix; this pass renames the right-half
+    matrix nets:
+      - `ROW{n}` → `R_ROW{n}`     (kbplacer already splits COL{n} per half)
+      - `Net-(D{n}-A)` → `Net-(D{n}_R-A)` on every right-side diode
+      - on every right-side switch, the dangling anode-net reference (which
+        still points at a now-deleted kbplacer diode) is rewritten to its
+        physically-paired right-half diode's new anode net
 
 Idempotent — re-running strips the right-half versions of the things it
 just mirrored, then re-creates them.
@@ -390,6 +400,79 @@ def pair_diodes(pcb: str, center: float) -> tuple[str, int, int]:
     return pcb, len(new_blocks), len(right_ranges)
 
 
+# ─── net-split pass for the right half (wireless split, no shared nets) ────
+
+def repair_right_half_nets(pcb: str, center: float) -> tuple[str, int, int]:
+    """Rename right-half ROW nets + re-wire each right switch to its diode.
+
+    Returns (pcb, n_row_renames, n_switch_rewires).
+    """
+    # 1. Collect right-half diode positions + refs (post pair_diodes).
+    right_diodes = []
+    for s, e in find_blocks(pcb, 'footprint "'):
+        block = pcb[s:e]
+        if not _is_paired(block):
+            continue
+        place = block_first_at(block)
+        if place is None or place[0] < center:
+            continue
+        right_diodes.append({"ref": block_ref(block), "x": place[0], "y": place[1]})
+
+    if not right_diodes:
+        return pcb, 0, 0
+
+    # 2. Pair each right switch with its physically-closest right diode.
+    sw_to_diode: dict[str, str] = {}
+    for sw in parse_all_switches(pcb):
+        if sw["x"] < center:
+            continue
+        d = min(right_diodes, key=lambda d: (d["x"]-sw["x"])**2 + (d["y"]-sw["y"])**2)
+        sw_to_diode[sw["ref"]] = d["ref"]
+
+    # 3. Walk all right-half footprints in REVERSE so splices don't invalidate
+    #    earlier indices. Rewrite ROW + anode nets.
+    blocks = []
+    for s, e in find_blocks(pcb, 'footprint "'):
+        block = pcb[s:e]
+        place = block_first_at(block)
+        if place is None or place[0] < center:
+            continue
+        blocks.append((s, e, block))
+    blocks.sort(key=lambda x: x[0], reverse=True)
+
+    n_row = n_sw = 0
+    for start, end, block in blocks:
+        ref = block_ref(block)
+        name = block_fp_name(block)
+
+        new_block, n = re.subn(r'\(net "ROW(\d+)"\)', r'(net "R_ROW\1")', block)
+        n_row += n
+        block = new_block
+
+        if "Diode" in name or "D_SOD" in name:
+            # Diode: anode pad should reference its OWN refdes, not the left
+            # half's. (We're at the right half here, so ref ends in "_R".)
+            block = re.sub(
+                r'\(net "Net-\(D[^)]+-A\)"\)',
+                f'(net "Net-({ref}-A)")',
+                block,
+            )
+        elif name.startswith("SW_") or "SW_Hotswap" in name:
+            paired = sw_to_diode.get(ref)
+            if paired:
+                block, n = re.subn(
+                    r'\(net "Net-\(D[^)]+-A\)"\)',
+                    f'(net "Net-({paired}-A)")',
+                    block,
+                )
+                if n:
+                    n_sw += 1
+
+        pcb = pcb[:start] + block + pcb[end:]
+
+    return pcb, n_row, n_sw
+
+
 # ─── entry point ───────────────────────────────────────────────────────────
 
 def main(pcb_path: Path) -> None:
@@ -405,6 +488,9 @@ def main(pcb_path: Path) -> None:
 
     pcb, n_paired, n_paired_stripped = pair_diodes(pcb, center)
     print(f"switch-local re-paired {n_paired} diode(s) (stripped {n_paired_stripped} existing on right)")
+
+    pcb, n_row, n_sw = repair_right_half_nets(pcb, center)
+    print(f"split right-half nets: {n_row} ROW renames, {n_sw} switch anode rewires")
 
     pcb_path.write_text(pcb)
     print(f"→ {pcb_path.name}")
