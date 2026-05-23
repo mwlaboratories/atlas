@@ -1,0 +1,84 @@
+# Atlas BOM — part-number registry for JLCPCB PCBA orders.
+#
+# Each entry maps a logical part name → footprint, LCSC catalog number,
+# JLCPCB rotation offset (if the part's reel orientation differs from the
+# KiCad footprint convention), and an assembly disposition.
+#
+# Used by:
+#   - bom-export script (TODO) to emit a CSV with C##### codes per ref
+#   - add_leds.py and friends, to tag footprints with the LCSC property
+#
+# disposition:
+#   pcba       — JLCPCB places (basic or pre-order, available for purchase)
+#   pcba_only_consign — JLCPCB can place if you mail them stock
+#   dnp        — Do Not Place; hand-solder after delivery
+#   plug_and_play — slots into a soldered socket post-delivery (no soldering)
+
+parts:
+  # ── Switches ───────────────────────────────────────────────────────────
+  choc_v2_switch:
+    description: Kailh Choc V2 (DeepSea Mini) low-profile switch
+    footprint: null                # the switch itself doesn't have a footprint;
+                                   # it plugs into the hotswap socket below
+    lcsc: null
+    disposition: plug_and_play
+
+  choc_hotswap:
+    description: Kailh Choc V1/V2 hotswap PCB socket (CPG135001S30)
+    footprint: Switch_Keyboard_Hotswap_Kailh:SW_Hotswap_Kailh_Choc_V1V2
+    lcsc: C5333465                 # JLCPCB pre-order, min 72 (~$9)
+    jlcpcb_rotation: 0             # verify before submitting BOM
+    disposition: pcba
+
+  # ── LEDs ───────────────────────────────────────────────────────────────
+  sk6812mini_e:
+    description: SK6812MINI-E reverse-mount RGB LED (3.2 × 2.8 mm)
+    footprint: LED_SMD:LED_SK6812MINI-E_3.2x2.8mm_P1.5mm_ReverseMount
+    lcsc: C2843680                 # verify on LCSC before order
+    jlcpcb_rotation: 0
+    disposition: pcba              # Extended part, ~$3 setup fee
+
+  # ── Controller ─────────────────────────────────────────────────────────
+  xiao_nrf52840_plus:
+    description: Seeed XIAO nRF52840 Plus (BLE 5.0, low-power)
+    footprint: Seeed_XIAO:XIAO-nRF52840-Plus-SMD
+    lcsc: C9900282874              # currently 0 stock, consign-only
+    disposition: dnp               # hand-solder for now
+
+  # ── Trackpoint sensor ──────────────────────────────────────────────────
+  sk8707_sensor:
+    description: Sprintek SK8707 strain-gauge trackpoint sensor (sensor only)
+    footprint: null                # custom footprint; sensor pads soldered direct
+    lcsc: null                     # not stocked by JLCPCB
+    disposition: dnp
+
+  # ── Diodes (matrix) ────────────────────────────────────────────────────
+  diode_1n4148:
+    description: 1N4148WS switching diode (matrix), SOD-323
+    footprint: Diode_SMD:D_SOD-323
+    lcsc: C81598                   # 1N4148WS-7-F or similar; basic part
+    jlcpcb_rotation: 0
+    disposition: pcba
+
+  # ── Passives ───────────────────────────────────────────────────────────
+  cap_100nf_0402:
+    description: 100 nF decoupling cap, 0402, X7R 16 V
+    footprint: Capacitor_SMD:C_0402_1005Metric
+    lcsc: C1525                    # generic 100 nF 0402, basic part
+    disposition: pcba
+
+  cap_10uf_0603:
+    description: 10 µF bulk cap, 0603, X5R 10 V
+    footprint: Capacitor_SMD:C_0603_1608Metric
+    lcsc: C19702
+    disposition: pcba
+
+  # ── Strain-gauge ADC (keeping path open from feat/ads1220-integration) ─
+  ads1220:
+    description: TI ADS1220 24-bit ADC for strain-gauge trackpoint
+    footprint: Package_SO:TSSOP-16_4.4x5mm_P0.65mm
+    lcsc: C40103
+    disposition: pcba
+
+  # ── Connectors / mechanical ────────────────────────────────────────────
+  # TODO: TRRS jack (split connection) and/or USB-C if XIAO not handling USB

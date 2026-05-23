@@ -1,0 +1,173 @@
+#+title: Atlas Parts Checklist — JLCPCB / LCSC lookup
+#+startup: indent
+
+Each part: what to search for, quantity per half, expected stock category,
+and the LCSC code field to fill in once verified. The Atlas design uses
+*BLE between halves*, so each half is independent → everything below
+times two for a full keyboard.
+
+When you verify a code, edit the =LCSC:= line and tick the checkbox.
+The =parts.yaml= file alongside this one is the canonical machine-readable
+source; this file is the human-friendly view to use while shopping.
+
+* Status legend
+
+- =Basic= — JLCPCB always-stocked, no setup fee
+- =Extended= — Stocked but ~$3 setup fee per unique part
+- =Pre-order= — JLCPCB orders for you, may have minimum quantity
+- =Consign= — You ship them stock; not usable for standard PCBA
+- =DNP= — Do Not Place; hand-solder after delivery
+
+* Switches & matrix
+
+** [X] Kailh Choc V1/V2 hotswap socket
+- LCSC: =C5333465=
+- Stock: Pre-order (min 72 pcs, ~$9 total)
+- Footprint: =Switch_Keyboard_Hotswap_Kailh:SW_Hotswap_Kailh_Choc_V1V2=
+- Qty per half: 17  ·  Total: 34  ·  Order 72 (38 spare)
+
+** [ ] Matrix diode (1N4148WS)
+- Search: "1N4148WS SOD-323" or "switching diode SOD-323"
+- LCSC: ~C81598~ ← verify
+- Stock: should be Basic
+- Footprint: =Diode_SMD:D_SOD-323=
+- Qty per half: 17  ·  Total: 34
+- Orientation matters — JLCPCB rotation may need =+90°= correction
+
+* RGB LEDs
+
+** [ ] SK6812MINI-E reverse-mount
+- Search: "SK6812MINI-E" — be careful, plain SK6812MINI is different
+- LCSC: ~C2843680~ ← verify (this code may be wrong)
+- Stock: Extended (~$3 setup)
+- Footprint: =LED_SMD:LED_SK6812MINI-E_3.2x2.8mm_P1.5mm_ReverseMount=
+- Qty per half: 17  ·  Total: 34
+
+** [ ] LED decoupling cap (100 nF 0402)
+- Search: "100nF 0402 X7R"
+- LCSC: ~C1525~ ← verify
+- Stock: Basic
+- Footprint: =Capacitor_SMD:C_0402_1005Metric=
+- Qty per half: 17 (one per LED)  ·  Total: 34
+- Optional but standard. Skip if PCBA cost is sensitive.
+
+* Power
+
+** [ ] LiPo battery — choose capacity first
+- Format: single-cell LiPo, ~3.7V nominal
+- Capacity options: 110 mAh (compact) / 250 mAh / 400 mAh+
+- Connector: JST PH 2.0 (most common) — or solder pads on the PCB
+- *NOT JLCPCB part* — buy separately (Adafruit, AliExpress, etc.)
+- Qty per half: 1  ·  Total: 2
+- Decide capacity based on case size and battery life targets
+
+** [ ] Battery connector (JST PH 2.0, 2-pin, SMD)
+- Search: "JST PH 2.0 SMD 2-pin"
+- LCSC: TBD
+- Stock: usually Basic
+- Footprint: =Connector_JST:JST_PH_S2B-PH-SM4-TB_1x02-1MP_P2.00mm_Horizontal= (or similar)
+- Qty per half: 1  ·  Total: 2
+- Skip this if you decide to solder battery wires directly to pads
+
+** [ ] Power slide switch (SP3T or SPST)
+- Suggestions:
+  - C&K PCM13 (was in main-branch yaml): SP3T, allows off / XIAO / XIAO+TP modes
+  - Simpler: SP DT slide switch, just on/off
+- Search: "SP3T slide switch SMD" or "SPDT slide switch SMD"
+- LCSC: TBD
+- Stock: usually Basic or Extended
+- Footprint: depends on which switch
+- Qty per half: 1  ·  Total: 2
+
+** No boost converter (decided from ZMK community guidance)
+- SK6812MINI-E only needs 3.4V for logical-high — LiPo (3.0-4.2V) is enough.
+- Reference: [[https://github.com/ebastler/zmk-designguide][ebastler/zmk-designguide]] (the de-facto wireless-ergo design guide).
+- Trade-off: LEDs may dim near empty battery, but no extra IC needed.
+
+** [ ] LED power-cutting MOSFETs (CRITICAL for battery life)
+- Why: SK6812 quiescent draw ~1 mA per LED *even when "off"*.
+  17 LEDs × 1 mA = 17 mA constant drain — 100× the BLE radio current.
+- Solution: P-channel MOSFET on the LED VDD rail, gated by XIAO GPIO (=UG_EN=).
+  Common topology in ebastler's guide: P-FET + N-FET pair for clean switching.
+- Search: "P-channel MOSFET SOT-23" + "N-channel MOSFET SOT-23"
+  - Common picks: AO3401 (P-FET), AO3400 (N-FET)
+- LCSC P-FET: TBD (AO3401 is ~=C15127=) ← verify
+- LCSC N-FET: TBD (AO3400 is ~=C20917=) ← verify
+- Stock: Basic
+- Footprint: =Package_TO_SOT_SMD:SOT-23=
+- Qty per half: 2 (one P, one N)  ·  Total: 4
+- Plus gate pull-up/down resistors (10 kΩ, ~2 per side)
+
+** [ ] LED data-line level shifter MOSFET
+- Why: XIAO's 3.3V data signal can be unreliable for SK6812MINI-E
+  at battery voltage. Single N-FET inverts-and-shifts to VBAT level.
+- Topology: N-FET with pull-up to VBAT — ZMK has a config flag for this.
+- Search: same N-channel MOSFET as above (often AO3400)
+- LCSC: shared with the power-cut N-FET
+- Qty per half: 1  ·  Total: 2
+- Plus pull-up resistor (1-2.2 kΩ)
+
+** [ ] Bulk cap on battery rail (10 µF 0603)
+- Search: "10uF 0603 X5R 6.3V"
+- LCSC: ~C19702~ ← verify
+- Stock: Basic
+- Footprint: =Capacitor_SMD:C_0603_1608Metric=
+- Qty per half: 1-2  ·  Total: 2-4
+
+* Controller
+
+** [ ] Seeed XIAO nRF52840 Plus
+- LCSC: =C9900282874= (verified)
+- Stock: *Consign only* (0 in stock)
+- Disposition: =DNP= — hand-solder after delivery
+- Footprint: =Seeed_XIAO:XIAO-nRF52840-Plus-SMD=
+- Qty per half: 1  ·  Total: 2
+
+* Trackpoint (strain-gauge path)
+
+** [ ] ADS1220 — 24-bit ADC
+- Search: "ADS1220 TSSOP-16"
+- LCSC: ~C40103~ ← verify (TI brand stock at JLCPCB varies)
+- Stock: usually Extended
+- Footprint: =Package_SO:TSSOP-16_4.4x5mm_P0.65mm=
+- Qty per half: 1  ·  Total: 2
+
+** [ ] ADS1220 reference cap (1 µF 0603)
+- Search: "1uF 0603 X7R"
+- LCSC: TBD
+- Stock: Basic
+- Footprint: =Capacitor_SMD:C_0603_1608Metric=
+- Qty per half: 1  ·  Total: 2
+
+** [ ] ADS1220 decoupling cap (100 nF 0402)
+- Reuse the LED cap (=C1525= same SKU)
+- Qty per half: 2 (AVDD, DVDD)  ·  Total: 4
+
+** [ ] Sprintek SK8707 strain-gauge sensor
+- LCSC: *not stocked*
+- Disposition: =DNP= — buy from Sprintek/Mouser, hand-solder
+- Footprint: custom (4 strain-gauge pads + 2 screw holes + center stick hole)
+- Qty per half: 1  ·  Total: 2
+
+* Misc / TBD
+
+** [ ] Mount holes / screw pads
+- Decide screw size (M2 typical for ergo): hole diameter ~2.2 mm with annular ring
+- No purchasable parts — just PCB features
+
+** [ ] Status LED (optional)
+- If you want a "BLE connected" or "battery low" indicator beyond per-key RGB
+- Search: "LED 0603 red" / "LED 0603 green"
+- LCSC: TBD if needed
+
+** [ ] Pull-up resistors on I²C / SPI lines (if needed by trackpoint or other peripherals)
+- 10 kΩ 0402 typical
+- LCSC: =C25744= (10 kΩ 0402 1%) ← verify
+- Footprint: =Resistor_SMD:R_0402_1005Metric=
+- Qty: as many as your design needs
+
+* Once codes are verified
+
+Update both this file (tick the boxes) and =pcb/lib/parts.yaml= with the
+final LCSC numbers. The yaml drives the BOM-tagging script; this file is
+the audit trail.
