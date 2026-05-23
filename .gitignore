@@ -23,9 +23,10 @@ _autosave-*.kicad_pcb
 *.bak
 
 # Generated 3D / fab outputs — re-generate via scripts when needed.
-# Vendored 3D models in **/3dmodels/ are NOT generated, keep them tracked.
-/pcb/atlas/pcb*.step
-/pcb/atlas/pcb*.STEP
+# Vendored 3D models live in **/3dmodels/ subfolders and stay tracked.
+/pcb/atlas/*.step
+/pcb/atlas/*.STEP
+!/pcb/atlas/3dmodels/
 /keyboard-plate.stl
 *.dxf
 *.gbr

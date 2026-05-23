@@ -1,0 +1,5 @@
+(fp_lib_table
+   (version 7)
+   (lib (name "Switch_Keyboard_Hotswap_Kailh")(type "KiCad")(uri "${KIPRJMOD}/footprints/Switch_Keyboard_Hotswap_Kailh.pretty")(options "")(descr ""))
+   (lib (name "Seeed_XIAO")(type "KiCad")(uri "${KIPRJMOD}/footprints/Seeed_XIAO.pretty")(options "")(descr "Seeed XIAO footprints (incl. XIAO BLE Plus)"))
+)
