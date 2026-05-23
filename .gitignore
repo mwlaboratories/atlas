@@ -15,3 +15,19 @@ CLAUDE.md
 # Build / output (placeholders for later)
 build/
 out/
+
+# KiCad cruft (user-local, generated, or temp)
+_autosave-*.kicad_pcb
+~*.lck
+*.kicad_prl
+*.bak
+
+# Generated 3D / fab outputs — re-generate via scripts when needed.
+# Vendored 3D models in **/3dmodels/ are NOT generated, keep them tracked.
+/pcb/atlas/pcb*.step
+/pcb/atlas/pcb*.STEP
+/keyboard-plate.stl
+*.dxf
+*.gbr
+*.drl
+gerbers/
