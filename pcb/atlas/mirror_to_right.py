@@ -5,16 +5,28 @@ Useful after you manually edit the outline on one side and add controller /
 power / signal-conditioning footprints. Switches and SK6812 LEDs are already
 placed on both halves by kbplacer + add_leds.py, so they're skipped.
 
-Idempotent: strips right-half Edge.Cuts gr_lines and right-half "other"
-footprints first, then mirrors the left-half versions across the centerline.
+Two different mirror strategies are used:
 
-Mirror math: x' = 2·center − x, y' = y, rotation' = (180 − rotation) mod 360.
-Layer stays unchanged — flip in KiCad afterwards (key shortcut F) if the
-right half needs to be on B.Cu for your PCB-cutting plan.
+ 1. **Centerline mirror** for Edge.Cuts and "free" footprints (MCU, regulators,
+    connectors, etc.) that the user placed by hand on the left half:
+        x' = 2·center − x, y' = y, rotation' = (180 − rotation) mod 360.
+    Layer stays unchanged.
+
+ 2. **Switch-local re-pair** for diodes (and any other switch-paired part):
+    each left diode is associated with its nearest left switch, its
+    switch-local pose is extracted, and a copy is placed at the same local
+    pose around the paired right switch. This is required because diodes on
+    both halves often want to live on the SAME side of their switch in the
+    switch's local frame (e.g. "to the right of the switch") — a centerline
+    mirror would flip that to the wrong side.
+
+Idempotent — re-running strips the right-half versions of the things it
+just mirrored, then re-creates them.
 
 Usage:
     python mirror_to_right.py [keyboard.kicad_pcb]
 """
+import math
 import re
 import sys
 import uuid as uuid_lib
@@ -22,12 +34,22 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 
-# Footprint prefixes that already exist on BOTH halves (don't mirror).
-# Diodes are NOT skipped — they need to mirror, otherwise user-moved left-half
-# diodes get out of sync with the right-half kbplacer-placed ones.
+# Footprint name fragments handled by the *centerline mirror* pass.
+# Things in SKIP_PREFIXES are left alone there; diodes are skipped here too
+# because they get their own pairing pass (see PAIRED_PREFIXES below).
 SKIP_PREFIXES = (
-    "SW_",                              # switches (kbplacer)
-    "LED_SMD:LED_SK6812MINI-E",         # LEDs (add_leds.py)
+    "SW_",                              # switches (kbplacer, both halves)
+    "LED_SMD:LED_SK6812MINI-E",         # LEDs (add_leds.py, both halves)
+    "Diode_SMD:",                       # diodes — handled by pair-pass
+    "D_SOD-323",                        # diodes — handled by pair-pass
+)
+
+# Footprint name fragments handled by the *switch-local re-pair* pass.
+# These get stripped from the right half and re-placed using the left half's
+# switch-local pose.
+PAIRED_PREFIXES = (
+    "Diode_SMD:",
+    "D_SOD-323",
 )
 
 
@@ -241,6 +263,133 @@ def mirror_footprints(pcb: str, center: float) -> str:
     return pcb, len(left_blocks), len(right_ranges)
 
 
+# ─── switch-local pairing pass (for diodes) ────────────────────────────────
+
+def parse_all_switches(pcb: str) -> list[dict]:
+    """All SW_* footprints with placement."""
+    out = []
+    for s, e in find_blocks(pcb, 'footprint "SW_'):
+        block = pcb[s:e]
+        p = block_first_at(block)
+        if p is None:
+            continue
+        out.append({"x": p[0], "y": p[1], "rot": p[2], "ref": block_ref(block)})
+    return out
+
+
+def _is_paired(block: str) -> bool:
+    name = block_fp_name(block)
+    return any(p in name for p in PAIRED_PREFIXES)
+
+
+def _rot_global_to_local(dx: float, dy: float, rot_deg: float) -> tuple[float, float]:
+    """Express a global-frame offset in the switch's local frame.
+
+    KiCad rotation is CCW from F.Cu (top); with +Y pointing DOWN that's math
+    CW. Going global → local means rotating by −rot.
+    """
+    a = -math.radians(rot_deg)
+    # math-CW rotation matrix for +Y-down PCB coords:
+    lx =  dx * math.cos(a) + dy * math.sin(a)
+    ly = -dx * math.sin(a) + dy * math.cos(a)
+    return lx, ly
+
+
+def _rot_local_to_global(lx: float, ly: float, rot_deg: float) -> tuple[float, float]:
+    """Inverse: local → global."""
+    a = math.radians(rot_deg)
+    dx =  lx * math.cos(a) + ly * math.sin(a)
+    dy = -lx * math.sin(a) + ly * math.cos(a)
+    return dx, dy
+
+
+def pair_diodes(pcb: str, center: float) -> tuple[str, int, int]:
+    """Strip right-half PAIRED_PREFIXES footprints, then re-place from left.
+
+    Each left diode is anchored to its nearest left switch (in global coords),
+    its switch-local pose is extracted, and a copy is placed at the same
+    local pose relative to the corresponding right-half switch (the one
+    whose position mirrors the left switch's across the centerline).
+    """
+    switches = parse_all_switches(pcb)
+    left_sw  = [s for s in switches if s["x"] < center]
+    right_sw = [s for s in switches if s["x"] >= center]
+    if not left_sw or not right_sw:
+        return pcb, 0, 0
+
+    # Pair: for each left switch, find right switch closest to its mirror.
+    pairs: dict[str, dict] = {}
+    for ls in left_sw:
+        target_x = 2 * center - ls["x"]
+        target_y = ls["y"]
+        rs = min(right_sw, key=lambda r: (r["x"]-target_x)**2 + (r["y"]-target_y)**2)
+        pairs[ls["ref"]] = rs
+
+    # Walk all paired-prefix footprint blocks; classify by half.
+    left_diodes: list[dict] = []
+    right_ranges: list[tuple[int, int]] = []
+    for s, e in find_blocks(pcb, 'footprint "'):
+        block = pcb[s:e]
+        if not _is_paired(block):
+            continue
+        place = block_first_at(block)
+        if place is None:
+            continue
+        x, y, rot = place
+        if x >= center:
+            right_ranges.append((s, e))
+            continue
+        # Left diode → find parent switch + extract switch-local pose
+        parent = min(left_sw, key=lambda sw: (sw["x"]-x)**2 + (sw["y"]-y)**2)
+        local_x, local_y = _rot_global_to_local(x - parent["x"], y - parent["y"], parent["rot"])
+        rot_delta = (rot - parent["rot"]) % 360
+        left_diodes.append({
+            "block": block,
+            "parent_ref": parent["ref"],
+            "local_x": local_x,
+            "local_y": local_y,
+            "rot_delta": rot_delta,
+        })
+
+    # Strip right-half paired footprints first (reverse order keeps offsets valid).
+    for s, e in reversed(right_ranges):
+        nl = 1 if e < len(pcb) and pcb[e] == "\n" else 0
+        pcb = pcb[:s] + pcb[e + nl:]
+
+    # Build new right-half blocks.
+    new_blocks: list[str] = []
+    for ld in left_diodes:
+        rs = pairs.get(ld["parent_ref"])
+        if rs is None:
+            continue
+        dx, dy = _rot_local_to_global(ld["local_x"], ld["local_y"], rs["rot"])
+        new_x = rs["x"] + dx
+        new_y = rs["y"] + dy
+        new_rot = (rs["rot"] + ld["rot_delta"]) % 360
+
+        block = ld["block"]
+        block = re.sub(
+            r'(^\t\t)\(at [-0-9.]+ [-0-9.]+(?: [-0-9.]+)?\)',
+            rf'\g<1>(at {new_x:.4f} {new_y:.4f} {new_rot:g})',
+            block, count=1, flags=re.MULTILINE,
+        )
+        block = re.sub(r'\(uuid "[^"]+"\)',
+                       lambda _: f'(uuid "{uuid_lib.uuid4()}")', block)
+        ref = block_ref(block)
+        if ref:
+            block = block.replace(f'"Reference" "{ref}"',
+                                  f'"Reference" "{ref}_R"', 1)
+        new_blocks.append(block)
+
+    if new_blocks:
+        mirrored = "\n".join(new_blocks) + "\n"
+        last = pcb.rfind(")")
+        sep = "" if pcb[:last].endswith("\n") else "\n"
+        pcb = pcb[:last] + sep + mirrored + pcb[last:]
+
+    return pcb, len(new_blocks), len(right_ranges)
+
+
 # ─── entry point ───────────────────────────────────────────────────────────
 
 def main(pcb_path: Path) -> None:
@@ -252,7 +401,10 @@ def main(pcb_path: Path) -> None:
     print("mirrored Edge.Cuts gr_lines (right-half stripped, left-half copied)")
 
     pcb, n_mirrored, n_stripped = mirror_footprints(pcb, center)
-    print(f"mirrored {n_mirrored} footprint(s) (stripped {n_stripped} existing on right)")
+    print(f"centerline-mirrored {n_mirrored} footprint(s) (stripped {n_stripped} existing on right)")
+
+    pcb, n_paired, n_paired_stripped = pair_diodes(pcb, center)
+    print(f"switch-local re-paired {n_paired} diode(s) (stripped {n_paired_stripped} existing on right)")
 
     pcb_path.write_text(pcb)
     print(f"→ {pcb_path.name}")
