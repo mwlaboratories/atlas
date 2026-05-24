@@ -1,0 +1,265 @@
+
+
+(kicad_pcb
+  (version 20240108)
+  (generator "ergogen")
+  (generator_version "4.2.1")
+  (general
+    (thickness 1.6)
+    (legacy_teardrops no)
+  )
+  (paper "A3")
+  (title_block
+    (title "keyboard")
+    (date "2026-05-24")
+    (rev "0.1.0")
+    (company "Unknown")
+  )
+
+  (layers
+    (0 "F.Cu" signal)
+    (31 "B.Cu" signal)
+    (32 "B.Adhes" user "B.Adhesive")
+    (33 "F.Adhes" user "F.Adhesive")
+    (34 "B.Paste" user)
+    (35 "F.Paste" user)
+    (36 "B.SilkS" user "B.Silkscreen")
+    (37 "F.SilkS" user "F.Silkscreen")
+    (38 "B.Mask" user)
+    (39 "F.Mask" user)
+    (40 "Dwgs.User" user "User.Drawings")
+    (41 "Cmts.User" user "User.Comments")
+    (42 "Eco1.User" user "User.Eco1")
+    (43 "Eco2.User" user "User.Eco2")
+    (44 "Edge.Cuts" user)
+    (45 "Margin" user)
+    (46 "B.CrtYd" user "B.Courtyard")
+    (47 "F.CrtYd" user "F.Courtyard")
+    (48 "B.Fab" user)
+    (49 "F.Fab" user)
+  )
+
+  (setup
+    (pad_to_mask_clearance 0.05)
+    (allow_soldermask_bridges_in_footprints no)
+    (pcbplotparams
+      (layerselection 0x00010fc_ffffffff)
+      (plot_on_all_layers_selection 0x0000000_00000000)
+      (disableapertmacros no)
+      (usegerberextensions no)
+      (usegerberattributes yes)
+      (usegerberadvancedattributes yes)
+      (creategerberjobfile yes)
+      (dashed_line_dash_ratio 12.000000)
+      (dashed_line_gap_ratio 3.000000)
+      (svgprecision 4)
+      (plotframeref no)
+      (viasonmask no)
+      (mode 1)
+      (useauxorigin no)
+      (hpglpennumber 1)
+      (hpglpenspeed 20)
+      (hpglpendiameter 15.000000)
+      (pdf_front_fp_property_popups yes)
+      (pdf_back_fp_property_popups yes)
+      (dxfpolygonmode yes)
+      (dxfimperialunits yes)
+      (dxfusepcbnewfont yes)
+      (psnegative no)
+      (psa4output no)
+      (plotreference yes)
+      (plotvalue yes)
+      (plotfptext yes)
+      (plotinvisibletext no)
+      (sketchpadsonfab no)
+      (subtractmaskfromsilk no)
+      (outputformat 1)
+      (mirror no)
+      (drillshape 1)
+      (scaleselection 1)
+      (outputdirectory "")
+    )
+  )
+
+  (net 0 "")
+(net 1 "COL")
+(net 2 "ROW")
+(net 3 "GND")
+(net 4 "D1")
+(net 5 "D2")
+(net 6 "NET_X")
+(net 7 "VCC")
+(net 8 "DOUT")
+(net 9 "DIN")
+
+  
+  (footprint "ceoloide:switch_choc_v1_v2"
+    (layer "F.Cu")
+    (at 50 -50 0)
+    (property "Reference" "S1"
+      (at 0 8.8 0)
+      (layer "F.SilkS")
+      hide
+      (effects (font (size 1 1) (thickness 0.15)))
+    )
+    (attr exclude_from_pos_files exclude_from_bom allow_soldermask_bridges)
+
+    
+    
+    (pad "" np_thru_hole circle (at 0 0 0) (size 5 5) (drill 5) (layers "*.Cu" "*.Mask"))
+    
+    
+    
+    (pad "" np_thru_hole circle (at 5.5 0 0) (size 1.9 1.9) (drill 1.9) (layers "*.Cu" "*.Mask"))
+    (pad "" np_thru_hole circle (at -5.5 0 0) (size 1.9 1.9) (drill 1.9) (layers "*.Cu" "*.Mask"))
+    
+    
+    (pad "" thru_hole circle (at 5.00 5.15 0) (size 1.9 1.9) (drill 1.6) (layers "*.Cu" "*.Mask") )
+    
+    
+    
+    (pad "" np_thru_hole circle (at 0 -5.95 0) (size 3 3) (drill 3) (layers "*.Cu" "*.Mask"))
+    
+    
+    
+    
+    (fp_line (start -7 -5.6) (end -7 -6.2) (layer "F.SilkS") (stroke (width 0.15) (type solid)))
+    (fp_line (start -7 -6.2) (end -2.52 -6.2) (layer "F.SilkS") (stroke (width 0.15) (type solid)))
+    (fp_line (start -2 -6.78) (end -2 -7.7) (layer "F.SilkS") (stroke (width 0.15) (type solid)))
+    (fp_line (start -1.5 -8.2) (end -2 -7.7) (layer "F.SilkS") (stroke (width 0.15) (type solid)))
+    (fp_line (start 1.5 -8.2) (end -1.5 -8.2) (layer "F.SilkS") (stroke (width 0.15) (type solid)))
+    (fp_line (start 2 -7.7) (end 1.5 -8.2) (layer "F.SilkS") (stroke (width 0.15) (type solid)))
+    (fp_arc (start -2 -6.78) (mid -2.139878 -6.382304) (end -2.52 -6.2) (layer "F.SilkS") (stroke (width 0.15) (type solid)))
+  
+    
+    (fp_line (start -7 -1.5) (end -7 -2) (layer "F.SilkS") (stroke (width 0.15) (type solid)))
+    (fp_line (start -2.5 -1.5) (end -7 -1.5) (layer "F.SilkS") (stroke (width 0.15) (type solid)))
+    (fp_line (start -2.5 -2.2) (end -2.5 -1.5) (layer "F.SilkS") (stroke (width 0.15) (type solid)))
+    (fp_line (start 1.5 -3.7) (end -0.8 -3.7) (layer "F.SilkS") (stroke (width 0.15) (type solid)))
+    (fp_line (start 2 -4.2) (end 1.5 -3.7) (layer "F.SilkS") (stroke (width 0.15) (type solid)))
+    (fp_arc (start -2.5 -2.22) (mid -1.956518 -3.312082) (end -0.8 -3.7) (layer "F.SilkS") (stroke (width 0.15) (type solid)))
+    
+    
+    
+    (pad "" np_thru_hole circle (at -5 -3.75 195) (size 3 3) (drill 3) (layers "*.Cu" "*.Mask"))
+
+    
+    
+    (pad "1" smd rect (at 3.275 -5.95 0) (size 2.6 2.6) (layers "F.Cu" "F.Paste" "F.Mask") (net 1 "COL"))
+    
+
+    
+    (pad "2" smd rect (at -8.275 -3.75 0) (size 2.6 2.6) (layers "F.Cu" "F.Paste" "F.Mask") (net 2 "ROW"))
+    
+    
+  )
+    
+
+    (footprint "ceoloide:diode_tht_sod123"
+        (layer "B.Cu")
+        (at 44 -46 90)
+        (property "Reference" "D1"
+            (at 0 0 90)
+            (layer "B.SilkS")
+            hide
+            (effects (font (size 1 1) (thickness 0.15)))
+        )
+        
+      (fp_line (start 0.25 0) (end 0.75 0) (layer "B.SilkS") (stroke (width 0.1) (type solid)))
+      (fp_line (start 0.25 0.4) (end -0.35 0) (layer "B.SilkS") (stroke (width 0.1) (type solid)))
+      (fp_line (start 0.25 -0.4) (end 0.25 0.4) (layer "B.SilkS") (stroke (width 0.1) (type solid)))
+      (fp_line (start -0.35 0) (end 0.25 -0.4) (layer "B.SilkS") (stroke (width 0.1) (type solid)))
+      (fp_line (start -0.35 0) (end -0.35 0.55) (layer "B.SilkS") (stroke (width 0.1) (type solid)))
+      (fp_line (start -0.35 0) (end -0.35 -0.55) (layer "B.SilkS") (stroke (width 0.1) (type solid)))
+      (fp_line (start -0.75 0) (end -0.35 0) (layer "B.SilkS") (stroke (width 0.1) (type solid)))
+        
+      (pad "1" smd rect (at -1.65 0 90) (size 0.9 1.2) (layers "B.Cu" "B.Paste" "B.Mask") (net 6 "NET_X"))
+      (pad "2" smd rect (at 1.65 0 90) (size 0.9 1.2) (layers "B.Cu" "B.Paste" "B.Mask") (net 1 "COL"))
+        
+    )
+        
+
+  (footprint "ceoloide:led_SK6812mini-e (per-keysingle-side)" 
+    (layer "B.Cu")
+    (at 50 -54.93 0)
+    (property "Reference" "LED1"
+      (at -4.75 0 90)
+      (layer "B.SilkS")
+      hide
+      (effects (font (size 1 1) (thickness 0.15)))
+    )
+    (attr smd)
+
+    (fp_line (start -1.6 -1.4) (end 1.6 -1.4) (layer "Dwgs.User") (stroke (width 0.12) (type solid)))
+    (fp_line (start -1.6 1.4) (end 1.6 1.4) (layer "Dwgs.User") (stroke (width 0.12) (type solid)))
+    (fp_line (start -1.6 -1.4) (end -1.6 1.4) (layer "Dwgs.User") (stroke (width 0.12) (type solid)))
+    (fp_line (start 1.6 -1.4) (end 1.6 1.4) (layer "Dwgs.User") (stroke (width 0.12) (type solid)))
+    (fp_line (start -1.6 -1.05) (end -2.94 -1.05) (layer "Dwgs.User") (stroke (width 0.12) (type solid)))
+    (fp_line (start -2.94 -1.05) (end -2.94 -0.37) (layer "Dwgs.User") (stroke (width 0.12) (type solid)))
+    (fp_line (start -2.94 -0.37) (end -1.6 -0.37) (layer "Dwgs.User") (stroke (width 0.12) (type solid)))
+    (fp_line (start -1.6 0.35) (end -2.94 0.35) (layer "Dwgs.User") (stroke (width 0.12) (type solid)))
+    (fp_line (start -2.94 1.03) (end -1.6 1.03) (layer "Dwgs.User") (stroke (width 0.12) (type solid)))
+    (fp_line (start -2.94 0.35) (end -2.94 1.03) (layer "Dwgs.User") (stroke (width 0.12) (type solid)))
+    (fp_line (start 1.6 1.03) (end 2.94 1.03) (layer "Dwgs.User") (stroke (width 0.12) (type solid)))
+    (fp_line (start 2.94 0.35) (end 1.6 0.35) (layer "Dwgs.User") (stroke (width 0.12) (type solid)))
+    (fp_line (start 2.94 1.03) (end 2.94 0.35) (layer "Dwgs.User") (stroke (width 0.12) (type solid)))
+    (fp_line (start 1.6 -0.37) (end 2.94 -0.37) (layer "Dwgs.User") (stroke (width 0.12) (type solid)))
+    (fp_line (start 2.94 -1.05) (end 1.6 -1.05) (layer "Dwgs.User") (stroke (width 0.12) (type solid)))
+    (fp_line (start 2.94 -0.37) (end 2.94 -1.05) (layer "Dwgs.User") (stroke (width 0.12) (type solid)))
+    
+    (fp_line (start -3.8 -1.6) (end -2.2 -1.6) (layer "B.SilkS") (stroke (width 0.12) (type solid)))
+    (fp_line (start -3.8 0) (end -3.8 -1.6) (layer "B.SilkS") (stroke (width 0.12) (type solid)))
+    (pad "2" smd rect (at 2.70 -0.7 0) (size 1.4 1) (layers "B.Cu" "B.Paste" "B.Mask") (net 8 "DOUT"))
+    (pad "1" smd rect (at 2.70 0.7 0) (size 1.4 1) (layers "B.Cu" "B.Paste" "B.Mask") (net 7 "VCC"))
+    (pad "3" smd rect (at -2.70 -0.7 0) (size 1.4 1) (layers "B.Cu" "B.Paste" "B.Mask") (net 3 "GND"))
+    (pad "4" smd rect (at -2.70 0.7 0) (size 1.4 1) (layers "B.Cu" "B.Paste" "B.Mask") (net 9 "DIN"))
+    
+    (fp_line (start -0.8 -1.4) (end -0.8 1.4) (layer "Dwgs.User") (stroke (width 0.12) (type solid)))
+    (fp_line (start 0.8 -1.4) (end 0.8 1.4) (layer "Dwgs.User") (stroke (width 0.12) (type solid)))
+    (fp_line (start -1 -1.4) (end -1 1.4) (layer "Dwgs.User") (stroke (width 0.12) (type solid)))
+    (fp_line (start 1 -1.4) (end 1 1.4) (layer "Dwgs.User") (stroke (width 0.12) (type solid)))
+    
+    (fp_poly
+      (pts
+        (xy 1.6 -1.05)
+        (xy 2.94 -1.05)
+        (xy 2.94 -0.37)
+        (xy 1.6 -0.37)
+        (xy 1.6 0.35)
+        (xy 2.94 0.35)
+        (xy 2.94 1.03)
+        (xy 1.6 1.03)
+        (xy 1.6 1.4)
+        (xy -1.6 1.4)
+        (xy -1.6 1.03)
+        (xy -2.94 1.03)
+        (xy -2.94 0.35)
+        (xy -1.6 0.35)
+        (xy -1.6 -0.37)
+        (xy -2.94 -0.37)
+        (xy -2.94 -1.05)
+        (xy -1.6 -1.05)
+        (xy -1.6 -1.4)
+        (xy 1.6 -1.4)
+      )
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+      (layer "B.CrtYd")
+    )
+    
+    (fp_rect (start -1.8 -1.55) (end 1.8 1.55) (layer "Edge.Cuts") (stroke (width 0.12) (type solid)) (fill none))
+  )
+    
+  (gr_line (start 41 -39) (end 59 -39) (layer Edge.Cuts) (stroke (width 0.15) (type default)))
+(gr_arc (start 59 -39) (mid 60.4142136 -39.5857864) (end 61 -41) (layer Edge.Cuts) (stroke (width 0.15) (type default)))
+(gr_line (start 61 -41) (end 61 -59) (layer Edge.Cuts) (stroke (width 0.15) (type default)))
+(gr_arc (start 61 -59) (mid 60.4142136 -60.4142136) (end 59 -61) (layer Edge.Cuts) (stroke (width 0.15) (type default)))
+(gr_line (start 59 -61) (end 41 -61) (layer Edge.Cuts) (stroke (width 0.15) (type default)))
+(gr_arc (start 41 -61) (mid 39.5857864 -60.4142136) (end 39 -59) (layer Edge.Cuts) (stroke (width 0.15) (type default)))
+(gr_line (start 39 -59) (end 39 -41) (layer Edge.Cuts) (stroke (width 0.15) (type default)))
+(gr_arc (start 39 -41) (mid 39.5857864 -39.5857864) (end 41 -39) (layer Edge.Cuts) (stroke (width 0.15) (type default)))
+
+)
+

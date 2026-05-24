@@ -1,0 +1,14 @@
+{
+  "name": "atlas",
+  "version": "0.1.0",
+  "description": "Split ergonomic keyboard — ergogen-driven PCB generation.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "ergogen": "ergogen tools/ergogen/atlas.yaml -o pcb/kicad",
+    "render": "kicad-cli pcb render --side bottom --width 2000 --height 1400 --quality high --output tools/renders/bottom.png pcb/kicad/keyboard.kicad_pcb"
+  },
+  "dependencies": {
+    "ergogen": "4.2.1"
+  }
+}

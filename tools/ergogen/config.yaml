@@ -1,0 +1,81 @@
+# Atlas keyboard — ergogen config (smoke-test stage)
+#
+# Goal of this minimal version: produce a valid .kicad_pcb with one key
+# (switch + diode + LED) so we know the toolchain is wired up correctly.
+# Subsequent revs add the full atlas grid + thumbs + trackpoint cutout +
+# split halves + edge cuts.
+#
+# Custom footprints from ceoloide/ergogen-footprints (vendored in
+# ./footprints/) — switch_choc_v1_v2, diode_tht_sod123, led_sk6812mini-e.
+
+meta:
+  engine: 4.2.1
+  name: atlas
+  version: 0.1.0
+
+# 1u cell size for Choc V2 + MX caps (atlas's stock).
+units:
+  kx: 19.05   # mm — column pitch (X)
+  ky: 19.05   # mm — row pitch (Y)
+
+# Points = where switches go. One zone, one column, one row for now.
+points:
+  zones:
+    test:
+      anchor:
+        shift: [50, 50]   # mm offset from PCB origin
+      columns:
+        c0:
+          rows:
+            r0:
+
+outlines:
+  _keys:
+    - what: rectangle
+      where: true
+      size: [18, 18]
+  main:
+    - what: outline
+      name: _keys
+      expand: 2
+
+pcbs:
+  keyboard:
+    template: kicad8
+    outlines:
+      main:
+        outline: main
+    footprints:
+      switch:
+        what: switch_choc_v1_v2
+        where: true
+        params:
+          from: COL
+          to: ROW
+          reversible: false
+          hotswap: true
+          solder: false
+          side: F
+      diode:
+        what: diode_tht_sod123
+        where: true
+        params:
+          from: COL
+          to: NET_X
+          side: B
+          reversible: false
+          include_tht: false
+        adjust:
+          shift: [-6, -4]
+          rotate: 90
+      led:
+        what: led_sk6812mini-e
+        where: true
+        params:
+          P1: VCC
+          P2: DOUT
+          P3: GND
+          P4: DIN
+          side: B
+        adjust:
+          shift: [0, 4.93]
