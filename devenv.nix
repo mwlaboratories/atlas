@@ -9,30 +9,33 @@
     kicad
   ];
 
-  scripts.serve.exec = ''
-    cd "''${DEVENV_ROOT}/tools/layout"
-    python3 -m http.server "''${1:-8000}"
+  scripts.dev.exec = ''
+    cd "''${DEVENV_ROOT}"
+    node tools/server.mjs
   '';
 
   scripts.ergogen.exec = ''
     cd "''${DEVENV_ROOT}"
-    npx ergogen "$@"
+    npx ergogen tools/ergogen -o tools/ergogen/output "$@"
   '';
 
   scripts.render.exec = ''
     cd "''${DEVENV_ROOT}"
     mkdir -p tools/renders
-    kicad-cli pcb render --side bottom --width 2000 --height 1400 --quality high \
-      --output tools/renders/bottom.png pcb/kicad/keyboard.kicad_pcb
-    echo "→ tools/renders/bottom.png"
+    kicad-cli pcb render --side top --width 1600 --height 1100 --quality high \
+      --output tools/renders/atlas-top.png pcb/kicad/keyboard.kicad_pcb
+    kicad-cli pcb render --side bottom --width 1600 --height 1100 --quality high \
+      --output tools/renders/atlas-bottom.png pcb/kicad/keyboard.kicad_pcb
+    echo "→ tools/renders/atlas-{top,bottom}.png"
   '';
 
   enterShell = ''
     echo ""
-    echo "  atlas — fresh"
-    echo "  serve     start layout webtool on http://localhost:8000"
-    echo "  ergogen   run ergogen on a yaml config"
-    echo "  render    render PCB bottom view to tools/renders/bottom.png"
+    echo "  atlas — ergogen pipeline"
+    echo "  dev       start full webtool + ergogen + render server"
+    echo "            open http://localhost:8000, click 'build PCB'"
+    echo "  ergogen   run ergogen once on tools/ergogen/config.yaml"
+    echo "  render    render current pcb/kicad/keyboard.kicad_pcb to PNGs"
     echo ""
   '';
 }

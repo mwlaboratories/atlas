@@ -1,57 +1,124 @@
-# Atlas keyboard — ergogen config (smoke-test stage)
+# Atlas keyboard — ergogen config
 #
-# Goal of this minimal version: produce a valid .kicad_pcb with one key
-# (switch + diode + LED) so we know the toolchain is wired up correctly.
-# Subsequent revs add the full atlas grid + thumbs + trackpoint cutout +
-# split halves + edge cuts.
-#
-# Custom footprints from ceoloide/ergogen-footprints (vendored in
-# ./footprints/) — switch_choc_v1_v2, diode_tht_sod123, led_sk6812mini-e.
+# Full 34-key split (5×3 alphas per half + 2 thumbs per half), Choc V2 + MX caps.
+# Mirrors the parameters defined in tools/layout/index.html's `atlas` preset.
+# Co-located ceoloide footprints in ./footprints/ provide the Kailh hotswap,
+# SK6812MINI-E reverse-mount LED, and SOD-123 diode.
 
 meta:
   engine: 4.2.1
   name: atlas
   version: 0.1.0
 
-# 1u cell size for Choc V2 + MX caps (atlas's stock).
+# 1u = 19.05 mm in both axes (Choc V2 + MX caps).
 units:
-  kx: 19.05   # mm — column pitch (X)
-  ky: 19.05   # mm — row pitch (Y)
+  kx: 19.05
+  ky: 19.05
+  # Per-column relative stagger (Y offset from previous column).
+  # atlas col.y is "distance from top" (down is +). ergogen y is up,
+  # so we NEGATE atlas's delta-y. Stagger = -(col.y - prev_col.y) × ky.
+  stag_ring:    11.049   # -(2.16 − 2.74) × 19.05
+  stag_middle:   3.048   # -(2.00 − 2.16) × 19.05
+  stag_index:   -3.048   # -(2.16 − 2.00) × 19.05
+  stag_inner:   -1.905   # -(2.26 − 2.16) × 19.05
+  # Thumb cluster: anchored relative to inner-bot, BELOW the alphas (down
+  # in atlas-world = -y in ergogen-world).
+  thumb_x: 1.4097
+  thumb_y: -20.4407
+  # 1.05u step at bisector angle 17.5° between t0 and t1:
+  thumb_step_x: 19.0689
+  thumb_step_y: -6.0156
 
-# Points = where switches go. One zone, one column, one row for now.
 points:
   zones:
-    test:
+    matrix:
       anchor:
-        shift: [50, 50]   # mm offset from PCB origin
+        shift: [80, 80]
       columns:
-        c0:
+        pinky:
+          key.column_net: COL0
           rows:
-            r0:
+            top:    {row_net: ROW0}
+            home:   {row_net: ROW1}
+            bot:    {row_net: ROW2}
+        ring:
+          key.stagger: stag_ring
+          key.column_net: COL1
+          rows:
+            top:    {row_net: ROW0}
+            home:   {row_net: ROW1}
+            bot:    {row_net: ROW2}
+        middle:
+          key.stagger: stag_middle
+          key.column_net: COL2
+          rows:
+            top:    {row_net: ROW0}
+            home:   {row_net: ROW1}
+            bot:    {row_net: ROW2}
+        index:
+          key.stagger: stag_index
+          key.column_net: COL3
+          rows:
+            top:    {row_net: ROW0}
+            home:   {row_net: ROW1}
+            bot:    {row_net: ROW2}
+        inner:
+          key.stagger: stag_inner
+          key.column_net: COL4
+          rows:
+            top:    {row_net: ROW0}
+            home:   {row_net: ROW1}
+            bot:    {row_net: ROW2}
+    thumbs:
+      anchor:
+        ref: matrix_inner_bot
+        shift: [thumb_x, thumb_y]
+        rotate: 14
+      columns:
+        t0:
+          key.column_net: COL3
+          rows:
+            thumb: {row_net: ROW3}
+        t1:
+          key.stagger: 0
+          key.spread: thumb_step_x
+          key:
+            shift: [0, thumb_step_y]
+            rotate: 7
+          key.column_net: COL4
+          rows:
+            thumb: {row_net: ROW3}
+
+  # Mirror the left half to the right. Distance must clear the half-width
+  # of the left half (~5 cols × 19.05 = ~95mm) plus the inter-half gap.
+  mirror:
+    ref: matrix_inner_bot
+    distance: 100
 
 outlines:
   _keys:
     - what: rectangle
       where: true
       size: [18, 18]
-  main:
+  board:
     - what: outline
       name: _keys
-      expand: 2
+      expand: 3
+      fillet: 2
 
 pcbs:
   keyboard:
     template: kicad8
     outlines:
       main:
-        outline: main
+        outline: board
     footprints:
       switch:
         what: switch_choc_v1_v2
         where: true
         params:
-          from: COL
-          to: ROW
+          from: "{{column_net}}"
+          to: "{{colrow}}"
           reversible: false
           hotswap: true
           solder: false
@@ -60,8 +127,8 @@ pcbs:
         what: diode_tht_sod123
         where: true
         params:
-          from: COL
-          to: NET_X
+          from: "{{colrow}}"
+          to: "{{row_net}}"
           side: B
           reversible: false
           include_tht: false
@@ -73,9 +140,9 @@ pcbs:
         where: true
         params:
           P1: VCC
-          P2: DOUT
+          P2: "led_din_{{name}}"
           P3: GND
-          P4: DIN
+          P4: "led_dout_{{name}}"
           side: B
         adjust:
           shift: [0, 4.93]

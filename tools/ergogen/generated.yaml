@@ -1,0 +1,128 @@
+meta:
+  engine: 4.2.1
+  name: atlas
+  version: 0.1.0
+
+units:
+  kx: 19.05
+  ky: 19.05
+
+points:
+  zones:
+    matrix:
+      anchor:
+        shift: [80, 80]
+      columns:
+        c0:
+          key:
+            shift: [9.525, -52.197]
+            column_net: COL0
+          rows:
+            r0: {row_net: ROW0}
+            r1: {row_net: ROW1}
+            r2: {row_net: ROW2}
+        c1:
+          key:
+            shift: [9.525, -41.148]
+            column_net: COL1
+          rows:
+            r0: {row_net: ROW0}
+            r1: {row_net: ROW1}
+            r2: {row_net: ROW2}
+        c2:
+          key:
+            shift: [9.525, -38.100]
+            column_net: COL2
+          rows:
+            r0: {row_net: ROW0}
+            r1: {row_net: ROW1}
+            r2: {row_net: ROW2}
+        c3:
+          key:
+            shift: [9.525, -41.148]
+            column_net: COL3
+          rows:
+            r0: {row_net: ROW0}
+            r1: {row_net: ROW1}
+            r2: {row_net: ROW2}
+        c4:
+          key:
+            shift: [9.525, -43.053]
+            column_net: COL4
+          rows:
+            r0: {row_net: ROW0}
+            r1: {row_net: ROW1}
+            r2: {row_net: ROW2}
+    thumbs:
+      anchor:
+        ref: matrix_c4_r0
+        shift: [1.410, -20.441]
+        rotate: 14
+      columns:
+        t0:
+          key:
+            column_net: TCOL0
+          rows:
+            thumb: {row_net: TROW0}
+        t1:
+          key:
+            shift: [19.077, -6.015]
+            rotate: 7
+            column_net: TCOL1
+          rows:
+            thumb: {row_net: TROW0}
+  mirror:
+    ref: matrix_c4_r0
+    distance: 180.975
+
+outlines:
+  _keys:
+    - what: rectangle
+      where: true
+      size: [18, 18]
+  board:
+    - what: outline
+      name: _keys
+      expand: 3
+      fillet: 2
+
+pcbs:
+  keyboard:
+    template: kicad8
+    outlines:
+      main:
+        outline: board
+    footprints:
+      switch:
+        what: switch_choc_v1_v2
+        where: true
+        params:
+          from: "{{column_net}}"
+          to: "{{colrow}}"
+          reversible: false
+          hotswap: true
+          solder: false
+          side: F
+      diode:
+        what: diode_tht_sod123
+        where: true
+        params:
+          from: "{{colrow}}"
+          to: "{{row_net}}"
+          side: B
+          reversible: false
+          include_tht: false
+        adjust:
+          shift: [-6, -4]
+          rotate: 90
+      led:
+        what: led_sk6812mini-e
+        where: true
+        params:
+          P1: VCC
+          P2: "led_dout_{{name}}"
+          P3: GND
+          P4: "led_din_{{name}}"
+          side: B
+        adjust:
+          shift: [0, 4.93]

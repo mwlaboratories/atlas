@@ -57,6 +57,46 @@
   .head > div { padding-left: 4px; }
   .head > div:first-child { text-align: right; padding: 0; }
   .actions { display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap; }
+  button#build {
+    background: var(--accent); color: #0a1410; font-weight: 700;
+    padding: 9px 14px; font-size: 13px;
+  }
+  button#build:disabled { background: #4a5a52; color: #0a1410; cursor: progress; }
+  .build-status {
+    margin-top: 10px; font-size: 11px; min-height: 16px; line-height: 1.4;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+  .build-status.ok    { color: var(--accent); }
+  .build-status.err   { color: #ff8b6b; }
+  .build-status.busy  { color: #d4b656; }
+  .render-block {
+    margin-top: 20px; padding-top: 18px; border-top: 1px solid var(--panel-border);
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .render-block h2 { margin: 0; }
+  .render-tabs { display: flex; gap: 4px; align-items: center; margin: 4px 0; }
+  .tab-btn {
+    background: #1f1f1f; color: var(--muted); padding: 5px 12px; border: 1px solid #2a2a2a;
+    border-radius: 3px; font-size: 11px; cursor: pointer; font-weight: 500;
+  }
+  .tab-btn.active { background: var(--accent); color: #0a1410; border-color: var(--accent); }
+  .tab-btn:hover:not(.active) { color: var(--fg); border-color: #444; }
+  .tab-link {
+    margin-left: auto; font-size: 11px; color: var(--muted); text-decoration: none;
+    padding: 5px 8px; border: 1px solid #2a2a2a; border-radius: 3px;
+  }
+  .tab-link:hover { color: var(--fg); border-color: #444; }
+  .render-img {
+    width: 100%; max-width: 100%; height: auto;
+    background: #111; border: 1px solid var(--panel-border); border-radius: 4px;
+    image-rendering: -webkit-optimize-contrast;
+  }
+  .build-log {
+    background: #0a0a0a; color: var(--muted); padding: 10px 12px; border-radius: 3px;
+    font: 11px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace;
+    max-height: 200px; overflow-y: auto; white-space: pre-wrap; word-break: break-word;
+    margin: 0;
+  }
   pre.json {
     background: #0e0e0e; padding: 10px 12px; border-radius: 3px;
     max-height: 22vh; overflow: auto; font-size: 11px; margin: 8px 0 0;
@@ -132,10 +172,12 @@
     <label><span>show trackpoint</span><input id="show-tp" type="checkbox" checked></label>
 
     <div class="actions">
-      <button id="copy">copy KLE</button>
+      <button id="build" title="Generate ergogen YAML, run ergogen → KiCad PCB, render PNG">⚙ build PCB</button>
+      <button class="secondary" id="copy">copy KLE</button>
       <button class="secondary" id="download">download</button>
       <button class="secondary" id="reset">reset (atlas)</button>
     </div>
+    <div id="build-status" class="build-status"></div>
 
     <h2>KLE output</h2>
     <pre class="json" id="json-out"></pre>
@@ -151,6 +193,17 @@
       <span><span class="swatch tp"></span>trackpoint hole</span>
     </div>
     <svg id="svg" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet"></svg>
+
+    <div class="render-block" id="render-block" style="display:none">
+      <h2>generated PCB</h2>
+      <div class="render-tabs">
+        <button class="tab-btn active" data-side="top">top</button>
+        <button class="tab-btn" data-side="bottom">bottom</button>
+        <a class="tab-link" id="yaml-link" href="/api/generated.yaml" target="_blank">view yaml</a>
+      </div>
+      <img id="render-img" class="render-img" alt="rendered PCB">
+      <pre class="build-log" id="build-log"></pre>
+    </div>
   </div>
 </div>
 
@@ -687,6 +740,54 @@ function init() {
   document.getElementById('reset').addEventListener('click', () => {
     applyPreset('atlas');
     document.getElementById('preset').value = 'atlas';
+  });
+
+  // ─── Build PCB ────────────────────────────────────────────────────────
+  // POSTs the current layout state to the Node dev server, which generates
+  // ergogen YAML, runs ergogen → KiCad PCB, and renders top + bottom PNGs.
+  let currentRender = { top: null, bottom: null };
+  const renderBlock = document.getElementById('render-block');
+  const renderImg   = document.getElementById('render-img');
+  const buildLog    = document.getElementById('build-log');
+  const buildStatus = document.getElementById('build-status');
+  const buildBtn    = document.getElementById('build');
+
+  function showSide(side) {
+    if (!currentRender[side]) return;
+    renderImg.src = currentRender[side];
+    document.querySelectorAll('.tab-btn').forEach(b =>
+      b.classList.toggle('active', b.dataset.side === side));
+  }
+  document.querySelectorAll('.tab-btn').forEach(btn =>
+    btn.addEventListener('click', () => showSide(btn.dataset.side)));
+
+  buildBtn.addEventListener('click', async () => {
+    buildBtn.disabled = true;
+    buildStatus.className = 'build-status busy';
+    buildStatus.textContent = '⚙ generating ergogen YAML, running pipeline...';
+    try {
+      const res = await fetch('/api/build', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ state }),
+      });
+      const data = await res.json();
+      if (!data.ok) throw new Error(data.error || 'build failed');
+      currentRender.top    = data.renderTopUrl;
+      currentRender.bottom = data.renderBottomUrl;
+      renderBlock.style.display = 'flex';
+      showSide('top');
+      buildLog.textContent = data.log.join('\n');
+      buildStatus.className = 'build-status ok';
+      buildStatus.textContent = `✓ PCB built (${data.log.length} steps). KiCad file at pcb/kicad/keyboard.kicad_pcb`;
+    } catch (e) {
+      buildStatus.className = 'build-status err';
+      buildStatus.textContent = `✗ ${e.message}`;
+      buildLog.textContent = e.stack || String(e);
+      renderBlock.style.display = 'flex';
+    } finally {
+      buildBtn.disabled = false;
+    }
   });
 
   renderCols();
