@@ -1,0 +1,35 @@
+#+title: Atlas PCB
+
+Source files for the Atlas keyboard PCB.
+
+* Layout
+
+| =keyboard.json=         | Layout source (KLE-style). Drives PCB design tooling. |
+| =keyboard.svg=          | Rendered layout preview.                              |
+| =keyboard-outline.svg=  | PCB edge cuts.                                        |
+| =keyboard-plate.svg=    | Switch plate outline (matches =/keyboard-plate.stl=). |
+| =parts.yaml=            | BOM — LCSC part numbers, disposition.                 |
+| =parts-checklist.org=   | Pre-fab checklist for JLCPCB ordering.                |
+| =kicad/=                | KiCad project — all generated files contained here.   |
+
+* Workflow
+
+1. Edit the layout in =tools/layout/index.html= and export =keyboard.json=.
+2. Open =kicad/keyboard.kicad_pro= in KiCad. The schematic uses one
+   hierarchical "key" sub-sheet instantiated 34 times.
+3. In the PCB editor, run *Tools → External Plugins → kbplacer*, point it
+   at =../keyboard.json= and configure:
+   - Switch footprint: =Switch_Keyboard_Hotswap_Kailh:SW_Hotswap_Kailh_Choc_V1V2_1.00u=
+   - Diode footprint + offset (-6, -4, +90°)
+   - Additional element (LED): =LED_SMD:LED_SK6812MINI-E_3.2x2.8mm_P1.5mm_ReverseMount=, offset (0, 4.93, 0°), side =B.Cu=
+4. Use *Replicate Layout* plugin to copy one routed key's internals to the
+   other 33 sibling sheet instances.
+5. Tag every symbol with its LCSC field from =parts.yaml=.
+6. Run *Fabrication Toolkit* to emit Gerbers + BOM + CPL → upload to JLCPCB.
+
+* Required KiCad plugins (PCM)
+
+- =kbplacer= — placement automation
+- =kiswitch= — Choc/MX keyboard footprint library
+- =Replicate Layout= — propagate one key's route to siblings
+- =Fabrication Toolkit= — JLCPCB-compatible export

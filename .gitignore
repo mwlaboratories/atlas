@@ -21,12 +21,15 @@ _autosave-*.kicad_pcb
 ~*.lck
 *.kicad_prl
 *.bak
+fp-info-cache
+
+# Fabrication-Toolkit output
+/pcb/kicad/production/
+/pcb/kicad/*.zip
 
 # Generated 3D / fab outputs — re-generate via scripts when needed.
-# Vendored 3D models live in **/3dmodels/ subfolders and stay tracked.
-/pcb/atlas/*.step
-/pcb/atlas/*.STEP
-!/pcb/atlas/3dmodels/
+/pcb/kicad/*.step
+/pcb/kicad/*.STEP
 /keyboard-plate.stl
 *.dxf
 *.gbr
