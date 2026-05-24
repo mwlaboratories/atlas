@@ -9,11 +9,10 @@
     kicad
   ];
 
-  scripts.dev.exec = ''
-    cd "''${DEVENV_ROOT}"
-    node tools/server.mjs
-  '';
+  # Long-running services — start with `devenv up`.
+  processes.server.exec = "cd ${"\${DEVENV_ROOT}"} && node tools/server.mjs";
 
+  # One-shot commands — runnable from any subshell once devenv is active.
   scripts.ergogen.exec = ''
     cd "''${DEVENV_ROOT}"
     npx ergogen tools/ergogen -o tools/ergogen/output "$@"
@@ -32,10 +31,10 @@
   enterShell = ''
     echo ""
     echo "  atlas — ergogen pipeline"
-    echo "  dev       start full webtool + ergogen + render server"
-    echo "            open http://localhost:8000, click 'build PCB'"
-    echo "  ergogen   run ergogen once on tools/ergogen/config.yaml"
-    echo "  render    render current pcb/kicad/keyboard.kicad_pcb to PNGs"
+    echo "  devenv up    start webtool + ergogen + render server (foreground)"
+    echo "               open http://localhost:8000, click 'build PCB'"
+    echo "  ergogen      one-shot: run ergogen on tools/ergogen/config.yaml"
+    echo "  render       one-shot: render pcb/kicad/keyboard.kicad_pcb to PNGs"
     echo ""
   '';
 }
