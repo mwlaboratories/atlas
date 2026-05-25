@@ -1,4 +1,9 @@
-# Devenv / direnv
+# Private — the layout/build pipeline + webtool stays out of the public repo.
+# Only the generated PCB artifacts under pcb/ are public-facing.
+tools/
+node_modules/
+
+# per-user devenv state
 .devenv/
 .direnv/
 devenv.local.nix
@@ -11,10 +16,6 @@ CLAUDE.md
 .DS_Store
 *.swp
 *~
-
-# Build / output (placeholders for later)
-build/
-out/
 
 # KiCad cruft (user-local, generated, or temp)
 _autosave-*.kicad_pcb
@@ -35,5 +36,3 @@ fp-info-cache
 *.gbr
 *.drl
 gerbers/
-node_modules/
-package-lock.json

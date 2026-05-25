@@ -28,6 +28,32 @@
     echo "→ tools/renders/atlas-{top,bottom}.png"
   '';
 
+  # Fetch 3D STEP models for components — used by kicad-cli to render a
+  # realistic preview. SMD parts come from JLCPCB/LCSC via easyeda2kicad;
+  # switch body comes from the kiswitch community library. Run once after
+  # cloning the repo.
+  scripts.fetch-3d-models.exec = ''
+    cd "''${DEVENV_ROOT}"
+    if [ ! -x tools/.venv/bin/easyeda2kicad ]; then
+      echo "→ creating venv + installing easyeda2kicad"
+      python3 -m venv tools/.venv
+      tools/.venv/bin/pip install -q easyeda2kicad
+    fi
+    mkdir -p tools/3d-models
+    cd tools/3d-models
+    echo "→ Choc hotswap (C5333465)"
+    ../.venv/bin/easyeda2kicad --lcsc_id C5333465 --3d --output kailh_hotswap --overwrite
+    echo "→ SK6812MINI-E (C5149201)"
+    ../.venv/bin/easyeda2kicad --lcsc_id C5149201 --3d --output sk6812mini-e --overwrite
+    echo "→ 1N4148W SOD-123 (C81598)"
+    ../.venv/bin/easyeda2kicad --lcsc_id C81598 --3d --output diode_sod123 --overwrite
+    echo "→ Choc V1 switch body (kiswitch)"
+    mkdir -p kiswitch.3dshapes
+    curl -sLo kiswitch.3dshapes/SW_Kailh_Choc_V1.stp \
+      "https://raw.githubusercontent.com/kiswitch/kiswitch/main/library/3dmodels/3d-library.3dshapes/SW_Kailh_Choc_V1.stp"
+    echo "done. models in tools/3d-models/"
+  '';
+
   enterShell = ''
     echo ""
     echo "  atlas — ergogen pipeline"
