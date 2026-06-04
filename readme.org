@@ -55,4 +55,6 @@ Thumb keys: | SCROLL | LCLK | LCLK | RCLK |
 
 - [[https://thock.mwlabs.be][thock.mwlabs.be]] — audition Choc switches:
   hear each one with a simulated typist and hot-swap on the fly.
+  Background + vote for the group-buy favourite:
+  [[https://mwlabs.be/lab-journal/introducing-thock/][Introducing Thock]].
 - [[https://mwlabs.be][mwlabs.be]] — mwlabs.
