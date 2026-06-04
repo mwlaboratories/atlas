@@ -8,7 +8,7 @@
 * Atlas
 
 34-key split ergonomic keyboard with trackpoint. Per-half XIAO nRF52840
-Plus, BLE split (no dongle), ZMK firmware.
+Plus, BLE split, ZMK firmware.
 
 ** Status (June 2026)
 
