@@ -17,8 +17,8 @@ Plus, BLE split, ZMK firmware.
 - Next board: ergogen-driven KiCad layout under =pcb/=, 34 keys (5×3
   alphas + 2 thumbs per half), Choc V2 hotswap.
 - ADS1220 strain-gauge trackpoint: firmware bench-proven (HID mouse,
-  radial deadzone, click-to-wake via input-processor-ping). Pinned at
-  =bench/ads1220=. Not yet on a fabricated PCB.
+  radial deadzone, click-to-wake via input-processor-ping) — pinned at
+  =bench/ads1220=. Currently being hand-laid into the PCB.
 
 ** Architecture
 
@@ -41,7 +41,7 @@ Thumb keys: | SCROLL | LCLK | LCLK | RCLK |
 | SK6812MINI-E rev-mount | =C5149201= | Extended                                   |
 | 1N4148W SOD-123 diode  | =C81598=   | Basic                                      |
 | XIAO nRF52840 Plus     | DNP        | Hand-solder; one per half                  |
-| ADS1220 (TSSOP-16)     | =C40103=   | Strain-gauge ADC for trackpoint, deferred  |
+| ADS1220 (TSSOP-16)     | =C40103=   | Strain-gauge ADC for trackpoint, integrating now |
 | Sprintek SK8707-PT     | DNP        | AIO trackpoint (used in current prototype) |
 
 ** Previous work
@@ -53,6 +53,6 @@ Thumb keys: | SCROLL | LCLK | LCLK | RCLK |
 
 ** Links
 
-- [[https://thock.mwlabs.be][thock.mwlabs.be]] — Choc switch range, for
-  picking what goes in the hotswaps.
+- [[https://thock.mwlabs.be][thock.mwlabs.be]] — audition Choc switches:
+  hear each one with a simulated typist and hot-swap on the fly.
 - [[https://mwlabs.be][mwlabs.be]] — mwlabs.
