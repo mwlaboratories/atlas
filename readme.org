@@ -50,3 +50,9 @@ Thumb keys: | SCROLL | LCLK | LCLK | RCLK |
   PCB + hand-wired XIAO breakouts.
 - =bench/ads1220= — ADS1220 strain-gauge ADC firmware, bench-proven,
   not yet boarded.
+
+** Links
+
+- [[https://thock.mwlabs.be][thock.mwlabs.be]] — Choc switch range, for
+  picking what goes in the hotswaps.
+- [[https://mwlabs.be][mwlabs.be]] — mwlabs.
