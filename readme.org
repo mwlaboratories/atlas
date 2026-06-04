@@ -4,8 +4,11 @@ Split ergonomic keyboard, Choc V2 + MX keycaps, 34 keys, BLE wireless. Each
 half has its own XIAO nRF52840 Plus controller. A later branch adds an
 ADS1220 strain-gauge trackpoint between cols 3–4 (atlas's signature).
 
-This branch (=fresh=) is a clean restart. Old history lives on =main= and
-will be replaced once this is ready.
+This branch (=main=) is a clean restart with a disjoint history. The
+previous work is preserved as tags:
+
+- =proto/breakout-v1= — the breakout-board prototype currently in daily use
+- =bench/ads1220= — bench-proven ADS1220 strain-gauge firmware
 
 * Current direction (2026-05-24)
 
@@ -165,8 +168,7 @@ here.
 
 1. Read this file + =pcb/readme.org=.
 2. Read =~/.claude/projects/-home-gomar-Documents-repos-atlas/memory/MEMORY.md=
-   for cross-session memory (especially =project_led_diode_mirror_bug.md= and
-   =project_eda_switch_to_easyeda.md=).
+   for cross-session memory (especially =project_led_diode_mirror_bug.md=).
 3. =devenv up= → http://localhost:8000 → click *build PCB* to see the current
    pipeline output before touching anything.
 4. Static reference config is =tools/ergogen/config.yaml=. The webtool-driven
