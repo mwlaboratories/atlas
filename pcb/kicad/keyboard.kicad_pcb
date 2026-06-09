@@ -571,6 +571,17 @@
 			(uuid "3c9fdce7-d31e-4888-b41c-cd754b63dd74")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/diode_sod123.3dshapes/SOD-123F_L2.7-W1.6-LS3.8-RD.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 180)
+			)
+		)
 	)
 	(footprint "ceoloide:switch_choc_v1_v2"
 		(layer "B.Cu")
@@ -812,6 +823,28 @@
 			(uuid "3f40fcda-34c4-44c8-bdbe-a4c716447b48")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/kiswitch.3dshapes/SW_Kailh_Choc_V2.step"
+			(offset
+				(xyz 0 0 -1.6)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 180 0 180)
+			)
+		)
+		(model "${KIPRJMOD}/../../tools/3d-models/kailh_hotswap.3dshapes/CONN-SMD_HOTPLUGPAKAGE__C9900010116.step"
+			(offset
+				(xyz 2.5 -4.85 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 180)
+			)
+		)
 	)
 	(footprint "ceoloide:diode_tht_sod123"
 		(layer "B.Cu")
@@ -947,6 +980,17 @@
 			(uuid "64663dab-c831-4c85-b142-ad315363666e")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/diode_sod123.3dshapes/SOD-123F_L2.7-W1.6-LS3.8-RD.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 180)
+			)
+		)
 	)
 	(footprint "ceoloide:switch_choc_v1_v2"
 		(layer "B.Cu")
@@ -1188,6 +1232,28 @@
 			(uuid "793cdb9d-aead-456b-920d-49660178b123")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/kiswitch.3dshapes/SW_Kailh_Choc_V2.step"
+			(offset
+				(xyz 0 0 -1.6)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 180 0 180)
+			)
+		)
+		(model "${KIPRJMOD}/../../tools/3d-models/kailh_hotswap.3dshapes/CONN-SMD_HOTPLUGPAKAGE__C9900010116.step"
+			(offset
+				(xyz 2.5 -4.85 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 180)
+			)
+		)
 	)
 	(footprint "ceoloide:led_SK6812mini-e (per-keysingle-side)"
 		(layer "B.Cu")
@@ -1513,6 +1579,17 @@
 			(uuid "4259f7fc-f0fc-48e8-8726-240dd67692c3")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/sk6812mini-e.3dshapes/LED-SMD_4P-L3.2-W2.8-LS5.9_SK6812MINI-E.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
 	)
 	(footprint "ceoloide:switch_choc_v1_v2"
 		(layer "B.Cu")
@@ -1754,6 +1831,28 @@
 			(uuid "9377769f-b00b-4786-9e3c-1aa7e120e44d")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/kiswitch.3dshapes/SW_Kailh_Choc_V2.step"
+			(offset
+				(xyz 0 0 -1.6)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 180 0 180)
+			)
+		)
+		(model "${KIPRJMOD}/../../tools/3d-models/kailh_hotswap.3dshapes/CONN-SMD_HOTPLUGPAKAGE__C9900010116.step"
+			(offset
+				(xyz 2.5 -4.85 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 180)
+			)
+		)
 	)
 	(footprint "ceoloide:diode_tht_sod123"
 		(layer "B.Cu")
@@ -1889,6 +1988,17 @@
 			(uuid "bebbbe32-6e7a-4938-b8c3-d66208356690")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/diode_sod123.3dshapes/SOD-123F_L2.7-W1.6-LS3.8-RD.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 180)
+			)
+		)
 	)
 	(footprint "ceoloide:led_SK6812mini-e (per-keysingle-side)"
 		(layer "B.Cu")
@@ -2214,6 +2324,17 @@
 			(uuid "d0b05204-ee3d-40a0-8264-e39aa74bc5ab")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/sk6812mini-e.3dshapes/LED-SMD_4P-L3.2-W2.8-LS5.9_SK6812MINI-E.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
 	)
 	(footprint "ceoloide:switch_choc_v1_v2"
 		(layer "B.Cu")
@@ -2455,6 +2576,28 @@
 			(uuid "32da9616-a0ca-41c2-972f-dc69abcea495")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/kiswitch.3dshapes/SW_Kailh_Choc_V2.step"
+			(offset
+				(xyz 0 0 -1.6)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 180 0 180)
+			)
+		)
+		(model "${KIPRJMOD}/../../tools/3d-models/kailh_hotswap.3dshapes/CONN-SMD_HOTPLUGPAKAGE__C9900010116.step"
+			(offset
+				(xyz 2.5 -4.85 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 180)
+			)
+		)
 	)
 	(footprint "ceoloide:led_SK6812mini-e (per-keysingle-side)"
 		(layer "B.Cu")
@@ -2781,6 +2924,17 @@
 			(uuid "a9df7c7b-0b77-4675-9086-e2959d784353")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/sk6812mini-e.3dshapes/LED-SMD_4P-L3.2-W2.8-LS5.9_SK6812MINI-E.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
 	)
 	(footprint "ceoloide:diode_tht_sod123"
 		(layer "B.Cu")
@@ -2916,6 +3070,17 @@
 			(uuid "329e0bff-7602-45ab-a255-8b425a7d6c6b")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/diode_sod123.3dshapes/SOD-123F_L2.7-W1.6-LS3.8-RD.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 180)
+			)
+		)
 	)
 	(footprint "ceoloide:switch_choc_v1_v2"
 		(layer "B.Cu")
@@ -3157,6 +3322,28 @@
 			(uuid "c7498df2-2029-41b5-96d8-d9fc96d277fb")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/kiswitch.3dshapes/SW_Kailh_Choc_V2.step"
+			(offset
+				(xyz 0 0 -1.6)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 180 0 180)
+			)
+		)
+		(model "${KIPRJMOD}/../../tools/3d-models/kailh_hotswap.3dshapes/CONN-SMD_HOTPLUGPAKAGE__C9900010116.step"
+			(offset
+				(xyz 2.5 -4.85 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 180)
+			)
+		)
 	)
 	(footprint "ceoloide:diode_tht_sod123"
 		(layer "B.Cu")
@@ -3292,6 +3479,17 @@
 			(uuid "5ec223ef-1fc8-437c-9ba0-0691708f6601")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/diode_sod123.3dshapes/SOD-123F_L2.7-W1.6-LS3.8-RD.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 180)
+			)
+		)
 	)
 	(footprint "ceoloide:switch_choc_v1_v2"
 		(layer "B.Cu")
@@ -3533,6 +3731,28 @@
 			(uuid "b51fac71-d94b-4266-98ad-c2e4036e4ca5")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/kiswitch.3dshapes/SW_Kailh_Choc_V2.step"
+			(offset
+				(xyz 0 0 -1.6)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 180 0 180)
+			)
+		)
+		(model "${KIPRJMOD}/../../tools/3d-models/kailh_hotswap.3dshapes/CONN-SMD_HOTPLUGPAKAGE__C9900010116.step"
+			(offset
+				(xyz 2.5 -4.85 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 180)
+			)
+		)
 	)
 	(footprint "ceoloide:led_SK6812mini-e (per-keysingle-side)"
 		(layer "B.Cu")
@@ -3859,6 +4079,17 @@
 			(uuid "8adfd21b-7f02-41cb-ac13-9ee724defd2d")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/sk6812mini-e.3dshapes/LED-SMD_4P-L3.2-W2.8-LS5.9_SK6812MINI-E.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
 	)
 	(footprint "ceoloide:switch_choc_v1_v2"
 		(layer "B.Cu")
@@ -4100,6 +4331,28 @@
 			(uuid "7e34e8fd-da8f-40bb-9d28-c74eea5bce13")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/kiswitch.3dshapes/SW_Kailh_Choc_V2.step"
+			(offset
+				(xyz 0 0 -1.6)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 180 0 180)
+			)
+		)
+		(model "${KIPRJMOD}/../../tools/3d-models/kailh_hotswap.3dshapes/CONN-SMD_HOTPLUGPAKAGE__C9900010116.step"
+			(offset
+				(xyz 2.5 -4.85 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 180)
+			)
+		)
 	)
 	(footprint "ceoloide:diode_tht_sod123"
 		(layer "B.Cu")
@@ -4235,6 +4488,17 @@
 			(uuid "4b425905-8340-418a-865e-bc4511c16f4d")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/diode_sod123.3dshapes/SOD-123F_L2.7-W1.6-LS3.8-RD.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 180)
+			)
+		)
 	)
 	(footprint "ceoloide:led_SK6812mini-e (per-keysingle-side)"
 		(layer "B.Cu")
@@ -4560,6 +4824,17 @@
 			(uuid "f8a51ab3-fa4a-4abd-ad60-89a2d7637c1f")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/sk6812mini-e.3dshapes/LED-SMD_4P-L3.2-W2.8-LS5.9_SK6812MINI-E.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
 	)
 	(footprint "ceoloide:switch_choc_v1_v2"
 		(layer "B.Cu")
@@ -4801,6 +5076,28 @@
 			(uuid "e00ebfc5-75a6-4943-a039-80a1414657e3")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/kiswitch.3dshapes/SW_Kailh_Choc_V2.step"
+			(offset
+				(xyz 0 0 -1.6)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 180 0 180)
+			)
+		)
+		(model "${KIPRJMOD}/../../tools/3d-models/kailh_hotswap.3dshapes/CONN-SMD_HOTPLUGPAKAGE__C9900010116.step"
+			(offset
+				(xyz 2.5 -4.85 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 180)
+			)
+		)
 	)
 	(footprint "ceoloide:led_SK6812mini-e (per-keysingle-side)"
 		(layer "B.Cu")
@@ -5126,6 +5423,17 @@
 			(uuid "df4d9fbf-c4e2-41a8-8061-c290ee502ee5")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/sk6812mini-e.3dshapes/LED-SMD_4P-L3.2-W2.8-LS5.9_SK6812MINI-E.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
 	)
 	(footprint "ceoloide:switch_choc_v1_v2"
 		(layer "B.Cu")
@@ -5367,6 +5675,28 @@
 			(uuid "38aa6b65-1f51-452e-94a5-20eb320e2b44")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/kiswitch.3dshapes/SW_Kailh_Choc_V2.step"
+			(offset
+				(xyz 0 0 -1.6)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 180 0 180)
+			)
+		)
+		(model "${KIPRJMOD}/../../tools/3d-models/kailh_hotswap.3dshapes/CONN-SMD_HOTPLUGPAKAGE__C9900010116.step"
+			(offset
+				(xyz 2.5 -4.85 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 180)
+			)
+		)
 	)
 	(footprint "ceoloide:diode_tht_sod123"
 		(layer "B.Cu")
@@ -5502,6 +5832,17 @@
 			(uuid "795d09db-f95d-43ab-9992-4a18d3c10fad")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/diode_sod123.3dshapes/SOD-123F_L2.7-W1.6-LS3.8-RD.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 180)
+			)
+		)
 	)
 	(footprint "ceoloide:led_SK6812mini-e (per-keysingle-side)"
 		(layer "B.Cu")
@@ -5827,6 +6168,17 @@
 			(uuid "4dff8cd4-73f3-4b74-9d1b-4dd2ed052feb")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/sk6812mini-e.3dshapes/LED-SMD_4P-L3.2-W2.8-LS5.9_SK6812MINI-E.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
 	)
 	(footprint "ceoloide:led_SK6812mini-e (per-keysingle-side)"
 		(layer "B.Cu")
@@ -6152,6 +6504,17 @@
 			(uuid "4b4d2fdc-39c3-45cd-9cf0-b663f35a13f4")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/sk6812mini-e.3dshapes/LED-SMD_4P-L3.2-W2.8-LS5.9_SK6812MINI-E.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
 	)
 	(footprint "ceoloide:led_SK6812mini-e (per-keysingle-side)"
 		(layer "B.Cu")
@@ -6477,6 +6840,17 @@
 			(uuid "fb244b40-548c-4b4c-b093-fc0b4a72161e")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/sk6812mini-e.3dshapes/LED-SMD_4P-L3.2-W2.8-LS5.9_SK6812MINI-E.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
 	)
 	(footprint "ceoloide:diode_tht_sod123"
 		(layer "B.Cu")
@@ -6612,6 +6986,17 @@
 			(uuid "195eed79-964b-4155-b1e5-dcd069600f0e")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/diode_sod123.3dshapes/SOD-123F_L2.7-W1.6-LS3.8-RD.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 180)
+			)
+		)
 	)
 	(footprint "ceoloide:switch_choc_v1_v2"
 		(layer "B.Cu")
@@ -6853,6 +7238,28 @@
 			(uuid "370a06b3-4f5c-4a28-bec5-3c003a90b0cc")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/kiswitch.3dshapes/SW_Kailh_Choc_V2.step"
+			(offset
+				(xyz 0 0 -1.6)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 180 0 180)
+			)
+		)
+		(model "${KIPRJMOD}/../../tools/3d-models/kailh_hotswap.3dshapes/CONN-SMD_HOTPLUGPAKAGE__C9900010116.step"
+			(offset
+				(xyz 2.5 -4.85 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 180)
+			)
+		)
 	)
 	(footprint "ceoloide:diode_tht_sod123"
 		(layer "B.Cu")
@@ -6988,6 +7395,17 @@
 			(uuid "d9be3493-0048-49ca-b402-20b5513742f5")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/diode_sod123.3dshapes/SOD-123F_L2.7-W1.6-LS3.8-RD.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 180)
+			)
+		)
 	)
 	(footprint "ceoloide:led_SK6812mini-e (per-keysingle-side)"
 		(layer "B.Cu")
@@ -7313,6 +7731,17 @@
 			(uuid "0e96c0ed-132b-4de4-a920-73111e8484df")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/sk6812mini-e.3dshapes/LED-SMD_4P-L3.2-W2.8-LS5.9_SK6812MINI-E.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
 	)
 	(footprint "ceoloide:led_SK6812mini-e (per-keysingle-side)"
 		(layer "B.Cu")
@@ -7638,6 +8067,17 @@
 			(uuid "9647816b-1624-44df-a0b4-7d68f1493946")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/sk6812mini-e.3dshapes/LED-SMD_4P-L3.2-W2.8-LS5.9_SK6812MINI-E.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
 	)
 	(footprint "ceoloide:led_SK6812mini-e (per-keysingle-side)"
 		(layer "B.Cu")
@@ -7963,6 +8403,17 @@
 			(uuid "8147cf94-5869-4448-8479-02de8b2f3da0")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/sk6812mini-e.3dshapes/LED-SMD_4P-L3.2-W2.8-LS5.9_SK6812MINI-E.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
 	)
 	(footprint "ceoloide:switch_choc_v1_v2"
 		(layer "B.Cu")
@@ -8204,6 +8655,28 @@
 			(uuid "635047b2-aab3-4f1b-bef6-c1bbbe2af9cb")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/kiswitch.3dshapes/SW_Kailh_Choc_V2.step"
+			(offset
+				(xyz 0 0 -1.6)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 180 0 180)
+			)
+		)
+		(model "${KIPRJMOD}/../../tools/3d-models/kailh_hotswap.3dshapes/CONN-SMD_HOTPLUGPAKAGE__C9900010116.step"
+			(offset
+				(xyz 2.5 -4.85 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 180)
+			)
+		)
 	)
 	(footprint "ceoloide:led_SK6812mini-e (per-keysingle-side)"
 		(layer "B.Cu")
@@ -8529,6 +9002,17 @@
 			(uuid "65fb95f7-cc15-41c1-a2c4-906a8a3d6460")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/sk6812mini-e.3dshapes/LED-SMD_4P-L3.2-W2.8-LS5.9_SK6812MINI-E.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
 	)
 	(footprint "ceoloide:diode_tht_sod123"
 		(layer "B.Cu")
@@ -8664,6 +9148,17 @@
 			(uuid "0cacf1d1-1455-4b61-9d24-b8d4f041da08")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/diode_sod123.3dshapes/SOD-123F_L2.7-W1.6-LS3.8-RD.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 180)
+			)
+		)
 	)
 	(footprint "ceoloide:diode_tht_sod123"
 		(layer "B.Cu")
@@ -8799,6 +9294,17 @@
 			(uuid "94e9118f-7949-4d1a-93c7-62a37aa8c842")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/diode_sod123.3dshapes/SOD-123F_L2.7-W1.6-LS3.8-RD.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 180)
+			)
+		)
 	)
 	(footprint "ceoloide:diode_tht_sod123"
 		(layer "B.Cu")
@@ -8934,6 +9440,17 @@
 			(uuid "e72051e0-7be7-4a34-a6bf-79e8debe260e")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/diode_sod123.3dshapes/SOD-123F_L2.7-W1.6-LS3.8-RD.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 180)
+			)
+		)
 	)
 	(footprint "ceoloide:led_SK6812mini-e (per-keysingle-side)"
 		(layer "B.Cu")
@@ -9259,6 +9776,17 @@
 			(uuid "d6a4fb01-7b8f-4641-b4f2-f51d19e96548")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/sk6812mini-e.3dshapes/LED-SMD_4P-L3.2-W2.8-LS5.9_SK6812MINI-E.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
 	)
 	(footprint "ceoloide:switch_choc_v1_v2"
 		(layer "B.Cu")
@@ -9500,6 +10028,28 @@
 			(uuid "47fa1ebe-f4e8-40a1-ae0c-db5319ea5165")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/kiswitch.3dshapes/SW_Kailh_Choc_V2.step"
+			(offset
+				(xyz 0 0 -1.6)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 180 0 180)
+			)
+		)
+		(model "${KIPRJMOD}/../../tools/3d-models/kailh_hotswap.3dshapes/CONN-SMD_HOTPLUGPAKAGE__C9900010116.step"
+			(offset
+				(xyz 2.5 -4.85 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 180)
+			)
+		)
 	)
 	(footprint "ceoloide:diode_tht_sod123"
 		(layer "B.Cu")
@@ -9635,6 +10185,17 @@
 			(uuid "06386e2f-daf2-4503-b7d8-6ac58e493c67")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/diode_sod123.3dshapes/SOD-123F_L2.7-W1.6-LS3.8-RD.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 180)
+			)
+		)
 	)
 	(footprint "ceoloide:switch_choc_v1_v2"
 		(layer "B.Cu")
@@ -9876,6 +10437,28 @@
 			(uuid "defcb7e5-49d8-45d1-a2dc-afbf32e27520")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/kiswitch.3dshapes/SW_Kailh_Choc_V2.step"
+			(offset
+				(xyz 0 0 -1.6)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 180 0 180)
+			)
+		)
+		(model "${KIPRJMOD}/../../tools/3d-models/kailh_hotswap.3dshapes/CONN-SMD_HOTPLUGPAKAGE__C9900010116.step"
+			(offset
+				(xyz 2.5 -4.85 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 180)
+			)
+		)
 	)
 	(footprint "ceoloide:led_SK6812mini-e (per-keysingle-side)"
 		(layer "B.Cu")
@@ -10201,6 +10784,17 @@
 			(uuid "1eabbca5-299f-485c-bf1f-573af328ab10")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/sk6812mini-e.3dshapes/LED-SMD_4P-L3.2-W2.8-LS5.9_SK6812MINI-E.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
 	)
 	(footprint "ceoloide:led_SK6812mini-e (per-keysingle-side)"
 		(layer "B.Cu")
@@ -10526,6 +11120,17 @@
 			(uuid "8791396c-3e69-4bd1-8554-e14ff5f1889d")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/sk6812mini-e.3dshapes/LED-SMD_4P-L3.2-W2.8-LS5.9_SK6812MINI-E.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
 	)
 	(footprint "ceoloide:switch_choc_v1_v2"
 		(layer "B.Cu")
@@ -10767,6 +11372,28 @@
 			(uuid "eb413b98-09d3-40c2-938e-e0baaa427dac")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/kiswitch.3dshapes/SW_Kailh_Choc_V2.step"
+			(offset
+				(xyz 0 0 -1.6)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 180 0 180)
+			)
+		)
+		(model "${KIPRJMOD}/../../tools/3d-models/kailh_hotswap.3dshapes/CONN-SMD_HOTPLUGPAKAGE__C9900010116.step"
+			(offset
+				(xyz 2.5 -4.85 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 180)
+			)
+		)
 	)
 	(footprint "ceoloide:switch_choc_v1_v2"
 		(layer "B.Cu")
@@ -11008,6 +11635,28 @@
 			(uuid "f0694d77-e5ef-4259-a89a-a4a8362d3125")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/kiswitch.3dshapes/SW_Kailh_Choc_V2.step"
+			(offset
+				(xyz 0 0 -1.6)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 180 0 180)
+			)
+		)
+		(model "${KIPRJMOD}/../../tools/3d-models/kailh_hotswap.3dshapes/CONN-SMD_HOTPLUGPAKAGE__C9900010116.step"
+			(offset
+				(xyz 2.5 -4.85 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 180)
+			)
+		)
 	)
 	(footprint "atlas:mcu_xiao_ble_plus"
 		(layer "B.Cu")
@@ -11517,6 +12166,28 @@
 			(uuid "c4099d9e-77fa-43b3-ad0c-5c3b6d1f4f57")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/kiswitch.3dshapes/SW_Kailh_Choc_V2.step"
+			(offset
+				(xyz 0 0 -1.6)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 180 0 180)
+			)
+		)
+		(model "${KIPRJMOD}/../../tools/3d-models/kailh_hotswap.3dshapes/CONN-SMD_HOTPLUGPAKAGE__C9900010116.step"
+			(offset
+				(xyz 2.5 -4.85 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 180)
+			)
+		)
 	)
 	(footprint "ceoloide:led_SK6812mini-e (per-keysingle-side)"
 		(layer "B.Cu")
@@ -11842,6 +12513,17 @@
 			(uuid "f79425eb-f899-42e2-ac00-a6bee12f65fa")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/sk6812mini-e.3dshapes/LED-SMD_4P-L3.2-W2.8-LS5.9_SK6812MINI-E.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
 	)
 	(footprint "ceoloide:switch_choc_v1_v2"
 		(layer "B.Cu")
@@ -12083,6 +12765,28 @@
 			(uuid "c1a1b56a-588a-46b6-86e9-ae75fb2cda29")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/kiswitch.3dshapes/SW_Kailh_Choc_V2.step"
+			(offset
+				(xyz 0 0 -1.6)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 180 0 180)
+			)
+		)
+		(model "${KIPRJMOD}/../../tools/3d-models/kailh_hotswap.3dshapes/CONN-SMD_HOTPLUGPAKAGE__C9900010116.step"
+			(offset
+				(xyz 2.5 -4.85 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 180)
+			)
+		)
 	)
 	(footprint "ceoloide:diode_tht_sod123"
 		(layer "B.Cu")
@@ -12218,6 +12922,17 @@
 			(uuid "3045605e-2393-4870-8bc4-68158a27911a")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/diode_sod123.3dshapes/SOD-123F_L2.7-W1.6-LS3.8-RD.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 180)
+			)
+		)
 	)
 	(footprint "ceoloide:led_SK6812mini-e (per-keysingle-side)"
 		(layer "B.Cu")
@@ -12543,6 +13258,17 @@
 			(uuid "0eefbec4-e1c0-40aa-a958-8a8da37a9153")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/sk6812mini-e.3dshapes/LED-SMD_4P-L3.2-W2.8-LS5.9_SK6812MINI-E.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
 	)
 	(footprint "ceoloide:diode_tht_sod123"
 		(layer "B.Cu")
@@ -12678,6 +13404,17 @@
 			(uuid "00061949-bb67-44b1-a8f2-6e7aa1348d61")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/diode_sod123.3dshapes/SOD-123F_L2.7-W1.6-LS3.8-RD.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 180)
+			)
+		)
 	)
 	(footprint "ceoloide:led_SK6812mini-e (per-keysingle-side)"
 		(layer "B.Cu")
@@ -13003,6 +13740,17 @@
 			(uuid "e509ce91-16ad-42a1-b851-91498ed211dd")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/sk6812mini-e.3dshapes/LED-SMD_4P-L3.2-W2.8-LS5.9_SK6812MINI-E.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
 	)
 	(footprint "ceoloide:switch_choc_v1_v2"
 		(layer "B.Cu")
@@ -13244,6 +13992,28 @@
 			(uuid "8583dc2c-f628-4a43-93aa-e311d5524826")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/kiswitch.3dshapes/SW_Kailh_Choc_V2.step"
+			(offset
+				(xyz 0 0 -1.6)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 180 0 180)
+			)
+		)
+		(model "${KIPRJMOD}/../../tools/3d-models/kailh_hotswap.3dshapes/CONN-SMD_HOTPLUGPAKAGE__C9900010116.step"
+			(offset
+				(xyz 2.5 -4.85 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 180)
+			)
+		)
 	)
 	(footprint "ceoloide:switch_choc_v1_v2"
 		(layer "B.Cu")
@@ -13485,6 +14255,28 @@
 			(uuid "8577a9a4-add7-4c9d-ac65-853ea72eb26b")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/kiswitch.3dshapes/SW_Kailh_Choc_V2.step"
+			(offset
+				(xyz 0 0 -1.6)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 180 0 180)
+			)
+		)
+		(model "${KIPRJMOD}/../../tools/3d-models/kailh_hotswap.3dshapes/CONN-SMD_HOTPLUGPAKAGE__C9900010116.step"
+			(offset
+				(xyz 2.5 -4.85 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 180)
+			)
+		)
 	)
 	(footprint "ceoloide:led_SK6812mini-e (per-keysingle-side)"
 		(layer "B.Cu")
@@ -13810,6 +14602,17 @@
 			(uuid "435bafda-7034-4bb7-a6ad-6b4865d5db65")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/sk6812mini-e.3dshapes/LED-SMD_4P-L3.2-W2.8-LS5.9_SK6812MINI-E.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
 	)
 	(footprint "ceoloide:switch_choc_v1_v2"
 		(layer "B.Cu")
@@ -14051,6 +14854,28 @@
 			(uuid "ef07f41a-7dc2-4973-b7d2-a6fc546235fa")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/kiswitch.3dshapes/SW_Kailh_Choc_V2.step"
+			(offset
+				(xyz 0 0 -1.6)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 180 0 180)
+			)
+		)
+		(model "${KIPRJMOD}/../../tools/3d-models/kailh_hotswap.3dshapes/CONN-SMD_HOTPLUGPAKAGE__C9900010116.step"
+			(offset
+				(xyz 2.5 -4.85 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 180)
+			)
+		)
 	)
 	(footprint "ceoloide:switch_choc_v1_v2"
 		(layer "B.Cu")
@@ -14292,6 +15117,28 @@
 			(uuid "838f2be1-0723-41c3-b1db-88d5771260f9")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/kiswitch.3dshapes/SW_Kailh_Choc_V2.step"
+			(offset
+				(xyz 0 0 -1.6)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 180 0 180)
+			)
+		)
+		(model "${KIPRJMOD}/../../tools/3d-models/kailh_hotswap.3dshapes/CONN-SMD_HOTPLUGPAKAGE__C9900010116.step"
+			(offset
+				(xyz 2.5 -4.85 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 180)
+			)
+		)
 	)
 	(footprint "ceoloide:led_SK6812mini-e (per-keysingle-side)"
 		(layer "B.Cu")
@@ -14617,6 +15464,17 @@
 			(uuid "ab975769-f521-451c-a689-42b3953f32ce")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/sk6812mini-e.3dshapes/LED-SMD_4P-L3.2-W2.8-LS5.9_SK6812MINI-E.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
 	)
 	(footprint "ceoloide:diode_tht_sod123"
 		(layer "B.Cu")
@@ -14752,6 +15610,17 @@
 			(uuid "436596eb-222f-49bb-94cf-c6ac3bf8619c")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/diode_sod123.3dshapes/SOD-123F_L2.7-W1.6-LS3.8-RD.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 180)
+			)
+		)
 	)
 	(footprint "ceoloide:switch_choc_v1_v2"
 		(layer "B.Cu")
@@ -14993,6 +15862,28 @@
 			(uuid "a6953693-c155-45be-aa00-7e31e20a8f50")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/kiswitch.3dshapes/SW_Kailh_Choc_V2.step"
+			(offset
+				(xyz 0 0 -1.6)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 180 0 180)
+			)
+		)
+		(model "${KIPRJMOD}/../../tools/3d-models/kailh_hotswap.3dshapes/CONN-SMD_HOTPLUGPAKAGE__C9900010116.step"
+			(offset
+				(xyz 2.5 -4.85 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 180)
+			)
+		)
 	)
 	(footprint "ceoloide:diode_tht_sod123"
 		(layer "B.Cu")
@@ -15128,6 +16019,17 @@
 			(uuid "fb81fbb8-0c57-48b1-9cd3-b7ae410d53f8")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/diode_sod123.3dshapes/SOD-123F_L2.7-W1.6-LS3.8-RD.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 180)
+			)
+		)
 	)
 	(footprint "ceoloide:diode_tht_sod123"
 		(layer "B.Cu")
@@ -15263,6 +16165,17 @@
 			(uuid "c4f569b1-f772-4ee3-af01-aa6757cc9f53")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/diode_sod123.3dshapes/SOD-123F_L2.7-W1.6-LS3.8-RD.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 180)
+			)
+		)
 	)
 	(footprint "ceoloide:led_SK6812mini-e (per-keysingle-side)"
 		(layer "B.Cu")
@@ -15588,6 +16501,17 @@
 			(uuid "79e38472-7a74-4259-88ed-7d8eeb39c17e")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/sk6812mini-e.3dshapes/LED-SMD_4P-L3.2-W2.8-LS5.9_SK6812MINI-E.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
 	)
 	(footprint "ceoloide:diode_tht_sod123"
 		(layer "B.Cu")
@@ -15723,6 +16647,17 @@
 			(uuid "9ab86ed5-1a3f-4412-a4dc-6e8489b6549e")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/diode_sod123.3dshapes/SOD-123F_L2.7-W1.6-LS3.8-RD.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 180)
+			)
+		)
 	)
 	(footprint "ceoloide:switch_choc_v1_v2"
 		(layer "B.Cu")
@@ -15964,6 +16899,28 @@
 			(uuid "6d7b88ae-d81b-4af6-9b6e-7268be0ee4df")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/kiswitch.3dshapes/SW_Kailh_Choc_V2.step"
+			(offset
+				(xyz 0 0 -1.6)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 180 0 180)
+			)
+		)
+		(model "${KIPRJMOD}/../../tools/3d-models/kailh_hotswap.3dshapes/CONN-SMD_HOTPLUGPAKAGE__C9900010116.step"
+			(offset
+				(xyz 2.5 -4.85 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 180)
+			)
+		)
 	)
 	(footprint "ceoloide:led_SK6812mini-e (per-keysingle-side)"
 		(layer "B.Cu")
@@ -16289,6 +17246,17 @@
 			(uuid "6fd6fe84-4f84-45b0-8c14-8c9997be36fc")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/sk6812mini-e.3dshapes/LED-SMD_4P-L3.2-W2.8-LS5.9_SK6812MINI-E.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
 	)
 	(footprint "ceoloide:led_SK6812mini-e (per-keysingle-side)"
 		(layer "B.Cu")
@@ -16614,6 +17582,17 @@
 			(uuid "17dc6903-5866-4bde-a2c2-2be32b1ef3b1")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/sk6812mini-e.3dshapes/LED-SMD_4P-L3.2-W2.8-LS5.9_SK6812MINI-E.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
 	)
 	(footprint "ceoloide:diode_tht_sod123"
 		(layer "B.Cu")
@@ -16749,6 +17728,17 @@
 			(uuid "593a2134-b73a-4aa5-b124-515f4fdf8fc3")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/diode_sod123.3dshapes/SOD-123F_L2.7-W1.6-LS3.8-RD.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 180)
+			)
+		)
 	)
 	(footprint "ceoloide:switch_choc_v1_v2"
 		(layer "B.Cu")
@@ -16990,6 +17980,28 @@
 			(uuid "3730c0b8-2793-452d-9c7a-beddb2fa04bd")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/kiswitch.3dshapes/SW_Kailh_Choc_V2.step"
+			(offset
+				(xyz 0 0 -1.6)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 180 0 180)
+			)
+		)
+		(model "${KIPRJMOD}/../../tools/3d-models/kailh_hotswap.3dshapes/CONN-SMD_HOTPLUGPAKAGE__C9900010116.step"
+			(offset
+				(xyz 2.5 -4.85 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 180)
+			)
+		)
 	)
 	(footprint "ceoloide:switch_choc_v1_v2"
 		(layer "B.Cu")
@@ -17231,6 +18243,28 @@
 			(uuid "70fa71b7-44bd-4690-8ce5-ec531738d573")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/kiswitch.3dshapes/SW_Kailh_Choc_V2.step"
+			(offset
+				(xyz 0 0 -1.6)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 180 0 180)
+			)
+		)
+		(model "${KIPRJMOD}/../../tools/3d-models/kailh_hotswap.3dshapes/CONN-SMD_HOTPLUGPAKAGE__C9900010116.step"
+			(offset
+				(xyz 2.5 -4.85 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 180)
+			)
+		)
 	)
 	(footprint "ceoloide:diode_tht_sod123"
 		(layer "B.Cu")
@@ -17366,6 +18400,17 @@
 			(uuid "5e57c71b-b541-46bb-b0c0-d517e43a2710")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/diode_sod123.3dshapes/SOD-123F_L2.7-W1.6-LS3.8-RD.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 180)
+			)
+		)
 	)
 	(footprint "ceoloide:switch_choc_v1_v2"
 		(layer "B.Cu")
@@ -17607,6 +18652,28 @@
 			(uuid "2d3c5b3e-4ab4-4f9b-9195-727bbb9c3367")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/kiswitch.3dshapes/SW_Kailh_Choc_V2.step"
+			(offset
+				(xyz 0 0 -1.6)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 180 0 180)
+			)
+		)
+		(model "${KIPRJMOD}/../../tools/3d-models/kailh_hotswap.3dshapes/CONN-SMD_HOTPLUGPAKAGE__C9900010116.step"
+			(offset
+				(xyz 2.5 -4.85 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 180)
+			)
+		)
 	)
 	(footprint "ceoloide:switch_choc_v1_v2"
 		(layer "B.Cu")
@@ -17848,6 +18915,28 @@
 			(uuid "88e84dfc-545e-409b-b852-5f730ce7ea61")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/kiswitch.3dshapes/SW_Kailh_Choc_V2.step"
+			(offset
+				(xyz 0 0 -1.6)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 180 0 180)
+			)
+		)
+		(model "${KIPRJMOD}/../../tools/3d-models/kailh_hotswap.3dshapes/CONN-SMD_HOTPLUGPAKAGE__C9900010116.step"
+			(offset
+				(xyz 2.5 -4.85 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 180)
+			)
+		)
 	)
 	(footprint "ceoloide:diode_tht_sod123"
 		(layer "B.Cu")
@@ -17983,6 +19072,17 @@
 			(uuid "f90e762c-2e14-4111-ae6a-226b90bfacd4")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/diode_sod123.3dshapes/SOD-123F_L2.7-W1.6-LS3.8-RD.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 180)
+			)
+		)
 	)
 	(footprint "ceoloide:diode_tht_sod123"
 		(layer "B.Cu")
@@ -18118,6 +19218,17 @@
 			(uuid "907c0019-3dfc-4de4-ace0-cda273ce86b9")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/diode_sod123.3dshapes/SOD-123F_L2.7-W1.6-LS3.8-RD.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 180)
+			)
+		)
 	)
 	(footprint "ceoloide:diode_tht_sod123"
 		(layer "B.Cu")
@@ -18253,6 +19364,17 @@
 			(uuid "0fe75119-2ffd-4e28-ba83-b61c775ef622")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/diode_sod123.3dshapes/SOD-123F_L2.7-W1.6-LS3.8-RD.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 180)
+			)
+		)
 	)
 	(footprint "ceoloide:diode_tht_sod123"
 		(layer "B.Cu")
@@ -18388,6 +19510,17 @@
 			(uuid "8bbd2564-9e29-456f-98d7-6ad73ead7b51")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/diode_sod123.3dshapes/SOD-123F_L2.7-W1.6-LS3.8-RD.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 180)
+			)
+		)
 	)
 	(footprint "ceoloide:switch_choc_v1_v2"
 		(layer "B.Cu")
@@ -18629,6 +19762,28 @@
 			(uuid "45d45ead-05ed-4c37-b468-6b736056edbd")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/kiswitch.3dshapes/SW_Kailh_Choc_V2.step"
+			(offset
+				(xyz 0 0 -1.6)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 180 0 180)
+			)
+		)
+		(model "${KIPRJMOD}/../../tools/3d-models/kailh_hotswap.3dshapes/CONN-SMD_HOTPLUGPAKAGE__C9900010116.step"
+			(offset
+				(xyz 2.5 -4.85 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 180)
+			)
+		)
 	)
 	(footprint "ceoloide:led_SK6812mini-e (per-keysingle-side)"
 		(layer "B.Cu")
@@ -18956,6 +20111,17 @@
 			(uuid "f22e8169-9bad-4990-8b69-17bb56345ac4")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/sk6812mini-e.3dshapes/LED-SMD_4P-L3.2-W2.8-LS5.9_SK6812MINI-E.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
 	)
 	(footprint "ceoloide:diode_tht_sod123"
 		(layer "B.Cu")
@@ -19091,6 +20257,17 @@
 			(uuid "a5ec9421-9a41-4533-91c9-b90b29505716")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/diode_sod123.3dshapes/SOD-123F_L2.7-W1.6-LS3.8-RD.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 180)
+			)
+		)
 	)
 	(footprint "ceoloide:led_SK6812mini-e (per-keysingle-side)"
 		(layer "B.Cu")
@@ -19416,6 +20593,17 @@
 			(uuid "6f12f8bc-21f1-4db8-bcce-90869240b7b9")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/sk6812mini-e.3dshapes/LED-SMD_4P-L3.2-W2.8-LS5.9_SK6812MINI-E.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
 	)
 	(footprint "ceoloide:diode_tht_sod123"
 		(layer "B.Cu")
@@ -19551,6 +20739,17 @@
 			(uuid "c98e236b-93b3-4f67-9440-b681129eb0fb")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/diode_sod123.3dshapes/SOD-123F_L2.7-W1.6-LS3.8-RD.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 180)
+			)
+		)
 	)
 	(footprint "ceoloide:led_SK6812mini-e (per-keysingle-side)"
 		(layer "B.Cu")
@@ -19876,6 +21075,17 @@
 			(uuid "611b9e35-20c0-4e82-bc5c-95c82fa291c0")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/sk6812mini-e.3dshapes/LED-SMD_4P-L3.2-W2.8-LS5.9_SK6812MINI-E.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
 	)
 	(footprint "ceoloide:led_SK6812mini-e (per-keysingle-side)"
 		(layer "B.Cu")
@@ -20201,6 +21411,17 @@
 			(uuid "3a09ce40-2603-40ac-9faa-08a1a888e653")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/sk6812mini-e.3dshapes/LED-SMD_4P-L3.2-W2.8-LS5.9_SK6812MINI-E.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
 	)
 	(footprint "ceoloide:diode_tht_sod123"
 		(layer "B.Cu")
@@ -20336,6 +21557,17 @@
 			(uuid "3e0ffcc8-7a09-4db9-8eca-b3d3d8101ec3")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/diode_sod123.3dshapes/SOD-123F_L2.7-W1.6-LS3.8-RD.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 180)
+			)
+		)
 	)
 	(footprint "ceoloide:led_SK6812mini-e (per-keysingle-side)"
 		(layer "B.Cu")
@@ -20663,6 +21895,17 @@
 			(uuid "8026905e-3b23-412b-9e94-983768895f4f")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/sk6812mini-e.3dshapes/LED-SMD_4P-L3.2-W2.8-LS5.9_SK6812MINI-E.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
 	)
 	(footprint "ceoloide:diode_tht_sod123"
 		(layer "B.Cu")
@@ -20798,6 +22041,17 @@
 			(uuid "0b69c530-4936-4ee4-835a-56fe7234f932")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/diode_sod123.3dshapes/SOD-123F_L2.7-W1.6-LS3.8-RD.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 180)
+			)
+		)
 	)
 	(footprint "ceoloide:switch_choc_v1_v2"
 		(layer "B.Cu")
@@ -21039,6 +22293,28 @@
 			(uuid "24aa3f34-b187-4632-9067-2c1f3ad780fa")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/kiswitch.3dshapes/SW_Kailh_Choc_V2.step"
+			(offset
+				(xyz 0 0 -1.6)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 180 0 180)
+			)
+		)
+		(model "${KIPRJMOD}/../../tools/3d-models/kailh_hotswap.3dshapes/CONN-SMD_HOTPLUGPAKAGE__C9900010116.step"
+			(offset
+				(xyz 2.5 -4.85 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 180)
+			)
+		)
 	)
 	(footprint "ceoloide:diode_tht_sod123"
 		(layer "B.Cu")
@@ -21174,6 +22450,17 @@
 			(uuid "c3fdbe1a-5552-42bf-a831-80e5be3b07e0")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/diode_sod123.3dshapes/SOD-123F_L2.7-W1.6-LS3.8-RD.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 180)
+			)
+		)
 	)
 	(footprint "ceoloide:led_SK6812mini-e (per-keysingle-side)"
 		(layer "B.Cu")
@@ -21499,6 +22786,17 @@
 			(uuid "ee1e0ce5-00b8-4842-bbd3-3ff928c8bbc9")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/sk6812mini-e.3dshapes/LED-SMD_4P-L3.2-W2.8-LS5.9_SK6812MINI-E.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
 	)
 	(footprint "ceoloide:led_SK6812mini-e (per-keysingle-side)"
 		(layer "B.Cu")
@@ -21824,6 +23122,17 @@
 			(uuid "d8371bab-074b-439d-86f5-11161cd68593")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/sk6812mini-e.3dshapes/LED-SMD_4P-L3.2-W2.8-LS5.9_SK6812MINI-E.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
 	)
 	(footprint "ceoloide:switch_choc_v1_v2"
 		(layer "B.Cu")
@@ -22065,6 +23374,28 @@
 			(uuid "391b48f5-1b8e-4998-9285-c1b4a63b8570")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/kiswitch.3dshapes/SW_Kailh_Choc_V2.step"
+			(offset
+				(xyz 0 0 -1.6)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 180 0 180)
+			)
+		)
+		(model "${KIPRJMOD}/../../tools/3d-models/kailh_hotswap.3dshapes/CONN-SMD_HOTPLUGPAKAGE__C9900010116.step"
+			(offset
+				(xyz 2.5 -4.85 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 180)
+			)
+		)
 	)
 	(footprint "ceoloide:switch_choc_v1_v2"
 		(layer "B.Cu")
@@ -22306,6 +23637,28 @@
 			(uuid "f5444fbf-107d-4368-a0b0-1e3778721557")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/kiswitch.3dshapes/SW_Kailh_Choc_V2.step"
+			(offset
+				(xyz 0 0 -1.6)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 180 0 180)
+			)
+		)
+		(model "${KIPRJMOD}/../../tools/3d-models/kailh_hotswap.3dshapes/CONN-SMD_HOTPLUGPAKAGE__C9900010116.step"
+			(offset
+				(xyz 2.5 -4.85 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 180)
+			)
+		)
 	)
 	(footprint "ceoloide:led_SK6812mini-e (per-keysingle-side)"
 		(layer "B.Cu")
@@ -22631,6 +23984,17 @@
 			(uuid "55ce66cb-31ac-4546-b145-46466f6dc44a")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/sk6812mini-e.3dshapes/LED-SMD_4P-L3.2-W2.8-LS5.9_SK6812MINI-E.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
 	)
 	(footprint "ceoloide:switch_choc_v1_v2"
 		(layer "B.Cu")
@@ -22872,6 +24236,28 @@
 			(uuid "b10d2436-121a-4a86-a576-a7c91456b2e5")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/kiswitch.3dshapes/SW_Kailh_Choc_V2.step"
+			(offset
+				(xyz 0 0 -1.6)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 180 0 180)
+			)
+		)
+		(model "${KIPRJMOD}/../../tools/3d-models/kailh_hotswap.3dshapes/CONN-SMD_HOTPLUGPAKAGE__C9900010116.step"
+			(offset
+				(xyz 2.5 -4.85 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 180)
+			)
+		)
 	)
 	(footprint "ceoloide:led_SK6812mini-e (per-keysingle-side)"
 		(layer "B.Cu")
@@ -23197,6 +24583,17 @@
 			(uuid "3f676f81-947f-4a52-ae98-ad9e1f6bb149")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/sk6812mini-e.3dshapes/LED-SMD_4P-L3.2-W2.8-LS5.9_SK6812MINI-E.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
 	)
 	(footprint "ceoloide:diode_tht_sod123"
 		(layer "B.Cu")
@@ -23332,6 +24729,17 @@
 			(uuid "0e65baf4-c09c-4633-b8eb-695b233b69c5")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/diode_sod123.3dshapes/SOD-123F_L2.7-W1.6-LS3.8-RD.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 180)
+			)
+		)
 	)
 	(footprint "ceoloide:switch_choc_v1_v2"
 		(layer "B.Cu")
@@ -23573,6 +24981,28 @@
 			(uuid "1161d4b9-fea2-4b4a-8bbc-70b6eed98ccd")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/kiswitch.3dshapes/SW_Kailh_Choc_V2.step"
+			(offset
+				(xyz 0 0 -1.6)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 180 0 180)
+			)
+		)
+		(model "${KIPRJMOD}/../../tools/3d-models/kailh_hotswap.3dshapes/CONN-SMD_HOTPLUGPAKAGE__C9900010116.step"
+			(offset
+				(xyz 2.5 -4.85 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 180)
+			)
+		)
 	)
 	(footprint "atlas:mcu_xiao_ble_plus"
 		(layer "B.Cu")
@@ -23976,6 +25406,17 @@
 			(uuid "5f76b4de-01aa-4191-bf54-15e5e4c8b0fa")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/diode_sod123.3dshapes/SOD-123F_L2.7-W1.6-LS3.8-RD.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 180)
+			)
+		)
 	)
 	(footprint "ceoloide:switch_choc_v1_v2"
 		(layer "B.Cu")
@@ -24217,6 +25658,28 @@
 			(uuid "2b160f80-af66-4cbf-ad80-df9ea4a8ceb5")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/kiswitch.3dshapes/SW_Kailh_Choc_V2.step"
+			(offset
+				(xyz 0 0 -1.6)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 180 0 180)
+			)
+		)
+		(model "${KIPRJMOD}/../../tools/3d-models/kailh_hotswap.3dshapes/CONN-SMD_HOTPLUGPAKAGE__C9900010116.step"
+			(offset
+				(xyz 2.5 -4.85 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 180)
+			)
+		)
 	)
 	(footprint "ceoloide:led_SK6812mini-e (per-keysingle-side)"
 		(layer "B.Cu")
@@ -24542,6 +26005,17 @@
 			(uuid "24d76848-04e1-496c-9c9c-0a1af5759567")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/sk6812mini-e.3dshapes/LED-SMD_4P-L3.2-W2.8-LS5.9_SK6812MINI-E.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
 	)
 	(footprint "ceoloide:diode_tht_sod123"
 		(layer "B.Cu")
@@ -24677,6 +26151,17 @@
 			(uuid "5097a5c2-d7d5-4f16-bf3f-6bf738ae7303")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/diode_sod123.3dshapes/SOD-123F_L2.7-W1.6-LS3.8-RD.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 180)
+			)
+		)
 	)
 	(footprint "ceoloide:diode_tht_sod123"
 		(layer "B.Cu")
@@ -24812,6 +26297,17 @@
 			(uuid "f1bd1bc1-33e7-463c-a2aa-9669af4c9677")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/diode_sod123.3dshapes/SOD-123F_L2.7-W1.6-LS3.8-RD.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 180)
+			)
+		)
 	)
 	(gr_line
 		(start 80 -94.478)
