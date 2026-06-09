@@ -89,10 +89,383 @@
 			(outputdirectory "")
 		)
 	)
+	(footprint "atlas:power_switch_smd_side"
+		(layer "F.Cu")
+		(uuid "1ad3ca47-84fe-410d-96f4-052d253bdb3c")
+		(at 88.625 96.482 90)
+		(descr "SMD side-actuated 2-position on/off power switch (Alps SSSS811101 / MK-12C02 / PCM12SMTR). Extracted from ceoloide power_switch_smd_side.js. Pads unbound; wire BAT+/RAW by hand.")
+		(tags "power switch slide spdt on-off ssss811101")
+		(property "Reference" "SW"
+			(at -3.6 0 0)
+			(layer "F.SilkS")
+			(uuid "8c255f3a-ce8c-43f5-b9be-8ad4b4d51765")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Value" "PWR_SW"
+			(at 0 6 90)
+			(layer "F.Fab")
+			(uuid "0f5f1f3a-2d29-4e69-b942-9267793078ba")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 0 90)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "8c23f405-3c0a-4c95-a58c-a99416e50f37")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 0 0 90)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "933aa55c-3acb-4625-835e-b71ad175f392")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(attr smd)
+		(duplicate_pad_numbers_are_jumpers no)
+		(fp_line
+			(start 0.415 -3.45)
+			(end -0.375 -3.45)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(layer "F.SilkS")
+			(uuid "986b170d-8790-4538-859b-7b403c76d00f")
+		)
+		(fp_line
+			(start -1.425 -1.4)
+			(end -1.425 -1.6)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(layer "F.SilkS")
+			(uuid "7d743bc5-bb9b-4030-be64-bdd640d43e4c")
+		)
+		(fp_line
+			(start -1.425 1.6)
+			(end -1.425 -0.1)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(layer "F.SilkS")
+			(uuid "cf938089-5b4b-42d5-8029-c9bc01aa14a1")
+		)
+		(fp_line
+			(start 1.425 2.85)
+			(end 1.425 -2.85)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(layer "F.SilkS")
+			(uuid "de66b88a-b475-4bd0-ad50-3c689ce38a09")
+		)
+		(fp_line
+			(start -0.375 3.45)
+			(end 0.415 3.45)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(layer "F.SilkS")
+			(uuid "d2f016e8-7c6a-400c-9066-c95d5e107aea")
+		)
+		(fp_line
+			(start 1.795 -4.4)
+			(end 1.795 -1.65)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(layer "F.CrtYd")
+			(uuid "32c2227a-b3c3-4359-abd6-b960f23d9fa5")
+		)
+		(fp_line
+			(start -2.755 -4.4)
+			(end 1.795 -4.4)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(layer "F.CrtYd")
+			(uuid "5797de15-fab5-4504-a9e9-f657d9781f89")
+		)
+		(fp_line
+			(start 3.095 -1.65)
+			(end 3.095 1.65)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(layer "F.CrtYd")
+			(uuid "8fc54e25-b850-46a0-a701-1228ce9ee4ed")
+		)
+		(fp_line
+			(start 1.795 -1.65)
+			(end 3.095 -1.65)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(layer "F.CrtYd")
+			(uuid "e77624e6-2c9d-4d27-ad40-d5a36218fefc")
+		)
+		(fp_line
+			(start 3.095 1.65)
+			(end 1.795 1.65)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(layer "F.CrtYd")
+			(uuid "3cc87393-620e-4d2a-82ba-cf2efe7faf3e")
+		)
+		(fp_line
+			(start 1.795 1.65)
+			(end 1.795 4.4)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(layer "F.CrtYd")
+			(uuid "1922822c-56e6-4756-94d8-3c53cd52433f")
+		)
+		(fp_line
+			(start 1.795 4.4)
+			(end -2.755 4.4)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(layer "F.CrtYd")
+			(uuid "8cf94f39-db6d-4dc1-bbbe-21eb8d98c0f7")
+		)
+		(fp_line
+			(start -2.755 4.4)
+			(end -2.755 -4.4)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(layer "F.CrtYd")
+			(uuid "b6186c3b-963f-4892-a1ab-e48d254339a6")
+		)
+		(fp_line
+			(start 1.295 -3.35)
+			(end -1.305 -3.35)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "8dc3b5c9-3f36-4580-b4ff-49a5751f8c84")
+		)
+		(fp_line
+			(start -1.305 -3.35)
+			(end -1.305 3.35)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "c3a1c651-33d2-4086-bcc4-135330131cb7")
+		)
+		(fp_line
+			(start 2.595 0.1)
+			(end 1.295 0.1)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "f24c7101-49cd-4b65-a5c0-6bbd4bb236e8")
+		)
+		(fp_line
+			(start 2.645 0.15)
+			(end 2.595 0.1)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "0af494df-20ce-4c35-82d4-ee019fb25777")
+		)
+		(fp_line
+			(start 2.845 0.35)
+			(end 2.645 0.15)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "0b07aaec-7575-4677-8f48-5c56640c0ce7")
+		)
+		(fp_line
+			(start 2.845 1.2)
+			(end 2.845 0.35)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "20670e1c-7dd3-4e51-9019-572a90756354")
+		)
+		(fp_line
+			(start 2.645 1.4)
+			(end 2.845 1.2)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "7d2e4638-1514-4f57-bf13-34fa546a8dc8")
+		)
+		(fp_line
+			(start 1.345 1.4)
+			(end 2.645 1.4)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "363e20f3-429c-4251-980d-ff6da5217edd")
+		)
+		(fp_line
+			(start 1.295 3.35)
+			(end 1.295 -3.35)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "650a654e-9127-4653-a27c-35619aa6599d")
+		)
+		(fp_line
+			(start -1.305 3.35)
+			(end 1.295 3.35)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "a9f37672-ec4f-4244-99f1-61ff2d8af9bb")
+		)
+		(fp_text user "OFF"
+			(at 0 -5 90)
+			(layer "F.SilkS")
+			(uuid "70aa2e88-5c96-425f-bd30-fdf724eb7d9a")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(fp_text user "ON"
+			(at 0 5 90)
+			(layer "F.SilkS")
+			(uuid "af6f6c12-abdb-4292-8fb1-67b4f7cefe5e")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(pad "" smd rect
+			(at -1.085 -3.65 180)
+			(size 1 0.8)
+			(layers "F.Cu" "F.Mask" "F.Paste")
+			(uuid "3b6ab375-c584-4c1f-9afd-777b2de29b78")
+		)
+		(pad "" smd rect
+			(at -1.085 3.65 180)
+			(size 1 0.8)
+			(layers "F.Cu" "F.Mask" "F.Paste")
+			(uuid "93bdcb73-65e8-4425-b33b-5bab862f6c3e")
+		)
+		(pad "" np_thru_hole circle
+			(at 0.025 -1.5 180)
+			(size 0.9 0.9)
+			(drill 0.9)
+			(layers "*.Cu" "*.Mask")
+			(uuid "5a123217-c3a7-4196-9b73-e63716449306")
+		)
+		(pad "" np_thru_hole circle
+			(at 0.025 1.5 180)
+			(size 0.9 0.9)
+			(drill 0.9)
+			(layers "*.Cu" "*.Mask")
+			(uuid "ed5587bf-81a1-4bc4-bf32-ee6468c6d283")
+		)
+		(pad "" smd rect
+			(at 1.125 -3.65 180)
+			(size 1 0.8)
+			(layers "F.Cu" "F.Mask" "F.Paste")
+			(uuid "22c52eb1-678e-458f-8ccd-c01b66f70aa4")
+		)
+		(pad "" smd rect
+			(at 1.125 3.65 180)
+			(size 1 0.8)
+			(layers "F.Cu" "F.Mask" "F.Paste")
+			(uuid "ce92a558-e580-46aa-a9b3-941e7faf3b82")
+		)
+		(pad "1" smd rect
+			(at -1.735 2.25 180)
+			(size 0.7 1.5)
+			(layers "F.Cu" "F.Mask" "F.Paste")
+			(uuid "7143f2d9-afd3-48a0-91aa-183076542b68")
+		)
+		(pad "2" smd rect
+			(at -1.735 -0.75 180)
+			(size 0.7 1.5)
+			(layers "F.Cu" "F.Mask" "F.Paste")
+			(uuid "7fe3750c-8079-47c4-af1b-763823f8c28c")
+		)
+		(pad "3" smd rect
+			(at -1.735 -2.25 180)
+			(size 0.7 1.5)
+			(layers "F.Cu" "F.Mask" "F.Paste")
+			(uuid "3452cbb7-351c-4beb-91fe-79a76bfbe0e3")
+		)
+		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/power_switch_ssss811101.3dshapes/SSSS811101.STEP"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz -90 0 -90)
+			)
+		)
+	)
 	(footprint "ceoloide:mounting_hole_npth"
 		(layer "F.Cu")
 		(uuid "46324c30-a909-43b6-b93c-a6f7c515dd03")
-		(at 156.2 -75.975)
+		(at 160.325 113.507)
 		(property "Reference" "MH3"
 			(at 0 2.55 0)
 			(layer "F.SilkS")
@@ -150,7 +523,7 @@
 	(footprint "ceoloide:mounting_hole_npth"
 		(layer "F.Cu")
 		(uuid "4f914d37-8d0b-4122-806c-3abb4aa7b508")
-		(at 156.2 -66.475)
+		(at 160.325 123.007)
 		(property "Reference" "MH1"
 			(at 0 2.55 0)
 			(layer "F.SilkS")
@@ -205,10 +578,383 @@
 		)
 		(embedded_fonts no)
 	)
+	(footprint "atlas:power_switch_smd_side"
+		(layer "F.Cu")
+		(uuid "6034418f-218c-49b0-ad56-f59574911879")
+		(at 327.275 96.482 90)
+		(descr "SMD side-actuated 2-position on/off power switch (Alps SSSS811101 / MK-12C02 / PCM12SMTR). Extracted from ceoloide power_switch_smd_side.js. Pads unbound; wire BAT+/RAW by hand.")
+		(tags "power switch slide spdt on-off ssss811101")
+		(property "Reference" "SW"
+			(at -3.6 0 0)
+			(layer "F.SilkS")
+			(uuid "dc1d2e31-86ec-4917-8c27-3a584fc84e83")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Value" "PWR_SW"
+			(at 0 6 90)
+			(layer "F.Fab")
+			(uuid "f5cbad00-bc36-47ce-9ea8-bb2f16613300")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 0 90)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "78711935-bb48-4961-ac9c-cfb5ffa93468")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 0 0 90)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "c4bbf826-d01e-420c-9258-351b3e8f3dca")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(attr smd)
+		(duplicate_pad_numbers_are_jumpers no)
+		(fp_line
+			(start 0.415 -3.45)
+			(end -0.375 -3.45)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(layer "F.SilkS")
+			(uuid "940adf3c-992e-4ada-b152-bab94bedb8c6")
+		)
+		(fp_line
+			(start -1.425 -1.4)
+			(end -1.425 -1.6)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(layer "F.SilkS")
+			(uuid "b2f76326-ea27-4de0-b571-cfb13f475a6b")
+		)
+		(fp_line
+			(start -1.425 1.6)
+			(end -1.425 -0.1)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(layer "F.SilkS")
+			(uuid "f75b2435-cdaf-4980-b238-8e472a7ddbaf")
+		)
+		(fp_line
+			(start 1.425 2.85)
+			(end 1.425 -2.85)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(layer "F.SilkS")
+			(uuid "fdd5674f-7dac-42f4-8705-87a336bc28fb")
+		)
+		(fp_line
+			(start -0.375 3.45)
+			(end 0.415 3.45)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(layer "F.SilkS")
+			(uuid "bba75c60-aa39-4e05-8553-e8844db8c080")
+		)
+		(fp_line
+			(start 1.795 -4.4)
+			(end 1.795 -1.65)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(layer "F.CrtYd")
+			(uuid "37d3ee96-31d7-476c-9983-4c50b582385c")
+		)
+		(fp_line
+			(start -2.755 -4.4)
+			(end 1.795 -4.4)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(layer "F.CrtYd")
+			(uuid "b0203f35-9523-4049-954c-2ab086f7dbae")
+		)
+		(fp_line
+			(start 3.095 -1.65)
+			(end 3.095 1.65)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(layer "F.CrtYd")
+			(uuid "9b35d94e-6cc1-49bf-9c31-41213b81efbc")
+		)
+		(fp_line
+			(start 1.795 -1.65)
+			(end 3.095 -1.65)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(layer "F.CrtYd")
+			(uuid "415cb255-b28b-4c44-9512-d808b49ec420")
+		)
+		(fp_line
+			(start 3.095 1.65)
+			(end 1.795 1.65)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(layer "F.CrtYd")
+			(uuid "3b3deb53-2c8b-48e0-8ba4-cb8905d2feff")
+		)
+		(fp_line
+			(start 1.795 1.65)
+			(end 1.795 4.4)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(layer "F.CrtYd")
+			(uuid "42bdf040-09be-48d8-839d-ffd539bd4019")
+		)
+		(fp_line
+			(start 1.795 4.4)
+			(end -2.755 4.4)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(layer "F.CrtYd")
+			(uuid "e5f48d4e-fc81-4fe8-99f4-b180a8c0f6a3")
+		)
+		(fp_line
+			(start -2.755 4.4)
+			(end -2.755 -4.4)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(layer "F.CrtYd")
+			(uuid "3ab5e7c4-2a77-4632-a99d-f5cd940b28c4")
+		)
+		(fp_line
+			(start 1.295 -3.35)
+			(end -1.305 -3.35)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "8841c5fe-52cd-4a0c-864b-c213af30efd1")
+		)
+		(fp_line
+			(start -1.305 -3.35)
+			(end -1.305 3.35)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "cb0c8409-8a6c-4c21-9a01-6392cabf3253")
+		)
+		(fp_line
+			(start 2.595 0.1)
+			(end 1.295 0.1)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "d518e84c-c594-4ad6-bbf3-3e6f08f5b4ed")
+		)
+		(fp_line
+			(start 2.645 0.15)
+			(end 2.595 0.1)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "91c03fa4-b4fb-4763-94cd-5283fe23f764")
+		)
+		(fp_line
+			(start 2.845 0.35)
+			(end 2.645 0.15)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "b9d344a0-ac0d-42f0-b2e3-6720bf6c2dab")
+		)
+		(fp_line
+			(start 2.845 1.2)
+			(end 2.845 0.35)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "a6af257e-9723-4f95-a6d7-32e908e106d3")
+		)
+		(fp_line
+			(start 2.645 1.4)
+			(end 2.845 1.2)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "8bd42f44-2e0b-4140-98c0-f39e622733ec")
+		)
+		(fp_line
+			(start 1.345 1.4)
+			(end 2.645 1.4)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "a0301b8a-0b2b-4c9c-b172-5f50bed5103d")
+		)
+		(fp_line
+			(start 1.295 3.35)
+			(end 1.295 -3.35)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "d88afd17-d879-4afd-929c-d8a67abda7ea")
+		)
+		(fp_line
+			(start -1.305 3.35)
+			(end 1.295 3.35)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "69ca372a-63b6-4f30-8b69-5559c9ce68a6")
+		)
+		(fp_text user "OFF"
+			(at 0 -5 90)
+			(layer "F.SilkS")
+			(uuid "7f3fccdf-b911-482a-b037-00e14b958f53")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(fp_text user "ON"
+			(at 0 5 90)
+			(layer "F.SilkS")
+			(uuid "4fa93f46-87b3-41eb-b9a5-376f17fd9b4f")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(pad "" smd rect
+			(at -1.085 -3.65 180)
+			(size 1 0.8)
+			(layers "F.Cu" "F.Mask" "F.Paste")
+			(uuid "afbc6a63-3b1e-4e06-b2b9-e01f06a9b077")
+		)
+		(pad "" smd rect
+			(at -1.085 3.65 180)
+			(size 1 0.8)
+			(layers "F.Cu" "F.Mask" "F.Paste")
+			(uuid "d445ec33-ef04-48a6-9399-a946e0267d24")
+		)
+		(pad "" np_thru_hole circle
+			(at 0.025 -1.5 180)
+			(size 0.9 0.9)
+			(drill 0.9)
+			(layers "*.Cu" "*.Mask")
+			(uuid "b14a7432-bca3-47e5-a96f-3d2944428807")
+		)
+		(pad "" np_thru_hole circle
+			(at 0.025 1.5 180)
+			(size 0.9 0.9)
+			(drill 0.9)
+			(layers "*.Cu" "*.Mask")
+			(uuid "aa3b4e1c-5ed6-463b-bce7-9cc623433892")
+		)
+		(pad "" smd rect
+			(at 1.125 -3.65 180)
+			(size 1 0.8)
+			(layers "F.Cu" "F.Mask" "F.Paste")
+			(uuid "3a2e62f7-8f61-4575-978f-a82f7579afff")
+		)
+		(pad "" smd rect
+			(at 1.125 3.65 180)
+			(size 1 0.8)
+			(layers "F.Cu" "F.Mask" "F.Paste")
+			(uuid "b79549b9-189e-458b-a81d-aa69ad785aff")
+		)
+		(pad "1" smd rect
+			(at -1.735 2.25 180)
+			(size 0.7 1.5)
+			(layers "F.Cu" "F.Mask" "F.Paste")
+			(uuid "ac462046-ff68-4185-9c4c-70e85fcfc6f0")
+		)
+		(pad "2" smd rect
+			(at -1.735 -0.75 180)
+			(size 0.7 1.5)
+			(layers "F.Cu" "F.Mask" "F.Paste")
+			(uuid "5665367f-5ed6-498e-9e55-934641607ac1")
+		)
+		(pad "3" smd rect
+			(at -1.735 -2.25 180)
+			(size 0.7 1.5)
+			(layers "F.Cu" "F.Mask" "F.Paste")
+			(uuid "db9b5b88-f33a-430f-a1b7-b2d4b299df94")
+		)
+		(embedded_fonts no)
+		(model "${KIPRJMOD}/../../tools/3d-models/power_switch_ssss811101.3dshapes/SSSS811101.STEP"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz -90 0 -90)
+			)
+		)
+	)
 	(footprint "ceoloide:mounting_hole_npth"
 		(layer "F.Cu")
 		(uuid "80ebe78a-1716-4e8d-89a7-7e66686fec8d")
-		(at 156.2 -56.975)
+		(at 160.325 132.507)
 		(property "Reference" "MH5"
 			(at 0 2.55 0)
 			(layer "F.SilkS")
@@ -266,7 +1012,7 @@
 	(footprint "ceoloide:mounting_hole_npth"
 		(layer "F.Cu")
 		(uuid "9f3cdcac-6bb1-4b50-82a1-d3b3bef7f4c2")
-		(at 251.45 -66.475)
+		(at 255.575 123.007)
 		(property "Reference" "MH2"
 			(at 0 2.55 0)
 			(layer "F.SilkS")
@@ -324,7 +1070,7 @@
 	(footprint "ceoloide:mounting_hole_npth"
 		(layer "F.Cu")
 		(uuid "a4369237-f105-4d71-9fe4-2dce2e59bce1")
-		(at 251.45 -75.975)
+		(at 255.575 113.507)
 		(property "Reference" "MH4"
 			(at 0 2.55 0)
 			(layer "F.SilkS")
@@ -382,7 +1128,7 @@
 	(footprint "ceoloide:mounting_hole_npth"
 		(layer "F.Cu")
 		(uuid "bdd4ea7c-ada7-4e15-81e1-605522ecc798")
-		(at 251.45 -56.975)
+		(at 255.575 132.507)
 		(property "Reference" "MH6"
 			(at 0 2.55 0)
 			(layer "F.SilkS")
@@ -440,7 +1186,7 @@
 	(footprint "ceoloide:diode_tht_sod123"
 		(layer "B.Cu")
 		(uuid "07b2e3a2-efdc-46b3-a634-a1e0843a3c53")
-		(at 121.625 -64.95 90)
+		(at 125.75 124.532 90)
 		(property "Reference" "D8"
 			(at 0 0 90)
 			(layer "B.SilkS")
@@ -586,7 +1332,7 @@
 	(footprint "ceoloide:switch_choc_v1_v2"
 		(layer "B.Cu")
 		(uuid "0866105f-5b7f-4038-8aac-5356c624e4da")
-		(at 127.625 -41.9 180)
+		(at 131.75 147.582 180)
 		(property "Reference" "S7"
 			(at 0 8.8 180)
 			(layer "B.SilkS")
@@ -849,7 +1595,7 @@
 	(footprint "ceoloide:diode_tht_sod123"
 		(layer "B.Cu")
 		(uuid "08a64bae-db43-4f5c-9c07-f63861d43636")
-		(at 162.280913 -21.838714 76)
+		(at 166.405913 167.643286 76)
 		(property "Reference" "D16"
 			(at 0 0 76)
 			(layer "B.SilkS")
@@ -995,7 +1741,7 @@
 	(footprint "ceoloide:switch_choc_v1_v2"
 		(layer "B.Cu")
 		(uuid "098bd9de-9dae-4d72-bae8-2b879e949424")
-		(at 89.525 -27.803 180)
+		(at 93.65 161.679 180)
 		(property "Reference" "S1"
 			(at 0 8.8 180)
 			(layer "B.SilkS")
@@ -1258,7 +2004,7 @@
 	(footprint "ceoloide:led_SK6812mini-e (per-keysingle-side)"
 		(layer "B.Cu")
 		(uuid "0dcf2b9e-73a7-40eb-a7f5-e02233c6c3d8")
-		(at 241.925 -41.877)
+		(at 246.05 147.605)
 		(property "Reference" "LED30"
 			(at -4.75 0 90)
 			(layer "B.SilkS")
@@ -1594,7 +2340,7 @@
 	(footprint "ceoloide:switch_choc_v1_v2"
 		(layer "B.Cu")
 		(uuid "0df87954-8a0a-4198-b590-421d7ee66d08")
-		(at 165.725 -75.047 180)
+		(at 169.85 114.435 180)
 		(property "Reference" "S15"
 			(at 0 8.8 180)
 			(layer "B.SilkS")
@@ -1857,7 +2603,7 @@
 	(footprint "ceoloide:diode_tht_sod123"
 		(layer "B.Cu")
 		(uuid "125d4df4-7e44-4215-a1b8-0cffc8d9f434")
-		(at 159.725 -59.997 90)
+		(at 163.85 129.485 90)
 		(property "Reference" "D14"
 			(at 0 0 90)
 			(layer "B.SilkS")
@@ -2003,7 +2749,7 @@
 	(footprint "ceoloide:led_SK6812mini-e (per-keysingle-side)"
 		(layer "B.Cu")
 		(uuid "1505140a-b85b-4cc1-98a2-703653d7b606")
-		(at 318.125 -70.833)
+		(at 322.25 118.649)
 		(property "Reference" "LED20"
 			(at -4.75 0 90)
 			(layer "B.SilkS")
@@ -2339,7 +3085,7 @@
 	(footprint "ceoloide:switch_choc_v1_v2"
 		(layer "B.Cu")
 		(uuid "15f67e10-f726-4bbf-9fa4-3d2eac0c33c5")
-		(at 108.575 -38.852 180)
+		(at 112.7 150.63 180)
 		(property "Reference" "S4"
 			(at 0 8.8 180)
 			(layer "B.SilkS")
@@ -2602,7 +3348,7 @@
 	(footprint "ceoloide:led_SK6812mini-e (per-keysingle-side)"
 		(layer "B.Cu")
 		(uuid "17828940-c30d-4784-9102-975ae7fb5e18")
-		(at 187.978322 -15.09385 -21)
+		(at 192.103322 174.38815 -21)
 		(property "Reference" "LED17"
 			(at -4.75 0 69)
 			(layer "B.SilkS")
@@ -2939,7 +3685,7 @@
 	(footprint "ceoloide:diode_tht_sod123"
 		(layer "B.Cu")
 		(uuid "178e6eff-428d-43b2-86ce-5c6d6159f9a4")
-		(at 293.075 -80.952 90)
+		(at 297.2 108.53 90)
 		(property "Reference" "D23"
 			(at 0 0 90)
 			(layer "B.SilkS")
@@ -3085,7 +3831,7 @@
 	(footprint "ceoloide:switch_choc_v1_v2"
 		(layer "B.Cu")
 		(uuid "199a3e45-de17-47ed-83c7-84f6c9996bcc")
-		(at 318.125 -46.853 180)
+		(at 322.25 142.629 180)
 		(property "Reference" "S19"
 			(at 0 8.8 180)
 			(layer "B.SilkS")
@@ -3348,7 +4094,7 @@
 	(footprint "ceoloide:diode_tht_sod123"
 		(layer "B.Cu")
 		(uuid "1d967bff-d08b-4455-969d-3bbbbd4a70f0")
-		(at 312.125 -31.803 90)
+		(at 316.25 157.679 90)
 		(property "Reference" "D18"
 			(at 0 0 90)
 			(layer "B.SilkS")
@@ -3494,7 +4240,7 @@
 	(footprint "ceoloide:switch_choc_v1_v2"
 		(layer "B.Cu")
 		(uuid "20338815-b46d-4bff-9465-904cfadebff9")
-		(at 299.075 -76.952 180)
+		(at 303.2 112.53 180)
 		(property "Reference" "S23"
 			(at 0 8.8 180)
 			(layer "B.SilkS")
@@ -3757,7 +4503,7 @@
 	(footprint "ceoloide:led_SK6812mini-e (per-keysingle-side)"
 		(layer "B.Cu")
 		(uuid "21a6f1bc-a905-463c-a461-1f504c53904f")
-		(at 239.322325 -21.289558 14)
+		(at 243.447325 168.192442 14)
 		(property "Reference" "LED33"
 			(at -4.75 0 104)
 			(layer "B.SilkS")
@@ -4094,7 +4840,7 @@
 	(footprint "ceoloide:switch_choc_v1_v2"
 		(layer "B.Cu")
 		(uuid "226bece8-fef4-4327-b163-9adb42ed5624")
-		(at 280.025 -60.95 180)
+		(at 284.15 128.532 180)
 		(property "Reference" "S25"
 			(at 0 8.8 180)
 			(layer "B.SilkS")
@@ -4357,7 +5103,7 @@
 	(footprint "ceoloide:diode_tht_sod123"
 		(layer "B.Cu")
 		(uuid "27bb81d8-982d-4f51-baba-7ef0d784958a")
-		(at 274.025 -84 90)
+		(at 278.15 105.482 90)
 		(property "Reference" "D26"
 			(at 0 0 90)
 			(layer "B.SilkS")
@@ -4503,7 +5249,7 @@
 	(footprint "ceoloide:led_SK6812mini-e (per-keysingle-side)"
 		(layer "B.Cu")
 		(uuid "2899e68e-7d56-45f9-b426-cbbb2b5cf0cd")
-		(at 260.975 -43.782)
+		(at 265.1 145.7)
 		(property "Reference" "LED27"
 			(at -4.75 0 90)
 			(layer "B.SilkS")
@@ -4839,7 +5585,7 @@
 	(footprint "ceoloide:switch_choc_v1_v2"
 		(layer "B.Cu")
 		(uuid "2ba20ffd-13a3-43b9-9361-172434a2e39b")
-		(at 108.575 -57.902 180)
+		(at 112.7 131.58 180)
 		(property "Reference" "S5"
 			(at 0 8.8 180)
 			(layer "B.SilkS")
@@ -5102,7 +5848,7 @@
 	(footprint "ceoloide:led_SK6812mini-e (per-keysingle-side)"
 		(layer "B.Cu")
 		(uuid "2cf3460e-8e72-47a1-ba89-b5845cda70d1")
-		(at 146.675 -81.882)
+		(at 150.8 107.6)
 		(property "Reference" "LED12"
 			(at -4.75 0 90)
 			(layer "B.SilkS")
@@ -5438,7 +6184,7 @@
 	(footprint "ceoloide:switch_choc_v1_v2"
 		(layer "B.Cu")
 		(uuid "2dcd1619-bbe4-4e2e-918c-12f813cb8bf4")
-		(at 146.675 -38.852 180)
+		(at 150.8 150.63 180)
 		(property "Reference" "S10"
 			(at 0 8.8 180)
 			(layer "B.SilkS")
@@ -5701,7 +6447,7 @@
 	(footprint "ceoloide:diode_tht_sod123"
 		(layer "B.Cu")
 		(uuid "2f692965-fa77-4e88-a5d9-8aa2816a7d7d")
-		(at 121.625 -84 90)
+		(at 125.75 105.482 90)
 		(property "Reference" "D9"
 			(at 0 0 90)
 			(layer "B.SilkS")
@@ -5847,7 +6593,7 @@
 	(footprint "ceoloide:led_SK6812mini-e (per-keysingle-side)"
 		(layer "B.Cu")
 		(uuid "3445a6ae-a1f2-4996-baf4-4612447cf9e5")
-		(at 299.075 -43.782)
+		(at 303.2 145.7)
 		(property "Reference" "LED21"
 			(at -4.75 0 90)
 			(layer "B.SilkS")
@@ -6183,7 +6929,7 @@
 	(footprint "ceoloide:led_SK6812mini-e (per-keysingle-side)"
 		(layer "B.Cu")
 		(uuid "34d27e88-93b2-481f-817e-8080c2e60b8d")
-		(at 89.525 -32.733)
+		(at 93.65 156.749)
 		(property "Reference" "LED1"
 			(at -4.75 0 90)
 			(layer "B.SilkS")
@@ -6519,7 +7265,7 @@
 	(footprint "ceoloide:led_SK6812mini-e (per-keysingle-side)"
 		(layer "B.Cu")
 		(uuid "3a31e384-0cf4-4191-9031-1a9fb4f510a4")
-		(at 318.125 -32.733)
+		(at 322.25 156.749)
 		(property "Reference" "LED18"
 			(at -4.75 0 90)
 			(layer "B.SilkS")
@@ -6855,7 +7601,7 @@
 	(footprint "ceoloide:diode_tht_sod123"
 		(layer "B.Cu")
 		(uuid "3c7ba04d-d82c-44e7-a2e0-dbd7a89c2aa4")
-		(at 274.025 -45.9 90)
+		(at 278.15 143.582 90)
 		(property "Reference" "D24"
 			(at 0 0 90)
 			(layer "B.SilkS")
@@ -7001,7 +7747,7 @@
 	(footprint "ceoloide:switch_choc_v1_v2"
 		(layer "B.Cu")
 		(uuid "3d163a4e-1d7f-45e9-a449-5b0711eecb42")
-		(at 146.675 -76.952 180)
+		(at 150.8 112.53 180)
 		(property "Reference" "S12"
 			(at 0 8.8 180)
 			(layer "B.SilkS")
@@ -7264,7 +8010,7 @@
 	(footprint "ceoloide:diode_tht_sod123"
 		(layer "B.Cu")
 		(uuid "409c768d-386c-4dad-86b7-9bdd343fb12d")
-		(at 102.575 -61.902 90)
+		(at 106.7 127.58 90)
 		(property "Reference" "D5"
 			(at 0 0 90)
 			(layer "B.SilkS")
@@ -7410,7 +8156,7 @@
 	(footprint "ceoloide:led_SK6812mini-e (per-keysingle-side)"
 		(layer "B.Cu")
 		(uuid "417e299d-2ee2-4ff0-9b96-bf6b9f93f11e")
-		(at 89.525 -70.833)
+		(at 93.65 118.649)
 		(property "Reference" "LED3"
 			(at -4.75 0 90)
 			(layer "B.SilkS")
@@ -7746,7 +8492,7 @@
 	(footprint "ceoloide:led_SK6812mini-e (per-keysingle-side)"
 		(layer "B.Cu")
 		(uuid "446b2855-eea8-4f19-978a-175267f1b332")
-		(at 165.725 -60.927)
+		(at 169.85 128.555)
 		(property "Reference" "LED14"
 			(at -4.75 0 90)
 			(layer "B.SilkS")
@@ -8082,7 +8828,7 @@
 	(footprint "ceoloide:led_SK6812mini-e (per-keysingle-side)"
 		(layer "B.Cu")
 		(uuid "480df26d-8eae-4bb5-ae9a-0b35a35bcdc6")
-		(at 299.075 -81.882)
+		(at 303.2 107.6)
 		(property "Reference" "LED23"
 			(at -4.75 0 90)
 			(layer "B.SilkS")
@@ -8418,7 +9164,7 @@
 	(footprint "ceoloide:switch_choc_v1_v2"
 		(layer "B.Cu")
 		(uuid "48b12902-955d-4a8f-960a-80eced330f79")
-		(at 165.725 -55.997 180)
+		(at 169.85 133.485 180)
 		(property "Reference" "S14"
 			(at 0 8.8 180)
 			(layer "B.SilkS")
@@ -8681,7 +9427,7 @@
 	(footprint "ceoloide:led_SK6812mini-e (per-keysingle-side)"
 		(layer "B.Cu")
 		(uuid "49101a88-8df7-4e04-ac79-d768967ec4e0")
-		(at 127.625 -84.93)
+		(at 131.75 104.552)
 		(property "Reference" "LED9"
 			(at -4.75 0 90)
 			(layer "B.SilkS")
@@ -9017,7 +9763,7 @@
 	(footprint "ceoloide:diode_tht_sod123"
 		(layer "B.Cu")
 		(uuid "496ce982-5f30-4c20-b40d-6bf5e0b5aeee")
-		(at 293.075 -61.902 90)
+		(at 297.2 127.58 90)
 		(property "Reference" "D22"
 			(at 0 0 90)
 			(layer "B.SilkS")
@@ -9163,7 +9909,7 @@
 	(footprint "ceoloide:diode_tht_sod123"
 		(layer "B.Cu")
 		(uuid "4e5b3e6e-5963-4ce3-a590-5c0042202c95")
-		(at 293.075 -42.852 90)
+		(at 297.2 146.63 90)
 		(property "Reference" "D21"
 			(at 0 0 90)
 			(layer "B.SilkS")
@@ -9309,7 +10055,7 @@
 	(footprint "ceoloide:diode_tht_sod123"
 		(layer "B.Cu")
 		(uuid "4f1249ec-40e3-4a84-8307-349078ef3486")
-		(at 182.043557 -16.375828 69)
+		(at 186.168557 173.106172 69)
 		(property "Reference" "D17"
 			(at 0 0 69)
 			(layer "B.SilkS")
@@ -9455,7 +10201,7 @@
 	(footprint "ceoloide:led_SK6812mini-e (per-keysingle-side)"
 		(layer "B.Cu")
 		(uuid "4febf53c-4c68-4d0f-9f91-5157536e6fb3")
-		(at 127.625 -65.88)
+		(at 131.75 123.602)
 		(property "Reference" "LED8"
 			(at -4.75 0 90)
 			(layer "B.SilkS")
@@ -9791,7 +10537,7 @@
 	(footprint "ceoloide:switch_choc_v1_v2"
 		(layer "B.Cu")
 		(uuid "512e1eff-fd23-4b71-9778-31129d229d9a")
-		(at 299.075 -38.852 180)
+		(at 303.2 150.63 180)
 		(property "Reference" "S21"
 			(at 0 8.8 180)
 			(layer "B.SilkS")
@@ -10054,7 +10800,7 @@
 	(footprint "ceoloide:diode_tht_sod123"
 		(layer "B.Cu")
 		(uuid "54f5513d-0864-46e8-a657-44a8203c9599")
-		(at 254.975 -42.852 90)
+		(at 259.1 146.63 90)
 		(property "Reference" "D27"
 			(at 0 0 90)
 			(layer "B.SilkS")
@@ -10200,7 +10946,7 @@
 	(footprint "ceoloide:switch_choc_v1_v2"
 		(layer "B.Cu")
 		(uuid "554eeee9-c73b-4c6f-80b5-8ba821f5c493")
-		(at 260.975 -38.852 180)
+		(at 265.1 150.63 180)
 		(property "Reference" "S27"
 			(at 0 8.8 180)
 			(layer "B.SilkS")
@@ -10463,7 +11209,7 @@
 	(footprint "ceoloide:led_SK6812mini-e (per-keysingle-side)"
 		(layer "B.Cu")
 		(uuid "58a43466-f704-4192-8197-bcb00c27286a")
-		(at 241.925 -79.977)
+		(at 246.05 109.505)
 		(property "Reference" "LED32"
 			(at -4.75 0 90)
 			(layer "B.SilkS")
@@ -10799,7 +11545,7 @@
 	(footprint "ceoloide:led_SK6812mini-e (per-keysingle-side)"
 		(layer "B.Cu")
 		(uuid "611de254-8596-444b-8092-6c239039ae20")
-		(at 241.925 -60.927)
+		(at 246.05 128.555)
 		(property "Reference" "LED31"
 			(at -4.75 0 90)
 			(layer "B.SilkS")
@@ -11135,7 +11881,7 @@
 	(footprint "ceoloide:switch_choc_v1_v2"
 		(layer "B.Cu")
 		(uuid "6331e8f9-6756-4f39-8bb8-9572406d6be8")
-		(at 240.515 -16.506 -166)
+		(at 244.64 172.976 -166)
 		(property "Reference" "S33"
 			(at 0 8.8 194)
 			(layer "B.SilkS")
@@ -11398,7 +12144,7 @@
 	(footprint "ceoloide:switch_choc_v1_v2"
 		(layer "B.Cu")
 		(uuid "674d590c-b291-4037-a977-598cbf40eb4d")
-		(at 280.025 -80 180)
+		(at 284.15 109.482 180)
 		(property "Reference" "S26"
 			(at 0 8.8 180)
 			(layer "B.SilkS")
@@ -11661,7 +12407,7 @@
 	(footprint "atlas:mcu_xiao_ble_plus"
 		(layer "B.Cu")
 		(uuid "67ee6cad-ecff-4f59-8d20-7ba5d34090c8")
-		(at 318.1 -83.5 90)
+		(at 322.225 105.982 90)
 		(descr "Seeed XIAO nRF52840 (BLE) Plus — 29 pads, extracted from atlas mcu_xiao_ble_plus.js")
 		(tags "xiao nrf52840 ble plus mcu seeed")
 		(property "Reference" "U**"
@@ -11929,7 +12675,7 @@
 	(footprint "ceoloide:switch_choc_v1_v2"
 		(layer "B.Cu")
 		(uuid "6a8449cb-9a58-45c3-9d4b-e9b8c0979df4")
-		(at 260.975 -57.902 180)
+		(at 265.1 131.58 180)
 		(property "Reference" "S28"
 			(at 0 8.8 180)
 			(layer "B.SilkS")
@@ -12192,7 +12938,7 @@
 	(footprint "ceoloide:led_SK6812mini-e (per-keysingle-side)"
 		(layer "B.Cu")
 		(uuid "73c49fcf-851b-40b4-839e-6065a70d27a6")
-		(at 299.075 -62.832)
+		(at 303.2 126.65)
 		(property "Reference" "LED22"
 			(at -4.75 0 90)
 			(layer "B.SilkS")
@@ -12528,7 +13274,7 @@
 	(footprint "ceoloide:switch_choc_v1_v2"
 		(layer "B.Cu")
 		(uuid "74c003e7-9edf-4dfd-8a7c-138c7092fd58")
-		(at 127.625 -80 180)
+		(at 131.75 109.482 180)
 		(property "Reference" "S9"
 			(at 0 8.8 180)
 			(layer "B.SilkS")
@@ -12791,7 +13537,7 @@
 	(footprint "ceoloide:diode_tht_sod123"
 		(layer "B.Cu")
 		(uuid "762acb87-75d9-4a84-bd88-5bb2ba4b8c6d")
-		(at 254.975 -80.952 90)
+		(at 259.1 108.53 90)
 		(property "Reference" "D29"
 			(at 0 0 90)
 			(layer "B.SilkS")
@@ -12937,7 +13683,7 @@
 	(footprint "ceoloide:led_SK6812mini-e (per-keysingle-side)"
 		(layer "B.Cu")
 		(uuid "7a211645-bf43-41e8-8306-94f74b6012b8")
-		(at 108.575 -81.882)
+		(at 112.7 107.6)
 		(property "Reference" "LED6"
 			(at -4.75 0 90)
 			(layer "B.SilkS")
@@ -13273,7 +14019,7 @@
 	(footprint "ceoloide:diode_tht_sod123"
 		(layer "B.Cu")
 		(uuid "7b29ad16-090d-459d-9b15-5c29f914d702")
-		(at 235.925 -40.947 90)
+		(at 240.05 148.535 90)
 		(property "Reference" "D30"
 			(at 0 0 90)
 			(layer "B.SilkS")
@@ -13419,7 +14165,7 @@
 	(footprint "ceoloide:led_SK6812mini-e (per-keysingle-side)"
 		(layer "B.Cu")
 		(uuid "7d38574e-b69d-42f7-81c2-c995d8a92d35")
-		(at 146.675 -62.832)
+		(at 150.8 126.65)
 		(property "Reference" "LED11"
 			(at -4.75 0 90)
 			(layer "B.SilkS")
@@ -13755,7 +14501,7 @@
 	(footprint "ceoloide:switch_choc_v1_v2"
 		(layer "B.Cu")
 		(uuid "800ad471-5f24-4987-a08e-5bd97042e41f")
-		(at 127.625 -60.95 180)
+		(at 131.75 128.532 180)
 		(property "Reference" "S8"
 			(at 0 8.8 180)
 			(layer "B.SilkS")
@@ -14018,7 +14764,7 @@
 	(footprint "ceoloide:switch_choc_v1_v2"
 		(layer "B.Cu")
 		(uuid "80992829-ec81-473e-b7b7-cc96b059abf0")
-		(at 241.925 -75.047 180)
+		(at 246.05 114.435 180)
 		(property "Reference" "S32"
 			(at 0 8.8 180)
 			(layer "B.SilkS")
@@ -14281,7 +15027,7 @@
 	(footprint "ceoloide:led_SK6812mini-e (per-keysingle-side)"
 		(layer "B.Cu")
 		(uuid "8354b80c-3e2a-400d-855e-86480bb04ccd")
-		(at 280.025 -84.93)
+		(at 284.15 104.552)
 		(property "Reference" "LED26"
 			(at -4.75 0 90)
 			(layer "B.SilkS")
@@ -14617,7 +15363,7 @@
 	(footprint "ceoloide:switch_choc_v1_v2"
 		(layer "B.Cu")
 		(uuid "85776bb8-0bd5-41e2-9039-a46aad0265e0")
-		(at 318.125 -27.803 180)
+		(at 322.25 161.679 180)
 		(property "Reference" "S18"
 			(at 0 8.8 180)
 			(layer "B.SilkS")
@@ -14880,7 +15626,7 @@
 	(footprint "ceoloide:switch_choc_v1_v2"
 		(layer "B.Cu")
 		(uuid "8ba1af09-3a4c-4f19-b636-05762a1aae17")
-		(at 318.125 -65.903 180)
+		(at 322.25 123.579 180)
 		(property "Reference" "S20"
 			(at 0 8.8 180)
 			(layer "B.SilkS")
@@ -15143,7 +15889,7 @@
 	(footprint "ceoloide:led_SK6812mini-e (per-keysingle-side)"
 		(layer "B.Cu")
 		(uuid "8bfb1906-b910-4365-9721-558e5ad25eae")
-		(at 108.575 -43.782)
+		(at 112.7 145.7)
 		(property "Reference" "LED4"
 			(at -4.75 0 90)
 			(layer "B.SilkS")
@@ -15479,7 +16225,7 @@
 	(footprint "ceoloide:diode_tht_sod123"
 		(layer "B.Cu")
 		(uuid "8dd8f7cd-e337-4c8e-8c90-d4de2a027265")
-		(at 312.125 -69.903 90)
+		(at 316.25 119.579 90)
 		(property "Reference" "D20"
 			(at 0 0 90)
 			(layer "B.SilkS")
@@ -15625,7 +16371,7 @@
 	(footprint "ceoloide:switch_choc_v1_v2"
 		(layer "B.Cu")
 		(uuid "8f4d4f88-025f-41c4-9962-2403ee1e92d2")
-		(at 165.725 -36.947 180)
+		(at 169.85 152.535 180)
 		(property "Reference" "S13"
 			(at 0 8.8 180)
 			(layer "B.SilkS")
@@ -15888,7 +16634,7 @@
 	(footprint "ceoloide:diode_tht_sod123"
 		(layer "B.Cu")
 		(uuid "92a38d7e-96e4-4c6a-926e-000eaaccf877")
-		(at 235.925 -59.997 90)
+		(at 240.05 129.485 90)
 		(property "Reference" "D31"
 			(at 0 0 90)
 			(layer "B.SilkS")
@@ -16034,7 +16780,7 @@
 	(footprint "ceoloide:diode_tht_sod123"
 		(layer "B.Cu")
 		(uuid "938d7d3f-3833-40b2-a67c-de7f2374ed8d")
-		(at 83.525 -31.803 90)
+		(at 87.65 157.679 90)
 		(property "Reference" "D1"
 			(at 0 0 90)
 			(layer "B.SilkS")
@@ -16180,7 +16926,7 @@
 	(footprint "ceoloide:led_SK6812mini-e (per-keysingle-side)"
 		(layer "B.Cu")
 		(uuid "9815cbae-28ee-47f0-a17f-7a395d5f90de")
-		(at 127.625 -46.83)
+		(at 131.75 142.652)
 		(property "Reference" "LED7"
 			(at -4.75 0 90)
 			(layer "B.SilkS")
@@ -16516,7 +17262,7 @@
 	(footprint "ceoloide:diode_tht_sod123"
 		(layer "B.Cu")
 		(uuid "9a93a607-fdbb-4a05-96a4-598c8dcd5f3d")
-		(at 102.575 -80.952 90)
+		(at 106.7 108.53 90)
 		(property "Reference" "D6"
 			(at 0 0 90)
 			(layer "B.SilkS")
@@ -16662,7 +17408,7 @@
 	(footprint "ceoloide:switch_choc_v1_v2"
 		(layer "B.Cu")
 		(uuid "a0b1e405-97c3-46eb-8416-c5d94f3fb42d")
-		(at 167.135 -16.506 166)
+		(at 171.26 172.976 166)
 		(property "Reference" "S16"
 			(at 0 8.8 166)
 			(layer "B.SilkS")
@@ -16925,7 +17671,7 @@
 	(footprint "ceoloide:led_SK6812mini-e (per-keysingle-side)"
 		(layer "B.Cu")
 		(uuid "a154f7ec-2ec1-4b72-a690-13d5bf472dbd")
-		(at 260.975 -62.832)
+		(at 265.1 126.65)
 		(property "Reference" "LED28"
 			(at -4.75 0 90)
 			(layer "B.SilkS")
@@ -17261,7 +18007,7 @@
 	(footprint "ceoloide:led_SK6812mini-e (per-keysingle-side)"
 		(layer "B.Cu")
 		(uuid "a46d26e7-125b-4c88-ac7c-3e52adcf06ec")
-		(at 260.975 -81.882)
+		(at 265.1 107.6)
 		(property "Reference" "LED29"
 			(at -4.75 0 90)
 			(layer "B.SilkS")
@@ -17597,7 +18343,7 @@
 	(footprint "ceoloide:diode_tht_sod123"
 		(layer "B.Cu")
 		(uuid "a98aca4f-cb09-4522-ac60-4902cb306e2e")
-		(at 235.925 -79.047 90)
+		(at 240.05 110.435 90)
 		(property "Reference" "D32"
 			(at 0 0 90)
 			(layer "B.SilkS")
@@ -17743,7 +18489,7 @@
 	(footprint "ceoloide:switch_choc_v1_v2"
 		(layer "B.Cu")
 		(uuid "ae0fdb25-dce7-4a2b-8b6f-40184f437000")
-		(at 241.925 -55.997 180)
+		(at 246.05 133.485 180)
 		(property "Reference" "S31"
 			(at 0 8.8 180)
 			(layer "B.SilkS")
@@ -18006,7 +18752,7 @@
 	(footprint "ceoloide:switch_choc_v1_v2"
 		(layer "B.Cu")
 		(uuid "b7f1ce61-5fc1-4912-88ef-910135c4a899")
-		(at 260.975 -76.952 180)
+		(at 265.1 112.53 180)
 		(property "Reference" "S29"
 			(at 0 8.8 180)
 			(layer "B.SilkS")
@@ -18269,7 +19015,7 @@
 	(footprint "ceoloide:diode_tht_sod123"
 		(layer "B.Cu")
 		(uuid "bad8b619-7b84-4d00-abba-71348ae09d46")
-		(at 140.675 -61.902 90)
+		(at 144.8 127.58 90)
 		(property "Reference" "D11"
 			(at 0 0 90)
 			(layer "B.SilkS")
@@ -18415,7 +19161,7 @@
 	(footprint "ceoloide:switch_choc_v1_v2"
 		(layer "B.Cu")
 		(uuid "bcaf6c59-990a-4677-afe6-8f1b37758f30")
-		(at 241.925 -36.947 180)
+		(at 246.05 152.535 180)
 		(property "Reference" "S30"
 			(at 0 8.8 180)
 			(layer "B.SilkS")
@@ -18678,7 +19424,7 @@
 	(footprint "ceoloide:switch_choc_v1_v2"
 		(layer "B.Cu")
 		(uuid "beb1626d-7181-4af4-964c-96708e743d64")
-		(at 280.025 -41.9 180)
+		(at 284.15 147.582 180)
 		(property "Reference" "S24"
 			(at 0 8.8 180)
 			(layer "B.SilkS")
@@ -18941,7 +19687,7 @@
 	(footprint "ceoloide:diode_tht_sod123"
 		(layer "B.Cu")
 		(uuid "c4201aae-6afb-4550-ba7e-f3962cd17741")
-		(at 121.625 -45.9 90)
+		(at 125.75 143.582 90)
 		(property "Reference" "D7"
 			(at 0 0 90)
 			(layer "B.SilkS")
@@ -19087,7 +19833,7 @@
 	(footprint "ceoloide:diode_tht_sod123"
 		(layer "B.Cu")
 		(uuid "c81ca5f7-1699-49cf-8319-9fef1002f362")
-		(at 83.525 -50.853 90)
+		(at 87.65 138.629 90)
 		(property "Reference" "D2"
 			(at 0 0 90)
 			(layer "B.SilkS")
@@ -19233,7 +19979,7 @@
 	(footprint "ceoloide:diode_tht_sod123"
 		(layer "B.Cu")
 		(uuid "c9e91be7-0cce-4596-a7e3-0451cfcc9820")
-		(at 102.575 -42.852 90)
+		(at 106.7 146.63 90)
 		(property "Reference" "D4"
 			(at 0 0 90)
 			(layer "B.SilkS")
@@ -19379,7 +20125,7 @@
 	(footprint "ceoloide:diode_tht_sod123"
 		(layer "B.Cu")
 		(uuid "cbd35a39-3445-43dd-9518-26c14f957557")
-		(at 140.675 -42.852 90)
+		(at 144.8 146.63 90)
 		(property "Reference" "D10"
 			(at 0 0 90)
 			(layer "B.SilkS")
@@ -19525,7 +20271,7 @@
 	(footprint "ceoloide:switch_choc_v1_v2"
 		(layer "B.Cu")
 		(uuid "ccac9670-f985-4a73-ac35-75f15d0698dd")
-		(at 221.438433 -10.491298 -159)
+		(at 225.563433 178.990702 -159)
 		(property "Reference" "S34"
 			(at 0 8.8 201)
 			(layer "B.SilkS")
@@ -19788,7 +20534,7 @@
 	(footprint "ceoloide:led_SK6812mini-e (per-keysingle-side)"
 		(layer "B.Cu")
 		(uuid "cd6164d0-6102-4f3a-866d-93abe614f05a")
-		(at 168.327675 -21.289558 -14)
+		(at 172.452675 168.192442 -14)
 		(property "Reference" "LED16"
 			(at -4.75 0 76)
 			(layer "B.SilkS")
@@ -20126,7 +20872,7 @@
 	(footprint "ceoloide:diode_tht_sod123"
 		(layer "B.Cu")
 		(uuid "d0734e3b-b29f-4a2c-92a3-7ba17e3bdba3")
-		(at 254.975 -61.902 90)
+		(at 259.1 127.58 90)
 		(property "Reference" "D28"
 			(at 0 0 90)
 			(layer "B.SilkS")
@@ -20272,7 +21018,7 @@
 	(footprint "ceoloide:led_SK6812mini-e (per-keysingle-side)"
 		(layer "B.Cu")
 		(uuid "d1cd4f95-f1a8-4d88-80aa-cdec0511d42c")
-		(at 89.525 -51.783)
+		(at 93.65 137.699)
 		(property "Reference" "LED2"
 			(at -4.75 0 90)
 			(layer "B.SilkS")
@@ -20608,7 +21354,7 @@
 	(footprint "ceoloide:diode_tht_sod123"
 		(layer "B.Cu")
 		(uuid "d2d5ca56-d453-4863-bef3-38fdc3af6e79")
-		(at 274.025 -64.95 90)
+		(at 278.15 124.532 90)
 		(property "Reference" "D25"
 			(at 0 0 90)
 			(layer "B.SilkS")
@@ -20754,7 +21500,7 @@
 	(footprint "ceoloide:led_SK6812mini-e (per-keysingle-side)"
 		(layer "B.Cu")
 		(uuid "d47d3aaf-5cbe-4541-af26-5e3d83918f2d")
-		(at 280.025 -46.83)
+		(at 284.15 142.652)
 		(property "Reference" "LED24"
 			(at -4.75 0 90)
 			(layer "B.SilkS")
@@ -21090,7 +21836,7 @@
 	(footprint "ceoloide:led_SK6812mini-e (per-keysingle-side)"
 		(layer "B.Cu")
 		(uuid "d548fbbf-d69c-4a1d-a85b-d3e0851706d5")
-		(at 280.025 -65.88)
+		(at 284.15 123.602)
 		(property "Reference" "LED25"
 			(at -4.75 0 90)
 			(layer "B.SilkS")
@@ -21426,7 +22172,7 @@
 	(footprint "ceoloide:diode_tht_sod123"
 		(layer "B.Cu")
 		(uuid "d6ca6094-e0b7-4c45-9edf-baa7a24f1761")
-		(at 159.725 -79.047 90)
+		(at 163.85 110.435 90)
 		(property "Reference" "D15"
 			(at 0 0 90)
 			(layer "B.SilkS")
@@ -21572,7 +22318,7 @@
 	(footprint "ceoloide:led_SK6812mini-e (per-keysingle-side)"
 		(layer "B.Cu")
 		(uuid "dab8a220-0aab-4de0-a4b6-51bdb8d9cdce")
-		(at 219.671679 -15.09385 21)
+		(at 223.796679 174.38815 21)
 		(property "Reference" "LED34"
 			(at -4.75 0 111)
 			(layer "B.SilkS")
@@ -21910,7 +22656,7 @@
 	(footprint "ceoloide:diode_tht_sod123"
 		(layer "B.Cu")
 		(uuid "dc7d74e7-a7b1-471c-b641-25d2448ee269")
-		(at 312.125 -50.853 90)
+		(at 316.25 138.629 90)
 		(property "Reference" "D19"
 			(at 0 0 90)
 			(layer "B.SilkS")
@@ -22056,7 +22802,7 @@
 	(footprint "ceoloide:switch_choc_v1_v2"
 		(layer "B.Cu")
 		(uuid "dcd9138e-9151-4251-960b-8eff85e57d2c")
-		(at 108.575 -76.952 180)
+		(at 112.7 112.53 180)
 		(property "Reference" "S6"
 			(at 0 8.8 180)
 			(layer "B.SilkS")
@@ -22319,7 +23065,7 @@
 	(footprint "ceoloide:diode_tht_sod123"
 		(layer "B.Cu")
 		(uuid "dd68f66a-886a-479f-8c1e-d42a9d06e2a5")
-		(at 233.725538 -18.935652 104)
+		(at 237.850538 170.546348 104)
 		(property "Reference" "D33"
 			(at 0 0 104)
 			(layer "B.SilkS")
@@ -22465,7 +23211,7 @@
 	(footprint "ceoloide:led_SK6812mini-e (per-keysingle-side)"
 		(layer "B.Cu")
 		(uuid "ddc322cd-5efb-4a67-9ccb-1a4be2daa204")
-		(at 318.125 -51.783)
+		(at 322.25 137.699)
 		(property "Reference" "LED19"
 			(at -4.75 0 90)
 			(layer "B.SilkS")
@@ -22801,7 +23547,7 @@
 	(footprint "ceoloide:led_SK6812mini-e (per-keysingle-side)"
 		(layer "B.Cu")
 		(uuid "e1e8fa28-e023-4650-a029-ce533ce5f9ac")
-		(at 165.725 -79.977)
+		(at 169.85 109.505)
 		(property "Reference" "LED15"
 			(at -4.75 0 90)
 			(layer "B.SilkS")
@@ -23137,7 +23883,7 @@
 	(footprint "ceoloide:switch_choc_v1_v2"
 		(layer "B.Cu")
 		(uuid "e3c3b51e-553e-4841-ba5e-5f73f74b320a")
-		(at 89.525 -46.853 180)
+		(at 93.65 142.629 180)
 		(property "Reference" "S2"
 			(at 0 8.8 180)
 			(layer "B.SilkS")
@@ -23400,7 +24146,7 @@
 	(footprint "ceoloide:switch_choc_v1_v2"
 		(layer "B.Cu")
 		(uuid "e85f77ac-887a-438d-9957-5d2e45ee67ef")
-		(at 299.075 -57.902 180)
+		(at 303.2 131.58 180)
 		(property "Reference" "S22"
 			(at 0 8.8 180)
 			(layer "B.SilkS")
@@ -23663,7 +24409,7 @@
 	(footprint "ceoloide:led_SK6812mini-e (per-keysingle-side)"
 		(layer "B.Cu")
 		(uuid "ea4bd49b-0c87-4e24-a2d0-6071ae427c03")
-		(at 146.675 -43.782)
+		(at 150.8 145.7)
 		(property "Reference" "LED10"
 			(at -4.75 0 90)
 			(layer "B.SilkS")
@@ -23999,7 +24745,7 @@
 	(footprint "ceoloide:switch_choc_v1_v2"
 		(layer "B.Cu")
 		(uuid "ebddd1f8-555c-40de-8b75-5b2b6850517a")
-		(at 146.675 -57.902 180)
+		(at 150.8 131.58 180)
 		(property "Reference" "S11"
 			(at 0 8.8 180)
 			(layer "B.SilkS")
@@ -24262,7 +25008,7 @@
 	(footprint "ceoloide:led_SK6812mini-e (per-keysingle-side)"
 		(layer "B.Cu")
 		(uuid "eec61e1f-6912-4d1c-bf16-118f34ba8787")
-		(at 165.725 -41.877)
+		(at 169.85 147.605)
 		(property "Reference" "LED13"
 			(at -4.75 0 90)
 			(layer "B.SilkS")
@@ -24598,7 +25344,7 @@
 	(footprint "ceoloide:diode_tht_sod123"
 		(layer "B.Cu")
 		(uuid "f14f1e71-77a8-45eb-9b3c-62dc32214535")
-		(at 159.725 -40.947 90)
+		(at 163.85 148.535 90)
 		(property "Reference" "D13"
 			(at 0 0 90)
 			(layer "B.SilkS")
@@ -24744,7 +25490,7 @@
 	(footprint "ceoloide:switch_choc_v1_v2"
 		(layer "B.Cu")
 		(uuid "f5f90020-d6f6-49ac-86af-02606392e186")
-		(at 89.525 -65.903 180)
+		(at 93.65 123.579 180)
 		(property "Reference" "S3"
 			(at 0 8.8 180)
 			(layer "B.SilkS")
@@ -25007,7 +25753,7 @@
 	(footprint "atlas:mcu_xiao_ble_plus"
 		(layer "B.Cu")
 		(uuid "f7d3ed65-4ddd-463c-9f62-c2036484afa4")
-		(at 89.5 -83.5 90)
+		(at 93.625 105.982 90)
 		(descr "Seeed XIAO nRF52840 (BLE) Plus — 29 pads, extracted from atlas mcu_xiao_ble_plus.js")
 		(tags "xiao nrf52840 ble plus mcu seeed")
 		(property "Reference" "U**"
@@ -25275,7 +26021,7 @@
 	(footprint "ceoloide:diode_tht_sod123"
 		(layer "B.Cu")
 		(uuid "f86a55b8-5696-4a9b-9196-5d0834b6cf45")
-		(at 83.525 -69.903 90)
+		(at 87.65 119.579 90)
 		(property "Reference" "D3"
 			(at 0 0 90)
 			(layer "B.SilkS")
@@ -25421,7 +26167,7 @@
 	(footprint "ceoloide:switch_choc_v1_v2"
 		(layer "B.Cu")
 		(uuid "fa912d6d-7132-41c2-b2f1-c1b8143f3bdb")
-		(at 186.211568 -10.491298 159)
+		(at 190.336568 178.990702 159)
 		(property "Reference" "S17"
 			(at 0 8.8 159)
 			(layer "B.SilkS")
@@ -25684,7 +26430,7 @@
 	(footprint "ceoloide:led_SK6812mini-e (per-keysingle-side)"
 		(layer "B.Cu")
 		(uuid "fdcc5266-39c0-4c5f-b728-694ffe236aa6")
-		(at 108.575 -62.832)
+		(at 112.7 126.65)
 		(property "Reference" "LED5"
 			(at -4.75 0 90)
 			(layer "B.SilkS")
@@ -26020,7 +26766,7 @@
 	(footprint "ceoloide:diode_tht_sod123"
 		(layer "B.Cu")
 		(uuid "ff5248cb-4e93-4a14-9e43-a8ceb4f47321")
-		(at 214.403478 -12.075412 111)
+		(at 218.528478 177.406588 111)
 		(property "Reference" "D34"
 			(at 0 0 111)
 			(layer "B.SilkS")
@@ -26166,7 +26912,7 @@
 	(footprint "ceoloide:diode_tht_sod123"
 		(layer "B.Cu")
 		(uuid "ff5afa1d-6ee0-4e0d-9d91-8b5bcb0fa125")
-		(at 140.675 -80.952 90)
+		(at 144.8 108.53 90)
 		(property "Reference" "D12"
 			(at 0 0 90)
 			(layer "B.SilkS")
@@ -26310,8 +27056,8 @@
 		)
 	)
 	(gr_line
-		(start 80 -94.478)
-		(end 99.05 -94.478)
+		(start 84.125 95.004)
+		(end 103.175 95.004)
 		(stroke
 			(width 0.15)
 			(type default)
@@ -26320,8 +27066,8 @@
 		(uuid "de0a3bd2-2744-475e-98b4-9949cb4cfcc4")
 	)
 	(gr_line
-		(start 80 -18.278)
-		(end 80 -94.478)
+		(start 84.125 171.204)
+		(end 84.125 95.004)
 		(stroke
 			(width 0.15)
 			(type default)
@@ -26330,8 +27076,8 @@
 		(uuid "3409f798-c22d-44bd-8d62-abfd7b9fa0fa")
 	)
 	(gr_line
-		(start 99.05 -94.478)
-		(end 99.05 -86.096)
+		(start 103.175 95.004)
+		(end 103.175 103.386)
 		(stroke
 			(width 0.15)
 			(type default)
@@ -26340,8 +27086,8 @@
 		(uuid "dcbbf6ee-5651-4d07-a940-77609db85a81")
 	)
 	(gr_line
-		(start 99.05 -86.096)
-		(end 118.1 -86.096)
+		(start 103.175 103.386)
+		(end 122.225 103.386)
 		(stroke
 			(width 0.15)
 			(type default)
@@ -26350,8 +27096,8 @@
 		(uuid "86d4793e-2022-41ba-a2c9-9e8b682224e4")
 	)
 	(gr_line
-		(start 99.05 -29.518)
-		(end 99.05 -18.278)
+		(start 103.175 159.964)
+		(end 103.175 171.204)
 		(stroke
 			(width 0.15)
 			(type default)
@@ -26360,8 +27106,8 @@
 		(uuid "a45a7a5c-961e-4511-aa01-83930526f632")
 	)
 	(gr_line
-		(start 99.05 -18.278)
-		(end 80 -18.278)
+		(start 103.175 171.204)
+		(end 84.125 171.204)
 		(stroke
 			(width 0.15)
 			(type default)
@@ -26370,8 +27116,8 @@
 		(uuid "181e59c4-26d3-4fd2-a5d8-681fb34504a0")
 	)
 	(gr_line
-		(start 118.1 -89.144)
-		(end 137.15 -89.144)
+		(start 122.225 100.338)
+		(end 141.275 100.338)
 		(stroke
 			(width 0.15)
 			(type default)
@@ -26380,8 +27126,8 @@
 		(uuid "7fdc38ec-2194-4619-89d8-9d0eb6417d0b")
 	)
 	(gr_line
-		(start 118.1 -86.096)
-		(end 118.1 -89.144)
+		(start 122.225 103.386)
+		(end 122.225 100.338)
 		(stroke
 			(width 0.15)
 			(type default)
@@ -26390,8 +27136,8 @@
 		(uuid "a02808ba-846b-436b-9785-5621f096c96a")
 	)
 	(gr_line
-		(start 137.15 -89.144)
-		(end 137.15 -86.096)
+		(start 141.275 100.338)
+		(end 141.275 103.386)
 		(stroke
 			(width 0.15)
 			(type default)
@@ -26400,8 +27146,8 @@
 		(uuid "dc5757c3-1a12-49ea-bcb2-2549610eb954")
 	)
 	(gr_line
-		(start 137.15 -86.096)
-		(end 156.2 -86.096)
+		(start 141.275 103.386)
+		(end 160.325 103.386)
 		(stroke
 			(width 0.15)
 			(type default)
@@ -26410,8 +27156,8 @@
 		(uuid "f953e578-906c-41c7-b002-7ce868cc9b45")
 	)
 	(gr_line
-		(start 156.2 -86.096)
-		(end 156.2 -84.191)
+		(start 160.325 103.386)
+		(end 160.325 105.291)
 		(stroke
 			(width 0.15)
 			(type default)
@@ -26420,8 +27166,8 @@
 		(uuid "8387c37e-e24c-48e7-b669-9adfab3050fc")
 	)
 	(gr_line
-		(start 156.2 -84.191)
-		(end 175.25 -84.191)
+		(start 160.325 105.291)
+		(end 179.375 105.291)
 		(stroke
 			(width 0.15)
 			(type default)
@@ -26430,8 +27176,8 @@
 		(uuid "60c641ae-0e77-46e5-8281-1244e966b527")
 	)
 	(gr_line
-		(start 156.2 -29.518)
-		(end 99.05 -29.518)
+		(start 160.325 159.964)
+		(end 103.175 159.964)
 		(stroke
 			(width 0.15)
 			(type default)
@@ -26440,8 +27186,8 @@
 		(uuid "66d69557-70f1-4b42-91eb-83ee9c9ca745")
 	)
 	(gr_line
-		(start 156.2 -9.516)
-		(end 156.2 -29.518)
+		(start 160.325 179.966)
+		(end 160.325 159.964)
 		(stroke
 			(width 0.15)
 			(type default)
@@ -26450,8 +27196,8 @@
 		(uuid "51ba1b17-6b8c-4f71-872e-92a90a6aef83")
 	)
 	(gr_line
-		(start 174.107 -4.944)
-		(end 156.2 -9.516)
+		(start 178.232 184.538)
+		(end 160.325 179.966)
 		(stroke
 			(width 0.15)
 			(type default)
@@ -26460,8 +27206,8 @@
 		(uuid "c0cd6e6a-9d78-4dfd-87e4-ce4341eca345")
 	)
 	(gr_line
-		(start 175.25 -84.191)
-		(end 175.25 -24.755)
+		(start 179.375 105.291)
+		(end 179.375 164.727)
 		(stroke
 			(width 0.15)
 			(type default)
@@ -26470,8 +27216,8 @@
 		(uuid "8c74548e-02f2-473d-ad3d-6e4ae277bcc6")
 	)
 	(gr_line
-		(start 175.25 -24.755)
-		(end 198.37 -15.87)
+		(start 179.375 164.727)
+		(end 202.495 173.612)
 		(stroke
 			(width 0.15)
 			(type default)
@@ -26480,8 +27226,8 @@
 		(uuid "53f4fefa-0c5e-4e52-9d62-111e63d5df74")
 	)
 	(gr_line
-		(start 191.633 1.724)
-		(end 174.107 -4.944)
+		(start 195.758 191.206)
+		(end 178.232 184.538)
 		(stroke
 			(width 0.15)
 			(type default)
@@ -26490,8 +27236,8 @@
 		(uuid "a75a171d-4b2f-466a-9d5d-196a6f1019c4")
 	)
 	(gr_line
-		(start 198.37 -15.87)
-		(end 191.633 1.724)
+		(start 202.495 173.612)
+		(end 195.758 191.206)
 		(stroke
 			(width 0.15)
 			(type default)
@@ -26500,8 +27246,8 @@
 		(uuid "835fc4a2-225f-4c72-a3c8-fb3ff69c0c63")
 	)
 	(gr_line
-		(start 209.28 -15.87)
-		(end 216.017 1.724)
+		(start 213.405 173.612)
+		(end 220.142 191.206)
 		(stroke
 			(width 0.15)
 			(type default)
@@ -26510,8 +27256,8 @@
 		(uuid "978e6a0c-c851-4796-bde3-43d8dd8c5f01")
 	)
 	(gr_line
-		(start 216.017 1.724)
-		(end 233.543 -4.944)
+		(start 220.142 191.206)
+		(end 237.668 184.538)
 		(stroke
 			(width 0.15)
 			(type default)
@@ -26520,8 +27266,8 @@
 		(uuid "0990441d-c7af-4255-a208-17303d4a2c20")
 	)
 	(gr_line
-		(start 232.4 -84.191)
-		(end 232.4 -24.755)
+		(start 236.525 105.291)
+		(end 236.525 164.727)
 		(stroke
 			(width 0.15)
 			(type default)
@@ -26530,8 +27276,8 @@
 		(uuid "718ebf51-0bad-431a-bf53-6edbee531058")
 	)
 	(gr_line
-		(start 232.4 -24.755)
-		(end 209.28 -15.87)
+		(start 236.525 164.727)
+		(end 213.405 173.612)
 		(stroke
 			(width 0.15)
 			(type default)
@@ -26540,8 +27286,8 @@
 		(uuid "0587d3f8-d6c3-449e-9cc3-18ab9d96936d")
 	)
 	(gr_line
-		(start 233.543 -4.944)
-		(end 251.45 -9.516)
+		(start 237.668 184.538)
+		(end 255.575 179.966)
 		(stroke
 			(width 0.15)
 			(type default)
@@ -26550,8 +27296,8 @@
 		(uuid "698a5609-8409-4984-a739-2e07ebeceb41")
 	)
 	(gr_line
-		(start 251.45 -86.096)
-		(end 251.45 -84.191)
+		(start 255.575 103.386)
+		(end 255.575 105.291)
 		(stroke
 			(width 0.15)
 			(type default)
@@ -26560,8 +27306,8 @@
 		(uuid "f48c963f-825d-4c30-9f76-ac059a234bc3")
 	)
 	(gr_line
-		(start 251.45 -84.191)
-		(end 232.4 -84.191)
+		(start 255.575 105.291)
+		(end 236.525 105.291)
 		(stroke
 			(width 0.15)
 			(type default)
@@ -26570,8 +27316,8 @@
 		(uuid "d909552d-d52f-4e31-ba0b-559052db8681")
 	)
 	(gr_line
-		(start 251.45 -29.518)
-		(end 308.6 -29.518)
+		(start 255.575 159.964)
+		(end 312.725 159.964)
 		(stroke
 			(width 0.15)
 			(type default)
@@ -26580,8 +27326,8 @@
 		(uuid "7a06a433-b071-46a1-bb44-dc10a6dea75a")
 	)
 	(gr_line
-		(start 251.45 -9.516)
-		(end 251.45 -29.518)
+		(start 255.575 179.966)
+		(end 255.575 159.964)
 		(stroke
 			(width 0.15)
 			(type default)
@@ -26590,8 +27336,8 @@
 		(uuid "b00dfacb-516f-41ba-a310-aafdb102451f")
 	)
 	(gr_line
-		(start 270.5 -89.144)
-		(end 270.5 -86.096)
+		(start 274.625 100.338)
+		(end 274.625 103.386)
 		(stroke
 			(width 0.15)
 			(type default)
@@ -26600,8 +27346,8 @@
 		(uuid "a4e6f204-7e81-4c24-abec-0c7c10fe309c")
 	)
 	(gr_line
-		(start 270.5 -86.096)
-		(end 251.45 -86.096)
+		(start 274.625 103.386)
+		(end 255.575 103.386)
 		(stroke
 			(width 0.15)
 			(type default)
@@ -26610,8 +27356,8 @@
 		(uuid "4fe7e234-9af6-41dc-9292-948c171759f8")
 	)
 	(gr_line
-		(start 289.55 -89.144)
-		(end 270.5 -89.144)
+		(start 293.675 100.338)
+		(end 274.625 100.338)
 		(stroke
 			(width 0.15)
 			(type default)
@@ -26620,8 +27366,8 @@
 		(uuid "0ff7807c-5ae8-45d2-8c2f-a86de5e266a2")
 	)
 	(gr_line
-		(start 289.55 -86.096)
-		(end 289.55 -89.144)
+		(start 293.675 103.386)
+		(end 293.675 100.338)
 		(stroke
 			(width 0.15)
 			(type default)
@@ -26630,8 +27376,8 @@
 		(uuid "62d50b29-3788-4788-b616-ef069281f1ca")
 	)
 	(gr_line
-		(start 308.6 -94.478)
-		(end 308.6 -86.096)
+		(start 312.725 95.004)
+		(end 312.725 103.386)
 		(stroke
 			(width 0.15)
 			(type default)
@@ -26640,8 +27386,8 @@
 		(uuid "60acf83a-1661-4f5c-92eb-dac40bdf69e3")
 	)
 	(gr_line
-		(start 308.6 -86.096)
-		(end 289.55 -86.096)
+		(start 312.725 103.386)
+		(end 293.675 103.386)
 		(stroke
 			(width 0.15)
 			(type default)
@@ -26650,8 +27396,8 @@
 		(uuid "d6609c3c-af91-43bf-9d7f-fc3ddff54ef6")
 	)
 	(gr_line
-		(start 308.6 -29.518)
-		(end 308.6 -18.278)
+		(start 312.725 159.964)
+		(end 312.725 171.204)
 		(stroke
 			(width 0.15)
 			(type default)
@@ -26660,8 +27406,8 @@
 		(uuid "cd3a276a-9848-4b33-acd9-ac0dc7908b4e")
 	)
 	(gr_line
-		(start 308.6 -18.278)
-		(end 327.65 -18.278)
+		(start 312.725 171.204)
+		(end 331.775 171.204)
 		(stroke
 			(width 0.15)
 			(type default)
@@ -26670,8 +27416,8 @@
 		(uuid "9fc3f8f2-72fe-4573-8037-5755cedd4ae2")
 	)
 	(gr_line
-		(start 327.65 -94.478)
-		(end 308.6 -94.478)
+		(start 331.775 95.004)
+		(end 312.725 95.004)
 		(stroke
 			(width 0.15)
 			(type default)
@@ -26680,8 +27426,8 @@
 		(uuid "9f0f307d-153c-4987-8b8d-778acc40cf0a")
 	)
 	(gr_line
-		(start 327.65 -18.278)
-		(end 327.65 -94.478)
+		(start 331.775 171.204)
+		(end 331.775 95.004)
 		(stroke
 			(width 0.15)
 			(type default)
