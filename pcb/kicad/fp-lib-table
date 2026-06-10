@@ -1,0 +1,4 @@
+(fp_lib_table
+  (version 7)
+  (lib (name "atlas")(type "KiCad")(uri "${KIPRJMOD}/atlas.pretty")(options "")(descr "Atlas project footprints (XIAO BLE Plus, etc.)"))
+)
