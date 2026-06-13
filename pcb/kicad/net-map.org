@@ -48,7 +48,7 @@ LiPo → on/off slide switch (Alps SSSS811101) → XIAO BAT+.
 
 | Node            | Net      | Pads                                   |
 |-----------------+----------+----------------------------------------|
-| Battery +       | VBAT     | SW pad1 (LiPo+ lead lands here)        |
+| Battery +       | VBAT     | SW pad1 (or a BAT+ solder pad)        |
 | switched BAT+   | BAT_SW   | SW pad2 (common) → XIAO BAT+ (pad28)   |
 | Battery − / GND | GND      | XIAO BAT− (pad29) → ground             |
 
