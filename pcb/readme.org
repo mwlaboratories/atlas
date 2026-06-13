@@ -11,8 +11,7 @@ Source files for the Atlas keyboard PCB — a hand-laid KiCad board.
 
 * Workflow
 
-The board is laid out by hand in KiCad — there is no generator.
-=kicad/keyboard.kicad_pcb= is the artifact, edited directly.
+=kicad/keyboard.kicad_pcb= is edited directly in KiCad.
 
 1. Place / adjust footprints and route in KiCad.
 2. Tag each footprint with its =LCSC= field from =parts.yaml=.
