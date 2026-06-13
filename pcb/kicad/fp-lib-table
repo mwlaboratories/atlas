@@ -1,4 +1,5 @@
 (fp_lib_table
   (version 7)
   (lib (name "atlas")(type "KiCad")(uri "${KIPRJMOD}/atlas.pretty")(options "")(descr "Atlas project footprints (XIAO BLE Plus, etc.)"))
+  (lib (name "ads1220")(type "KiCad")(uri "${KIPRJMOD}/ads1220.pretty")(options "")(descr "ADS1220 ADC footprint from badjeff/ads1220-pcb (CERN-OHL-P v2)"))
 )

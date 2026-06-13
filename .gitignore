@@ -23,6 +23,7 @@ _autosave-*.kicad_pcb
 *.kicad_prl
 *.bak
 fp-info-cache
+*-drc.rpt
 
 # Fabrication-Toolkit output
 /pcb/kicad/production/
