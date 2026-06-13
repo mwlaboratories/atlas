@@ -41,3 +41,19 @@ Free: D6 (pad 7), D7 (pad 8) — former PS/2 trackpoint pins, now unused.
   numbering only; verified against switch X-positions.)
 - Open item: which physical thumb is COL3 vs COL4 is a keymap-level
   choice, not electrical — confirm against the keymap when routing.
+
+* Power path
+
+LiPo → on/off slide switch (Alps SSSS811101) → XIAO BAT+.
+
+| Node            | Net      | Pads                                   |
+|-----------------+----------+----------------------------------------|
+| Battery +       | VBAT     | SW pad1 (LiPo+ lead lands here)        |
+| switched BAT+   | BAT_SW   | SW pad2 (common) → XIAO BAT+ (pad28)   |
+| Battery − / GND | GND      | XIAO BAT− (pad29) → ground             |
+
+- BAT+ = XIAO pad28 (nearest D6), BAT− = pad29 (nearest D7), viewed from
+  the underside. Right half = R_VBAT / R_BAT_SW / R_GND.
+- To verify: SW pad2 is assumed the SPDT common terminal (pad3 NC).
+- No JST battery connector footprint on the board yet — LiPo+ wires
+  directly to SW pad1.
