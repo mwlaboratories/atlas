@@ -57,3 +57,17 @@ LiPo → on/off slide switch (Alps SSSS811101) → XIAO BAT+.
 - To verify: SW pad2 is assumed the SPDT common terminal (pad3 NC).
 - No connector (JST PH too tall) — BAT+/BAT- are hand-soldered pads:
   BAT+ pad → VBAT (→ switch), BAT- pad → GND.
+
+* Per-key RGB LEDs
+
+17× SK6812MINI-E per half, daisy-chained. XIAO D6 (LED_DATA / R_LED_DATA)
+→ first LED DIN → DOUT→DIN chain (=lednet_0..16=) → tail (NC). VCC → 3v3,
+GND common.
+
+- Chain order is a position-serpentine *default* — re-order freely while
+  routing; just match the firmware LED-position map to the final order.
+- Not yet placed: data-line level shifter MOSFET (3.3 V SK6812 data can
+  be marginal) and the LED-power gating P-FET (=UG_EN=). Data is direct
+  to D6 and VCC is ungated 3v3 for now.
+- Firmware RGB is still commented out (=CONFIG_ZMK_RGB_UNDERGLOW=) — wire
+  the &led_strip to D6 when enabling.
