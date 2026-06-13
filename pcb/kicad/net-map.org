@@ -1,0 +1,43 @@
+#+title: Atlas net map (XIAO ↔ matrix ↔ ADS1220)
+
+Verified pin assignment for the hand-laid board. Each XIAO pad carries
+its net directly (schematic-less; KiCad-10 name-only nets). Right half is
+the same map with an =R_= prefix so the two BT halves stay electrically
+separate. Source of truth: =bench/ads1220= firmware + Seeed XIAO nRF52840
+Plus pinout. Independently audited 2026-06-13.
+
+* XIAO pad → pin → net
+
+| Pad | Pin  | nRF    | Left net | Right net | Role          |
+|-----+------+--------+----------+-----------+---------------|
+|   1 | D0   | P0.02  | ROW0     | R_ROW0    | matrix row    |
+|   2 | D1   | P0.03  | ROW1     | R_ROW1    | matrix row    |
+|   3 | D2   | P0.28  | ROW2     | R_ROW2    | matrix row    |
+|   4 | D3   | P0.29  | ROW3     | R_ROW3    | thumb row     |
+|   5 | D4   | P0.04  | COL0     | R_COL0    | col (pinky)   |
+|   6 | D5   | P0.05  | COL1     | R_COL1    | col (ring)    |
+|   9 | D8   | P1.13  | COL4     | R_COL4    | col (inner)   |
+|  10 | D9   | P1.14  | COL3     | R_COL3    | col (index)   |
+|  11 | D10  | P1.15  | COL2     | R_COL2    | col (middle)  |
+|  12 | 3V3  | —      | 3v3      | R_3v3     | power         |
+|  13 | GND  | —      | GND      | R_GND     | ground        |
+|  15 | D11  | P0.15  | CS       | R_CS      | ADC chip-sel  |
+|  16 | D12  | P0.19  | DRDY     | R_DRDY    | ADC data-rdy  |
+|  21 | D17  | P1.03  | SCLK     | R_SCLK    | ADC SPI clk   |
+|  22 | D18  | P1.05  | MISO     | R_MISO    | ADC SPI in    |
+|  23 | D19  | P1.07  | MOSI     | R_MOSI    | ADC SPI out   |
+
+Free: D6 (pad 7), D7 (pad 8) — former PS/2 trackpoint pins, now unused.
+
+* Notes
+
+- Thumbs fold into the main matrix: the 2 thumb keys per half sit on
+  ROW3 × {COL3, COL4}. The board's old =TROW0/TCOL0/TCOL1= nets were
+  renamed accordingly.
+- SPI to the ADS1220 runs through series resistors R1–R4 (badjeff's
+  front-end): XIAO → R → ADS1220. DRDY is a direct GPIO.
+- Columns are NOT pin-mirrored between halves — both wire pinky→D4 and
+  inner→D8 physically. (The firmware's reversed col-gpios list is logical
+  numbering only; verified against switch X-positions.)
+- Open item: which physical thumb is COL3 vs COL4 is a keymap-level
+  choice, not electrical — confirm against the keymap when routing.
