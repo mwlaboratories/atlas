@@ -1,5 +1,5 @@
-# Private — the layout/build pipeline + webtool stays out of the public repo.
-# Only the generated PCB artifacts under pcb/ are public-facing.
+# Private / local workspace — not part of the published board.
+# The public-facing artifact is the hand-laid KiCad board under pcb/.
 tools/
 node_modules/
 

@@ -5,19 +5,10 @@
     just
     python3
     wl-clipboard
-    nodejs_22
     kicad
   ];
 
-  # Long-running services — start with `devenv up`.
-  processes.server.exec = "cd ${"\${DEVENV_ROOT}"} && node tools/server.mjs";
-
   # One-shot commands — runnable from any subshell once devenv is active.
-  scripts.ergogen.exec = ''
-    cd "''${DEVENV_ROOT}"
-    npx ergogen tools/ergogen -o tools/ergogen/output "$@"
-  '';
-
   scripts.render.exec = ''
     cd "''${DEVENV_ROOT}"
     mkdir -p tools/renders
@@ -56,11 +47,9 @@
 
   enterShell = ''
     echo ""
-    echo "  atlas — ergogen pipeline"
-    echo "  devenv up    start webtool + ergogen + render server (foreground)"
-    echo "               open http://localhost:8000, click 'build PCB'"
-    echo "  ergogen      one-shot: run ergogen on tools/ergogen/config.yaml"
-    echo "  render       one-shot: render pcb/kicad/keyboard.kicad_pcb to PNGs"
+    echo "  atlas — hand-laid KiCad PCB"
+    echo "  render            render pcb/kicad/keyboard.kicad_pcb to PNGs"
+    echo "  fetch-3d-models   download component 3D models (run once)"
     echo ""
   '';
 }

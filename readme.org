@@ -14,7 +14,7 @@ Plus, BLE split, ZMK firmware.
 
 - Daily driver: breakout-board prototype, Sprintek AIO trackpoint on the
   left half. Pinned at the =proto/breakout-v1= tag.
-- Next board: ergogen-driven KiCad layout under =pcb/=, 34 keys (5×3
+- Next board: hand-laid KiCad PCB under =pcb/=, 34 keys (5×3
   alphas + 2 thumbs per half), Choc V2 hotswap.
 - ADS1220 strain-gauge trackpoint: firmware bench-proven (HID mouse,
   radial deadzone, click-to-wake via input-processor-ping) — pinned at

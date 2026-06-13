@@ -1,8 +1,8 @@
 (footprint "power_switch_smd_side"
     (version 20240108)
-    (generator "atlas-ergogen-extract")
+    (generator "atlas")
     (layer "F.Cu")
-    (descr "SMD side-actuated 2-position on/off power switch (Alps SSSS811101 / MK-12C02 / PCM12SMTR). Extracted from ceoloide power_switch_smd_side.js. Pads unbound; wire BAT+/RAW by hand.")
+    (descr "SMD side-actuated 2-position on/off power switch (Alps SSSS811101 / MK-12C02 / PCM12SMTR). Pads unbound; wire BAT+/RAW by hand.")
     (tags "power switch slide spdt on-off ssss811101")
     (property "Value" "PWR_SW" (at 0 6 0) (layer "F.Fab") (effects (font (size 1 1) (thickness 0.15))))
     (property "Reference" "SW"

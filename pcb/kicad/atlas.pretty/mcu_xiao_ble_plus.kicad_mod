@@ -1,8 +1,8 @@
 (footprint "mcu_xiao_ble_plus"
     (version 20240108)
-    (generator "atlas-ergogen-extract")
+    (generator "atlas")
     (layer "F.Cu")
-    (descr "Seeed XIAO nRF52840 (BLE) Plus — 29 pads, extracted from atlas mcu_xiao_ble_plus.js")
+    (descr "Seeed XIAO nRF52840 (BLE) Plus — 29 pads")
     (tags "xiao nrf52840 ble plus mcu seeed")
     (attr smd)
     (property "Reference" "U**" (at 0 -10 0) (layer "F.SilkS") (effects (font (size 1 1) (thickness 0.15))))
