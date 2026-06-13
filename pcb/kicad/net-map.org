@@ -55,5 +55,5 @@ LiPo → on/off slide switch (Alps SSSS811101) → XIAO BAT+.
 - BAT+ = XIAO pad28 (nearest D6), BAT− = pad29 (nearest D7), viewed from
   the underside. Right half = R_VBAT / R_BAT_SW / R_GND.
 - To verify: SW pad2 is assumed the SPDT common terminal (pad3 NC).
-- No JST battery connector footprint on the board yet — LiPo+ wires
-  directly to SW pad1.
+- No connector (JST PH too tall) — BAT+/BAT- are hand-soldered pads:
+  BAT+ pad → VBAT (→ switch), BAT- pad → GND.
