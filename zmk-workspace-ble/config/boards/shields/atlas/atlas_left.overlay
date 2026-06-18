@@ -1,0 +1,174 @@
+#include "atlas.dtsi"
+#include <dt-bindings/pinctrl/nrf-pinctrl.h>
+#include <zephyr/dt-bindings/input/input-event-codes.h>
+#include <input/processors/temp_layer.dtsi>
+#include <input/processors/scaler.dtsi>
+#include <input/processors/code_mapper.dtsi>
+
+&kscan0 {
+    col-gpios
+        = <&xiao_d 4 GPIO_ACTIVE_HIGH>
+        , <&xiao_d 5 GPIO_ACTIVE_HIGH>
+        , <&xiao_d 10 GPIO_ACTIVE_HIGH>
+        , <&xiao_d 9 GPIO_ACTIVE_HIGH>
+        , <&xiao_d 8 GPIO_ACTIVE_HIGH>
+        ;
+};
+
+/* PS/2 Trackpoint Configuration (UART-based driver)
+ * Trackpoint wired to TX/RX on XIAO BLE:
+ *   D6 = P1.11 -> PS/2 Clock (SCL)
+ *   D7 = P1.12 -> PS/2 Data (SDA) - UART RX
+ */
+
+/* Interrupt priority overrides for PS/2 timing */
+/* GPIOTE and UART0 at priority 0 for reliable PS/2 communication */
+&gpiote { interrupts = < 6 2 >; };  /* Lower priority - UART0 handles reads */
+&clock { interrupts = < 0 3 >; };
+&power { interrupts = < 0 3 >; };
+&radio { interrupts = < 1 3 >; };
+&uart0 { interrupts = < 2 0 >; };  /* Priority 0 for PS/2 UART responses */
+&i2c0 { interrupts = < 3 3 >; };
+&spi0 { interrupts = < 3 3 >; };
+&i2c1 { interrupts = < 4 3 >; };
+&spi1 { interrupts = < 4 3 >; };
+&nfct { interrupts = < 5 3 >; };
+&adc { interrupts = < 7 3 >; };
+&timer0 { interrupts = < 8 3 >; };
+&timer1 { interrupts = < 9 3 >; };
+&timer2 { interrupts = < 10 3 >; };
+&rtc0 { interrupts = < 11 3 >; };
+&temp { interrupts = < 12 3 >; };
+&rng { interrupts = < 13 3 >; };
+&ecb { interrupts = < 14 3 >; };
+&ccm { interrupts = < 15 3 >; };
+&wdt { interrupts = < 16 3 >; };
+&rtc1 { interrupts = < 17 3 >; };
+&qdec { interrupts = < 18 3 >; };
+&comp { interrupts = < 19 3 >; };
+&egu0 { interrupts = < 20 3 >; };
+&egu1 { interrupts = < 21 3 >; };
+&egu2 { interrupts = < 22 3 >; };
+&egu3 { interrupts = < 23 3 >; };
+&egu4 { interrupts = < 24 3 >; };
+&egu5 { interrupts = < 25 3 >; };
+&timer3 { interrupts = < 26 3 >; };
+&timer4 { interrupts = < 27 3 >; };
+&pwm0 { interrupts = < 28 3 >; };
+&pdm0 { interrupts = < 29 3 >; };
+&pwm1 { interrupts = < 33 3 >; };
+&pwm2 { interrupts = < 34 3 >; };
+&spi2 { interrupts = < 35 3 >; };
+&rtc2 { interrupts = < 36 3 >; };
+&i2s0 { interrupts = < 37 3 >; };
+&usbd { interrupts = < 39 3 >; };
+&uart1 { interrupts = < 40 3 >; };
+&qspi { interrupts = < 41 3 >; };
+&pwm3 { interrupts = < 45 3 >; };
+&spi3 { interrupts = < 47 3 >; };
+&cryptocell { interrupts = < 42 3 >; };
+
+&pinctrl {
+    /* UART RX on P1.12 (D7/SDA) for PS/2 receive */
+    uart0_ps2_default: uart0_ps2_default {
+        group1 {
+            psels = <NRF_PSEL(UART_TX, 0, 27)>,
+                    <NRF_PSEL(UART_RX, 1, 12)>;
+        };
+    };
+
+    uart0_ps2_sleep: uart0_ps2_sleep {
+        group1 {
+            psels = <NRF_PSEL(UART_TX, 0, 27)>,
+                    <NRF_PSEL(UART_RX, 1, 12)>;
+            low-power-enable;
+        };
+    };
+
+    /* Switch UART to unexposed pins during transmit */
+    /* NOTE: Do NOT use P0.28 - it's D2 (matrix row)! Use P0.31 instead */
+    uart0_ps2_off: uart0_ps2_off {
+        group1 {
+            psels = <NRF_PSEL(UART_TX, 0, 27)>,
+                    <NRF_PSEL(UART_RX, 0, 31)>;
+        };
+    };
+};
+
+&uart0 {
+    status = "okay";
+    compatible = "nordic,nrf-uarte";
+    current-speed = <14400>;
+    pinctrl-0 = <&uart0_ps2_default>;
+    pinctrl-1 = <&uart0_ps2_off>;
+    pinctrl-names = "default", "sleep";
+
+    uart_ps2: uart_ps2 {
+        status = "okay";
+        compatible = "uart-ps2";
+        scl-gpios = <&gpio1 11 GPIO_ACTIVE_HIGH>;
+        sda-gpios = <&gpio1 12 GPIO_ACTIVE_HIGH>;
+    };
+};
+
+/ {
+    /* PS/2 Mouse device */
+    mouse_ps2: mouse_ps2 {
+        compatible = "zmk,input-mouse-ps2";
+        status = "okay";
+        ps2-device = <&uart_ps2>;
+        /* Reset pin on NFC1 (P0.09) - required for reliable init */
+        rst-gpios = <&gpio0 9 GPIO_ACTIVE_HIGH>;
+        sampling-rate = <100>;
+        /* Max TP sensitivity - all values at maximum */
+        tp-sensitivity = <255>;
+        tp-neg-inertia = <255>;
+        tp-val6-upper-speed = <255>;
+    };
+
+    /* Scroll mode processor - converts XY to scroll wheel */
+    zip_xy_to_scroll: zip_xy_to_scroll {
+        compatible = "zmk,input-processor-code-mapper";
+        #input-processor-cells = <0>;
+        type = <INPUT_EV_REL>;
+        map = <INPUT_REL_X INPUT_REL_HWHEEL>, <INPUT_REL_Y INPUT_REL_WHEEL>;
+    };
+
+    /* Swap X and Y axes */
+    zip_xy_swap: zip_xy_swap {
+        compatible = "zmk,input-processor-code-mapper";
+        #input-processor-cells = <0>;
+        type = <INPUT_EV_REL>;
+        map = <INPUT_REL_X INPUT_REL_Y>, <INPUT_REL_Y INPUT_REL_X>;
+    };
+
+    /* Trackpoint listener - converts to HID mouse reports */
+    trackpoint_listener: trackpoint_listener {
+        compatible = "zmk,input-listener";
+        status = "okay";
+        device = <&mouse_ps2>;
+        /* Swap axes + 2x scaling + auto mouse layer */
+        input-processors = <&zip_xy_swap>, <&zip_xy_scaler 2 1>, <&zip_temp_layer 5 1000>;
+
+        /* Layer 6: Scroll mode - swap + reduced sensitivity */
+        scroll {
+            layers = <6>;
+            input-processors = <&zip_xy_swap>, <&zip_xy_scaler 1 4>, <&zip_xy_to_scroll>;
+        };
+    };
+
+    /* Right side trackpoint listener - receives events from peripheral via input-split */
+    trackpoint_listener_right: trackpoint_listener_right {
+        compatible = "zmk,input-listener";
+        status = "okay";
+        device = <&trackpoint_split_right>;
+        /* Note: xy_swap already applied on peripheral side, just scale + auto layer */
+        input-processors = <&zip_xy_scaler 2 1>, <&zip_temp_layer 5 1000>;
+
+        /* Layer 6: Scroll mode */
+        scroll {
+            layers = <6>;
+            input-processors = <&zip_xy_scaler 1 4>, <&zip_xy_to_scroll>;
+        };
+    };
+};

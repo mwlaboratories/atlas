@@ -1,0 +1,11 @@
+config SHIELD_ATLAS_LEFT
+    def_bool $(shields_list_contains,atlas_left)
+
+config SHIELD_ATLAS_RIGHT
+    def_bool $(shields_list_contains,atlas_right)
+
+config SHIELD_ATLAS_DONGLE
+    def_bool $(shields_list_contains,atlas_dongle)
+
+config SHIELD_ATLAS_TRACKBALL
+    def_bool $(shields_list_contains,atlas_trackball)

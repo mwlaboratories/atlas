@@ -37,3 +37,6 @@ fp-info-cache
 *.gbr
 *.drl
 gerbers/
+
+# nix build output
+result

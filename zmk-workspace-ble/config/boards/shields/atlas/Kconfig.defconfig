@@ -1,0 +1,32 @@
+if SHIELD_ATLAS_LEFT || SHIELD_ATLAS_RIGHT
+
+config ZMK_SPLIT
+    default y
+
+# Enable pointing for both sides (both have trackpoints)
+config ZMK_POINTING
+    default y
+
+endif
+
+if SHIELD_ATLAS_LEFT
+
+# Max 16 characters in keyboard name
+config ZMK_KEYBOARD_NAME
+    default "ATLAS"
+
+config ZMK_SPLIT_ROLE_CENTRAL
+    default y
+
+# Only the right side as peripheral
+config ZMK_SPLIT_BLE_CENTRAL_PERIPHERALS
+    default 1
+
+# 1 peripheral + 5 BT profiles = 6
+config BT_MAX_CONN
+    default 6
+
+config BT_MAX_PAIRED
+    default 6
+
+endif
