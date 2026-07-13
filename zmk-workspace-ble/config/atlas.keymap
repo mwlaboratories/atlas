@@ -83,6 +83,9 @@
         compatible = "zmk,combos";
         combo_game_toggle {
             timeout-ms = <50>;
+            // Don't fire mid-typing: only when both keys are pressed after a
+            // typing pause, so a fast "o p" roll can't toggle the game layer.
+            require-prior-idle-ms = <150>;
             key-positions = <8 9>;  // O + P positions
             bindings = <&tog_game_hold GAME 0>;
             layers = <0 GAME>;  // Active on base and game layers
