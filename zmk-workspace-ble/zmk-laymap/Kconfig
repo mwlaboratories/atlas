@@ -1,0 +1,13 @@
+config LAYMAP_LAYER_REPORT
+    bool "Broadcast the active ZMK layer to the host over raw HID (laymap)"
+    depends on RAW_HID
+    help
+      Subscribe to layer state changes and send a raw-HID report to the host
+      on every change, so the laymap desktop overlay can display the active
+      layer. Requires the zmk-raw-hid module (CONFIG_RAW_HID).
+
+      Report framing (inside the CONFIG_RAW_HID_REPORT_SIZE-byte payload):
+        byte 0   : 0x4C ('L') message type
+        byte 1   : highest active layer index (0 = base)
+        bytes 2-5: active-layer bitmask, u32 little-endian
+        rest     : zero

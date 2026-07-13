@@ -51,6 +51,7 @@ zmk-workspace-ble/optional/
 zmk-workspace-ble/zephyr/
 zmk-workspace-ble/zmk/
 zmk-workspace-ble/kb_zmk_ps2_mouse_trackpoint_driver/
+zmk-workspace-ble/zmk-raw-hid/
 
 # keymap-drawer intermediate (SVG lands in images/keymap.svg)
 nix/keymap.yaml

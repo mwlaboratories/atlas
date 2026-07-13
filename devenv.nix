@@ -65,12 +65,20 @@ in
     echo "→ images/keymap.svg"
   '';
 
+  # Build both firmware halves with the laymap layer reporter (zmk-laymap/)
+  # baked into the central. Logic lives in build-firmware.sh to avoid Nix
+  # string-escaping; it drops into the zmk-nix dev shell for west + the SDK.
+  scripts.firmware.exec = ''
+    exec bash "''${DEVENV_ROOT}/zmk-workspace-ble/build-firmware.sh"
+  '';
+
   enterShell = ''
     echo ""
     echo "  atlas — hand-laid KiCad PCB + ZMK firmware"
     echo "  render            render pcb/kicad/keyboard.kicad_pcb to PNGs"
     echo "  fetch-3d-models   download component 3D models (run once)"
     echo "  draw-keymap       regenerate images/keymap.svg from the keymap"
+    echo "  firmware          build atlas_{left,right}.uf2 (left = + laymap)"
     echo ""
   '';
 }

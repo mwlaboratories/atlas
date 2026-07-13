@@ -1,0 +1,4 @@
+name: zmk-laymap
+build:
+  cmake: .
+  kconfig: Kconfig
