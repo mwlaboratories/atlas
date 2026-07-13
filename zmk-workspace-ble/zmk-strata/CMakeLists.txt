@@ -1,0 +1,1 @@
+target_sources_ifdef(CONFIG_STRATA_LAYER_REPORT app PRIVATE src/layer_report.c)

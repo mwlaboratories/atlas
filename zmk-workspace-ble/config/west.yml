@@ -15,7 +15,7 @@ manifest:
     - name: kb_zmk_ps2_mouse_trackpoint_driver
       remote: badjeff
       revision: 2df4d6d0d305ed121b1efbf0a028b44b174dccc7
-    # Raw-HID transport for the laymap layer reporter (zmk-laymap/, local).
+    # Raw-HID transport for the strata layer reporter (zmk-strata/, local).
     - name: zmk-raw-hid
       remote: zzeneg
       revision: main

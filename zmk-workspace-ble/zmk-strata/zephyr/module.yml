@@ -1,4 +1,4 @@
-name: zmk-laymap
+name: zmk-strata
 build:
   cmake: .
   kconfig: Kconfig
