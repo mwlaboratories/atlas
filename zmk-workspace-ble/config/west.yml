@@ -6,6 +6,8 @@ manifest:
       url-base: https://github.com/badjeff
     - name: zzeneg
       url-base: https://github.com/zzeneg
+    - name: mwlaboratories
+      url-base: https://github.com/mwlaboratories
 
   projects:
     - name: zmk
@@ -15,9 +17,14 @@ manifest:
     - name: kb_zmk_ps2_mouse_trackpoint_driver
       remote: badjeff
       revision: 2df4d6d0d305ed121b1efbf0a028b44b174dccc7
-    # Raw-HID transport for the strata layer reporter (zmk-strata/, local).
+    # Raw-HID transport for the strata layer reporter.
     - name: zmk-raw-hid
       remote: zzeneg
+      revision: main
+    # The strata layer reporter — the same published module every zmk-config
+    # pulls, so our builds double as integration tests of it.
+    - name: zmk-strata
+      remote: mwlaboratories
       revision: main
 
   self:

@@ -1,4 +1,0 @@
-name: zmk-strata
-build:
-  cmake: .
-  kconfig: Kconfig

@@ -1,0 +1,3 @@
+# Load board Kconfig descriptions.
+osource "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/boards/seeed/xiao_ble/Kconfig.xiao_ble"
+osource "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/boards/seeed/xiao_ble/Kconfig.xiao_ble"

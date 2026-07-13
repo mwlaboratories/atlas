@@ -1,0 +1,2426 @@
+# 0 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/misc/empty_file.c"
+# 0 "<built-in>"
+# 0 "<command-line>"
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/boards/seeed/xiao_ble/xiao_ble_zmk.dts" 1
+
+
+
+
+
+
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/boards/seeed/xiao_ble/xiao_ble.dts" 1 3 4
+
+
+
+
+
+
+/dts-v1/;
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/boards/seeed/xiao_ble/xiao_ble_common.dtsi" 1 3 4
+
+
+
+
+
+
+
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/dts/arm/nordic/nrf52840_qiaa.dtsi" 1 3 4
+
+
+
+
+
+
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/dts/common/mem.h" 1 3 4
+# 8 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/dts/arm/nordic/nrf52840_qiaa.dtsi" 2 3 4
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/dts/arm/nordic/nrf52840.dtsi" 1 3 4
+
+
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/dts/arm/armv7-m.dtsi" 1 3 4
+
+
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/dts/common/skeleton.dtsi" 1 3 4
+# 9 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/dts/common/skeleton.dtsi" 3 4
+/ {
+ #address-cells = <1>;
+ #size-cells = <1>;
+ chosen { };
+ aliases { };
+};
+# 4 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/dts/arm/armv7-m.dtsi" 2 3 4
+
+/ {
+ soc {
+  #address-cells = <1>;
+  #size-cells = <1>;
+  compatible = "simple-bus";
+  interrupt-parent = <&nvic>;
+  ranges;
+
+  nvic: interrupt-controller@e000e100 {
+   #address-cells = <1>;
+   compatible = "arm,v7m-nvic";
+   reg = <0xe000e100 0xc00>;
+   interrupt-controller;
+   #interrupt-cells = <2>;
+  };
+
+  systick: timer@e000e010 {
+   compatible = "arm,armv7m-systick";
+   reg = <0xe000e010 0x10>;
+  };
+ };
+};
+# 4 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/dts/arm/nordic/nrf52840.dtsi" 2 3 4
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/dts/common/nordic/nrf_common.dtsi" 1 3 4
+
+
+
+
+
+
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/include/zephyr/dt-bindings/adc/adc.h" 1 3 4
+# 9 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/include/zephyr/dt-bindings/adc/adc.h" 3 4
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/include/zephyr/dt-bindings/dt-util.h" 1 3 4
+# 19 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/include/zephyr/dt-bindings/dt-util.h" 3 4
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/include/zephyr/sys/util_macro.h" 1 3 4
+# 34 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/include/zephyr/sys/util_macro.h" 3 4
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/include/zephyr/sys/util_internal.h" 1 3 4
+# 18 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/include/zephyr/sys/util_internal.h" 3 4
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/include/zephyr/sys/util_loops.h" 1 3 4
+# 1083 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/include/zephyr/sys/util_loops.h" 3 4
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/include/zephyr/sys/util_listify.h" 1 3 4
+# 1084 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/include/zephyr/sys/util_loops.h" 2 3 4
+# 19 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/include/zephyr/sys/util_internal.h" 2 3 4
+# 162 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/include/zephyr/sys/util_internal.h" 3 4
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/include/zephyr/sys/util_internal_is_eq.h" 1 3 4
+# 163 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/include/zephyr/sys/util_internal.h" 2 3 4
+# 193 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/include/zephyr/sys/util_internal.h" 3 4
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/include/zephyr/sys/util_internal_util_inc.h" 1 3 4
+# 194 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/include/zephyr/sys/util_internal.h" 2 3 4
+
+
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/include/zephyr/sys/util_internal_util_dec.h" 1 3 4
+# 197 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/include/zephyr/sys/util_internal.h" 2 3 4
+
+
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/include/zephyr/sys/util_internal_util_x2.h" 1 3 4
+# 200 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/include/zephyr/sys/util_internal.h" 2 3 4
+# 35 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/include/zephyr/sys/util_macro.h" 2 3 4
+# 20 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/include/zephyr/dt-bindings/dt-util.h" 2 3 4
+# 10 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/include/zephyr/dt-bindings/adc/adc.h" 2 3 4
+# 8 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/dts/common/nordic/nrf_common.dtsi" 2 3 4
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/include/zephyr/dt-bindings/gpio/gpio.h" 1 3 4
+# 9 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/dts/common/nordic/nrf_common.dtsi" 2 3 4
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/include/zephyr/dt-bindings/i2c/i2c.h" 1 3 4
+# 10 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/dts/common/nordic/nrf_common.dtsi" 2 3 4
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/include/zephyr/dt-bindings/input/input-event-codes.h" 1 3 4
+# 11 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/dts/common/nordic/nrf_common.dtsi" 2 3 4
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/include/zephyr/dt-bindings/pinctrl/nrf-pinctrl.h" 1 3 4
+# 12 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/dts/common/nordic/nrf_common.dtsi" 2 3 4
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/include/zephyr/dt-bindings/pwm/pwm.h" 1 3 4
+# 13 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/dts/common/nordic/nrf_common.dtsi" 2 3 4
+
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/dts/common/freq.h" 1 3 4
+# 15 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/dts/common/nordic/nrf_common.dtsi" 2 3 4
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/dts/arm/nordic/override.dtsi" 1 3 4
+# 16 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/dts/common/nordic/nrf_common.dtsi" 2 3 4
+# 24 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/dts/common/nordic/nrf_common.dtsi" 3 4
+/ {
+ pinctrl: pin-controller {
+
+
+
+
+  compatible = "nordic,nrf-pinctrl";
+ };
+
+ rng_hci: entropy_bt_hci {
+  compatible = "zephyr,bt-hci-entropy";
+  status = "okay";
+ };
+
+ sw_pwm: sw-pwm {
+  compatible = "nordic,nrf-sw-pwm";
+  status = "disabled";
+  generator = <&timer1>;
+  clock-prescaler = <0>;
+  #pwm-cells = <3>;
+ };
+};
+# 5 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/dts/arm/nordic/nrf52840.dtsi" 2 3 4
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/include/zephyr/dt-bindings/adc/nrf-saadc-v3.h" 1 3 4
+# 10 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/include/zephyr/dt-bindings/adc/nrf-saadc-v3.h" 3 4
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/include/zephyr/dt-bindings/adc/nrf-saadc-v2.h" 1 3 4
+# 10 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/include/zephyr/dt-bindings/adc/nrf-saadc-v2.h" 3 4
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/include/zephyr/dt-bindings/adc/nrf-saadc.h" 1 3 4
+# 11 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/include/zephyr/dt-bindings/adc/nrf-saadc-v2.h" 2 3 4
+# 11 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/include/zephyr/dt-bindings/adc/nrf-saadc-v3.h" 2 3 4
+# 6 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/dts/arm/nordic/nrf52840.dtsi" 2 3 4
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/include/zephyr/dt-bindings/regulator/nrf5x.h" 1 3 4
+# 7 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/dts/arm/nordic/nrf52840.dtsi" 2 3 4
+
+/ {
+ chosen {
+  zephyr,bt-hci = &bt_hci_controller;
+  zephyr,entropy = &rng;
+  zephyr,flash-controller = &flash_controller;
+ };
+
+ cpus {
+  #address-cells = <1>;
+  #size-cells = <0>;
+
+  cpu@0 {
+   device_type = "cpu";
+   compatible = "arm,cortex-m4f";
+   reg = <0>;
+   #address-cells = <1>;
+   #size-cells = <1>;
+
+   itm: itm@e0000000 {
+    compatible = "arm,armv7m-itm";
+    reg = <0xe0000000 0x1000>;
+    swo-ref-frequency = <32000000>;
+   };
+  };
+ };
+
+ soc {
+  ficr: ficr@10000000 {
+   compatible = "nordic,nrf-ficr";
+   reg = <0x10000000 0x1000>;
+   #nordic,ficr-cells = <1>;
+   status = "okay";
+  };
+
+  uicr: uicr@10001000 {
+   compatible = "nordic,nrf-uicr";
+   reg = <0x10001000 0x1000>;
+   status = "okay";
+  };
+
+  sram0: memory@20000000 {
+   compatible = "mmio-sram";
+  };
+
+  clock: clock@40000000 {
+   compatible = "nordic,nrf-clock";
+   reg = <0x40000000 0x1000>;
+   interrupts = <0 1>;
+   status = "okay";
+  };
+
+  power: power@40000000 {
+   compatible = "nordic,nrf-power";
+   reg = <0x40000000 0x1000>;
+   interrupts = <0 1>;
+   status = "okay";
+   #address-cells = <1>;
+   #size-cells = <1>;
+
+   gpregret1: gpregret1@4000051c {
+    #address-cells = <1>;
+    #size-cells = <1>;
+    compatible = "nordic,nrf-gpregret";
+    reg = <0x4000051c 0x1>;
+    status = "okay";
+   };
+
+   gpregret2: gpregret2@40000520 {
+    #address-cells = <1>;
+    #size-cells = <1>;
+    compatible = "nordic,nrf-gpregret";
+    reg = <0x40000520 0x1>;
+    status = "okay";
+   };
+
+   reg1: regulator@40000578 {
+    compatible = "nordic,nrf5x-regulator";
+    reg = <0x40000578 0x1>;
+    regulator-name = "REG1";
+    regulator-initial-mode = <0>;
+   };
+  };
+
+  radio: radio@40001000 {
+   compatible = "nordic,nrf-radio";
+   reg = <0x40001000 0x1000>;
+   interrupts = <1 1>;
+   status = "okay";
+   ieee802154-supported;
+   ble-2mbps-supported;
+   ble-coded-phy-supported;
+   tx-high-power-supported;
+
+   ieee802154: ieee802154 {
+    compatible = "nordic,nrf-ieee802154";
+    status = "disabled";
+   };
+
+
+
+
+   bt_hci_controller: bt_hci_controller {
+    compatible = "zephyr,bt-hci-ll-sw-split";
+    status = "okay";
+   };
+  };
+
+  uart0: uart@40002000 {
+
+
+   compatible = "nordic,nrf-uarte";
+   reg = <0x40002000 0x1000>;
+   interrupts = <2 1>;
+   status = "disabled";
+  };
+
+  i2c0: i2c@40003000 {
+
+
+
+
+
+
+
+   compatible = "nordic,nrf-twim";
+   #address-cells = <1>;
+   #size-cells = <0>;
+   reg = <0x40003000 0x1000>;
+   interrupts = <3 1>;
+   easydma-maxcnt-bits = <16>;
+   status = "disabled";
+   zephyr,pm-device-runtime-auto;
+  };
+
+  spi0: spi@40003000 {
+
+
+
+
+
+
+
+   compatible = "nordic,nrf-spim";
+   #address-cells = <1>;
+   #size-cells = <0>;
+   reg = <0x40003000 0x1000>;
+   interrupts = <3 1>;
+   max-frequency = <(((8) * 1000) * 1000)>;
+   easydma-maxcnt-bits = <16>;
+   status = "disabled";
+  };
+
+  i2c1: i2c@40004000 {
+
+
+
+
+
+
+
+   compatible = "nordic,nrf-twim";
+   #address-cells = <1>;
+   #size-cells = <0>;
+   reg = <0x40004000 0x1000>;
+   interrupts = <4 1>;
+   easydma-maxcnt-bits = <16>;
+   status = "disabled";
+   zephyr,pm-device-runtime-auto;
+  };
+
+  spi1: spi@40004000 {
+
+
+
+
+
+
+
+   compatible = "nordic,nrf-spim";
+   #address-cells = <1>;
+   #size-cells = <0>;
+   reg = <0x40004000 0x1000>;
+   interrupts = <4 1>;
+   max-frequency = <(((8) * 1000) * 1000)>;
+   easydma-maxcnt-bits = <16>;
+   status = "disabled";
+  };
+
+  nfct: nfct@40005000 {
+   compatible = "nordic,nrf-nfct";
+   reg = <0x40005000 0x1000>;
+   interrupts = <5 1>;
+   status = "disabled";
+  };
+
+  gpiote: gpiote0: gpiote@40006000 {
+   compatible = "nordic,nrf-gpiote";
+   reg = <0x40006000 0x1000>;
+   interrupts = <6 5>;
+   status = "disabled";
+   instance = <0>;
+  };
+
+  adc: adc@40007000 {
+   compatible = "nordic,nrf-saadc";
+   reg = <0x40007000 0x1000>;
+   interrupts = <7 1>;
+   status = "disabled";
+   #io-channel-cells = <1>;
+   zephyr,pm-device-runtime-auto;
+  };
+
+  timer0: timer@40008000 {
+   compatible = "nordic,nrf-timer";
+   status = "disabled";
+   reg = <0x40008000 0x1000>;
+   cc-num = <4>;
+   max-bit-width = <32>;
+   interrupts = <8 1>;
+   prescaler = <0>;
+  };
+
+  timer1: timer@40009000 {
+   compatible = "nordic,nrf-timer";
+   status = "disabled";
+   reg = <0x40009000 0x1000>;
+   cc-num = <4>;
+   max-bit-width = <32>;
+   interrupts = <9 1>;
+   prescaler = <0>;
+  };
+
+  timer2: timer@4000a000 {
+   compatible = "nordic,nrf-timer";
+   status = "disabled";
+   reg = <0x4000a000 0x1000>;
+   cc-num = <4>;
+   max-bit-width = <32>;
+   interrupts = <10 1>;
+   prescaler = <0>;
+  };
+
+  rtc0: rtc@4000b000 {
+   compatible = "nordic,nrf-rtc";
+   reg = <0x4000b000 0x1000>;
+   cc-num = <3>;
+   interrupts = <11 1>;
+   status = "disabled";
+   clock-frequency = <32768>;
+   prescaler = <1>;
+  };
+
+  temp: temp@4000c000 {
+   compatible = "nordic,nrf-temp";
+   reg = <0x4000c000 0x1000>;
+   interrupts = <12 1>;
+   status = "okay";
+  };
+
+  rng: random@4000d000 {
+   compatible = "nordic,nrf-rng";
+   reg = <0x4000d000 0x1000>;
+   interrupts = <13 1>;
+   status = "okay";
+  };
+
+  ecb: ecb@4000e000 {
+   compatible = "nordic,nrf-ecb";
+   reg = <0x4000e000 0x1000>;
+   interrupts = <14 1>;
+   status = "okay";
+  };
+
+  ccm: ccm@4000f000 {
+   compatible = "nordic,nrf-ccm";
+   reg = <0x4000f000 0x1000>;
+   interrupts = <15 1>;
+   length-field-length-8-bits;
+   status = "okay";
+  };
+
+  wdt: wdt0: watchdog@40010000 {
+   compatible = "nordic,nrf-wdt";
+   reg = <0x40010000 0x1000>;
+   interrupts = <16 1>;
+   status = "okay";
+  };
+
+  rtc1: rtc@40011000 {
+   compatible = "nordic,nrf-rtc";
+   reg = <0x40011000 0x1000>;
+   cc-num = <4>;
+   interrupts = <17 1>;
+   status = "disabled";
+   clock-frequency = <32768>;
+   prescaler = <1>;
+  };
+
+  qdec: qdec0: qdec@40012000 {
+   compatible = "nordic,nrf-qdec";
+   reg = <0x40012000 0x1000>;
+   interrupts = <18 1>;
+   status = "disabled";
+  };
+
+  comp: comparator@40013000 {
+
+
+
+
+   compatible = "nordic,nrf-comp";
+   reg = <0x40013000 0x1000>;
+   interrupts = <19 1>;
+   status = "disabled";
+  };
+
+  egu0: swi0: egu@40014000 {
+   compatible = "nordic,nrf-egu", "nordic,nrf-swi";
+   reg = <0x40014000 0x1000>;
+   interrupts = <20 1>;
+   status = "okay";
+  };
+
+  egu1: swi1: egu@40015000 {
+   compatible = "nordic,nrf-egu", "nordic,nrf-swi";
+   reg = <0x40015000 0x1000>;
+   interrupts = <21 1>;
+   status = "okay";
+  };
+
+  egu2: swi2: egu@40016000 {
+   compatible = "nordic,nrf-egu", "nordic,nrf-swi";
+   reg = <0x40016000 0x1000>;
+   interrupts = <22 1>;
+   status = "okay";
+  };
+
+  egu3: swi3: egu@40017000 {
+   compatible = "nordic,nrf-egu", "nordic,nrf-swi";
+   reg = <0x40017000 0x1000>;
+   interrupts = <23 1>;
+   status = "okay";
+  };
+
+  egu4: swi4: egu@40018000 {
+   compatible = "nordic,nrf-egu", "nordic,nrf-swi";
+   reg = <0x40018000 0x1000>;
+   interrupts = <24 1>;
+   status = "okay";
+  };
+
+  egu5: swi5: egu@40019000 {
+   compatible = "nordic,nrf-egu", "nordic,nrf-swi";
+   reg = <0x40019000 0x1000>;
+   interrupts = <25 1>;
+   status = "okay";
+  };
+
+  timer3: timer@4001a000 {
+   compatible = "nordic,nrf-timer";
+   status = "disabled";
+   reg = <0x4001a000 0x1000>;
+   cc-num = <6>;
+   max-bit-width = <32>;
+   interrupts = <26 1>;
+   prescaler = <0>;
+  };
+
+  timer4: timer@4001b000 {
+   compatible = "nordic,nrf-timer";
+   status = "disabled";
+   reg = <0x4001b000 0x1000>;
+   cc-num = <6>;
+   max-bit-width = <32>;
+   interrupts = <27 1>;
+   prescaler = <0>;
+  };
+
+  pwm0: pwm@4001c000 {
+   compatible = "nordic,nrf-pwm";
+   reg = <0x4001c000 0x1000>;
+   interrupts = <28 1>;
+   status = "disabled";
+   #pwm-cells = <3>;
+  };
+
+  pdm0: pdm@4001d000 {
+   compatible = "nordic,nrf-pdm";
+   reg = <0x4001d000 0x1000>;
+   interrupts = <29 1>;
+   status = "disabled";
+  };
+
+  acl: acl@4001e000 {
+   compatible = "nordic,nrf-acl";
+   reg = <0x4001e000 0x1000>;
+   status = "okay";
+  };
+
+  flash_controller: flash-controller@4001e000 {
+   compatible = "nordic,nrf52-flash-controller";
+   reg = <0x4001e000 0x1000>;
+   partial-erase;
+
+   #address-cells = <1>;
+   #size-cells = <1>;
+
+
+   flash0: flash@0 {
+    compatible = "soc-nv-flash";
+    erase-block-size = <4096>;
+    write-block-size = <4>;
+   };
+  };
+
+  ppi: ppi@4001f000 {
+   compatible = "nordic,nrf-ppi";
+   reg = <0x4001f000 0x1000>;
+   status = "okay";
+  };
+
+  mwu: mwu@40020000 {
+   compatible = "nordic,nrf-mwu";
+   reg = <0x40020000 0x1000>;
+   status = "okay";
+  };
+
+  pwm1: pwm@40021000 {
+   compatible = "nordic,nrf-pwm";
+   reg = <0x40021000 0x1000>;
+   interrupts = <33 1>;
+   status = "disabled";
+   #pwm-cells = <3>;
+  };
+
+  pwm2: pwm@40022000 {
+   compatible = "nordic,nrf-pwm";
+   reg = <0x40022000 0x1000>;
+   interrupts = <34 1>;
+   status = "disabled";
+   #pwm-cells = <3>;
+  };
+
+  spi2: spi@40023000 {
+
+
+
+
+
+
+
+   compatible = "nordic,nrf-spim";
+   #address-cells = <1>;
+   #size-cells = <0>;
+   reg = <0x40023000 0x1000>;
+   interrupts = <35 1>;
+   max-frequency = <(((8) * 1000) * 1000)>;
+   easydma-maxcnt-bits = <16>;
+   status = "disabled";
+  };
+
+  rtc2: rtc@40024000 {
+   compatible = "nordic,nrf-rtc";
+   reg = <0x40024000 0x1000>;
+   cc-num = <4>;
+   interrupts = <36 1>;
+   status = "disabled";
+   clock-frequency = <32768>;
+   prescaler = <1>;
+  };
+
+  i2s0: i2s@40025000 {
+   compatible = "nordic,nrf-i2s";
+   #address-cells = <1>;
+   #size-cells = <0>;
+   reg = <0x40025000 0x1000>;
+   interrupts = <37 1>;
+   status = "disabled";
+  };
+
+  usbd: usbd@40027000 {
+   compatible = "nordic,nrf-usbd";
+   reg = <0x40027000 0x1000>;
+   interrupts = <39 1>;
+   num-bidir-endpoints = <1>;
+   num-in-endpoints = <7>;
+   num-out-endpoints = <7>;
+   num-isoin-endpoints = <1>;
+   num-isoout-endpoints = <1>;
+   status = "disabled";
+  };
+
+  uart1: uart@40028000 {
+   compatible = "nordic,nrf-uarte";
+   reg = <0x40028000 0x1000>;
+   interrupts = <40 1>;
+   status = "disabled";
+  };
+
+  qspi: qspi@40029000 {
+   compatible = "nordic,nrf-qspi";
+   #address-cells = <1>;
+   #size-cells = <0>;
+   reg = <0x40029000 0x1000>, <0x12000000 0x8000000>;
+   reg-names = "qspi", "qspi_mm";
+   interrupts = <41 1>;
+   status = "disabled";
+  };
+
+  pwm3: pwm@4002d000 {
+   compatible = "nordic,nrf-pwm";
+   reg = <0x4002d000 0x1000>;
+   interrupts = <45 1>;
+   status = "disabled";
+   #pwm-cells = <3>;
+  };
+
+  spi3: spi@4002f000 {
+   compatible = "nordic,nrf-spim";
+   #address-cells = <1>;
+   #size-cells = <0>;
+   reg = <0x4002f000 0x1000>;
+   interrupts = <47 1>;
+   max-frequency = <(((32) * 1000) * 1000)>;
+   easydma-maxcnt-bits = <16>;
+   rx-delay-supported;
+   rx-delay = <2>;
+   status = "disabled";
+  };
+
+  gpio0: gpio@50000000 {
+   compatible = "nordic,nrf-gpio";
+   gpio-controller;
+   reg = <0x50000000 0x200
+          0x50000500 0x300>;
+   #gpio-cells = <2>;
+   status = "disabled";
+   port = <0>;
+   gpiote-instance = <&gpiote>;
+  };
+
+  gpio1: gpio@50000300 {
+   compatible = "nordic,nrf-gpio";
+   gpio-controller;
+   reg = <0x50000300 0x200
+          0x50000800 0x300>;
+   #gpio-cells = <2>;
+   ngpios = <16>;
+   status = "disabled";
+   port = <1>;
+   gpiote-instance = <&gpiote>;
+  };
+
+  cryptocell: crypto@5002a000 {
+   compatible = "nordic,cryptocell", "arm,cryptocell-310";
+   reg = <0x5002a000 0x1000>, <0x5002b000 0x1000>;
+   reg-names = "wrapper", "core";
+   interrupts = <42 1>;
+   status = "disabled";
+  };
+ };
+};
+
+&nvic {
+ arm,num-irq-priority-bits = <3>;
+};
+
+&systick {
+
+ status = "disabled";
+};
+# 9 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/dts/arm/nordic/nrf52840_qiaa.dtsi" 2 3 4
+
+&flash0 {
+ reg = <0x00000000 ((1024) * 1024)>;
+};
+
+&sram0 {
+ reg = <0x20000000 ((256) * 1024)>;
+};
+
+&power {
+ reg0: regulator@40000580 {
+  compatible = "nordic,nrf52x-regulator-hv";
+  reg = <0x40000580 0x1>;
+  regulator-name = "REG0";
+  status = "disabled";
+ };
+};
+
+/ {
+ soc {
+  compatible = "nordic,nrf52840-qiaa", "nordic,nrf52840",
+        "nordic,nrf52", "simple-bus";
+ };
+};
+# 9 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/boards/seeed/xiao_ble/xiao_ble_common.dtsi" 2 3 4
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/dts/common/nordic/nrf52840_partition_uf2_sdv7.dtsi" 1 3 4
+
+
+
+
+
+
+
+/ {
+ chosen {
+  zephyr,sram = &sram0;
+  zephyr,flash = &flash0;
+  zephyr,code-partition = &code_partition;
+ };
+};
+
+&flash0 {
+# 26 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/dts/common/nordic/nrf52840_partition_uf2_sdv7.dtsi" 3 4
+ partitions {
+  compatible = "fixed-partitions";
+  #address-cells = <1>;
+  #size-cells = <1>;
+
+  reserved_partition_0: partition@0 {
+   label = "SoftDevice";
+   read-only;
+   reg = <0x00000000 0x00027000>;
+  };
+
+  code_partition: partition@27000 {
+   label = "Application";
+   reg = <0x00027000 0x000C5000>;
+  };
+
+  storage_partition: partition@ec000 {
+   label = "Storage";
+   reg = <0x000ec000 0x00008000>;
+  };
+
+  boot_partition: partition@f4000 {
+   label = "UF2";
+   read-only;
+   reg = <0x000f4000 0x0000c000>;
+  };
+ };
+};
+# 10 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/boards/seeed/xiao_ble/xiao_ble_common.dtsi" 2 3 4
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/boards/seeed/xiao_ble/xiao_ble-pinctrl.dtsi" 1 3 4
+
+
+
+
+
+&pinctrl {
+ uart0_default: uart0_default {
+  group1 {
+   psels = <((((((1) * 32U) + (11)) & 0x1FFU) << 0U) | ((0U & 0xFFU) << 24U))>;
+  };
+  group2 {
+   psels = <((((((1) * 32U) + (12)) & 0x1FFU) << 0U) | ((1U & 0xFFU) << 24U))>;
+   bias-pull-up;
+  };
+ };
+
+ uart0_sleep: uart0_sleep {
+  group1 {
+   psels = <((((((1) * 32U) + (11)) & 0x1FFU) << 0U) | ((0U & 0xFFU) << 24U))>,
+    <((((((1) * 32U) + (12)) & 0x1FFU) << 0U) | ((1U & 0xFFU) << 24U))>;
+   low-power-enable;
+  };
+ };
+
+ i2c0_default: i2c0_default {
+  group1 {
+   psels = <((((((0) * 32U) + (7)) & 0x1FFU) << 0U) | ((12U & 0xFFU) << 24U))>,
+    <((((((0) * 32U) + (27)) & 0x1FFU) << 0U) | ((11U & 0xFFU) << 24U))>;
+  };
+ };
+
+ i2c0_sleep: i2c0_sleep {
+  group1 {
+   psels = <((((((0) * 32U) + (7)) & 0x1FFU) << 0U) | ((12U & 0xFFU) << 24U))>,
+    <((((((0) * 32U) + (27)) & 0x1FFU) << 0U) | ((11U & 0xFFU) << 24U))>;
+   low-power-enable;
+  };
+ };
+
+ i2c1_default: i2c1_default {
+  group1 {
+   psels = <((((((0) * 32U) + (4)) & 0x1FFU) << 0U) | ((12U & 0xFFU) << 24U))>,
+    <((((((0) * 32U) + (5)) & 0x1FFU) << 0U) | ((11U & 0xFFU) << 24U))>;
+  };
+ };
+
+ i2c1_sleep: i2c1_sleep {
+  group1 {
+   psels = <((((((0) * 32U) + (4)) & 0x1FFU) << 0U) | ((12U & 0xFFU) << 24U))>,
+    <((((((0) * 32U) + (5)) & 0x1FFU) << 0U) | ((11U & 0xFFU) << 24U))>;
+   low-power-enable;
+  };
+ };
+
+ pdm0_default: pdm0_default {
+  group1 {
+   psels = <((((((1) * 32U) + (00)) & 0x1FFU) << 0U) | ((20U & 0xFFU) << 24U))>,
+    <((((((0) * 32U) + (16)) & 0x1FFU) << 0U) | ((21U & 0xFFU) << 24U))>;
+  };
+ };
+
+ pdm0_sleep: pdm0_sleep {
+  group1 {
+   psels = <((((((1) * 32U) + (00)) & 0x1FFU) << 0U) | ((20U & 0xFFU) << 24U))>,
+    <((((((0) * 32U) + (16)) & 0x1FFU) << 0U) | ((21U & 0xFFU) << 24U))>;
+    low-power-enable;
+  };
+ };
+
+ pwm0_default: pwm0_default {
+  group1 {
+   psels = <((((((0) * 32U) + (17)) & 0x1FFU) << 0U) | ((22U & 0xFFU) << 24U))>;
+   nordic,invert;
+  };
+ };
+
+ pwm0_sleep: pwm0_sleep {
+  group1 {
+   psels = <((((((0) * 32U) + (17)) & 0x1FFU) << 0U) | ((22U & 0xFFU) << 24U))>;
+   low-power-enable;
+  };
+ };
+
+ spi2_default: spi2_default {
+  group1 {
+   psels = <((((((1) * 32U) + (13)) & 0x1FFU) << 0U) | ((4U & 0xFFU) << 24U))>,
+    <((((((1) * 32U) + (15)) & 0x1FFU) << 0U) | ((5U & 0xFFU) << 24U))>,
+    <((((((1) * 32U) + (14)) & 0x1FFU) << 0U) | ((6U & 0xFFU) << 24U))>;
+  };
+ };
+
+ spi2_sleep: spi2_sleep {
+  group1 {
+   psels = <((((((1) * 32U) + (13)) & 0x1FFU) << 0U) | ((4U & 0xFFU) << 24U))>,
+    <((((((1) * 32U) + (15)) & 0x1FFU) << 0U) | ((5U & 0xFFU) << 24U))>,
+    <((((((1) * 32U) + (14)) & 0x1FFU) << 0U) | ((6U & 0xFFU) << 24U))>;
+   low-power-enable;
+  };
+ };
+
+ spi3_default: spi3_default {
+  group1 {
+   psels = <((((((0) * 32U) + (21)) & 0x1FFU) << 0U) | ((4U & 0xFFU) << 24U))>,
+    <((((((0) * 32U) + (20)) & 0x1FFU) << 0U) | ((5U & 0xFFU) << 24U))>,
+    <((((((0) * 32U) + (24)) & 0x1FFU) << 0U) | ((6U & 0xFFU) << 24U))>;
+  };
+ };
+
+ spi3_sleep: spi3_sleep {
+  group1 {
+   psels = <((((((0) * 32U) + (21)) & 0x1FFU) << 0U) | ((4U & 0xFFU) << 24U))>,
+    <((((((0) * 32U) + (20)) & 0x1FFU) << 0U) | ((5U & 0xFFU) << 24U))>,
+    <((((((0) * 32U) + (24)) & 0x1FFU) << 0U) | ((6U & 0xFFU) << 24U))>;
+   low-power-enable;
+  };
+ };
+
+ qspi_default: qspi_default {
+  group1 {
+   psels = <((((((0) * 32U) + (21)) & 0x1FFU) << 0U) | ((29U & 0xFFU) << 24U))>,
+    <((((((0) * 32U) + (20)) & 0x1FFU) << 0U) | ((31U & 0xFFU) << 24U))>,
+    <((((((0) * 32U) + (24)) & 0x1FFU) << 0U) | ((32U & 0xFFU) << 24U))>,
+    <((((((0) * 32U) + (22)) & 0x1FFU) << 0U) | ((33U & 0xFFU) << 24U))>,
+    <((((((0) * 32U) + (23)) & 0x1FFU) << 0U) | ((34U & 0xFFU) << 24U))>,
+    <((((((0) * 32U) + (25)) & 0x1FFU) << 0U) | ((30U & 0xFFU) << 24U))>;
+  };
+ };
+
+ qspi_sleep: qspi_sleep {
+  group1 {
+   psels = <((((((0) * 32U) + (21)) & 0x1FFU) << 0U) | ((29U & 0xFFU) << 24U))>,
+    <((((((0) * 32U) + (20)) & 0x1FFU) << 0U) | ((31U & 0xFFU) << 24U))>,
+    <((((((0) * 32U) + (24)) & 0x1FFU) << 0U) | ((32U & 0xFFU) << 24U))>,
+    <((((((0) * 32U) + (22)) & 0x1FFU) << 0U) | ((33U & 0xFFU) << 24U))>,
+    <((((((0) * 32U) + (23)) & 0x1FFU) << 0U) | ((34U & 0xFFU) << 24U))>;
+   low-power-enable;
+  };
+  group2 {
+   psels = <((((((0) * 32U) + (25)) & 0x1FFU) << 0U) | ((30U & 0xFFU) << 24U))>;
+   low-power-enable;
+   bias-pull-up;
+  };
+ };
+};
+# 11 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/boards/seeed/xiao_ble/xiao_ble_common.dtsi" 2 3 4
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/boards/seeed/xiao_ble/seeed_xiao_connector.dtsi" 1 3 4
+
+
+
+
+
+
+
+/ {
+ xiao_d: connector {
+  compatible = "seeed,xiao-gpio";
+  #gpio-cells = <2>;
+  gpio-map-mask = <0xffffffff 0xffffffc0>;
+  gpio-map-pass-thru = <0 0x3f>;
+  gpio-map
+   = <0 0 &gpio0 2 0>
+   , <1 0 &gpio0 3 0>
+   , <2 0 &gpio0 28 0>
+   , <3 0 &gpio0 29 0>
+   , <4 0 &gpio0 4 0>
+   , <5 0 &gpio0 5 0>
+   , <6 0 &gpio1 11 0>
+   , <7 0 &gpio1 12 0>
+   , <8 0 &gpio1 13 0>
+   , <9 0 &gpio1 14 0>
+   , <10 0 &gpio1 15 0>
+   ;
+ };
+};
+
+xiao_spi: &spi2 {};
+xiao_i2c: &i2c1 {};
+xiao_serial: &uart0 {};
+xiao_adc: &adc {};
+# 12 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/boards/seeed/xiao_ble/xiao_ble_common.dtsi" 2 3 4
+
+/ {
+ chosen {
+  zephyr,ieee802154 = &ieee802154;
+ };
+
+ leds {
+  compatible = "gpio-leds";
+  led0: led_0 {
+   gpios = <&gpio0 26 (1 << 0)>;
+   label = "Red LED";
+  };
+  led1: led_1 {
+   gpios = <&gpio0 30 (1 << 0)>;
+   label = "Green LED";
+  };
+  led2: led_2 {
+   gpios = <&gpio0 6 (1 << 0)>;
+   label = "Blue LED";
+  };
+ };
+
+ pwmleds {
+  compatible = "pwm-leds";
+  pwm_led0: pwm_led_0 {
+   pwms = <&pwm0 0 (((20) * 1000UL) * 1000UL) (1 << 0)>;
+  };
+ };
+
+
+ aliases {
+  led0 = &led0;
+  led1 = &led1;
+  led2 = &led2;
+  pwm-led0 = &pwm_led0;
+  bootloader-led0 = &led0;
+  mcuboot-led0 = &led0;
+  watchdog0 = &wdt0;
+ };
+};
+
+&reg0 {
+ status = "okay";
+};
+
+&reg1 {
+ regulator-initial-mode = <1>;
+};
+
+&adc {
+ status = "okay";
+};
+
+&uicr {
+ gpio-as-nreset;
+};
+
+&gpiote {
+ status = "okay";
+};
+
+&gpio0 {
+ status = "okay";
+};
+
+&gpio1 {
+ status = "okay";
+};
+
+&uart0 {
+ compatible = "nordic,nrf-uarte";
+ status = "okay";
+ current-speed = <115200>;
+ pinctrl-0 = <&uart0_default>;
+ pinctrl-1 = <&uart0_sleep>;
+ pinctrl-names = "default", "sleep";
+};
+
+&i2c1 {
+ compatible = "nordic,nrf-twi";
+
+ status = "okay";
+ pinctrl-0 = <&i2c1_default>;
+ pinctrl-1 = <&i2c1_sleep>;
+ pinctrl-names = "default", "sleep";
+};
+
+&pwm0 {
+ status = "okay";
+ pinctrl-0 = <&pwm0_default>;
+ pinctrl-1 = <&pwm0_sleep>;
+ pinctrl-names = "default", "sleep";
+};
+
+&spi2 {
+ compatible = "nordic,nrf-spi";
+ status = "okay";
+ pinctrl-0 = <&spi2_default>;
+ pinctrl-1 = <&spi2_sleep>;
+ pinctrl-names = "default", "sleep";
+};
+
+&qspi {
+ status = "okay";
+ pinctrl-0 = <&qspi_default>;
+ pinctrl-1 = <&qspi_sleep>;
+ pinctrl-names = "default", "sleep";
+ p25q16h: p25q16h@0 {
+  compatible = "nordic,qspi-nor";
+  reg = <0>;
+  sck-frequency = <104000000>;
+  quad-enable-requirements = "S2B1v1";
+  jedec-id = [85 60 15];
+  sfdp-bfp = [
+   e5 20 f1 ff ff ff ff 00 44 eb 08 6b 08 3b 80 bb
+   ee ff ff ff ff ff 00 ff ff ff 00 ff 0c 20 0f 52
+   10 d8 08 81
+  ];
+  size = <16777216>;
+  has-dpd;
+  t-enter-dpd = <3000>;
+  t-exit-dpd = <8000>;
+ };
+};
+
+&ieee802154 {
+ status = "okay";
+};
+
+zephyr_udc0: &usbd {
+ compatible = "nordic,nrf-usbd";
+ status = "okay";
+};
+
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/boards/common/usb/cdc_acm_serial.dtsi" 1 3 4
+
+
+
+
+
+
+/ {
+ chosen {
+  zephyr,console = &board_cdc_acm_uart;
+  zephyr,shell-uart = &board_cdc_acm_uart;
+  zephyr,uart-mcumgr = &board_cdc_acm_uart;
+  zephyr,bt-mon-uart = &board_cdc_acm_uart;
+  zephyr,bt-c2h-uart = &board_cdc_acm_uart;
+ };
+};
+
+&zephyr_udc0 {
+ board_cdc_acm_uart: board_cdc_acm_uart {
+  compatible = "zephyr,cdc-acm-uart";
+ };
+};
+# 147 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/boards/seeed/xiao_ble/xiao_ble_common.dtsi" 2 3 4
+# 9 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/boards/seeed/xiao_ble/xiao_ble.dts" 2 3 4
+
+/ {
+ model = "Seeed XIAO BLE";
+ compatible = "seeed,xiao-ble";
+};
+# 8 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/boards/seeed/xiao_ble/xiao_ble_zmk.dts" 2
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/common/nordic/nrf52840_uf2_boot_mode.dtsi" 1 3 4
+
+&gpregret1 {
+    adafruit_boot_retention: retention@0 {
+        compatible = "zephyr,retention";
+        status = "okay";
+        reg = <0x0 0x1>;
+    };
+};
+
+/ {
+    chosen {
+        zephyr,boot-mode = &boot_retention;
+        zmk,magic-boot-mode = &adafruit_boot_retention;
+    };
+
+    magic_mapper {
+        compatible = "zmk,bootmode-to-magic-mapper";
+        status = "okay";
+
+        #address-cells = <1>;
+        #size-cells = <1>;
+
+        boot_retention: retention@0 {
+            compatible = "zephyr,retention";
+            status = "okay";
+            reg = <0x0 0x1>;
+        };
+    };
+};
+# 9 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/boards/seeed/xiao_ble/xiao_ble_zmk.dts" 2
+
+
+sd_partition: &reserved_partition_0 { };
+
+/ {
+    chosen {
+        zmk,battery = &vbatt;
+    };
+
+    vbatt: vbatt {
+        compatible = "zmk,battery-voltage-divider";
+        io-channels = <&adc 7>;
+        power-gpios = <&gpio0 14 (((1 << 1) | (1 << 2)) | (1 << 0))>;
+        output-ohms = <510000>;
+        full-ohms = <(1000000 + 510000)>;
+    };
+};
+
+&xiao_serial { status = "disabled"; };
+
+&adc {
+    status = "okay";
+};
+
+&qspi {
+    status = "okay";
+    pinctrl-0 = <&qspi_default>;
+    pinctrl-1 = <&qspi_sleep>;
+    pinctrl-names = "default", "sleep";
+    p25q16h: p25q16h@0 {
+        compatible = "nordic,qspi-nor";
+        reg = <0>;
+        sck-frequency = <104000000>;
+        quad-enable-requirements = "S2B1v1";
+        jedec-id = [85 60 15];
+        sfdp-bfp = [
+            e5 20 f1 ff ff ff ff 00 44 eb 08 6b 08 3b 80 bb
+            ee ff ff ff ff ff 00 ff ff ff 00 ff 0c 20 0f 52
+            10 d8 08 81
+        ];
+        size = <16777216>;
+        has-dpd;
+        t-enter-dpd = <3000>;
+        t-exit-dpd = <8000>;
+    };
+};
+# 0 "<command-line>" 2
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/config/boards/shields/atlas/atlas_left.overlay" 1
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/config/boards/shields/atlas/atlas.dtsi" 1
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/include/dt-bindings/zmk/matrix_transform.h" 1 3 4
+# 2 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/config/boards/shields/atlas/atlas.dtsi" 2
+
+/ {
+    chosen {
+        zmk,kscan = &kscan0;
+        zmk,matrix_transform = &default_transform;
+    };
+
+
+    split_inputs {
+        #address-cells = <1>;
+        #size-cells = <0>;
+
+        trackpoint_split_right: trackpoint_split@0 {
+            compatible = "zmk,input-split";
+            reg = <0>;
+        };
+    };
+
+    default_transform: keymap_transform_0 {
+        compatible = "zmk,matrix-transform";
+        columns = <10>;
+        rows = <4>;
+
+
+
+
+        map = <
+                (((0) << 8) + (0)) (((0) << 8) + (1)) (((0) << 8) + (2)) (((0) << 8) + (3)) (((0) << 8) + (4)) (((0) << 8) + (5)) (((0) << 8) + (6)) (((0) << 8) + (7)) (((0) << 8) + (8)) (((0) << 8) + (9))
+                (((1) << 8) + (0)) (((1) << 8) + (1)) (((1) << 8) + (2)) (((1) << 8) + (3)) (((1) << 8) + (4)) (((1) << 8) + (5)) (((1) << 8) + (6)) (((1) << 8) + (7)) (((1) << 8) + (8)) (((1) << 8) + (9))
+                (((2) << 8) + (0)) (((2) << 8) + (1)) (((2) << 8) + (2)) (((2) << 8) + (3)) (((2) << 8) + (4)) (((2) << 8) + (5)) (((2) << 8) + (6)) (((2) << 8) + (7)) (((2) << 8) + (8)) (((2) << 8) + (9))
+                                        (((3) << 8) + (3)) (((3) << 8) + (4)) (((3) << 8) + (5)) (((3) << 8) + (6))
+        >;
+    };
+
+
+    kscan0: kscan_0 {
+        compatible = "zmk,kscan-gpio-matrix";
+        label = "KSCAN";
+
+        diode-direction = "col2row";
+        row-gpios
+            = <&xiao_d 0 ((0 << 0) | (1 << 5))>
+            , <&xiao_d 1 ((0 << 0) | (1 << 5))>
+            , <&xiao_d 2 ((0 << 0) | (1 << 5))>
+            , <&xiao_d 3 ((0 << 0) | (1 << 5))>
+            ;
+    };
+};
+# 2 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/config/boards/shields/atlas/atlas_left.overlay" 2
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/include/zephyr/dt-bindings/pinctrl/nrf-pinctrl.h" 1 3 4
+# 3 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/config/boards/shields/atlas/atlas_left.overlay" 2
+
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/input/processors/temp_layer.dtsi" 1 3 4
+# 9 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/input/processors/temp_layer.dtsi" 3 4
+/ {
+    /omit-if-no-ref/ zip_temp_layer: zip_temp_layer {
+        compatible = "zmk,input-processor-temp-layer";
+        #input-processor-cells = <2>;
+    };
+};
+# 5 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/config/boards/shields/atlas/atlas_left.overlay" 2
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/input/processors/scaler.dtsi" 1 3 4
+# 9 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/input/processors/scaler.dtsi" 3 4
+/ {
+    /omit-if-no-ref/ zip_x_scaler: zip_x_scaler {
+        compatible = "zmk,input-processor-scaler";
+        #input-processor-cells = <2>;
+        type = <0x02>;
+        codes = <0x00>;
+        track-remainders;
+    };
+
+    /omit-if-no-ref/ zip_y_scaler: zip_y_scaler {
+        compatible = "zmk,input-processor-scaler";
+        #input-processor-cells = <2>;
+        type = <0x02>;
+        codes = <0x01>;
+        track-remainders;
+    };
+
+    /omit-if-no-ref/ zip_xy_scaler: zip_xy_scaler {
+        compatible = "zmk,input-processor-scaler";
+        #input-processor-cells = <2>;
+        type = <0x02>;
+        codes = <0x00 0x01>;
+        track-remainders;
+    };
+
+    /omit-if-no-ref/ zip_scroll_scaler: zip_scroll_scaler {
+        compatible = "zmk,input-processor-scaler";
+        #input-processor-cells = <2>;
+        type = <0x02>;
+        codes = <0x08 0x06>;
+        track-remainders;
+    };
+};
+# 6 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/config/boards/shields/atlas/atlas_left.overlay" 2
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/input/processors/code_mapper.dtsi" 1 3 4
+# 9 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/input/processors/code_mapper.dtsi" 3 4
+/ {
+    /omit-if-no-ref/ zip_xy_swap_mapper: zip_xy_swap_mapper {
+        compatible = "zmk,input-processor-code-mapper";
+        #input-processor-cells = <0>;
+        type = <0x02>;
+        map
+            = <0x01 0x00>
+            , <0x00 0x01>
+            ;
+    };
+
+    /omit-if-no-ref/ zip_xy_to_scroll_mapper: zip_xy_to_scroll_mapper {
+        compatible = "zmk,input-processor-code-mapper";
+        #input-processor-cells = <0>;
+        type = <0x02>;
+        map
+            = <0x01 0x08>
+            , <0x00 0x06>
+            ;
+    };
+};
+# 7 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/config/boards/shields/atlas/atlas_left.overlay" 2
+
+&kscan0 {
+    col-gpios
+        = <&xiao_d 4 (0 << 0)>
+        , <&xiao_d 5 (0 << 0)>
+        , <&xiao_d 10 (0 << 0)>
+        , <&xiao_d 9 (0 << 0)>
+        , <&xiao_d 8 (0 << 0)>
+        ;
+};
+# 26 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/config/boards/shields/atlas/atlas_left.overlay"
+&gpiote { interrupts = < 6 2 >; };
+&clock { interrupts = < 0 3 >; };
+&power { interrupts = < 0 3 >; };
+&radio { interrupts = < 1 3 >; };
+&uart0 { interrupts = < 2 0 >; };
+&i2c0 { interrupts = < 3 3 >; };
+&spi0 { interrupts = < 3 3 >; };
+&i2c1 { interrupts = < 4 3 >; };
+&spi1 { interrupts = < 4 3 >; };
+&nfct { interrupts = < 5 3 >; };
+&adc { interrupts = < 7 3 >; };
+&timer0 { interrupts = < 8 3 >; };
+&timer1 { interrupts = < 9 3 >; };
+&timer2 { interrupts = < 10 3 >; };
+&rtc0 { interrupts = < 11 3 >; };
+&temp { interrupts = < 12 3 >; };
+&rng { interrupts = < 13 3 >; };
+&ecb { interrupts = < 14 3 >; };
+&ccm { interrupts = < 15 3 >; };
+&wdt { interrupts = < 16 3 >; };
+&rtc1 { interrupts = < 17 3 >; };
+&qdec { interrupts = < 18 3 >; };
+&comp { interrupts = < 19 3 >; };
+&egu0 { interrupts = < 20 3 >; };
+&egu1 { interrupts = < 21 3 >; };
+&egu2 { interrupts = < 22 3 >; };
+&egu3 { interrupts = < 23 3 >; };
+&egu4 { interrupts = < 24 3 >; };
+&egu5 { interrupts = < 25 3 >; };
+&timer3 { interrupts = < 26 3 >; };
+&timer4 { interrupts = < 27 3 >; };
+&pwm0 { interrupts = < 28 3 >; };
+&pdm0 { interrupts = < 29 3 >; };
+&pwm1 { interrupts = < 33 3 >; };
+&pwm2 { interrupts = < 34 3 >; };
+&spi2 { interrupts = < 35 3 >; };
+&rtc2 { interrupts = < 36 3 >; };
+&i2s0 { interrupts = < 37 3 >; };
+&usbd { interrupts = < 39 3 >; };
+&uart1 { interrupts = < 40 3 >; };
+&qspi { interrupts = < 41 3 >; };
+&pwm3 { interrupts = < 45 3 >; };
+&spi3 { interrupts = < 47 3 >; };
+&cryptocell { interrupts = < 42 3 >; };
+
+&pinctrl {
+
+    uart0_ps2_default: uart0_ps2_default {
+        group1 {
+            psels = <((((((0) * 32U) + (27)) & 0x1FFU) << 0U) | ((0U & 0xFFU) << 24U))>,
+                    <((((((1) * 32U) + (12)) & 0x1FFU) << 0U) | ((1U & 0xFFU) << 24U))>;
+        };
+    };
+
+    uart0_ps2_sleep: uart0_ps2_sleep {
+        group1 {
+            psels = <((((((0) * 32U) + (27)) & 0x1FFU) << 0U) | ((0U & 0xFFU) << 24U))>,
+                    <((((((1) * 32U) + (12)) & 0x1FFU) << 0U) | ((1U & 0xFFU) << 24U))>;
+            low-power-enable;
+        };
+    };
+
+
+
+    uart0_ps2_off: uart0_ps2_off {
+        group1 {
+            psels = <((((((0) * 32U) + (27)) & 0x1FFU) << 0U) | ((0U & 0xFFU) << 24U))>,
+                    <((((((0) * 32U) + (31)) & 0x1FFU) << 0U) | ((1U & 0xFFU) << 24U))>;
+        };
+    };
+};
+
+&uart0 {
+    status = "okay";
+    compatible = "nordic,nrf-uarte";
+    current-speed = <14400>;
+    pinctrl-0 = <&uart0_ps2_default>;
+    pinctrl-1 = <&uart0_ps2_off>;
+    pinctrl-names = "default", "sleep";
+
+    uart_ps2: uart_ps2 {
+        status = "okay";
+        compatible = "uart-ps2";
+        scl-gpios = <&gpio1 11 (0 << 0)>;
+        sda-gpios = <&gpio1 12 (0 << 0)>;
+    };
+};
+
+/ {
+
+    mouse_ps2: mouse_ps2 {
+        compatible = "zmk,input-mouse-ps2";
+        status = "okay";
+        ps2-device = <&uart_ps2>;
+
+        rst-gpios = <&gpio0 9 (0 << 0)>;
+        sampling-rate = <100>;
+
+        tp-sensitivity = <255>;
+        tp-neg-inertia = <255>;
+        tp-val6-upper-speed = <255>;
+    };
+
+
+    zip_xy_to_scroll: zip_xy_to_scroll {
+        compatible = "zmk,input-processor-code-mapper";
+        #input-processor-cells = <0>;
+        type = <0x02>;
+        map = <0x00 0x06>, <0x01 0x08>;
+    };
+
+
+    zip_xy_swap: zip_xy_swap {
+        compatible = "zmk,input-processor-code-mapper";
+        #input-processor-cells = <0>;
+        type = <0x02>;
+        map = <0x00 0x01>, <0x01 0x00>;
+    };
+
+
+    trackpoint_listener: trackpoint_listener {
+        compatible = "zmk,input-listener";
+        status = "okay";
+        device = <&mouse_ps2>;
+
+        input-processors = <&zip_xy_swap>, <&zip_xy_scaler 2 1>, <&zip_temp_layer 5 1000>;
+
+
+        scroll {
+            layers = <6>;
+            input-processors = <&zip_xy_swap>, <&zip_xy_scaler 1 4>, <&zip_xy_to_scroll>;
+        };
+    };
+
+
+    trackpoint_listener_right: trackpoint_listener_right {
+        compatible = "zmk,input-listener";
+        status = "okay";
+        device = <&trackpoint_split_right>;
+
+        input-processors = <&zip_xy_scaler 2 1>, <&zip_temp_layer 5 1000>;
+
+
+        scroll {
+            layers = <6>;
+            input-processors = <&zip_xy_scaler 1 4>, <&zip_xy_to_scroll>;
+        };
+    };
+};
+# 0 "<command-line>" 2
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/config/atlas.keymap" 1
+# 15 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/config/atlas.keymap"
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors.dtsi" 1 3 4
+
+
+
+
+
+
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors/key_press.dtsi" 1 3 4
+
+
+
+
+
+
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/include/dt-bindings/zmk/behaviors.h" 1 3 4
+# 8 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors/key_press.dtsi" 2 3 4
+
+/ {
+    behaviors {
+
+    /omit-if-no-ref/
+
+        kp: key_press {
+            compatible = "zmk,behavior-key-press";
+            #binding-cells = <1>;
+            display-name = "Key Press";
+        };
+    };
+};
+# 8 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors.dtsi" 2 3 4
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors/key_toggle.dtsi" 1 3 4
+
+
+
+
+
+
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/include/dt-bindings/zmk/behaviors.h" 1 3 4
+# 8 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors/key_toggle.dtsi" 2 3 4
+
+/ {
+    behaviors {
+
+    /omit-if-no-ref/
+
+        kt: key_toggle {
+            compatible = "zmk,behavior-key-toggle";
+            #binding-cells = <1>;
+            display-name = "Key Toggle";
+        };
+    };
+};
+# 9 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors.dtsi" 2 3 4
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors/transparent.dtsi" 1 3 4
+
+
+
+
+
+
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/include/dt-bindings/zmk/behaviors.h" 1 3 4
+# 8 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors/transparent.dtsi" 2 3 4
+
+/ {
+    behaviors {
+
+        /omit-if-no-ref/
+
+        trans: transparent {
+            compatible = "zmk,behavior-transparent";
+            #binding-cells = <0>;
+            display-name = "Transparent";
+        };
+    };
+};
+# 10 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors.dtsi" 2 3 4
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors/none.dtsi" 1 3 4
+
+
+
+
+
+
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/include/dt-bindings/zmk/behaviors.h" 1 3 4
+# 8 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors/none.dtsi" 2 3 4
+
+/ {
+    behaviors {
+
+        /omit-if-no-ref/
+
+        none: none {
+            compatible = "zmk,behavior-none";
+            #binding-cells = <0>;
+            display-name = "None";
+        };
+    };
+};
+# 11 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors.dtsi" 2 3 4
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors/mod_tap.dtsi" 1 3 4
+
+
+
+
+
+
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/include/dt-bindings/zmk/behaviors.h" 1 3 4
+# 8 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors/mod_tap.dtsi" 2 3 4
+
+/ {
+    behaviors {
+
+        /omit-if-no-ref/
+
+        mt: mod_tap {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            flavor = "hold-preferred";
+            tapping-term-ms = <200>;
+            bindings = <&kp>, <&kp>;
+            display-name = "Mod-Tap";
+        };
+    };
+};
+# 12 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors.dtsi" 2 3 4
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors/layer_tap.dtsi" 1 3 4
+
+
+
+
+
+
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/include/dt-bindings/zmk/behaviors.h" 1 3 4
+# 8 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors/layer_tap.dtsi" 2 3 4
+
+/ {
+    behaviors {
+
+        /omit-if-no-ref/
+
+        lt: layer_tap {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            flavor = "tap-preferred";
+            tapping-term-ms = <200>;
+            bindings = <&mo>, <&kp>;
+            display-name = "Layer-Tap";
+        };
+    };
+};
+# 13 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors.dtsi" 2 3 4
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors/gresc.dtsi" 1 3 4
+
+
+
+
+
+
+
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/include/dt-bindings/zmk/behaviors.h" 1 3 4
+# 9 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors/gresc.dtsi" 2 3 4
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/include/dt-bindings/zmk/keys.h" 1 3 4
+
+
+
+
+
+       
+
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/include/dt-bindings/zmk/hid_usage.h" 1 3 4
+# 11 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/include/dt-bindings/zmk/hid_usage.h" 3 4
+       
+# 9 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/include/dt-bindings/zmk/keys.h" 2 3 4
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/include/dt-bindings/zmk/hid_usage_pages.h" 1 3 4
+# 11 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/include/dt-bindings/zmk/hid_usage_pages.h" 3 4
+       
+# 10 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/include/dt-bindings/zmk/keys.h" 2 3 4
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/include/dt-bindings/zmk/modifiers.h" 1 3 4
+
+
+
+
+
+       
+# 11 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/include/dt-bindings/zmk/keys.h" 2 3 4
+# 10 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors/gresc.dtsi" 2 3 4
+
+/ {
+    behaviors {
+
+        /omit-if-no-ref/
+
+        gresc: grave_escape {
+            compatible = "zmk,behavior-mod-morph";
+            #binding-cells = <0>;
+            bindings = <&kp (((((0x07) << 16) | (0x29))))>, <&kp ((((0x07) << 16) | (0x35)))>;
+            mods = <(0x08|0x02|0x80|0x20)>;
+            display-name = "Grave/Escape";
+        };
+    };
+};
+# 14 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors.dtsi" 2 3 4
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors/sticky_key.dtsi" 1 3 4
+
+
+
+
+
+
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/include/dt-bindings/zmk/behaviors.h" 1 3 4
+# 8 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors/sticky_key.dtsi" 2 3 4
+
+/ {
+    behaviors {
+
+        /omit-if-no-ref/
+
+        sk: sticky_key {
+            compatible = "zmk,behavior-sticky-key";
+            #binding-cells = <1>;
+            release-after-ms = <1000>;
+            bindings = <&kp>;
+            ignore-modifiers;
+            display-name = "Sticky Key";
+        };
+
+        /omit-if-no-ref/
+
+        sl: sticky_layer {
+            compatible = "zmk,behavior-sticky-key";
+            #binding-cells = <1>;
+            release-after-ms = <1000>;
+            bindings = <&mo>;
+            quick-release;
+            display-name = "Sticky Layer";
+        };
+    };
+
+};
+# 15 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors.dtsi" 2 3 4
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors/momentary_layer.dtsi" 1 3 4
+
+
+
+
+
+
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/include/dt-bindings/zmk/behaviors.h" 1 3 4
+# 8 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors/momentary_layer.dtsi" 2 3 4
+
+/ {
+    behaviors {
+
+        /omit-if-no-ref/
+
+        mo: momentary_layer {
+            compatible = "zmk,behavior-momentary-layer";
+            #binding-cells = <1>;
+            display-name = "Momentary Layer";
+        };
+    };
+};
+# 16 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors.dtsi" 2 3 4
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors/toggle_layer.dtsi" 1 3 4
+
+
+
+
+
+
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/include/dt-bindings/zmk/behaviors.h" 1 3 4
+# 8 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors/toggle_layer.dtsi" 2 3 4
+
+/ {
+    behaviors {
+
+        /omit-if-no-ref/
+
+        tog: toggle_layer {
+            compatible = "zmk,behavior-toggle-layer";
+            #binding-cells = <1>;
+            display-name = "Toggle Layer";
+            locking;
+        };
+    };
+};
+# 17 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors.dtsi" 2 3 4
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors/to_layer.dtsi" 1 3 4
+
+
+
+
+
+
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/include/dt-bindings/zmk/behaviors.h" 1 3 4
+# 8 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors/to_layer.dtsi" 2 3 4
+
+/ {
+    behaviors {
+
+        /omit-if-no-ref/
+
+        to: to_layer {
+            compatible = "zmk,behavior-to-layer";
+            #binding-cells = <1>;
+            display-name = "To Layer";
+            locking;
+        };
+    };
+};
+# 18 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors.dtsi" 2 3 4
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors/reset.dtsi" 1 3 4
+
+
+
+
+
+
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/include/dt-bindings/zmk/reset.h" 1 3 4
+# 8 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors/reset.dtsi" 2 3 4
+
+/ {
+    behaviors {
+
+        sys_reset: sysreset {
+            compatible = "zmk,behavior-reset";
+            #binding-cells = <0>;
+            display-name = "Reset";
+        };
+
+
+        bootloader: bootload {
+            compatible = "zmk,behavior-reset";
+            type = <0x57>;
+            bootloader;
+            #binding-cells = <0>;
+            display-name = "Bootloader";
+        };
+    };
+};
+# 19 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors.dtsi" 2 3 4
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors/sensor_rotate_key_press.dtsi" 1 3 4
+
+
+
+
+
+
+/ {
+    behaviors {
+
+        /omit-if-no-ref/ inc_dec_cp: inc_dec_kp: enc_key_press {
+            compatible = "zmk,behavior-sensor-rotate-var";
+            #sensor-binding-cells = <2>;
+            bindings = <&kp>, <&kp>;
+        };
+    };
+};
+# 20 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors.dtsi" 2 3 4
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors/rgb_underglow.dtsi" 1 3 4
+
+
+
+
+
+
+/ {
+    behaviors {
+
+        rgb_ug: rgb_ug {
+            compatible = "zmk,behavior-rgb-underglow";
+            #binding-cells = <2>;
+            display-name = "Underglow";
+        };
+    };
+};
+# 21 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors.dtsi" 2 3 4
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors/bluetooth.dtsi" 1 3 4
+
+
+
+
+
+
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/include/dt-bindings/zmk/behaviors.h" 1 3 4
+# 8 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors/bluetooth.dtsi" 2 3 4
+
+/ {
+    behaviors {
+
+        /omit-if-no-ref/
+
+        bt: bluetooth {
+            compatible = "zmk,behavior-bluetooth";
+            #binding-cells = <2>;
+            display-name = "Bluetooth";
+        };
+    };
+};
+# 22 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors.dtsi" 2 3 4
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors/ext_power.dtsi" 1 3 4
+
+
+
+
+
+
+/ {
+    behaviors {
+
+        ext_power: extpower {
+            compatible = "zmk,behavior-ext-power";
+            #binding-cells = <1>;
+            display-name = "External Power";
+        };
+    };
+};
+# 23 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors.dtsi" 2 3 4
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors/outputs.dtsi" 1 3 4
+
+
+
+
+
+
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/include/dt-bindings/zmk/behaviors.h" 1 3 4
+# 8 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors/outputs.dtsi" 2 3 4
+
+/ {
+    behaviors {
+
+        /omit-if-no-ref/
+
+        out: outputs {
+            compatible = "zmk,behavior-outputs";
+            #binding-cells = <1>;
+            display-name = "Output Selection";
+        };
+    };
+};
+# 24 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors.dtsi" 2 3 4
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors/caps_word.dtsi" 1 3 4
+
+
+
+
+
+
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/include/dt-bindings/zmk/behaviors.h" 1 3 4
+# 8 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors/caps_word.dtsi" 2 3 4
+
+
+/ {
+    behaviors {
+
+        /omit-if-no-ref/
+
+        caps_word: caps_word {
+            compatible = "zmk,behavior-caps-word";
+            #binding-cells = <0>;
+            continue-list = <((0x02 << 24 | (((0x07) << 16) | (0x2D)))) ((((0x07) << 16) | (0x2A))) ((((0x07) << 16) | (0x4C)))>;
+            display-name = "Caps Word";
+        };
+    };
+};
+# 25 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors.dtsi" 2 3 4
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors/key_repeat.dtsi" 1 3 4
+
+
+
+
+
+
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/include/dt-bindings/zmk/behaviors.h" 1 3 4
+# 8 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors/key_repeat.dtsi" 2 3 4
+
+
+/ {
+    behaviors {
+
+    /omit-if-no-ref/
+
+        key_repeat: key_repeat {
+            compatible = "zmk,behavior-key-repeat";
+            #binding-cells = <0>;
+            usage-pages = <(0x07)>;
+            display-name = "Key Repeat";
+        };
+    };
+};
+# 26 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors.dtsi" 2 3 4
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors/backlight.dtsi" 1 3 4
+
+
+
+
+
+
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/include/dt-bindings/zmk/behaviors.h" 1 3 4
+# 8 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors/backlight.dtsi" 2 3 4
+
+ / {
+    behaviors {
+
+        /omit-if-no-ref/
+
+
+        bl: bcklight {
+            compatible = "zmk,behavior-backlight";
+            #binding-cells = <2>;
+            display-name = "Backlight";
+        };
+    };
+};
+# 27 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors.dtsi" 2 3 4
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors/macros.dtsi" 1 3 4
+# 29 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors/macros.dtsi" 3 4
+/ {
+    behaviors {
+        macro_tap: macro_tap {
+            compatible = "zmk,macro-control-mode-tap";
+            #binding-cells = <0>;
+        };
+
+        macro_press: macro_press {
+            compatible = "zmk,macro-control-mode-press";
+            #binding-cells = <0>;
+        };
+
+        macro_release: macro_release {
+            compatible = "zmk,macro-control-mode-release";
+            #binding-cells = <0>;
+        };
+
+        macro_tap_time: macro_tap_time {
+            compatible = "zmk,macro-control-tap-time";
+            #binding-cells = <1>;
+        };
+
+        macro_wait_time: macro_wait_time {
+            compatible = "zmk,macro-control-wait-time";
+            #binding-cells = <1>;
+        };
+
+        macro_pause_for_release: macro_pause_for_release {
+            compatible = "zmk,macro-pause-for-release";
+            #binding-cells = <0>;
+        };
+
+        macro_param_1to1: macro_param_1to1 {
+            compatible = "zmk,macro-param-1to1";
+            #binding-cells = <0>;
+        };
+
+        macro_param_1to2: macro_param_1to2 {
+            compatible = "zmk,macro-param-1to2";
+            #binding-cells = <0>;
+        };
+
+        macro_param_2to1: macro_param_2to1 {
+            compatible = "zmk,macro-param-2to1";
+            #binding-cells = <0>;
+        };
+
+        macro_param_2to2: macro_param_2to2 {
+            compatible = "zmk,macro-param-2to2";
+            #binding-cells = <0>;
+        };
+    };
+};
+# 28 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors.dtsi" 2 3 4
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors/soft_off.dtsi" 1 3 4
+
+
+
+
+
+
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/include/dt-bindings/zmk/behaviors.h" 1 3 4
+# 8 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors/soft_off.dtsi" 2 3 4
+
+/ {
+    behaviors {
+
+        /omit-if-no-ref/
+
+        soft_off: z_so_off {
+            compatible = "zmk,behavior-soft-off";
+            #binding-cells = <0>;
+            split-peripheral-off-on-press;
+        };
+    };
+};
+# 29 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors.dtsi" 2 3 4
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors/studio_unlock.dtsi" 1 3 4
+
+
+
+
+
+
+/ {
+    behaviors {
+        studio_unlock: studio_unlock {
+            compatible = "zmk,behavior-studio-unlock";
+            #binding-cells = <0>;
+            display-name = "Studio Unlock";
+        };
+    };
+};
+# 30 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors.dtsi" 2 3 4
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors/mouse_keys.dtsi" 1 3 4
+
+
+
+
+
+
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors/mouse_key_press.dtsi" 1 3 4
+
+
+
+
+
+
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/include/dt-bindings/zmk/behaviors.h" 1 3 4
+# 8 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors/mouse_key_press.dtsi" 2 3 4
+
+/ {
+    behaviors {
+
+        /omit-if-no-ref/
+
+        mkp: mouse_key_press {
+            compatible = "zmk,behavior-mouse-key-press";
+            #binding-cells = <1>;
+            display-name = "Mouse Key Press";
+        };
+    };
+
+    mkp_input_listener: mkp_input_listener {
+        compatible = "zmk,input-listener";
+        device = <&mkp>;
+    };
+};
+# 8 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors/mouse_keys.dtsi" 2 3 4
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors/mouse_move.dtsi" 1 3 4
+# 9 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors/mouse_move.dtsi" 3 4
+/ {
+    behaviors {
+        /omit-if-no-ref/ mmv: mouse_move {
+            compatible = "zmk,behavior-input-two-axis";
+            #binding-cells = <1>;
+            x-input-code = <0x00>;
+            y-input-code = <0x01>;
+            time-to-max-speed-ms = <300>;
+            acceleration-exponent = <1>;
+        };
+    };
+
+    mmv_input_listener: mmv_input_listener {
+        compatible = "zmk,input-listener";
+        device = <&mmv>;
+    };
+};
+# 9 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors/mouse_keys.dtsi" 2 3 4
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors/mouse_scroll.dtsi" 1 3 4
+# 10 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors/mouse_scroll.dtsi" 3 4
+/ {
+    behaviors {
+        /omit-if-no-ref/ msc: mouse_scroll {
+            compatible = "zmk,behavior-input-two-axis";
+            #binding-cells = <1>;
+            x-input-code = <0x06>;
+            y-input-code = <0x08>;
+            time-to-max-speed-ms = <300>;
+            acceleration-exponent = <0>;
+        };
+    };
+
+    msc_input_listener: msc_input_listener {
+        compatible = "zmk,input-listener";
+        device = <&msc>;
+    };
+};
+# 10 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors/mouse_keys.dtsi" 2 3 4
+# 31 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/behaviors.dtsi" 2 3 4
+# 16 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/config/atlas.keymap" 2
+
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/include/dt-bindings/zmk/mouse.h" 1 3 4
+
+
+
+
+
+
+       
+
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/include/dt-bindings/zmk/pointing.h" 1 3 4
+
+
+
+
+
+       
+# 10 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/include/dt-bindings/zmk/mouse.h" 2 3 4
+# 18 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/config/atlas.keymap" 2
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/include/dt-bindings/zmk/bt.h" 1 3 4
+# 19 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/config/atlas.keymap" 2
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/include/dt-bindings/zmk/outputs.h" 1 3 4
+# 20 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/config/atlas.keymap" 2
+# 33 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/config/atlas.keymap"
+&mt {
+    flavor = "tap-preferred";
+    tapping_term_ms = <200>;
+};
+
+&mmv {
+   time-to-max-speed-ms = <680>;
+   acceleration-exponent=<2>;
+};
+
+/ {
+    behaviors {
+        ht: hold_tap {
+            label = "hold_tap";
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            flavor = "tap-preferred";
+            tapping-term-ms = <220>;
+            quick-tap-ms = <150>;
+            global-quick-tap;
+            bindings = <&kp>, <&kp>;
+        };
+        hm: homerow_mods {
+            compatible = "zmk,behavior-hold-tap";
+            label = "HOMEROW_MODS";
+            #binding-cells = <2>;
+            tapping-term-ms = <200>;
+            quick_tap_ms = <0>;
+            flavor = "tap-preferred";
+            bindings = <&kp>, <&kp>;
+        };
+        td: tapdance {
+            compatible = "zmk,behavior-hold-tap";
+            label = "TAPDANCE";
+            #binding-cells = <2>;
+            tapping-term-ms = <150>;
+            quick_tap_ms = <0>;
+            flavor = "tap-preferred";
+            bindings = <&kp>, <&kp>;
+        };
+        tog_game_hold: tog_game_hold {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            flavor = "hold-preferred";
+            tapping-term-ms = <2000>;
+            bindings = <&tog>, <&none>;
+        };
+    };
+
+    combos {
+        compatible = "zmk,combos";
+        combo_game_toggle {
+            timeout-ms = <50>;
+
+
+            require-prior-idle-ms = <150>;
+            key-positions = <8 9>;
+            bindings = <&tog_game_hold 4 0>;
+            layers = <0 4>;
+        };
+    };
+
+    conditional_layers {
+        compatible = "zmk,conditional-layers";
+        func_layer {
+            if-layers = <2 1>;
+            then-layer = <3>;
+        };
+    };
+
+   keymap {
+        compatible = "zmk,keymap";
+        default_layer {
+            bindings = <
+
+
+            &kp ((((0x07) << 16) | (0x14))) &kp ((((0x07) << 16) | (0x1A))) &kp ((((0x07) << 16) | (0x08))) &kp ((((0x07) << 16) | (0x15))) &kp ((((0x07) << 16) | (0x17))) &kp ((((0x07) << 16) | (0x1C))) &kp ((((0x07) << 16) | (0x18))) &kp ((((0x07) << 16) | (0x0C))) &kp ((((0x07) << 16) | (0x12))) &kp ((((0x07) << 16) | (0x13)))
+
+
+            &kp ((((0x07) << 16) | (0x04))) &ht (((((0x07) << 16) | (0xE2)))) ((((0x07) << 16) | (0x16))) &ht (((((0x07) << 16) | (0xE3)))) ((((0x07) << 16) | (0x07))) &ht (((((0x07) << 16) | (0xE0)))) ((((0x07) << 16) | (0x09))) &kp ((((0x07) << 16) | (0x0A))) &kp ((((0x07) << 16) | (0x0B))) &ht (((((0x07) << 16) | (0xE4)))) ((((0x07) << 16) | (0x0D))) &ht (((((0x07) << 16) | (0xE7)))) ((((0x07) << 16) | (0x0E))) &ht (((((0x07) << 16) | (0xE6)))) ((((0x07) << 16) | (0x0F))) &kp (((((0x07) << 16) | (0x2A))))
+
+
+            &kp ((((0x07) << 16) | (0x1D))) &kp ((((0x07) << 16) | (0x1B))) &kp ((((0x07) << 16) | (0x06))) &kp ((((0x07) << 16) | (0x19))) &kp ((((0x07) << 16) | (0x05))) &kp ((((0x07) << 16) | (0x11))) &kp ((((0x07) << 16) | (0x10))) &kp ((((0x07) << 16) | (0x36))) &kp (((((0x07) << 16) | (0x37)))) &kp (((((0x07) << 16) | (0x4C))))
+
+                                           &kp ((((0x07) << 16) | (0x2C))) &lt 1 ((((0x07) << 16) | (0x2B))) &lt 2 (((((0x07) << 16) | (0x28)))) &kp (((((0x07) << 16) | (0xE1))))
+
+            >;
+        };
+
+        sym_layer {
+            bindings = <
+
+
+            &kp (((0x02 << 24 | (((0x07) << 16) | (0x1E))))) &kp (((0x02 << 24 | (((0x07) << 16) | (0x1F))))) &kp ((0x02 << 24 | (((0x07) << 16) | (0x20)))) &kp (((0x02 << 24 | (((0x07) << 16) | (0x21))))) &kp (((0x02 << 24 | (((0x07) << 16) | (0x22))))) &kp ((0x02 << 24 | (((0x07) << 16) | (0x23)))) &kp (((0x02 << 24 | (((0x07) << 16) | (0x24))))) &kp (((0x02 << 24 | (((0x07) << 16) | (0x25))))) &kp ((((0x07) << 16) | (0x35))) &kp ((0x02 << 24 | (((0x07) << 16) | (0x35))))
+
+
+            &kp (((0x02 << 24 | (((0x07) << 16) | (0x34))))) &kp (((((0x07) << 16) | (0x2F)))) &kp (((0x02 << 24 | (((0x07) << 16) | (0x2F))))) &kp (((0x02 << 24 | (((0x07) << 16) | (0x26))))) &trans &kp (((((0x07) << 16) | (0x38)))) &kp ((((0x07) << 16) | (0x2D))) &kp ((((0x07) << 16) | (0x2E))) &kp ((0x02 << 24 | (((0x07) << 16) | (0x33)))) &kp (((((0x07) << 16) | (0x33))))
+
+
+            &kp (((((0x07) << 16) | (0x34)))) &kp (((((0x07) << 16) | (0x30)))) &kp (((0x02 << 24 | (((0x07) << 16) | (0x30))))) &kp (((0x02 << 24 | (((0x07) << 16) | (0x27))))) &trans &kp (((((0x07) << 16) | (0x31)))) &kp (((0x02 << 24 | (((0x07) << 16) | (0x2D))))) &kp ((0x02 << 24 | (((0x07) << 16) | (0x2E)))) &kp ((0x02 << 24 | (((0x07) << 16) | (0x31)))) &kp (((0x02 << 24 | (((0x07) << 16) | (0x38)))))
+
+                                             &trans &trans &trans &trans
+
+            >;
+        };
+
+        num_layer {
+            bindings = <
+
+
+            &kp (((((0x07) << 16) | (0x1E)))) &kp (((((0x07) << 16) | (0x1F)))) &kp (((((0x07) << 16) | (0x20)))) &kp (((((0x07) << 16) | (0x21)))) &kp (((((0x07) << 16) | (0x22)))) &kp (((((0x07) << 16) | (0x23)))) &kp (((((0x07) << 16) | (0x24)))) &kp (((((0x07) << 16) | (0x25)))) &kp (((((0x07) << 16) | (0x26)))) &kp (((((0x07) << 16) | (0x27))))
+
+
+            &kp (((((0x07) << 16) | (0x4C)))) &kp (((((0x07) << 16) | (0x39)))) &kp (((((0x07) << 16) | (0x46)))) &kp (((((0x07) << 16) | (0x49)))) &trans &kp (((((0x07) << 16) | (0x50)))) &kp (((((0x07) << 16) | (0x51)))) &kp (((((0x07) << 16) | (0x52)))) &kp (((((0x07) << 16) | (0x4F)))) &trans
+
+
+            &trans &trans &trans &trans &trans &kp ((((0x07) << 16) | (0x4A))) &kp (((((0x07) << 16) | (0x4E)))) &kp (((((0x07) << 16) | (0x4B)))) &kp ((((0x07) << 16) | (0x4D))) &trans
+
+                                             &kp (((((0x07) << 16) | (0x29)))) &trans &trans &trans
+
+            >;
+        };
+
+        func_layer {
+            bindings = <
+
+
+            &kp ((((0x07) << 16) | (0x3A))) &kp ((((0x07) << 16) | (0x3B))) &kp ((((0x07) << 16) | (0x3C))) &kp ((((0x07) << 16) | (0x3D))) &kp ((((0x07) << 16) | (0x3E))) &trans &trans &kp ((((0x0C) << 16) | (0xE2))) &trans &trans
+
+
+            &kp ((((0x07) << 16) | (0x3F))) &kp ((((0x07) << 16) | (0x40))) &kp ((((0x07) << 16) | (0x41))) &kp ((((0x07) << 16) | (0x42))) &kp ((((0x07) << 16) | (0x43))) &kp (((((0x0C) << 16) | (0xB6)))) &kp (((((0x0C) << 16) | (0xEA)))) &kp (((((0x0C) << 16) | (0xE9)))) &kp ((((0x0C) << 16) | (0xB5))) &kp (((((0x0C) << 16) | (0xCD))))
+
+
+            &kp ((((0x07) << 16) | (0x44))) &kp ((((0x07) << 16) | (0x45))) &bt 4 0 &out 0 &bt 0 0 &bt 3 0 &bt 3 1 &bt 3 2 &bt 3 3 &bt 3 4
+
+                                                &trans &trans &trans &trans
+
+            >;
+        };
+
+
+        game_layer {
+            bindings = <
+
+
+            &kp ((((0x07) << 16) | (0x2B))) &kp ((((0x07) << 16) | (0x14))) &kp ((((0x07) << 16) | (0x1A))) &kp ((((0x07) << 16) | (0x08))) &kp ((((0x07) << 16) | (0x15))) &kp (((((0x07) << 16) | (0x1E)))) &kp (((((0x07) << 16) | (0x1F)))) &kp (((((0x07) << 16) | (0x20)))) &kp (((((0x07) << 16) | (0x21)))) &kp (((((0x07) << 16) | (0x22))))
+
+
+            &kp (((((0x07) << 16) | (0xE1)))) &kp ((((0x07) << 16) | (0x04))) &kp ((((0x07) << 16) | (0x16))) &kp ((((0x07) << 16) | (0x07))) &kp ((((0x07) << 16) | (0x09))) &kp ((((0x07) << 16) | (0x3A))) &kp ((((0x07) << 16) | (0x3B))) &kp ((((0x07) << 16) | (0x3C))) &kp ((((0x07) << 16) | (0x3D))) &kp ((((0x07) << 16) | (0x3E)))
+
+
+            &kp (((((0x07) << 16) | (0xE0)))) &kp ((((0x07) << 16) | (0x1D))) &kp ((((0x07) << 16) | (0x1B))) &kp ((((0x07) << 16) | (0x06))) &kp ((((0x07) << 16) | (0x19))) &kp ((((0x07) << 16) | (0x0A))) &kp ((((0x07) << 16) | (0x17))) &kp ((((0x07) << 16) | (0x10))) &kp ((((0x07) << 16) | (0x05))) &kp (((((0x07) << 16) | (0x29))))
+
+                                            &kp ((((0x07) << 16) | (0x2C))) &kp (((((0x07) << 16) | (0xE2)))) &kp (((((0x07) << 16) | (0x23)))) &kp (((((0x07) << 16) | (0x28))))
+
+            >;
+        };
+
+        mouse_layer {
+            bindings = <
+
+
+            &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans
+
+
+            &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans
+
+
+            &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans
+
+
+                                            &mo 6 &mkp ((1UL << (0))) &mkp ((1UL << (0))) &mkp ((1UL << (1)))
+
+            >;
+        };
+
+        scroll_layer {
+            bindings = <
+
+
+            &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans
+
+
+            &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans
+
+
+            &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans
+
+
+                                            &mo 6 &mkp ((1UL << (0))) &mkp ((1UL << (0))) &mkp ((1UL << (1)))
+
+            >;
+        };
+    };
+};
+# 0 "<command-line>" 2
+# 1 "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/misc/empty_file.c"

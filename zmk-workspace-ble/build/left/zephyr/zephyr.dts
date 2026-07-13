@@ -1,0 +1,1081 @@
+/dts-v1/;
+
+/ {
+	#address-cells = < 0x1 >;
+	#size-cells = < 0x1 >;
+	model = "Seeed XIAO BLE";
+	compatible = "seeed,xiao-ble";
+	chosen {
+		zephyr,bt-hci = &bt_hci_controller;
+		zephyr,entropy = &rng;
+		zephyr,flash-controller = &flash_controller;
+		zephyr,sram = &sram0;
+		zephyr,flash = &flash0;
+		zephyr,code-partition = &code_partition;
+		zephyr,ieee802154 = &ieee802154;
+		zephyr,console = &board_cdc_acm_uart;
+		zephyr,shell-uart = &board_cdc_acm_uart;
+		zephyr,uart-mcumgr = &board_cdc_acm_uart;
+		zephyr,bt-mon-uart = &board_cdc_acm_uart;
+		zephyr,bt-c2h-uart = &board_cdc_acm_uart;
+		zephyr,boot-mode = &boot_retention;
+		zmk,magic-boot-mode = &adafruit_boot_retention;
+		zmk,battery = &vbatt;
+		zmk,kscan = &kscan0;
+		zmk,matrix_transform = &default_transform;
+	};
+	aliases {
+		led0 = &led0;
+		led1 = &led1;
+		led2 = &led2;
+		pwm-led0 = &pwm_led0;
+		bootloader-led0 = &led0;
+		mcuboot-led0 = &led0;
+		watchdog0 = &wdt0;
+	};
+	soc {
+		#address-cells = < 0x1 >;
+		#size-cells = < 0x1 >;
+		compatible = "nordic,nrf52840-qiaa", "nordic,nrf52840", "nordic,nrf52", "simple-bus";
+		interrupt-parent = < &nvic >;
+		ranges;
+		nvic: interrupt-controller@e000e100 {
+			#address-cells = < 0x1 >;
+			compatible = "arm,v7m-nvic";
+			reg = < 0xe000e100 0xc00 >;
+			interrupt-controller;
+			#interrupt-cells = < 0x2 >;
+			arm,num-irq-priority-bits = < 0x3 >;
+			phandle = < 0x1 >;
+		};
+		systick: timer@e000e010 {
+			compatible = "arm,armv7m-systick";
+			reg = < 0xe000e010 0x10 >;
+			status = "disabled";
+		};
+		ficr: ficr@10000000 {
+			compatible = "nordic,nrf-ficr";
+			reg = < 0x10000000 0x1000 >;
+			#nordic,ficr-cells = < 0x1 >;
+			status = "okay";
+		};
+		uicr: uicr@10001000 {
+			compatible = "nordic,nrf-uicr";
+			reg = < 0x10001000 0x1000 >;
+			status = "okay";
+			gpio-as-nreset;
+		};
+		sram0: memory@20000000 {
+			compatible = "mmio-sram";
+			reg = < 0x20000000 0x40000 >;
+		};
+		clock: clock@40000000 {
+			compatible = "nordic,nrf-clock";
+			reg = < 0x40000000 0x1000 >;
+			interrupts = < 0x0 0x3 >;
+			status = "okay";
+		};
+		power: power@40000000 {
+			compatible = "nordic,nrf-power";
+			reg = < 0x40000000 0x1000 >;
+			interrupts = < 0x0 0x3 >;
+			status = "okay";
+			#address-cells = < 0x1 >;
+			#size-cells = < 0x1 >;
+			gpregret1: gpregret1@4000051c {
+				#address-cells = < 0x1 >;
+				#size-cells = < 0x1 >;
+				compatible = "nordic,nrf-gpregret";
+				reg = < 0x4000051c 0x1 >;
+				status = "okay";
+				adafruit_boot_retention: retention@0 {
+					compatible = "zephyr,retention";
+					status = "okay";
+					reg = < 0x0 0x1 >;
+				};
+			};
+			gpregret2: gpregret2@40000520 {
+				#address-cells = < 0x1 >;
+				#size-cells = < 0x1 >;
+				compatible = "nordic,nrf-gpregret";
+				reg = < 0x40000520 0x1 >;
+				status = "okay";
+			};
+			reg1: regulator@40000578 {
+				compatible = "nordic,nrf5x-regulator";
+				reg = < 0x40000578 0x1 >;
+				regulator-name = "REG1";
+				regulator-initial-mode = < 0x1 >;
+			};
+			reg0: regulator@40000580 {
+				compatible = "nordic,nrf52x-regulator-hv";
+				reg = < 0x40000580 0x1 >;
+				regulator-name = "REG0";
+				status = "okay";
+			};
+		};
+		radio: radio@40001000 {
+			compatible = "nordic,nrf-radio";
+			reg = < 0x40001000 0x1000 >;
+			interrupts = < 0x1 0x3 >;
+			status = "okay";
+			ieee802154-supported;
+			ble-2mbps-supported;
+			ble-coded-phy-supported;
+			tx-high-power-supported;
+			ieee802154: ieee802154 {
+				compatible = "nordic,nrf-ieee802154";
+				status = "okay";
+			};
+			bt_hci_controller: bt_hci_controller {
+				compatible = "zephyr,bt-hci-ll-sw-split";
+				status = "okay";
+			};
+		};
+		uart0: xiao_serial: uart@40002000 {
+			compatible = "nordic,nrf-uarte";
+			reg = < 0x40002000 0x1000 >;
+			interrupts = < 0x2 0x0 >;
+			status = "okay";
+			current-speed = < 0x3840 >;
+			pinctrl-0 = < &uart0_ps2_default >;
+			pinctrl-1 = < &uart0_ps2_off >;
+			pinctrl-names = "default", "sleep";
+			uart_ps2: uart_ps2 {
+				status = "okay";
+				compatible = "uart-ps2";
+				scl-gpios = < &gpio1 0xb 0x0 >;
+				sda-gpios = < &gpio1 0xc 0x0 >;
+				phandle = < 0x13 >;
+			};
+		};
+		i2c0: i2c@40003000 {
+			compatible = "nordic,nrf-twim";
+			#address-cells = < 0x1 >;
+			#size-cells = < 0x0 >;
+			reg = < 0x40003000 0x1000 >;
+			interrupts = < 0x3 0x3 >;
+			easydma-maxcnt-bits = < 0x10 >;
+			status = "disabled";
+			zephyr,pm-device-runtime-auto;
+		};
+		spi0: spi@40003000 {
+			compatible = "nordic,nrf-spim";
+			#address-cells = < 0x1 >;
+			#size-cells = < 0x0 >;
+			reg = < 0x40003000 0x1000 >;
+			interrupts = < 0x3 0x3 >;
+			max-frequency = < 0x7a1200 >;
+			easydma-maxcnt-bits = < 0x10 >;
+			status = "disabled";
+		};
+		i2c1: xiao_i2c: i2c@40004000 {
+			compatible = "nordic,nrf-twi";
+			#address-cells = < 0x1 >;
+			#size-cells = < 0x0 >;
+			reg = < 0x40004000 0x1000 >;
+			interrupts = < 0x4 0x3 >;
+			easydma-maxcnt-bits = < 0x10 >;
+			status = "okay";
+			zephyr,pm-device-runtime-auto;
+			pinctrl-0 = < &i2c1_default >;
+			pinctrl-1 = < &i2c1_sleep >;
+			pinctrl-names = "default", "sleep";
+		};
+		spi1: spi@40004000 {
+			compatible = "nordic,nrf-spim";
+			#address-cells = < 0x1 >;
+			#size-cells = < 0x0 >;
+			reg = < 0x40004000 0x1000 >;
+			interrupts = < 0x4 0x3 >;
+			max-frequency = < 0x7a1200 >;
+			easydma-maxcnt-bits = < 0x10 >;
+			status = "disabled";
+		};
+		nfct: nfct@40005000 {
+			compatible = "nordic,nrf-nfct";
+			reg = < 0x40005000 0x1000 >;
+			interrupts = < 0x5 0x3 >;
+			status = "disabled";
+		};
+		gpiote: gpiote0: gpiote@40006000 {
+			compatible = "nordic,nrf-gpiote";
+			reg = < 0x40006000 0x1000 >;
+			interrupts = < 0x6 0x2 >;
+			status = "okay";
+			instance = < 0x0 >;
+			phandle = < 0xd >;
+		};
+		adc: xiao_adc: adc@40007000 {
+			compatible = "nordic,nrf-saadc";
+			reg = < 0x40007000 0x1000 >;
+			interrupts = < 0x7 0x3 >;
+			status = "okay";
+			#io-channel-cells = < 0x1 >;
+			zephyr,pm-device-runtime-auto;
+			phandle = < 0x11 >;
+		};
+		timer0: timer@40008000 {
+			compatible = "nordic,nrf-timer";
+			status = "disabled";
+			reg = < 0x40008000 0x1000 >;
+			cc-num = < 0x4 >;
+			max-bit-width = < 0x20 >;
+			interrupts = < 0x8 0x3 >;
+			prescaler = < 0x0 >;
+		};
+		timer1: timer@40009000 {
+			compatible = "nordic,nrf-timer";
+			status = "disabled";
+			reg = < 0x40009000 0x1000 >;
+			cc-num = < 0x4 >;
+			max-bit-width = < 0x20 >;
+			interrupts = < 0x9 0x3 >;
+			prescaler = < 0x0 >;
+			phandle = < 0xe >;
+		};
+		timer2: timer@4000a000 {
+			compatible = "nordic,nrf-timer";
+			status = "disabled";
+			reg = < 0x4000a000 0x1000 >;
+			cc-num = < 0x4 >;
+			max-bit-width = < 0x20 >;
+			interrupts = < 0xa 0x3 >;
+			prescaler = < 0x0 >;
+		};
+		rtc0: rtc@4000b000 {
+			compatible = "nordic,nrf-rtc";
+			reg = < 0x4000b000 0x1000 >;
+			cc-num = < 0x3 >;
+			interrupts = < 0xb 0x3 >;
+			status = "disabled";
+			clock-frequency = < 0x8000 >;
+			prescaler = < 0x1 >;
+		};
+		temp: temp@4000c000 {
+			compatible = "nordic,nrf-temp";
+			reg = < 0x4000c000 0x1000 >;
+			interrupts = < 0xc 0x3 >;
+			status = "okay";
+		};
+		rng: random@4000d000 {
+			compatible = "nordic,nrf-rng";
+			reg = < 0x4000d000 0x1000 >;
+			interrupts = < 0xd 0x3 >;
+			status = "okay";
+		};
+		ecb: ecb@4000e000 {
+			compatible = "nordic,nrf-ecb";
+			reg = < 0x4000e000 0x1000 >;
+			interrupts = < 0xe 0x3 >;
+			status = "okay";
+		};
+		ccm: ccm@4000f000 {
+			compatible = "nordic,nrf-ccm";
+			reg = < 0x4000f000 0x1000 >;
+			interrupts = < 0xf 0x3 >;
+			length-field-length-8-bits;
+			status = "okay";
+		};
+		wdt: wdt0: watchdog@40010000 {
+			compatible = "nordic,nrf-wdt";
+			reg = < 0x40010000 0x1000 >;
+			interrupts = < 0x10 0x3 >;
+			status = "okay";
+		};
+		rtc1: rtc@40011000 {
+			compatible = "nordic,nrf-rtc";
+			reg = < 0x40011000 0x1000 >;
+			cc-num = < 0x4 >;
+			interrupts = < 0x11 0x3 >;
+			status = "disabled";
+			clock-frequency = < 0x8000 >;
+			prescaler = < 0x1 >;
+		};
+		qdec: qdec0: qdec@40012000 {
+			compatible = "nordic,nrf-qdec";
+			reg = < 0x40012000 0x1000 >;
+			interrupts = < 0x12 0x3 >;
+			status = "disabled";
+		};
+		comp: comparator@40013000 {
+			compatible = "nordic,nrf-comp";
+			reg = < 0x40013000 0x1000 >;
+			interrupts = < 0x13 0x3 >;
+			status = "disabled";
+		};
+		egu0: swi0: egu@40014000 {
+			compatible = "nordic,nrf-egu", "nordic,nrf-swi";
+			reg = < 0x40014000 0x1000 >;
+			interrupts = < 0x14 0x3 >;
+			status = "okay";
+		};
+		egu1: swi1: egu@40015000 {
+			compatible = "nordic,nrf-egu", "nordic,nrf-swi";
+			reg = < 0x40015000 0x1000 >;
+			interrupts = < 0x15 0x3 >;
+			status = "okay";
+		};
+		egu2: swi2: egu@40016000 {
+			compatible = "nordic,nrf-egu", "nordic,nrf-swi";
+			reg = < 0x40016000 0x1000 >;
+			interrupts = < 0x16 0x3 >;
+			status = "okay";
+		};
+		egu3: swi3: egu@40017000 {
+			compatible = "nordic,nrf-egu", "nordic,nrf-swi";
+			reg = < 0x40017000 0x1000 >;
+			interrupts = < 0x17 0x3 >;
+			status = "okay";
+		};
+		egu4: swi4: egu@40018000 {
+			compatible = "nordic,nrf-egu", "nordic,nrf-swi";
+			reg = < 0x40018000 0x1000 >;
+			interrupts = < 0x18 0x3 >;
+			status = "okay";
+		};
+		egu5: swi5: egu@40019000 {
+			compatible = "nordic,nrf-egu", "nordic,nrf-swi";
+			reg = < 0x40019000 0x1000 >;
+			interrupts = < 0x19 0x3 >;
+			status = "okay";
+		};
+		timer3: timer@4001a000 {
+			compatible = "nordic,nrf-timer";
+			status = "disabled";
+			reg = < 0x4001a000 0x1000 >;
+			cc-num = < 0x6 >;
+			max-bit-width = < 0x20 >;
+			interrupts = < 0x1a 0x3 >;
+			prescaler = < 0x0 >;
+		};
+		timer4: timer@4001b000 {
+			compatible = "nordic,nrf-timer";
+			status = "disabled";
+			reg = < 0x4001b000 0x1000 >;
+			cc-num = < 0x6 >;
+			max-bit-width = < 0x20 >;
+			interrupts = < 0x1b 0x3 >;
+			prescaler = < 0x0 >;
+		};
+		pwm0: pwm@4001c000 {
+			compatible = "nordic,nrf-pwm";
+			reg = < 0x4001c000 0x1000 >;
+			interrupts = < 0x1c 0x3 >;
+			status = "okay";
+			#pwm-cells = < 0x3 >;
+			pinctrl-0 = < &pwm0_default >;
+			pinctrl-1 = < &pwm0_sleep >;
+			pinctrl-names = "default", "sleep";
+			phandle = < 0x10 >;
+		};
+		pdm0: pdm@4001d000 {
+			compatible = "nordic,nrf-pdm";
+			reg = < 0x4001d000 0x1000 >;
+			interrupts = < 0x1d 0x3 >;
+			status = "disabled";
+		};
+		acl: acl@4001e000 {
+			compatible = "nordic,nrf-acl";
+			reg = < 0x4001e000 0x1000 >;
+			status = "okay";
+		};
+		flash_controller: flash-controller@4001e000 {
+			compatible = "nordic,nrf52-flash-controller";
+			reg = < 0x4001e000 0x1000 >;
+			partial-erase;
+			#address-cells = < 0x1 >;
+			#size-cells = < 0x1 >;
+			flash0: flash@0 {
+				compatible = "soc-nv-flash";
+				erase-block-size = < 0x1000 >;
+				write-block-size = < 0x4 >;
+				reg = < 0x0 0x100000 >;
+				partitions {
+					compatible = "fixed-partitions";
+					#address-cells = < 0x1 >;
+					#size-cells = < 0x1 >;
+					reserved_partition_0: sd_partition: partition@0 {
+						label = "SoftDevice";
+						read-only;
+						reg = < 0x0 0x27000 >;
+					};
+					code_partition: partition@27000 {
+						label = "Application";
+						reg = < 0x27000 0xc5000 >;
+					};
+					storage_partition: partition@ec000 {
+						label = "Storage";
+						reg = < 0xec000 0x8000 >;
+					};
+					boot_partition: partition@f4000 {
+						label = "UF2";
+						read-only;
+						reg = < 0xf4000 0xc000 >;
+					};
+				};
+			};
+		};
+		ppi: ppi@4001f000 {
+			compatible = "nordic,nrf-ppi";
+			reg = < 0x4001f000 0x1000 >;
+			status = "okay";
+		};
+		mwu: mwu@40020000 {
+			compatible = "nordic,nrf-mwu";
+			reg = < 0x40020000 0x1000 >;
+			status = "okay";
+		};
+		pwm1: pwm@40021000 {
+			compatible = "nordic,nrf-pwm";
+			reg = < 0x40021000 0x1000 >;
+			interrupts = < 0x21 0x3 >;
+			status = "disabled";
+			#pwm-cells = < 0x3 >;
+		};
+		pwm2: pwm@40022000 {
+			compatible = "nordic,nrf-pwm";
+			reg = < 0x40022000 0x1000 >;
+			interrupts = < 0x22 0x3 >;
+			status = "disabled";
+			#pwm-cells = < 0x3 >;
+		};
+		spi2: xiao_spi: spi@40023000 {
+			compatible = "nordic,nrf-spi";
+			#address-cells = < 0x1 >;
+			#size-cells = < 0x0 >;
+			reg = < 0x40023000 0x1000 >;
+			interrupts = < 0x23 0x3 >;
+			max-frequency = < 0x7a1200 >;
+			easydma-maxcnt-bits = < 0x10 >;
+			status = "okay";
+			pinctrl-0 = < &spi2_default >;
+			pinctrl-1 = < &spi2_sleep >;
+			pinctrl-names = "default", "sleep";
+		};
+		rtc2: rtc@40024000 {
+			compatible = "nordic,nrf-rtc";
+			reg = < 0x40024000 0x1000 >;
+			cc-num = < 0x4 >;
+			interrupts = < 0x24 0x3 >;
+			status = "disabled";
+			clock-frequency = < 0x8000 >;
+			prescaler = < 0x1 >;
+		};
+		i2s0: i2s@40025000 {
+			compatible = "nordic,nrf-i2s";
+			#address-cells = < 0x1 >;
+			#size-cells = < 0x0 >;
+			reg = < 0x40025000 0x1000 >;
+			interrupts = < 0x25 0x3 >;
+			status = "disabled";
+		};
+		usbd: zephyr_udc0: usbd@40027000 {
+			compatible = "nordic,nrf-usbd";
+			reg = < 0x40027000 0x1000 >;
+			interrupts = < 0x27 0x3 >;
+			num-bidir-endpoints = < 0x1 >;
+			num-in-endpoints = < 0x7 >;
+			num-out-endpoints = < 0x7 >;
+			num-isoin-endpoints = < 0x1 >;
+			num-isoout-endpoints = < 0x1 >;
+			status = "okay";
+			board_cdc_acm_uart: board_cdc_acm_uart {
+				compatible = "zephyr,cdc-acm-uart";
+			};
+		};
+		uart1: uart@40028000 {
+			compatible = "nordic,nrf-uarte";
+			reg = < 0x40028000 0x1000 >;
+			interrupts = < 0x28 0x3 >;
+			status = "disabled";
+		};
+		qspi: qspi@40029000 {
+			compatible = "nordic,nrf-qspi";
+			#address-cells = < 0x1 >;
+			#size-cells = < 0x0 >;
+			reg = < 0x40029000 0x1000 >, < 0x12000000 0x8000000 >;
+			reg-names = "qspi", "qspi_mm";
+			interrupts = < 0x29 0x3 >;
+			status = "okay";
+			pinctrl-0 = < &qspi_default >;
+			pinctrl-1 = < &qspi_sleep >;
+			pinctrl-names = "default", "sleep";
+			p25q16h: p25q16h@0 {
+				compatible = "nordic,qspi-nor";
+				reg = < 0x0 >;
+				sck-frequency = < 0x632ea00 >;
+				quad-enable-requirements = "S2B1v1";
+				jedec-id = [ 85 60 15 ];
+				sfdp-bfp = [ E5 20 F1 FF FF FF FF 00 44 EB 08 6B 08 3B 80 BB EE FF FF FF FF FF 00 FF FF FF 00 FF 0C 20 0F 52 10 D8 08 81 ];
+				size = < 0x1000000 >;
+				has-dpd;
+				t-enter-dpd = < 0xbb8 >;
+				t-exit-dpd = < 0x1f40 >;
+			};
+		};
+		pwm3: pwm@4002d000 {
+			compatible = "nordic,nrf-pwm";
+			reg = < 0x4002d000 0x1000 >;
+			interrupts = < 0x2d 0x3 >;
+			status = "disabled";
+			#pwm-cells = < 0x3 >;
+		};
+		spi3: spi@4002f000 {
+			compatible = "nordic,nrf-spim";
+			#address-cells = < 0x1 >;
+			#size-cells = < 0x0 >;
+			reg = < 0x4002f000 0x1000 >;
+			interrupts = < 0x2f 0x3 >;
+			max-frequency = < 0x1e84800 >;
+			easydma-maxcnt-bits = < 0x10 >;
+			rx-delay-supported;
+			rx-delay = < 0x2 >;
+			status = "disabled";
+		};
+		gpio0: gpio@50000000 {
+			compatible = "nordic,nrf-gpio";
+			gpio-controller;
+			reg = < 0x50000000 0x200 0x50000500 0x300 >;
+			#gpio-cells = < 0x2 >;
+			status = "okay";
+			port = < 0x0 >;
+			gpiote-instance = < &gpiote >;
+			phandle = < 0xf >;
+		};
+		gpio1: gpio@50000300 {
+			compatible = "nordic,nrf-gpio";
+			gpio-controller;
+			reg = < 0x50000300 0x200 0x50000800 0x300 >;
+			#gpio-cells = < 0x2 >;
+			ngpios = < 0x10 >;
+			status = "okay";
+			port = < 0x1 >;
+			gpiote-instance = < &gpiote >;
+			phandle = < 0x4 >;
+		};
+		cryptocell: crypto@5002a000 {
+			compatible = "nordic,cryptocell", "arm,cryptocell-310";
+			reg = < 0x5002a000 0x1000 >, < 0x5002b000 0x1000 >;
+			reg-names = "wrapper", "core";
+			interrupts = < 0x2a 0x3 >;
+			status = "disabled";
+		};
+	};
+	pinctrl: pin-controller {
+		compatible = "nordic,nrf-pinctrl";
+		uart0_default: uart0_default {
+			group1 {
+				psels = < 0x2b >;
+			};
+			group2 {
+				psels = < 0x100002c >;
+				bias-pull-up;
+			};
+		};
+		uart0_sleep: uart0_sleep {
+			group1 {
+				psels = < 0x2b >, < 0x100002c >;
+				low-power-enable;
+			};
+		};
+		i2c0_default: i2c0_default {
+			group1 {
+				psels = < 0xc000007 >, < 0xb00001b >;
+			};
+		};
+		i2c0_sleep: i2c0_sleep {
+			group1 {
+				psels = < 0xc000007 >, < 0xb00001b >;
+				low-power-enable;
+			};
+		};
+		i2c1_default: i2c1_default {
+			phandle = < 0x5 >;
+			group1 {
+				psels = < 0xc000004 >, < 0xb000005 >;
+			};
+		};
+		i2c1_sleep: i2c1_sleep {
+			phandle = < 0x6 >;
+			group1 {
+				psels = < 0xc000004 >, < 0xb000005 >;
+				low-power-enable;
+			};
+		};
+		pdm0_default: pdm0_default {
+			group1 {
+				psels = < 0x14000020 >, < 0x15000010 >;
+			};
+		};
+		pdm0_sleep: pdm0_sleep {
+			group1 {
+				psels = < 0x14000020 >, < 0x15000010 >;
+				low-power-enable;
+			};
+		};
+		pwm0_default: pwm0_default {
+			phandle = < 0x7 >;
+			group1 {
+				psels = < 0x16000011 >;
+				nordic,invert;
+			};
+		};
+		pwm0_sleep: pwm0_sleep {
+			phandle = < 0x8 >;
+			group1 {
+				psels = < 0x16000011 >;
+				low-power-enable;
+			};
+		};
+		spi2_default: spi2_default {
+			phandle = < 0x9 >;
+			group1 {
+				psels = < 0x400002d >, < 0x500002f >, < 0x600002e >;
+			};
+		};
+		spi2_sleep: spi2_sleep {
+			phandle = < 0xa >;
+			group1 {
+				psels = < 0x400002d >, < 0x500002f >, < 0x600002e >;
+				low-power-enable;
+			};
+		};
+		spi3_default: spi3_default {
+			group1 {
+				psels = < 0x4000015 >, < 0x5000014 >, < 0x6000018 >;
+			};
+		};
+		spi3_sleep: spi3_sleep {
+			group1 {
+				psels = < 0x4000015 >, < 0x5000014 >, < 0x6000018 >;
+				low-power-enable;
+			};
+		};
+		qspi_default: qspi_default {
+			phandle = < 0xb >;
+			group1 {
+				psels = < 0x1d000015 >, < 0x1f000014 >, < 0x20000018 >, < 0x21000016 >, < 0x22000017 >, < 0x1e000019 >;
+			};
+		};
+		qspi_sleep: qspi_sleep {
+			phandle = < 0xc >;
+			group1 {
+				psels = < 0x1d000015 >, < 0x1f000014 >, < 0x20000018 >, < 0x21000016 >, < 0x22000017 >;
+				low-power-enable;
+			};
+			group2 {
+				psels = < 0x1e000019 >;
+				low-power-enable;
+				bias-pull-up;
+			};
+		};
+		uart0_ps2_default: uart0_ps2_default {
+			phandle = < 0x2 >;
+			group1 {
+				psels = < 0x1b >, < 0x100002c >;
+			};
+		};
+		uart0_ps2_sleep: uart0_ps2_sleep {
+			group1 {
+				psels = < 0x1b >, < 0x100002c >;
+				low-power-enable;
+			};
+		};
+		uart0_ps2_off: uart0_ps2_off {
+			phandle = < 0x3 >;
+			group1 {
+				psels = < 0x1b >, < 0x100001f >;
+			};
+		};
+	};
+	rng_hci: entropy_bt_hci {
+		compatible = "zephyr,bt-hci-entropy";
+		status = "okay";
+	};
+	sw_pwm: sw-pwm {
+		compatible = "nordic,nrf-sw-pwm";
+		status = "disabled";
+		generator = < &timer1 >;
+		clock-prescaler = < 0x0 >;
+		#pwm-cells = < 0x3 >;
+	};
+	cpus {
+		#address-cells = < 0x1 >;
+		#size-cells = < 0x0 >;
+		cpu@0 {
+			device_type = "cpu";
+			compatible = "arm,cortex-m4f";
+			reg = < 0x0 >;
+			#address-cells = < 0x1 >;
+			#size-cells = < 0x1 >;
+			itm: itm@e0000000 {
+				compatible = "arm,armv7m-itm";
+				reg = < 0xe0000000 0x1000 >;
+				swo-ref-frequency = < 0x1e84800 >;
+			};
+		};
+	};
+	xiao_d: connector {
+		compatible = "seeed,xiao-gpio";
+		#gpio-cells = < 0x2 >;
+		gpio-map-mask = < 0xffffffff 0xffffffc0 >;
+		gpio-map-pass-thru = < 0x0 0x3f >;
+		gpio-map = < 0x0 0x0 &gpio0 0x2 0x0 >, < 0x1 0x0 &gpio0 0x3 0x0 >, < 0x2 0x0 &gpio0 0x1c 0x0 >, < 0x3 0x0 &gpio0 0x1d 0x0 >, < 0x4 0x0 &gpio0 0x4 0x0 >, < 0x5 0x0 &gpio0 0x5 0x0 >, < 0x6 0x0 &gpio1 0xb 0x0 >, < 0x7 0x0 &gpio1 0xc 0x0 >, < 0x8 0x0 &gpio1 0xd 0x0 >, < 0x9 0x0 &gpio1 0xe 0x0 >, < 0xa 0x0 &gpio1 0xf 0x0 >;
+		phandle = < 0x12 >;
+	};
+	leds {
+		compatible = "gpio-leds";
+		led0: led_0 {
+			gpios = < &gpio0 0x1a 0x1 >;
+			label = "Red LED";
+		};
+		led1: led_1 {
+			gpios = < &gpio0 0x1e 0x1 >;
+			label = "Green LED";
+		};
+		led2: led_2 {
+			gpios = < &gpio0 0x6 0x1 >;
+			label = "Blue LED";
+		};
+	};
+	pwmleds {
+		compatible = "pwm-leds";
+		pwm_led0: pwm_led_0 {
+			pwms = < &pwm0 0x0 0x1312d00 0x1 >;
+		};
+	};
+	magic_mapper {
+		compatible = "zmk,bootmode-to-magic-mapper";
+		status = "okay";
+		#address-cells = < 0x1 >;
+		#size-cells = < 0x1 >;
+		boot_retention: retention@0 {
+			compatible = "zephyr,retention";
+			status = "okay";
+			reg = < 0x0 0x1 >;
+		};
+	};
+	vbatt: vbatt {
+		compatible = "zmk,battery-voltage-divider";
+		io-channels = < &adc 0x7 >;
+		power-gpios = < &gpio0 0xe 0x7 >;
+		output-ohms = < 0x7c830 >;
+		full-ohms = < 0x170a70 >;
+	};
+	split_inputs {
+		#address-cells = < 0x1 >;
+		#size-cells = < 0x0 >;
+		trackpoint_split_right: trackpoint_split@0 {
+			compatible = "zmk,input-split";
+			reg = < 0x0 >;
+			phandle = < 0x19 >;
+		};
+	};
+	default_transform: keymap_transform_0 {
+		compatible = "zmk,matrix-transform";
+		columns = < 0xa >;
+		rows = < 0x4 >;
+		map = < 0x0 0x1 0x2 0x3 0x4 0x5 0x6 0x7 0x8 0x9 0x100 0x101 0x102 0x103 0x104 0x105 0x106 0x107 0x108 0x109 0x200 0x201 0x202 0x203 0x204 0x205 0x206 0x207 0x208 0x209 0x303 0x304 0x305 0x306 >;
+	};
+	kscan0: kscan_0 {
+		compatible = "zmk,kscan-gpio-matrix";
+		label = "KSCAN";
+		diode-direction = "col2row";
+		row-gpios = < &xiao_d 0x0 0x20 >, < &xiao_d 0x1 0x20 >, < &xiao_d 0x2 0x20 >, < &xiao_d 0x3 0x20 >;
+		col-gpios = < &xiao_d 0x4 0x0 >, < &xiao_d 0x5 0x0 >, < &xiao_d 0xa 0x0 >, < &xiao_d 0x9 0x0 >, < &xiao_d 0x8 0x0 >;
+	};
+	zip_temp_layer: zip_temp_layer {
+		compatible = "zmk,input-processor-temp-layer";
+		#input-processor-cells = < 0x2 >;
+		phandle = < 0x17 >;
+	};
+	zip_xy_scaler: zip_xy_scaler {
+		compatible = "zmk,input-processor-scaler";
+		#input-processor-cells = < 0x2 >;
+		type = < 0x2 >;
+		codes = < 0x0 0x1 >;
+		track-remainders;
+		phandle = < 0x16 >;
+	};
+	mouse_ps2: mouse_ps2 {
+		compatible = "zmk,input-mouse-ps2";
+		status = "okay";
+		ps2-device = < &uart_ps2 >;
+		rst-gpios = < &gpio0 0x9 0x0 >;
+		sampling-rate = < 0x64 >;
+		tp-sensitivity = < 0xff >;
+		tp-neg-inertia = < 0xff >;
+		tp-val6-upper-speed = < 0xff >;
+		phandle = < 0x14 >;
+	};
+	zip_xy_to_scroll: zip_xy_to_scroll {
+		compatible = "zmk,input-processor-code-mapper";
+		#input-processor-cells = < 0x0 >;
+		type = < 0x2 >;
+		map = < 0x0 0x6 >, < 0x1 0x8 >;
+		phandle = < 0x18 >;
+	};
+	zip_xy_swap: zip_xy_swap {
+		compatible = "zmk,input-processor-code-mapper";
+		#input-processor-cells = < 0x0 >;
+		type = < 0x2 >;
+		map = < 0x0 0x1 >, < 0x1 0x0 >;
+		phandle = < 0x15 >;
+	};
+	trackpoint_listener: trackpoint_listener {
+		compatible = "zmk,input-listener";
+		status = "okay";
+		device = < &mouse_ps2 >;
+		input-processors = < &zip_xy_swap >, < &zip_xy_scaler 0x2 0x1 >, < &zip_temp_layer 0x5 0x3e8 >;
+		scroll {
+			layers = < 0x6 >;
+			input-processors = < &zip_xy_swap >, < &zip_xy_scaler 0x1 0x4 >, < &zip_xy_to_scroll >;
+		};
+	};
+	trackpoint_listener_right: trackpoint_listener_right {
+		compatible = "zmk,input-listener";
+		status = "okay";
+		device = < &trackpoint_split_right >;
+		input-processors = < &zip_xy_scaler 0x2 0x1 >, < &zip_temp_layer 0x5 0x3e8 >;
+		scroll {
+			layers = < 0x6 >;
+			input-processors = < &zip_xy_scaler 0x1 0x4 >, < &zip_xy_to_scroll >;
+		};
+	};
+	behaviors {
+		kp: key_press {
+			compatible = "zmk,behavior-key-press";
+			#binding-cells = < 0x1 >;
+			display-name = "Key Press";
+			phandle = < 0x1a >;
+		};
+		trans: transparent {
+			compatible = "zmk,behavior-transparent";
+			#binding-cells = < 0x0 >;
+			display-name = "Transparent";
+			phandle = < 0x24 >;
+		};
+		none: none {
+			compatible = "zmk,behavior-none";
+			#binding-cells = < 0x0 >;
+			display-name = "None";
+			phandle = < 0x1d >;
+		};
+		lt: layer_tap {
+			compatible = "zmk,behavior-hold-tap";
+			#binding-cells = < 0x2 >;
+			flavor = "tap-preferred";
+			tapping-term-ms = < 0xc8 >;
+			bindings = < &mo >, < &kp >;
+			display-name = "Layer-Tap";
+			phandle = < 0x23 >;
+		};
+		mo: momentary_layer {
+			compatible = "zmk,behavior-momentary-layer";
+			#binding-cells = < 0x1 >;
+			display-name = "Momentary Layer";
+			phandle = < 0x1b >;
+		};
+		tog: toggle_layer {
+			compatible = "zmk,behavior-toggle-layer";
+			#binding-cells = < 0x1 >;
+			display-name = "Toggle Layer";
+			locking;
+			phandle = < 0x1c >;
+		};
+		sys_reset: sysreset {
+			compatible = "zmk,behavior-reset";
+			#binding-cells = < 0x0 >;
+			display-name = "Reset";
+		};
+		bootloader: bootload {
+			compatible = "zmk,behavior-reset";
+			type = < 0x57 >;
+			bootloader;
+			#binding-cells = < 0x0 >;
+			display-name = "Bootloader";
+		};
+		rgb_ug: rgb_ug {
+			compatible = "zmk,behavior-rgb-underglow";
+			#binding-cells = < 0x2 >;
+			display-name = "Underglow";
+		};
+		bt: bluetooth {
+			compatible = "zmk,behavior-bluetooth";
+			#binding-cells = < 0x2 >;
+			display-name = "Bluetooth";
+			phandle = < 0x25 >;
+		};
+		ext_power: extpower {
+			compatible = "zmk,behavior-ext-power";
+			#binding-cells = < 0x1 >;
+			display-name = "External Power";
+		};
+		out: outputs {
+			compatible = "zmk,behavior-outputs";
+			#binding-cells = < 0x1 >;
+			display-name = "Output Selection";
+			phandle = < 0x26 >;
+		};
+		macro_tap: macro_tap {
+			compatible = "zmk,macro-control-mode-tap";
+			#binding-cells = < 0x0 >;
+		};
+		macro_press: macro_press {
+			compatible = "zmk,macro-control-mode-press";
+			#binding-cells = < 0x0 >;
+		};
+		macro_release: macro_release {
+			compatible = "zmk,macro-control-mode-release";
+			#binding-cells = < 0x0 >;
+		};
+		macro_tap_time: macro_tap_time {
+			compatible = "zmk,macro-control-tap-time";
+			#binding-cells = < 0x1 >;
+		};
+		macro_wait_time: macro_wait_time {
+			compatible = "zmk,macro-control-wait-time";
+			#binding-cells = < 0x1 >;
+		};
+		macro_pause_for_release: macro_pause_for_release {
+			compatible = "zmk,macro-pause-for-release";
+			#binding-cells = < 0x0 >;
+		};
+		macro_param_1to1: macro_param_1to1 {
+			compatible = "zmk,macro-param-1to1";
+			#binding-cells = < 0x0 >;
+		};
+		macro_param_1to2: macro_param_1to2 {
+			compatible = "zmk,macro-param-1to2";
+			#binding-cells = < 0x0 >;
+		};
+		macro_param_2to1: macro_param_2to1 {
+			compatible = "zmk,macro-param-2to1";
+			#binding-cells = < 0x0 >;
+		};
+		macro_param_2to2: macro_param_2to2 {
+			compatible = "zmk,macro-param-2to2";
+			#binding-cells = < 0x0 >;
+		};
+		studio_unlock: studio_unlock {
+			compatible = "zmk,behavior-studio-unlock";
+			#binding-cells = < 0x0 >;
+			display-name = "Studio Unlock";
+		};
+		mkp: mouse_key_press {
+			compatible = "zmk,behavior-mouse-key-press";
+			#binding-cells = < 0x1 >;
+			display-name = "Mouse Key Press";
+			phandle = < 0x1e >;
+		};
+		mmv: mouse_move {
+			compatible = "zmk,behavior-input-two-axis";
+			#binding-cells = < 0x1 >;
+			x-input-code = < 0x0 >;
+			y-input-code = < 0x1 >;
+			time-to-max-speed-ms = < 0x2a8 >;
+			acceleration-exponent = < 0x2 >;
+			phandle = < 0x1f >;
+		};
+		msc: mouse_scroll {
+			compatible = "zmk,behavior-input-two-axis";
+			#binding-cells = < 0x1 >;
+			x-input-code = < 0x6 >;
+			y-input-code = < 0x8 >;
+			time-to-max-speed-ms = < 0x12c >;
+			acceleration-exponent = < 0x0 >;
+			phandle = < 0x20 >;
+		};
+		ht: hold_tap {
+			label = "hold_tap";
+			compatible = "zmk,behavior-hold-tap";
+			#binding-cells = < 0x2 >;
+			flavor = "tap-preferred";
+			tapping-term-ms = < 0xdc >;
+			quick-tap-ms = < 0x96 >;
+			global-quick-tap;
+			bindings = < &kp >, < &kp >;
+			phandle = < 0x22 >;
+		};
+		hm: homerow_mods {
+			compatible = "zmk,behavior-hold-tap";
+			label = "HOMEROW_MODS";
+			#binding-cells = < 0x2 >;
+			tapping-term-ms = < 0xc8 >;
+			quick_tap_ms = < 0x0 >;
+			flavor = "tap-preferred";
+			bindings = < &kp >, < &kp >;
+		};
+		td: tapdance {
+			compatible = "zmk,behavior-hold-tap";
+			label = "TAPDANCE";
+			#binding-cells = < 0x2 >;
+			tapping-term-ms = < 0x96 >;
+			quick_tap_ms = < 0x0 >;
+			flavor = "tap-preferred";
+			bindings = < &kp >, < &kp >;
+		};
+		tog_game_hold: tog_game_hold {
+			compatible = "zmk,behavior-hold-tap";
+			#binding-cells = < 0x2 >;
+			flavor = "hold-preferred";
+			tapping-term-ms = < 0x7d0 >;
+			bindings = < &tog >, < &none >;
+			phandle = < 0x21 >;
+		};
+	};
+	mkp_input_listener: mkp_input_listener {
+		compatible = "zmk,input-listener";
+		device = < &mkp >;
+	};
+	mmv_input_listener: mmv_input_listener {
+		compatible = "zmk,input-listener";
+		device = < &mmv >;
+	};
+	msc_input_listener: msc_input_listener {
+		compatible = "zmk,input-listener";
+		device = < &msc >;
+	};
+	combos {
+		compatible = "zmk,combos";
+		combo_game_toggle {
+			timeout-ms = < 0x32 >;
+			require-prior-idle-ms = < 0x96 >;
+			key-positions = < 0x8 0x9 >;
+			bindings = < &tog_game_hold 0x4 0x0 >;
+			layers = < 0x0 0x4 >;
+		};
+	};
+	conditional_layers {
+		compatible = "zmk,conditional-layers";
+		func_layer {
+			if-layers = < 0x2 0x1 >;
+			then-layer = < 0x3 >;
+		};
+	};
+	keymap {
+		compatible = "zmk,keymap";
+		default_layer {
+			bindings = < &kp 0x70014 &kp 0x7001a &kp 0x70008 &kp 0x70015 &kp 0x70017 &kp 0x7001c &kp 0x70018 &kp 0x7000c &kp 0x70012 &kp 0x70013 &kp 0x70004 &ht 0x700e2 0x70016 &ht 0x700e3 0x70007 &ht 0x700e0 0x70009 &kp 0x7000a &kp 0x7000b &ht 0x700e4 0x7000d &ht 0x700e7 0x7000e &ht 0x700e6 0x7000f &kp 0x7002a &kp 0x7001d &kp 0x7001b &kp 0x70006 &kp 0x70019 &kp 0x70005 &kp 0x70011 &kp 0x70010 &kp 0x70036 &kp 0x70037 &kp 0x7004c &kp 0x7002c &lt 0x1 0x7002b &lt 0x2 0x70028 &kp 0x700e1 >;
+		};
+		sym_layer {
+			bindings = < &kp 0x207001e &kp 0x207001f &kp 0x2070020 &kp 0x2070021 &kp 0x2070022 &kp 0x2070023 &kp 0x2070024 &kp 0x2070025 &kp 0x70035 &kp 0x2070035 &kp 0x2070034 &kp 0x7002f &kp 0x207002f &kp 0x2070026 &trans &kp 0x70038 &kp 0x7002d &kp 0x7002e &kp 0x2070033 &kp 0x70033 &kp 0x70034 &kp 0x70030 &kp 0x2070030 &kp 0x2070027 &trans &kp 0x70031 &kp 0x207002d &kp 0x207002e &kp 0x2070031 &kp 0x2070038 &trans &trans &trans &trans >;
+		};
+		num_layer {
+			bindings = < &kp 0x7001e &kp 0x7001f &kp 0x70020 &kp 0x70021 &kp 0x70022 &kp 0x70023 &kp 0x70024 &kp 0x70025 &kp 0x70026 &kp 0x70027 &kp 0x7004c &kp 0x70039 &kp 0x70046 &kp 0x70049 &trans &kp 0x70050 &kp 0x70051 &kp 0x70052 &kp 0x7004f &trans &trans &trans &trans &trans &trans &kp 0x7004a &kp 0x7004e &kp 0x7004b &kp 0x7004d &trans &kp 0x70029 &trans &trans &trans >;
+		};
+		func_layer {
+			bindings = < &kp 0x7003a &kp 0x7003b &kp 0x7003c &kp 0x7003d &kp 0x7003e &trans &trans &kp 0xc00e2 &trans &trans &kp 0x7003f &kp 0x70040 &kp 0x70041 &kp 0x70042 &kp 0x70043 &kp 0xc00b6 &kp 0xc00ea &kp 0xc00e9 &kp 0xc00b5 &kp 0xc00cd &kp 0x70044 &kp 0x70045 &bt 0x4 0x0 &out 0x0 &bt 0x0 0x0 &bt 0x3 0x0 &bt 0x3 0x1 &bt 0x3 0x2 &bt 0x3 0x3 &bt 0x3 0x4 &trans &trans &trans &trans >;
+		};
+		game_layer {
+			bindings = < &kp 0x7002b &kp 0x70014 &kp 0x7001a &kp 0x70008 &kp 0x70015 &kp 0x7001e &kp 0x7001f &kp 0x70020 &kp 0x70021 &kp 0x70022 &kp 0x700e1 &kp 0x70004 &kp 0x70016 &kp 0x70007 &kp 0x70009 &kp 0x7003a &kp 0x7003b &kp 0x7003c &kp 0x7003d &kp 0x7003e &kp 0x700e0 &kp 0x7001d &kp 0x7001b &kp 0x70006 &kp 0x70019 &kp 0x7000a &kp 0x70017 &kp 0x70010 &kp 0x70005 &kp 0x70029 &kp 0x7002c &kp 0x700e2 &kp 0x70023 &kp 0x70028 >;
+		};
+		mouse_layer {
+			bindings = < &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &mo 0x6 &mkp 0x1 &mkp 0x1 &mkp 0x2 >;
+		};
+		scroll_layer {
+			bindings = < &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &mo 0x6 &mkp 0x1 &mkp 0x1 &mkp 0x2 >;
+		};
+	};
+};

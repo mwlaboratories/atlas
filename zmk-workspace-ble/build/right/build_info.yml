@@ -1,0 +1,71 @@
+cmake:
+  application:
+    configuration-dir: /home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app
+    source-dir: /home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app
+  board:
+    name: xiao_ble
+    path:
+     - /home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/boards/seeed/xiao_ble
+     - /home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/boards/seeed/xiao_ble
+    qualifiers: nrf52840/zmk
+    revision: 
+  devicetree:
+    bindings-dirs:
+     - /home/gomar/Documents/repos/atlas/zmk-workspace-ble/kb_zmk_ps2_mouse_trackpoint_driver/dts/bindings
+     - /home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/module/dts/bindings
+     - /home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/bindings
+     - /home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/dts/bindings
+    extra-user-files:
+     - /home/gomar/Documents/repos/atlas/zmk-workspace-ble/config/atlas.keymap
+    files:
+     - /home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/boards/seeed/xiao_ble/xiao_ble_zmk.dts
+     - /home/gomar/Documents/repos/atlas/zmk-workspace-ble/config/boards/shields/atlas/atlas_right.overlay
+     - /home/gomar/Documents/repos/atlas/zmk-workspace-ble/config/atlas.keymap
+    include-dirs:
+     - /home/gomar/Documents/repos/atlas/zmk-workspace-ble/kb_zmk_ps2_mouse_trackpoint_driver/include
+     - /home/gomar/Documents/repos/atlas/zmk-workspace-ble/kb_zmk_ps2_mouse_trackpoint_driver/dts
+     - /home/gomar/Documents/repos/atlas/zmk-workspace-ble/modules/hal/stm32/dts
+     - /home/gomar/Documents/repos/atlas/zmk-workspace-ble/modules/hal/atmel/include
+     - /home/gomar/Documents/repos/atlas/zmk-workspace-ble/modules/hal/gigadevice/include
+     - /home/gomar/Documents/repos/atlas/zmk-workspace-ble/modules/hal/nuvoton/dts
+     - /home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/module/include
+     - /home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/module/dts
+     - /home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/include
+     - /home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts/common
+     - /home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/dts
+     - /home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/include
+     - /home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/include/zephyr
+     - /home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/dts/common
+     - /home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/dts/x86
+     - /home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/dts/xtensa
+     - /home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/dts/sparc
+     - /home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/dts/riscv
+     - /home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/dts/posix
+     - /home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/dts/nios2
+     - /home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/dts/arm64
+     - /home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/dts/arm
+     - /home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/dts/arc
+     - /home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/dts
+  kconfig:
+    files:
+     - /home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/boards/seeed/xiao_ble/xiao_ble_zmk_defconfig
+     - /home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/prj.conf
+     - /home/gomar/Documents/repos/atlas/zmk-workspace-ble/config/boards/shields/atlas/atlas_right.conf
+     - /home/gomar/Documents/repos/atlas/zmk-workspace-ble/config/atlas.conf
+     - /home/gomar/Documents/repos/atlas/zmk-workspace-ble/config/atlas.conf
+    user-files:
+     - /home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/prj.conf
+  toolchain:
+    name: gnuarmemb
+    path: /nix/store/mmkh2v78liwvll9ikdamv3iqwy5drm1g-gcc-arm-embedded-15.2.rel1
+  vendor-specific:
+    nordic:
+      svdfile: /home/gomar/Documents/repos/atlas/zmk-workspace-ble/modules/hal/nordic/nrfx/mdk/nrf52840.svd
+  zephyr:
+    version: 4.1.0
+    zephyr-base: /home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr
+version: 0.1.0
+west:
+  command: /nix/store/clbgf3gfyw65558m0yd0waxfz6mspl9j-python3.13-west-1.5.0/bin/west build -p -s zmk/app -b xiao_ble//zmk -d build/right -- -DSHIELD=atlas_right -DZMK_CONFIG=/home/gomar/Documents/repos/atlas/zmk-workspace-ble/config
+  topdir: /home/gomar/Documents/repos/atlas/zmk-workspace-ble
+  version: 1.5.0

@@ -65,8 +65,8 @@ in
     echo "→ images/keymap.svg"
   '';
 
-  # Build both firmware halves with the strata layer reporter (zmk-strata/)
-  # baked into the central. Logic lives in build-firmware.sh to avoid Nix
+  # Build both firmware halves with the strata layer reporter (zmk-strata, pulled
+  # via west.yml) baked into the central. Logic lives in build-firmware.sh to avoid Nix
   # string-escaping; it drops into the zmk-nix dev shell for west + the SDK.
   scripts.firmware.exec = ''
     exec bash "''${DEVENV_ROOT}/zmk-workspace-ble/build-firmware.sh"

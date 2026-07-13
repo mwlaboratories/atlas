@@ -1,0 +1,4 @@
+osource "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk-raw-hid/boards/shields/*/Kconfig.defconfig"
+osource "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/module/boards/shields/*/Kconfig.defconfig"
+osource "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zmk/app/boards/shields/*/Kconfig.defconfig"
+osource "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/config/boards/shields/*/Kconfig.defconfig"

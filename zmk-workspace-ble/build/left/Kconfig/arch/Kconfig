@@ -1,0 +1,11 @@
+# Load Zephyr Arch Kconfig descriptions.
+osource "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/arch/x86/Kconfig"
+osource "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/arch/xtensa/Kconfig"
+osource "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/arch/sparc/Kconfig"
+osource "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/arch/riscv/Kconfig"
+osource "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/arch/posix/Kconfig"
+osource "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/arch/nios2/Kconfig"
+osource "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/arch/mips/Kconfig"
+osource "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/arch/arm64/Kconfig"
+osource "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/arch/arm/Kconfig"
+osource "/home/gomar/Documents/repos/atlas/zmk-workspace-ble/zephyr/arch/arc/Kconfig"
