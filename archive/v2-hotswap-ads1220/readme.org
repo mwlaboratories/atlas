@@ -1,0 +1,24 @@
+#+title: v2 hotswap + ADS1220 (archived)
+
+Later hotswap board, kept so it can be converted into an extra version.
+Hand-laid KiCad PCB: Choc hotswap sockets, ADS1220 front-end, per-key
+SK6812 chain, XIAO nRF52840 Plus, power switch, and battery-lead pads.
+
+The board being built now is =pcb/atlas/= at the repo root. Nothing in
+this folder is part of the default dev shell or firmware build.
+
+* Layout
+
+Paths are the old =pcb/= tree, moved under this folder:
+
+| =pcb/kicad/=              | KiCad project (=keyboard.kicad_pcb=), footprints, 3D models, ADS1220 reference, net-map |
+| =pcb/parts.yaml=          | BOM (LCSC numbers)                                                                      |
+| =pcb/parts-checklist.org= | JLCPCB checklist                                                                        |
+| =pcb/keyboard.json=       | Layout reference                                                                        |
+| =pcb/readme.org=          | PCB notes from that version                                                             |
+| =fetch-3d-models.sh=      | The old devenv =fetch-3d-models= script                                                 |
+
+=fetch-3d-models.sh= used to be a devenv command. It is not registered
+in the root =devenv.nix=, so entering the dev shell does not run it.
+Run it by hand from this directory only when refreshing models for this
+archived board. It writes to =pcb/kicad/3d-models/= here.

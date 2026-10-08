@@ -9,58 +9,16 @@
 
 * Atlas
 
+Reverted to the working prototype for simplicity, to get over the
+production line now. Later hotswap/ADC work lives in
+=archive/v2-hotswap-ads1220/=.
+
 34-key split ergonomic keyboard with a trackpoint on each half and an
-optional oversized trackball. This tree is the prototype that was built
-and is in use. The KiCad board, case, and plates are restored from
-commit =426184a= (2026-02-17). =pcb/atlas/atlas.kicad_pcb= is blob
-=bf3b1aba=, the same file from =de23780= (2025-11-13) through
-=proto/breakout-v1=.
+optional oversized trackball. Soldered Choc V1, 20×17 mm spacing,
+wider custom caps. XIAO nRF52840, BLE split, ZMK in
+=zmk-workspace-ble/=. Board in =pcb/atlas/=, case and plates in =stl/=.
 
-The pictures above are that board. =images/atlas-render.png= is the
-README render (blob =bb2cc7b=). =images/atlas_jan_small.jpg= is the
-January 2026 photo of the same keyboard (it was =images/atlas.jpg= on
-main).
-
-** This board
-
-- 34× =ScottoKeebs_Choc:Choc_V1_1.00u=. Choc V1, soldered through-hole.
-  The switches are soldered to the PCB. There are no hotswap sockets.
-  An older README line that said "Choc V1 hotswap switches" does not
-  describe this board.
-- Key pitch 20.0 mm (columns) × 17.0 mm (rows), so the caps can be a
-  little wider than stock Choc and the trackpoint sits between the keys.
-- XIAO nRF52840 on =totem:xiao-ble-smd-cutout= (breakout, not the Plus).
-- Trackpoint bridge headers =totem:6pin= and =totem:5pin=, battery
-  =totem:2pin=.
-- Case, plate, and bottom plates in =stl/=. Optional trackball in
-  =pcb/trackball/= and =stl/trackball-*=.
-- No ADS1220 and no per-key RGB on this PCB.
-
-There is no separate keycap CAD file in the repo. The caps in the render
-are the ones for this 20×17 mm spacing. =pcb/atlas/atlas.step= carries
-the Choc V1 switch bodies on the board.
-
-The March 2026 layout generator (=tools/keyboard.yaml=, hotswap Choc at
-18×17 mm) is a later design and is not part of this tree.
-
-** Next
-
-Integrate the ADS1220 strain-gauge front-end onto this PCB. Bench
-firmware for that ADC is pinned at =bench/ads1220=. It has not been
-laid onto this board.
-
-** Firmware
-
-ZMK BLE split lives in =zmk-workspace-ble/=. The matrix matches the
-prototype: =atlas.dtsi= and the left/right overlays are the same files
-as =proto/breakout-v1=. Rows are D0–D3 on both halves (col2row). Left
-columns are D4, D5, D10, D9, D8. Right columns are the mirror (D8, D9,
-D10, D5, D4). Trackpoint PS/2 is D6 clock and D7 data.
-
-The July 2026 firmware stays on that pinout: strata layer broadcast
-(=zmk-strata=), keymap-drawer, the game-toggle idle guard, and the
-peripheral battery proxy. =bench/ads1220= remains the separate
-bench-only ADC firmware.
+Next step: integrate the new ADC (ADS1220) into this PCB.
 
 ** Architecture
 
