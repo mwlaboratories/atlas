@@ -9,16 +9,20 @@
 
 * Atlas
 
-Reverted to the working prototype for simplicity, to get over the
-production line now. Later hotswap/ADC work lives in
-=archive/v2-hotswap-ads1220/=.
+Main was reverted to the built, working prototype, commit =426184a=:
+soldered Choc V1, 20×17 mm spacing, wider custom caps, and a trackpoint
+between the keys. The goal is getting to real production as soon as
+possible.
+
+Next step: integrate the new ADC (ADS1220) into this PCB. The later
+hotswap/ADS1220 board is in =archive/v2-hotswap-ads1220/= and can be
+turned into an extra version later.
+
+The keycaps are not part of the open-source files.
 
 34-key split ergonomic keyboard with a trackpoint on each half and an
-optional oversized trackball. Soldered Choc V1, 20×17 mm spacing,
-wider custom caps. XIAO nRF52840, BLE split, ZMK in
+optional oversized trackball. XIAO nRF52840, BLE split, ZMK in
 =zmk-workspace-ble/=. Board in =pcb/atlas/=, case and plates in =stl/=.
-
-Next step: integrate the new ADC (ADS1220) into this PCB.
 
 ** Architecture
 
