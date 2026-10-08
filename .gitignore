@@ -1,5 +1,5 @@
 # Private / local workspace — not part of the published board.
-# The public-facing artifact is the hand-laid KiCad board under pcb/.
+# The public-facing artifact is the built prototype under pcb/atlas/.
 tools/
 node_modules/
 
