@@ -7,24 +7,45 @@
 
 * Atlas
 
-34-key split ergonomic keyboard with trackpoint. Per-half XIAO nRF52840
-Plus, BLE split, ZMK firmware.
+34-key split ergonomic keyboard with trackpoint. Per-half XIAO nRF52840,
+BLE split, ZMK firmware, Choc V2 hotswap, 20 × 17 mm column stagger.
 
-** Status (June 2026)
+** Status (October 2026)
 
 - Daily driver: breakout-board prototype, Sprintek AIO trackpoint on the
   left half. Pinned at the =proto/breakout-v1= tag.
-- Next board: hand-laid KiCad PCB under =pcb/=, 34 keys (5×3
-  alphas + 2 thumbs per half), Choc V2 hotswap.
+- PCB: hotswap board ordered (5 panels, fully assembled). Each panel holds
+  both halves.
 - ADS1220 strain-gauge trackpoint: firmware bench-proven (HID mouse,
-  radial deadzone, click-to-wake via input-processor-ping) — pinned at
-  =bench/ads1220=. Currently being hand-laid into the PCB.
+  radial deadzone, click-to-wake) at the =bench/ads1220= tag; on the PCB
+  per half.
+
+** Repository
+
+| =cad/=                    | Case parts as STEP, per half: wooden housing, switch plate, bottom plate |
+| =pcb/=                    | KiCad project: =atlas-left=, =atlas-right= and =atlas-panel= (both halves, as ordered) |
+| =firmware/atlas20/=       | ZMK shield for the PCB (charlieplexed matrix; draft, untested) |
+| =firmware/prototype-ble/= | ZMK workspace of the current breakout prototype |
+| =images/=, =nix/=         | Photo, keymap drawing and the keymap-drawer setup |
 
 ** Architecture
 
 #+begin_example
 Host <--BLE-- Left (central + trackpoint) <--BLE-- Right (peripheral)
 #+end_example
+
+** Trackpoint wiring
+
+Sprintek SK8707 bare strain-gauge stick, read by an ADS1220 per half.
+Stick up, ribbon to the left, contacts far → near:
+
+| b | REFN0 | supply − |
+| a | REFP0 | supply + (excitation current) |
+| y | AIN1  | left/right output |
+| x | AIN0  | away/toward output |
+
+The right half's stick is turned 180°, so its J1 order is reversed.
+Verified with a multimeter on the real stick (October 2026).
 
 ** Mouse layer
 
@@ -35,21 +56,24 @@ the last movement.
 Thumb keys: | SCROLL | LCLK | LCLK | RCLK |
 #+end_example
 
-** Parts
+** Parts (per half)
 
-| Choc V1/V2 hotswap     | =C5333465= | Extended                                   |
-| SK6812MINI-E rev-mount | =C5149201= | Extended                                   |
-| 1N4148W SOD-123 diode  | =C81598=   | Basic                                      |
-| XIAO nRF52840 Plus     | DNP        | Hand-solder; one per half                  |
-| ADS1220 (TSSOP-16)     | =C40103=   | Strain-gauge ADC for trackpoint, integrating now |
-| Sprintek SK8707-PT     | DNP        | AIO trackpoint (used in current prototype) |
+| XIAO nRF52840 (Seeed 102010448)     | 1  |
+| ADS1220IRVAR, VQFN-16               | 1  |
+| Kailh Choc hotswap CPG135001S30     | 17 |
+| 1N4148W SOD-123 diode               | 17 |
+| BAW56 dual diode, SOT-23            | 5  |
+| C&K PCM12SMTR power switch          | 1  |
+| C&K PTS810 reset button             | 1  |
+| Sprintek SK8707 trackpoint          | 1 (hand-soldered to J1) |
+| 701535 LiPo cell                    | 1 (hand-soldered to BT1) |
 
 ** Previous work
 
-- =proto/breakout-v1= — breakout-board prototype (daily driver). KiCad
-  PCB + hand-wired XIAO breakouts.
-- =bench/ads1220= — ADS1220 strain-gauge ADC firmware, bench-proven,
-  not yet boarded.
+- =proto/breakout-v1= — breakout-board prototype (daily driver).
+- =bench/ads1220= — ADS1220 strain-gauge ADC firmware, bench-proven.
+- =archive/ads1220-integration=, =archive/restore-prototype= — tips of
+  earlier branches, kept as tags.
 
 ** Links
 

@@ -1,0 +1,11 @@
+file_format: "1"
+id: atlas
+name: Atlas
+type: shield
+url: https://github.com/
+requires: [seeed_xiao]
+features:
+  - keys
+siblings:
+  - atlas_left
+  - atlas_right

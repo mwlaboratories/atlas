@@ -1,0 +1,10 @@
+(version 1)
+# Copper to board edge: 0.3 mm everywhere (the board-setup minimum is 0 so these rules can make an exception) ...
+(rule "copper_edge_default"
+  (constraint edge_clearance (min 0.3mm)))
+# ... except the TOTEM-style XIAO windows: the plated holes under the XIAO's VBAT/GND/RESET pads open into a
+# routed window on purpose (their copper ring is cut by the window, exactly as in GEIST's TOTEM) ...
+(rule "xiao_window_pads"
+  (condition "(A.memberOfFootprint('U1') && A.Pad_Type == 'Through-hole') || (B.memberOfFootprint('U1') && B.Pad_Type == 'Through-hole')")
+  (constraint edge_clearance (min 0mm))
+  (severity ignore))

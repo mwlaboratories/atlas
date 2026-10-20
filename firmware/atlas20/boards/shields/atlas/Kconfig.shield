@@ -1,0 +1,5 @@
+config SHIELD_ATLAS_LEFT
+    def_bool $(shields_list_contains,atlas_left)
+
+config SHIELD_ATLAS_RIGHT
+    def_bool $(shields_list_contains,atlas_right)

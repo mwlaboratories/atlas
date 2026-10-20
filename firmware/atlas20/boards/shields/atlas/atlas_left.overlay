@@ -1,0 +1,14 @@
+#include "atlas.dtsi"
+
+&kscan0 {
+    interrupt-gpios = <&xiao_d 5 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>;
+    gpios
+        = <&xiao_d 0 GPIO_ACTIVE_HIGH>    /* P0 */
+        , <&xiao_d 1 GPIO_ACTIVE_HIGH>    /* P1 */
+        , <&xiao_d 2 GPIO_ACTIVE_HIGH>    /* P2 */
+        , <&xiao_d 3 GPIO_ACTIVE_HIGH>    /* P3 */
+        , <&xiao_d 4 GPIO_ACTIVE_HIGH>    /* P4 */
+        ;
+};
+
+/* ADS1220 trackpoint ADC (SPI): pins per pcb/atlas-*.kicad_pcb (U2); driver = badjeff's module (TODO). */

@@ -1,0 +1,7 @@
+include:
+  - board: xiao_ble//zmk
+    shield: atlas_left
+  - board: xiao_ble//zmk
+    shield: atlas_right
+  - board: xiao_ble//zmk
+    shield: settings_reset
