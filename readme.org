@@ -27,6 +27,7 @@ BLE split, ZMK firmware, Choc V2 hotswap, 20 × 17 mm column stagger.
 | =firmware/atlas20/=       | ZMK shield for the PCB (charlieplexed matrix; draft, untested) |
 | =firmware/prototype-ble/= | ZMK workspace of the current breakout prototype |
 | =images/=, =nix/=         | Photo, keymap drawing and the keymap-drawer setup |
+| =licenses/=               | License texts, see below |
 
 ** Architecture
 
@@ -74,6 +75,14 @@ Thumb keys: | SCROLL | LCLK | LCLK | RCLK |
 - =bench/ads1220= — ADS1220 strain-gauge ADC firmware, bench-proven.
 - =archive/ads1220-integration=, =archive/restore-prototype= — tips of
   earlier branches, kept as tags.
+
+** License
+
+- Hardware (=cad/=, =pcb/=): CERN-OHL-S-2.0
+- Firmware (=firmware/=, =nix/=): GPL-3.0
+- Documentation and images: CC-BY-SA-4.0
+
+Full texts in =licenses/=.
 
 ** Links
 
