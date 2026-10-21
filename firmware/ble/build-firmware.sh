@@ -16,6 +16,7 @@ cd "$(dirname "$0")"
 
 nix develop -c bash -euo pipefail -c '
   export ZEPHYR_BASE="$PWD/zephyr"
+  [ -d .west ] || west init -l config   # fresh clone: make this a west workspace
   west update    # fetch zmk, zmk-raw-hid, zmk-strata, trackpoint driver
   west zephyr-export
   mkdir -p firmware

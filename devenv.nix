@@ -34,7 +34,7 @@ in
   scripts.draw-keymap.exec = ''
     cd "''${DEVENV_ROOT}"
     keymap -c nix/keymap-drawer.yaml parse \
-      -z firmware/prototype-ble/config/atlas.keymap -c 10 -o nix/keymap.yaml
+      -z firmware/ble/config/atlas.keymap -c 10 -o nix/keymap.yaml
     keymap -c nix/keymap-drawer.yaml draw nix/keymap.yaml \
       -n "33333+2 2+33333" -o images/keymap.svg
     echo "→ images/keymap.svg"
@@ -44,7 +44,7 @@ in
   # via west.yml) baked into the central. Logic lives in build-firmware.sh to avoid Nix
   # string-escaping; it drops into the zmk-nix dev shell for west + the SDK.
   scripts.firmware.exec = ''
-    exec bash "''${DEVENV_ROOT}/firmware/prototype-ble/build-firmware.sh"
+    exec bash "''${DEVENV_ROOT}/firmware/ble/build-firmware.sh"
   '';
 
   enterShell = ''

@@ -25,7 +25,7 @@ BLE split, ZMK firmware, Choc V2 hotswap, 20 × 17 mm column stagger.
 | =cad/=                    | Case parts as STEP, per half: wooden housing, switch plate, bottom plate |
 | =pcb/=                    | KiCad project: =atlas-left=, =atlas-right= and =atlas-panel= (both halves, as ordered) |
 | =firmware/atlas20/=       | ZMK shield for the PCB (charlieplexed matrix; draft, untested) |
-| =firmware/prototype-ble/= | ZMK workspace of the current breakout prototype |
+| =firmware/ble/=           | ZMK workspace of the breakout prototype, BLE split (no dongle) |
 | =images/=, =nix/=         | Photo, keymap drawing and the keymap-drawer setup |
 | =licenses/=               | License texts, see below |
 
