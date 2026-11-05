@@ -25,6 +25,14 @@ fp-info-cache
 *.gbr
 *.drl
 gerbers/
+# Fab packages (BOM, pick-and-place, gerber zips) stay out of the repo on
+# purpose: the board is shared as KiCad source, assembled boards are ordered
+# through PCBWay.
+pcb/fab/
+*_bom.csv
+*_cpl.csv
+*-pos.csv
+*_gerbers.zip
 /renders/
 
 # nix build output

@@ -13,7 +13,22 @@ in
     wl-clipboard
     kicad
     keymap-drawer
+    uv # provides `uvx`, used by the kicad-mcp wrapper below
   ];
+
+  # MCP server: kicad-mcp-pro, run via uvx. See .mcp.json (project-scoped so
+  # Claude Code only offers it inside this repo).
+  #
+  # Why the LD_LIBRARY_PATH: the package's telemetry module pulls in grpcio,
+  # whose prebuilt manylinux wheel dynamically links libstdc++.so.6. On NixOS
+  # that library isn't on the default loader path, so the C extension fails to
+  # load. We inject the matching 64-bit libstdc++ from the same nixpkgs.
+  # OTEL_SDK_DISABLED keeps the telemetry SDK from exporting anything.
+  scripts.kicad-mcp.exec = ''
+    export LD_LIBRARY_PATH="${pkgs.stdenv.cc.cc.lib}/lib''${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+    export OTEL_SDK_DISABLED=true
+    exec uvx kicad-mcp-pro@3.25.0 --transport stdio "$@"
+  '';
 
   # One-shot commands — runnable from any subshell once devenv is active.
   scripts.render.exec = ''

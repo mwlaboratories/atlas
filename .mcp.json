@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "kicad": {
+      "command": "kicad-mcp",
+      "args": []
+    }
+  }
+}
