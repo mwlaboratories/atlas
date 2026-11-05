@@ -1,7 +1,7 @@
 { pkgs, ... }:
 
 let
-  # keymap-drawer (caksoylar) — parses config/atlas.keymap and renders the
+  # keymap-drawer (caksoylar) — parses config/old_prototype.keymap and renders the
   # layer diagram in images/keymap.svg. Built from ./nix/ because the version
   # we pin (0.22.1) needs tree-sitter 0.24.0 + a devicetree grammar.
   keymap-drawer = pkgs.python3Packages.callPackage ./nix/keymap-drawer.nix { };
@@ -49,7 +49,7 @@ in
   scripts.draw-keymap.exec = ''
     cd "''${DEVENV_ROOT}"
     keymap -c nix/keymap-drawer.yaml parse \
-      -z firmware/ble/config/atlas.keymap -c 10 -o nix/keymap.yaml
+      -z firmware/ble/config/old_prototype.keymap -c 10 -o nix/keymap.yaml
     keymap -c nix/keymap-drawer.yaml draw nix/keymap.yaml \
       -n "33333+2 2+33333" -o images/keymap.svg
     echo "→ images/keymap.svg"
@@ -67,7 +67,7 @@ in
     echo "  atlas — KiCad PCB, case STEP files + ZMK firmware"
     echo "  render            render pcb/atlas-{left,right}.kicad_pcb to PNGs"
     echo "  draw-keymap       regenerate images/keymap.svg from the keymap"
-    echo "  firmware          build atlas_{left,right}.uf2 (left = + strata)"
+    echo "  firmware          build old_prototype_{left,right}.uf2 (left = + strata)"
     echo ""
   '';
 }

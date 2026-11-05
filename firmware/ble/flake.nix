@@ -27,7 +27,7 @@
         # Zephyr 4.1 / HWMv2 renamed the old `seeeduino_xiao_ble` alias.
         # Per ZMK's 2025-12-09 migration note: seeeduino_xiao_ble -> xiao_ble//zmk
         board = "xiao_ble//zmk";
-        shield = "atlas_%PART%";
+        shield = "old_prototype_%PART%";
         # parts defaults to [ "left" "right" ]; central is the first ("left").
 
         zephyrDepsHash = "sha256-B1R8LGhftG5BKSrCGsJ5WuboQub3CEyf4pQFdh0kq00=";

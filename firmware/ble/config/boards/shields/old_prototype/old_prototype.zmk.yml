@@ -1,0 +1,10 @@
+file_format: "1"
+id: old_prototype
+name: ATLAS
+type: shield
+requires: [xiao_ble]
+features:
+  - keys
+siblings:
+  - old_prototype_left
+  - old_prototype_right

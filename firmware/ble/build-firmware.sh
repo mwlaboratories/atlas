@@ -22,9 +22,9 @@ nix develop -c bash -euo pipefail -c '
   mkdir -p firmware
   for part in left right; do
     west build -p -s zmk/app -b "xiao_ble//zmk" -d "build/$part" -- \
-      -DSHIELD="atlas_$part" \
+      -DSHIELD="old_prototype_$part" \
       -DZMK_CONFIG="$PWD/config"
-    cp "build/$part/zephyr/zmk.uf2" "firmware/atlas_$part.uf2"
+    cp "build/$part/zephyr/zmk.uf2" "firmware/old_prototype_$part.uf2"
   done
 '
-echo "→ firmware/atlas_{left,right}.uf2  (left carries the strata layer reporter)"
+echo "→ firmware/old_prototype_{left,right}.uf2  (left carries the strata layer reporter)"

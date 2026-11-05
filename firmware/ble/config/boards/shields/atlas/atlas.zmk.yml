@@ -1,8 +1,9 @@
 file_format: "1"
 id: atlas
-name: ATLAS
+name: Atlas
 type: shield
-requires: [xiao_ble]
+url: https://github.com/
+requires: [seeed_xiao]
 features:
   - keys
 siblings:

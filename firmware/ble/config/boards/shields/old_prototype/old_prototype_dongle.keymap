@@ -3,7 +3,7 @@
  * DONGLE KEYMAP - Used by the dongle (central device)
  * ============================================================================
  * The dongle receives key events from peripherals and sends HID to the host.
- * Layer definitions here must match config/atlas.keymap for proper functionality.
+ * Layer definitions here must match config/old_prototype.keymap for proper functionality.
  *
  * Mouse/scroll layers (5, 6) are defined here with thumb key bindings since
  * the dongle handles pointing device input processing.
