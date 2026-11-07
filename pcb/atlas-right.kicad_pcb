@@ -24757,7 +24757,7 @@
 		(uuid "f9137ade-341b-4d49-b5ad-0a8530f21e46")
 	)
 	(segment
-		(start 161.3516 78.75)
+		(start 161.3516 78.45)
 		(end 164.6516 78.75)
 		(width 0.2)
 		(layer "F.Cu")
@@ -24789,7 +24789,7 @@
 		(uuid "dbd8a99b-b032-48bb-ae77-64e7e3dac657")
 	)
 	(via
-		(at 161.3516 78.75)
+		(at 161.3516 78.45)
 		(size 0.6)
 		(drill 0.3)
 		(layers "F.Cu" "B.Cu")
@@ -24819,6 +24819,14 @@
 		(layer "B.Cu")
 		(net "RST")
 		(uuid "de53c091-bae8-4c4b-9993-4fa6e9c8cfa8")
+	)
+	(segment
+		(start 161.3516 78.45)
+		(end 161.145 79.225)
+		(width 0.2)
+		(layer "B.Cu")
+		(net "RST")
+		(uuid "fb867068-db83-413d-8799-5a8e294e8e9a")
 	)
 	(segment
 		(start 161.3516 74.35)
