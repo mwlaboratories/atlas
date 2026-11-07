@@ -36,6 +36,9 @@ pcb/fab/
 /renders/
 # Printable test-fit models (pcb/testfit.py) and local board review notes
 pcb/testfit/
+# Generated case parts (cad/tools) and its virtualenv
+cad/out/
+cad/tools/.venv/
 pcb/review/
 
 # nix build output
