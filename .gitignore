@@ -34,6 +34,9 @@ pcb/fab/
 *-pos.csv
 *_gerbers.zip
 /renders/
+# Printable test-fit models (pcb/testfit.py) and local board review notes
+pcb/testfit/
+pcb/review/
 
 # nix build output
 result
@@ -55,3 +58,6 @@ firmware/ble/zmk-strata/
 
 # keymap-drawer intermediate (SVG lands in images/keymap.svg)
 nix/keymap.yaml
+
+# Python bytecode
+__pycache__/

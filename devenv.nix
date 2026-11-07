@@ -43,6 +43,13 @@ in
     echo "→ renders/atlas-{left,right}-{top,bottom}.png"
   '';
 
+  # Printable PCB test-fit models (top side flat, hotswap pin holes drilled
+  # through) for checking real switches and the case. See pcb/testfit.py.
+  scripts.testfit.exec = ''
+    cd "''${DEVENV_ROOT}"
+    ${pkgs.freecad}/bin/FreeCADCmd pcb/testfit.py
+  '';
+
   # Regenerate images/keymap.svg (the layer diagram in readme.org) from the
   # active keymap via keymap-drawer. Named draw-keymap to avoid shadowing
   # keymap-drawer's own `keymap` console script (which this calls).
@@ -66,6 +73,7 @@ in
     echo ""
     echo "  atlas — KiCad PCB, case STEP files + ZMK firmware"
     echo "  render            render pcb/atlas-{left,right}.kicad_pcb to PNGs"
+    echo "  testfit           printable PCB test-fit models -> pcb/testfit/ (Bambu 3MF)"
     echo "  draw-keymap       regenerate images/keymap.svg from the keymap"
     echo "  firmware          build old_prototype_{left,right}.uf2 (left = + strata)"
     echo ""
