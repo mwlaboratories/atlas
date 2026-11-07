@@ -13,9 +13,7 @@ All three boards are saved as `(version 20260206) (generator "pcbnew")
 
 ## Battery connection: solder pads, as in v4
 
-A JST-PH header was tried and dropped. Gomar decided after seeing the
-S2B-PH-K-S fitment screenshots (below): it does not fit the case. The v4
-solder pads are back exactly as they were in `a2bec11`:
+The solder pads are exactly as they were in `a2bec11`:
 
 - **Footprint:** `atlas20:battery_pads`, value `LiPo 371030`, on B.Cu
 - **Pads:** SMD roundrect 2.0 × 3.0 mm, 3.5 mm pitch
@@ -29,7 +27,7 @@ solder pads are back exactly as they were in `a2bec11`:
 | panel `BT1` | (52.75, 134.849999) | −90° | BAT+ | GND |
 | panel `BT101` | (259.250001, 134.849999) | −90° | R_BAT+ | R_GND |
 
-The battery routing around the pads is also back to v4.
+The battery routing around the pads is unchanged from v4.
 
 **BOM:** no connector, no LiPo cell and no trackpoint. The cell is wired to
 the solder pads by hand.
@@ -74,55 +72,3 @@ its drill circle intersects an SMD pad that has paste.
 `a2bec11`, with 0 unconnected. The existing violations are library footprint
 issues, NPTH inside courtyard, and courtyard overlaps. There are no copper
 zones; only the keepout areas around the holes exist.
-
-## Record: why the JST-PH connector was dropped (historical)
-
-This section records the measurements from the trial. **None of it applies
-to v4.1 as built.**
-
-**The trial part.** It was `Connector_JST:JST_PH_S2B-PH-K_1x02_P2.00mm_Horizontal`
-(JST S2B-PH-K-S): THT, side entry, body on B.Cu, with the plug entering from
-the battery bay.
-
-**How the case CAD was measured.**
-
-- The case CAD (`cad/atlas-*-{housing,bottomplate,switchplate}.step`) is in
-  cm and has its own origin. Its M2 holes line up exactly with PCB holes
-  H2–H7 when:
-  - left: `x_kicad = X_cad + 120`, `y_kicad = 120 − Y_cad`
-  - right: `x_kicad = X_cad`, `y_kicad = 120 − Y_cad`
-  - Z: the PCB bottom face is at Z_cad = −3.805 mm.
-- The STEP files were converted to meshes through `kicad-cli pcb export glb`
-  and measured by ray-casting in headless Blender 5.1.
-
-**Measured.** z = 0 is the PCB bottom face.
-
-| quantity | value |
-|---|---|
-| Bottomplate below the PCB, total thickness | 2.40 mm |
-| Pocket under the BT1 pads, depth | 1.70 mm |
-| Top side: only free window near BT1 | x 52–57, y ≥ 134.5, 2.20 mm high |
-| S2B-PH-K-S body depth below the PCB | 4.89 mm (3.19 mm into the pocket floor, 2.49 mm through the plate's outer face) |
-| Pin tail to housing underside (untrimmed) | 0.49 mm |
-| Body front past board edge | 2.5 mm into the battery bay |
-
-**The other JST-PH variants.**
-
-- They are taller: about 5.5 mm (SMD side entry) and 6.0 mm (vertical).
-- The SMD side-entry part is also 8.2 mm wide, against 6.8 mm free between
-  the H3 screw boss and the board edge.
-- So no JST-PH header fits the case as designed.
-
-**Fitment screenshots** (in this folder; z = 0 is the PCB bottom face):
-
-- `v41-fit-left-current-BT1-section.png`: v4 as built, with the 1.70 mm pocket
-  under the solder pads
-- `v41-fit-left-S2B-PH-K-section-pin1.png`: trial header on the left, through
-  pin 1. Shows the header through the bottomplate and the pin tail against
-  the housing.
-- `v41-fit-left-S2B-PH-K-section-x53.25.png`: trial header on the left,
-  across both pins
-- `v41-fit-right-S2B-PH-K-section-pin1.png`: trial header on the right,
-  through pin 1
-- `v41-fit-right-S2B-PH-K-section-x138.75.png`: trial header on the right,
-  across both pins
