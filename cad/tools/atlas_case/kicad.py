@@ -88,10 +88,18 @@ class Footprint:
     y: float
     rot: float        # degrees, CCW, case frame
     pads: list[Pad] = field(default_factory=list)
+    fab: list[tuple[float, float]] | None = None   # closed Fab-layer outline, case frame
 
     @property
     def name(self) -> str:
         return self.lib.split(":")[-1]
+
+
+# Footprint names (the part after "lib:") the case parts look for.
+SWITCH = "choc_v1_v2_hotswap"
+SOCKET = "kailh_choc_hotswap_CPG135001S30"
+DIODE = "diode_tht_sod123"
+SOT23 = "SOT-23"
 
 
 @dataclass
@@ -100,12 +108,17 @@ class Board:
     outline: list[tuple[float, float]]           # closed polygon, case frame, CCW
     footprints: list[Footprint]
     thickness: float
+    mirrored: bool = False                       # a right half seen as a left one (kicad.mirrored)
 
     def by_ref(self, ref: str) -> Footprint:
-        return next(f for f in self.footprints if f.ref == ref)
+        for f in self.footprints:
+            if f.ref == ref:
+                return f
+        raise KeyError(f"{self.half} board has no footprint {ref!r}; the case expects it")
 
-    def of_kind(self, name_part: str) -> list[Footprint]:
-        return [f for f in self.footprints if name_part in f.lib]
+    def of_kind(self, name: str) -> list[Footprint]:
+        """Footprints whose name (after the library prefix) is exactly `name`."""
+        return [f for f in self.footprints if f.name == name]
 
 
 def _chain(segments, tol=0.01):
@@ -154,6 +167,17 @@ def load_board(path: str | Path, half: str) -> Board:
         fp = Footprint(ref=str(props.get("Reference", "")), lib=str(f[1]), value=str(props.get("Value", "")),
                        side="F" if find(f, "layer")[1] == "F.Cu" else "B", x=x, y=y, rot=fr.angle(rot))
         a = math.radians(rot)
+
+        def to_case(lx, ly):
+            # footprint-local -> board: KiCad rotates footprint-local points by -rot (y down)
+            return fr.p(X + lx * math.cos(a) + ly * math.sin(a), Y - lx * math.sin(a) + ly * math.cos(a))
+        fab = [(xy(find(g, "start")), xy(find(g, "end"))) for g in find_all(f, "fp_line")
+               if str(find(g, "layer")[1]).endswith(".Fab")]
+        if fab:
+            try:
+                fp.fab = [to_case(*q) for q in _chain(fab)]
+            except ValueError:
+                fp.fab = None           # open Fab drawing: not usable as an outline
         for pd in find_all(f, "pad"):
             pat = find(pd, "at")
             px, py = float(pat[1]), float(pat[2])
@@ -185,5 +209,7 @@ def mirrored(board: Board, axis2: float = MIRROR_X) -> Board:
         x, y = mp(f.x, f.y)
         g = Footprint(ref=f.ref, lib=f.lib, value=f.value, side=f.side, x=x, y=y, rot=(-f.rot) % 360)
         g.pads = [Pad(p.number, *mp(p.x, p.y), p.size, p.drill, p.net) for p in f.pads]
+        g.fab = [mp(*q) for q in f.fab] if f.fab else None
         fps.append(g)
-    return Board(half=board.half, outline=outline, footprints=fps, thickness=board.thickness)
+    return Board(half=board.half, outline=outline, footprints=fps, thickness=board.thickness,
+                 mirrored=not board.mirrored)

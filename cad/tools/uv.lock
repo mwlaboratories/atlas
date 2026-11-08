@@ -26,10 +26,18 @@ version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
     { name = "build123d" },
+    { name = "numpy" },
+    { name = "pillow" },
+    { name = "scipy" },
 ]
 
 [package.metadata]
-requires-dist = [{ name = "build123d", specifier = "==0.13.0" }]
+requires-dist = [
+    { name = "build123d", specifier = "==0.13.0" },
+    { name = "numpy" },
+    { name = "pillow" },
+    { name = "scipy" },
+]
 
 [[package]]
 name = "bd-materials"

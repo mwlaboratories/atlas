@@ -52,14 +52,19 @@ in
 
   # Case pipeline (cad/tools): build123d models generated from the KiCad
   # boards, exported to cad/out/ and checked against the reference STEPs.
+  # Halves build in parallel; unchanged parts come from cad/out/.cache.
   # build123d's OCP wheels are manylinux builds: they need these libraries on
   # the loader path on NixOS. Python comes from nixpkgs, uv only manages deps.
-  scripts.case.exec = ''
+  scripts.cad.exec = ''
     cd "''${DEVENV_ROOT}"
     export LD_LIBRARY_PATH="${pkgs.lib.makeLibraryPath (with pkgs; [ stdenv.cc.cc.lib libGL xorg.libX11 zlib expat fontconfig freetype ])}''${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
     export UV_PYTHON="${pkgs.python312}/bin/python3.12" UV_PYTHON_DOWNLOADS=never
     unset PYTHONPATH  # the devenv shell exports nixpkgs python3.13 packages (keymap-drawer)
-    exec uv run --project cad/tools python cad/tools/build.py "$@"
+    case "''${1:-}" in
+      view)  shift; exec uv run --project cad/tools python cad/tools/view.py "$@" ;;
+      print) shift; exec uv run --project cad/tools python cad/tools/build.py --print "$@" ;;
+      *)     exec uv run --project cad/tools python cad/tools/build.py "$@" ;;
+    esac
   '';
 
   # Regenerate images/keymap.svg (the layer diagram in readme.org) from the
@@ -86,7 +91,10 @@ in
     echo "  atlas — KiCad PCB, case STEP files + ZMK firmware"
     echo "  render            render pcb/atlas-{left,right}.kicad_pcb to PNGs"
     echo "  testfit           printable PCB test-fit models -> pcb/testfit/ (Bambu 3MF)"
-    echo "  case              build the case from the boards -> cad/out/, check vs cad/*.step"
+    echo "  cad               build the case from the boards -> cad/out/, all checks (cached)"
+    echo "  cad --fast        quick iteration: no reference compare, no thin-wall scan"
+    echo "  cad view          case viewer at http://localhost:8737, fast rebuild after each change"
+    echo "  cad print         build + cad/out/atlas-case.3mf for Bambu (one part per plate)"
     echo "  draw-keymap       regenerate images/keymap.svg from the keymap"
     echo "  firmware          build old_prototype_{left,right}.uf2 (left = + strata)"
     echo ""

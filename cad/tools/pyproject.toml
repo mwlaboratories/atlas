@@ -3,7 +3,7 @@ name = "atlas-case"
 version = "0.1.0"
 description = "Atlas keyboard case, generated from the KiCad boards with build123d"
 requires-python = ">=3.12,<3.13"
-dependencies = ["build123d==0.13.0"]
+dependencies = ["build123d==0.13.0", "numpy", "scipy", "pillow"]  # numpy/scipy/pillow: raster thin-wall check
 
 [tool.uv]
 package = false
