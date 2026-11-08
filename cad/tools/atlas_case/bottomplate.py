@@ -7,7 +7,7 @@ seen from the other side, so footprint-local shapes are mirrored in x there
 (`place`).
 
 Layers (z, mm):
-  -6.2 .. -3.8  the plate; pockets cut down from its top (holes under the socket bodies
+  -5.9 .. -3.8  the plate; pockets cut down from its top (holes under the socket bodies
                 and the window through it), screw countersinks from below
   -3.8 .. 0     a thin wall around the XIAO corner, where the housing has no skirt
 
@@ -38,7 +38,10 @@ H = HousingParams()      # defaults below are taken from the default housing
 class BottomplateParams:
     housing: HousingParams = field(default_factory=HousingParams)
     switchplate: SwitchplateParams = field(default_factory=SwitchplateParams)
-    bottom: float = -6.2
+    # 0.3 mm above the housing skirt's foot (-6.2): printed plates come out thicker than
+    # drawn (measured 2026-11-08: bottom plate +0.15, switch plate +0.08), and a plate
+    # proud of the housing rocks on the table; recessed, the keyboard stands on the wood
+    bottom: float = -5.9
     top: float = -3.8                    # plate top face
     # outline: the space the housing skirt and the switch plate's thumb wall leave, fit_gap
     # from each of them (so flush with the PCB where the skirt hugs it), out to the
@@ -80,7 +83,7 @@ class BottomplateParams:
     socket_clearance: float = 0.5
     # recess under the switch's centre post, and a relief joining it to the socket pocket
     switch_post_r: float = 2.6
-    switch_post_floor: float = -5.7
+    switch_post_floor: float = -5.5            # = bottom + floor_skin (Choc posts/legs reach ~1.05 below the PCB)
     # recess under every other hole of the switch footprint (the Choc v1 side legs at
     # x +-5.5 stick out under the PCB), radius drill/2 + this, at switch_post_floor;
     # 0 = none

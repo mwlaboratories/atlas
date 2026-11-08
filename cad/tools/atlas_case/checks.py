@@ -78,6 +78,36 @@ def no_overlaps(parts: dict) -> list[Result]:
     return out
 
 
+SOCKET_TAB_DEPTH = 0.3   # mm under the PCB: the hotswap socket's metal tabs lie flat there
+
+
+def real_sockets(pcb: PopulatedBoard, board: Board, bp: BottomplateParams) -> PopulatedBoard:
+    """The populated board with each hotswap socket's 3D model cut down to the real part.
+    KiCad's model is a plain rectangle extruded the full 1.9 mm, tabs included; the real
+    Kailh socket's body is two offset lobes (socket_pocket less its 0.5 mm clearance,
+    measured from the part) and its solder tabs lie flat against the PCB. So below
+    SOCKET_TAB_DEPTH only the lobes count. Other components are left as they are."""
+    from build123d import Plane, extrude, offset, Kind
+    from .bottomplate import path_face, place
+    from .kicad import SOCKET
+    body2d = offset(path_face(bp.socket_pocket), -0.5, kind=Kind.INTERSECTION)
+    sockets = {f.ref: f for f in board.of_kind(SOCKET)}
+    parts = []
+    for prt in pcb.parts:
+        fp = sockets.get(prt.ref)
+        if fp is None or "HOTPLUG" not in prt.model.upper():
+            parts.append(prt)
+            continue
+        bb = Compound(prt.solids).bounding_box()
+        lobes = Pos(0, 0, bb.min.Z - 1) * extrude(place(fp, body2d, False), amount=bb.size.Z + 2)
+        tabs = Pos((bb.min.X + bb.max.X) / 2, (bb.min.Y + bb.max.Y) / 2, PCB_BOTTOM - SOCKET_TAB_DEPTH / 2) \
+            * Box(bb.size.X + 2, bb.size.Y + 2, SOCKET_TAB_DEPTH)
+        keep = lobes + tabs
+        solids = [x for sol in prt.solids for x in (sol & keep).solids()]
+        parts.append(type(prt)(prt.ref, prt.model, solids or prt.solids))
+    return type(pcb)(pcb.board, parts)
+
+
 def components_clear(parts: dict, pcb: PopulatedBoard, reach: float = 1.0) -> list[Result]:
     """Every PCB component (sockets, diodes, XIAO, ...) clear of every case part by MIN_GAP.
 
@@ -475,7 +505,7 @@ def run(parts: dict, board: Board, pcb: PopulatedBoard | None,
         "one_solid": lambda: one_solid(parts),
         "no_overlaps": lambda: no_overlaps(parts),
         "pcb_fits": lambda: pcb_fits(parts, pcb, hp) if has_pcb else [],
-        "components_clear": lambda: components_clear(parts, pcb) if has_pcb else [],
+        "components_clear": lambda: components_clear(parts, real_sockets(pcb, board, bp)) if has_pcb else [],
         "thumb_wall_clear": lambda: thumb_wall_clear(board, sp) if has_sp else [],
         "lip_lock": lambda: lip_lock(parts, bp, board),
         "switches_centred": lambda: switches_centred(parts, board, sp),

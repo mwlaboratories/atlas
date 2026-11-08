@@ -52,12 +52,12 @@ class HousingParams:
     # (tray_floor + battery thickness) + battery_clearance = 1.4, as in Fusion. The
     # clearance is kept at 0.2 so the wood over the tray stays 3.6 mm for the CNC
     # (0.3 gave 1.5 and thinner wood; user, 2026-11-08).
-    notch_depth: float | None = None
+    notch_depth: float | None = 1.4          # kept at 1.4 for the wood over the tray (user)
     battery: tuple = (35.0, 15.0, 7.0)       # 701535 pouch: length (x), width (y), thickness (z)
     battery_clearance: float = 0.2
     # the bottom plate's bay floor as printed (its bottom + floor_skin); keep in step with
     # bottomplate.py (importing it here would be circular)
-    tray_floor: float = -5.8
+    tray_floor: float = -5.5
     # CNC: the housing is milled in wood with a 1/8" (3.175 mm) end mill, so an inside
     # vertical corner is at least its radius; applied to the tray's inside corners
     # (0 = sharp, as drawn in Fusion)
