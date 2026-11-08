@@ -1,0 +1,20 @@
+#include "atlas.dtsi"
+
+&default_transform {
+    col-offset = <5>;
+};
+
+&kscan0 {
+    interrupt-gpios = <&xiao_d 5 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>;
+    gpios
+        = <&xiao_d 7 GPIO_ACTIVE_HIGH>    /* P0 */
+        , <&xiao_d 8 GPIO_ACTIVE_HIGH>    /* P1 */
+        , <&xiao_d 9 GPIO_ACTIVE_HIGH>    /* P2 */
+        , <&xiao_d 10 GPIO_ACTIVE_HIGH>    /* P3 */
+        , <&xiao_d 6 GPIO_ACTIVE_HIGH>    /* P4 */
+        ;
+};
+
+/* ADS1220 strain-gauge pointing (SPI, U2 per pcb/atlas-*.kicad_pcb): not fitted
+ * yet, so off. When it is: build with ADS1220=1 (see build-firmware.sh), which
+ * adds ads1220.conf + ads1220.overlay next to this file. */

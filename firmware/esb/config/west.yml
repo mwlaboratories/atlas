@@ -1,0 +1,59 @@
+# ESB split: the halves talk to a USB dongle over Nordic's Enhanced ShockBurst
+# (badjeff/zmk-feature-split-esb) instead of BLE. Tracks the latest of each:
+# the ESB module needs ZMK on Zephyr 4.1 (zmk main as of 2026-11) plus
+# badjeff's patched nRF Connect SDK 3.1 for the radio driver. Mirrors badjeff's
+# own ESB zmk-config (branch esb-shield-only). If an upstream bump breaks the
+# build, pin `revision:` to the last good commit.
+manifest:
+  remotes:
+    - name: zmkfirmware
+      url-base: https://github.com/zmkfirmware
+    - name: badjeff
+      url-base: https://github.com/badjeff
+    - name: nrfconnect
+      url-base: https://github.com/nrfconnect
+    - name: zzeneg
+      url-base: https://github.com/zzeneg
+    - name: mwlaboratories
+      url-base: https://github.com/mwlaboratories
+
+  projects:
+    - name: zmk
+      remote: zmkfirmware
+      revision: main
+      import: app/west.yml
+
+    # ESB split transport + the nRF SDK pieces it builds on.
+    - name: zmk-feature-split-esb
+      remote: badjeff
+      revision: main
+    - name: sdk-nrf
+      remote: badjeff
+      revision: v3.1-branch+zmk-fixes
+      path: nrf
+    - name: nrfxlib
+      remote: nrfconnect
+      revision: v3.1-branch
+      repo-path: sdk-nrfxlib
+      path: nrfxlib
+
+    # ADS1220 strain-gauge pointing for the v4.x PCB (ADS1220=1 builds only;
+    # inert otherwise). Reference wiring: badjeff/zmk-config esb-shield-only,
+    # boards/shields/donki36/donki36_tpoint0_ads1220.dtsi.
+    - name: ads1220-zephyr-module
+      remote: badjeff
+      revision: main
+    - name: analog-axis-hires-input-zephyr-module
+      remote: badjeff
+      revision: main
+
+    # strata: raw-HID transport + the layer/battery reporter (repos/strata).
+    - name: zmk-raw-hid
+      remote: zzeneg
+      revision: main
+    - name: zmk-strata
+      remote: mwlaboratories
+      revision: main
+
+  self:
+    path: config
