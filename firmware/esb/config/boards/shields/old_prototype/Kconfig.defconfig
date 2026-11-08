@@ -1,0 +1,19 @@
+# ESB split: the dongle is the central, both halves are peripherals.
+
+if SHIELD_OLD_PROTOTYPE_LEFT || SHIELD_OLD_PROTOTYPE_RIGHT || SHIELD_OLD_PROTOTYPE_DONGLE
+
+config ZMK_SPLIT
+    default y
+
+endif
+
+if SHIELD_OLD_PROTOTYPE_DONGLE
+
+# Max 16 characters
+config ZMK_KEYBOARD_NAME
+    default "ATLAS"
+
+config ZMK_SPLIT_ROLE_CENTRAL
+    default y
+
+endif

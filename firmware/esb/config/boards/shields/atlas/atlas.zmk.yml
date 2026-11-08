@@ -1,0 +1,11 @@
+file_format: "1"
+id: atlas
+name: Atlas
+type: shield
+requires: [xiao_ble]
+features:
+  - keys
+siblings:
+  - atlas_left
+  - atlas_right
+  - atlas_dongle

@@ -64,3 +64,20 @@ nix/keymap.yaml
 
 # Python bytecode
 __pycache__/
+firmware/esb/build/
+firmware/esb/.west/
+firmware/esb/firmware/
+firmware/esb/modules/
+firmware/esb/zephyr/
+firmware/esb/zmk/
+firmware/esb/nrf/
+firmware/esb/nrfxlib/
+firmware/esb/zmk-feature-split-esb/
+firmware/esb/zmk-raw-hid/
+firmware/esb/zmk-strata/
+firmware/esb/bootloader/
+firmware/esb/tools/
+firmware/esb/test/
+firmware/esb/optional/
+firmware/esb/ads1220-zephyr-module/
+firmware/esb/analog-axis-hires-input-zephyr-module/
