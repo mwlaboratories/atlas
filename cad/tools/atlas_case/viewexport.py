@@ -27,7 +27,7 @@ from build123d import Compound, export_gltf
 from .pcb3d import PopulatedBoard
 
 # stack order, top to bottom; the viewer draws pair views between neighbours from this
-STACK = ["housing", "switchplate", "pcb", "parts", "bottomplate"]
+STACK = ["housing", "switchplate", "pcb", "pads", "parts", "bottomplate"]
 
 
 def _baked(shape):
@@ -50,11 +50,16 @@ def glb(shape, path: Path, tol: float = 0.02, angular: float = 0.1) -> None:
     tmp.replace(path)
 
 
-def pcb_glbs(pcb: PopulatedBoard, d: Path) -> dict[str, Path]:
-    """Meshes of the bare board and its components into d: {"pcb": path, "parts": path}."""
+def pcb_glbs(pcb: PopulatedBoard, d: Path, pads=None) -> dict[str, Path]:
+    """Meshes of the bare board, its components and (if given) its pads into d:
+    {"pcb": path, "parts": path[, "pads": path]}."""
     glb(pcb.board, d / "pcb.glb", tol=0.05, angular=0.3)     # positions only: coarse is fine
     glb(Compound([s for p in pcb.parts for s in p.solids]), d / "parts.glb", tol=0.1, angular=0.5)
-    return {"pcb": d / "pcb.glb", "parts": d / "parts.glb"}
+    out = {"pcb": d / "pcb.glb", "parts": d / "parts.glb"}
+    if pads is not None:
+        glb(pads, d / "pads.glb", tol=0.02, angular=0.3)
+        out["pads"] = d / "pads.glb"
+    return out
 
 
 @contextmanager

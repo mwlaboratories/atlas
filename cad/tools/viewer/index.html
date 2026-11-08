@@ -13,11 +13,19 @@
     :root { --bg: #14171c; --panel: #1c2027; --ink: #e6e9ef; --muted: #98a1b3; --line: #2c323c; }
   }
   * { box-sizing: border-box; }
+  /* dragging to orbit/pan must never select label or slider text (it stole the drag) */
+  #app, .view, .view .label, .view .ctl, header { -webkit-user-select: none; user-select: none; }
+  .view { touch-action: none; }
+  #side { -webkit-user-select: text; user-select: text; }   /* check results stay copyable */
   html, body { margin: 0; height: 100%; background: var(--bg); color: var(--ink);
     font: 13px/1.4 system-ui, -apple-system, "Segoe UI", sans-serif; }
-  #app { display: grid; height: 100%; grid-template-columns: 1fr 320px;
+  #app { display: grid; height: 100%; grid-template-columns: 1fr 0;
     grid-template-rows: auto 1fr 0; grid-template-areas: "head head" "main side" "pairs side"; }
   #app.pairs-on { grid-template-rows: auto 1fr 300px; }
+  /* the side panel (part toggles, fit checks) is hidden unless asked for: a plain viewer */
+  #app.panel-on { grid-template-columns: 1fr 320px; }
+  #side { display: none; }
+  #app.panel-on #side { display: block; }
   #pairs { display: none; }
   #app.pairs-on #pairs { display: grid; }
   header { grid-area: head; display: flex; align-items: center; gap: 16px; padding: 8px 14px;
@@ -81,12 +89,14 @@
 <div id="app">
   <header>
     <h1>Atlas case</h1>
-    <div class="seg" id="halves"><button data-h="left" class="on">Left</button><button data-h="right">Right</button></div>
+    <div class="seg" id="halves"><button data-h="left" class="on">Left</button><button data-h="right">Right</button><button data-h="both">Both</button></div>
     <span id="summary" class="pill wait">checks pending</span>
     <label class="tog"><input type="checkbox" id="pairtoggle"> pair views</label>
     <button id="top" class="btn" title="orthographic, straight down — for judging gaps">Top</button>
     <button id="persp" class="btn">3D</button>
     <button id="centre" class="btn">Centre</button>
+    <button id="panel" class="btn" title="part toggles and fit check results">Panel</button>
+    <span id="gpu" class="pill wait" title="WebGL renderer in use"></span>
     <span class="sp"></span>
     <span id="status">loading…</span>
   </header>

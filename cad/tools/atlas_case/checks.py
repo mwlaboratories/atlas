@@ -307,6 +307,8 @@ def min_floor(parts: dict, bp: BottomplateParams) -> list[Result]:
 # right half) or a footprint ref.
 ACCEPTED_THIN = [
     ("bottomplate", "SW_PWR", 6.0, "power switch slot steps (as drawn in Fusion)"),
+    ("switchplate", (17.1, 13.0), 7.0, "thumb ear runs out to a sharp point (design: the printer "
+                                       "lays down as much of it as it can)"),
 ]
 RASTER = 0.05           # mm per pixel for the thin-wall scan (walls measured to +-0.05)
 THIN_MIN_AREA = 0.1     # mm2; smaller uncovered bits are acute-corner tips, not walls

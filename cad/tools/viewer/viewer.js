@@ -5,8 +5,8 @@ import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
-const COLORS = { housing: 0x8d939d, switchplate: 0x3f72d6, pcb: 0x2f8a55, parts: 0xc9a227, bottomplate: 0xe07b39 };
-const NAMES = { housing: "Housing", switchplate: "Switch plate", pcb: "PCB", parts: "PCB parts", bottomplate: "Bottom plate" };
+const COLORS = { housing: 0x8d939d, switchplate: 0x3f72d6, pcb: 0x2f8a55, pads: 0xe8b04a, parts: 0xc9a227, bottomplate: 0xe07b39 };
+const NAMES = { housing: "Housing", switchplate: "Switch plate", pcb: "PCB", pads: "Pads", parts: "PCB parts", bottomplate: "Bottom plate" };
 // the pairs to inspect: each mating interface on its own
 const PAIRS = [
   ["switchplate", "housing", "Switch plate · housing"],
@@ -15,13 +15,30 @@ const PAIRS = [
   ["bottomplate", "housing", "Bottom plate · housing skirt"],
   ["switchplate", "bottomplate", "Thumb lip · bottom plate lock"],
 ];
-const EXPLODE = { housing: 2, switchplate: 1, pcb: 0, parts: 0, bottomplate: -1 };
+const EXPLODE = { housing: 2, switchplate: 1, pcb: 0, pads: 0, parts: 0, bottomplate: -1 };
 const TIGHT = 0.2;   // mm: passing gaps below this get an orange marker
 
 const canvas = document.getElementById("gl");
-const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-const DPR = Math.min(window.devicePixelRatio, 1.5);   // full retina x6 views is too slow
-renderer.setPixelRatio(DPR);
+// no MSAA (costly at high resolution); while the camera moves, half resolution
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: false, alpha: true, powerPreference: "high-performance" });
+const DPR = Math.min(window.devicePixelRatio, 1.5);
+let PR = DPR;                                   // current pixel ratio (lowered while dragging)
+renderer.setPixelRatio(PR);
+// which renderer the browser really uses: a software fallback (SwiftShader / llvmpipe) is
+// the usual reason a simple scene lags on a big GPU (Chromium on Linux + NVIDIA)
+const GPU = (() => {
+  const gl = renderer.getContext();
+  const ext = gl.getExtension("WEBGL_debug_renderer_info");
+  return ext ? gl.getParameter(ext.UNMASKED_RENDERER_WEBGL) : gl.getParameter(gl.RENDERER);
+})();
+const SOFTWARE = /swiftshader|llvmpipe|software|softpipe|basic render/i.test(GPU);
+console.log("[atlas-gpu]", GPU, SOFTWARE ? "(SOFTWARE RENDERING)" : "");
+{
+  const el = document.getElementById("gpu");
+  el.textContent = (SOFTWARE ? "software rendering: " : "GPU: ") + GPU.replace(/^ANGLE \(|\)$/g, "").slice(0, 60);
+  el.className = "pill " + (SOFTWARE ? "fail" : "ok");
+  if (SOFTWARE) el.title = "the browser draws on the CPU; enable hardware acceleration / GPU for this browser";
+}
 renderer.localClippingEnabled = true;
 const persp = new THREE.PerspectiveCamera(35, 1, 0.5, 5000);
 const ortho = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 5000);
@@ -31,8 +48,21 @@ let orthoHalf = 60;          // mm: half the visible height at zoom 1 in the ort
 const controls = new OrbitControls(camera, document.getElementById("app"));
 controls.enableDamping = false;
 let dirty = true;                       // render on demand, not every frame
+
+// --- diagnostics: errors never stop the viewer silently, and a per-second perf log ----------
+function showError(msg) {
+  console.error("[atlas-err]", msg);
+  const st = document.getElementById("status");
+  if (st) { st.textContent = "viewer error: " + String(msg).slice(0, 120); st.style.color = "var(--fail)"; }
+}
+window.addEventListener("error", (e) => showError(e.message + (e.filename ? ` (${e.filename.split("/").pop()}:${e.lineno})` : "")));
+window.addEventListener("unhandledrejection", (e) => showError("promise: " + (e.reason && (e.reason.message || e.reason))));
+const perf = { frames: 0, ms: 0, max: 0, tris: 0, calls: 0, t0: performance.now(), last: null };
+window.atlasPerf = perf;                 // read from the console / devtools: atlasPerf.last
 const redraw = () => { dirty = true; };
 controls.addEventListener("change", redraw);
+controls.addEventListener("start", () => { PR = DPR * 0.5; renderer.setPixelRatio(PR); redraw(); });
+controls.addEventListener("end", () => { PR = DPR; renderer.setPixelRatio(PR); redraw(); });
 window.addEventListener("resize", redraw);
 for (const el of [document.querySelector("header"), document.getElementById("side")])
   for (const ev of ["pointerdown", "wheel", "contextmenu"])
@@ -90,6 +120,10 @@ for (const n of Object.keys(COLORS)) {
 }
 document.getElementById("explode").addEventListener("input", () => place(main));
 document.getElementById("centre").addEventListener("click", () => frame(true));
+document.getElementById("panel").addEventListener("click", () => {
+  document.getElementById("app").classList.toggle("panel-on");
+  redraw();
+});
 document.getElementById("top").addEventListener("click", topView);
 document.getElementById("persp").addEventListener("click", perspView);
 document.getElementById("pairtoggle").addEventListener("change", (e) => {
@@ -100,7 +134,9 @@ document.getElementById("pairtoggle").addEventListener("change", (e) => {
 const secIn = document.getElementById("section");
 secIn.addEventListener("input", () => {
   const z = +secIn.value;
-  clip.constant = z; redraw();          // scene units are mm (meshes are scaled on load)
+  clip.constant = z;                    // scene units are mm (meshes are scaled on load)
+  setSection(z < 6);
+  redraw();
   document.getElementById("secv").textContent = z >= 6 ? "off" : `z ${z.toFixed(1)}`;
 });
 document.querySelectorAll("#halves button").forEach((b) => b.addEventListener("click", () => {
@@ -148,35 +184,61 @@ function showStatus(s) {
 const esc = (t) => t.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 
 async function load(force) {
-  if (!manifest || !manifest.halves[half]) return;
-  const h = manifest.halves[half];
+  // "both": the two halves side by side (their meshes are already in the case frame, left
+  // at x -97..33, right at 39..169), merged per part so toggles, section and views apply
+  const which = half === "both" ? ["left", "right"] : [half];
+  const avail = which.filter((hh) => manifest && manifest.halves[hh]);
+  if (!avail.length) return;
   const got = {};
-  await Promise.all(h.parts.map(async (n) => {
-    const g = await loader.loadAsync(`view/${half}-${n}.glb?v=${version}`);
-    got[n] = g.scene;
-  }));
+  await Promise.all(avail.flatMap((hh) => manifest.halves[hh].parts.map(async (n) => {
+    const t0 = performance.now();
+    const g = await loader.loadAsync(`view/${hh}-${n}.glb?v=${version}`);
+    let tris = 0;
+    g.scene.traverse((c) => { if (c.isMesh) tris += (c.geometry.index ? c.geometry.index.count : c.geometry.attributes.position.count) / 3; });
+    console.log("[atlas-load]", JSON.stringify({ part: `${hh}-${n}`, ms: Math.round(performance.now() - t0), triangles: tris }));
+    (got[n] = got[n] || new THREE.Group()).add(g.scene);
+  })));
   meshes = got;
   if (meshes.housing) {
-    const size = new THREE.Box3().setFromObject(meshes.housing).getSize(new THREE.Vector3());
+    const size = new THREE.Box3().setFromObject(meshes.housing.children[0]).getSize(new THREE.Vector3());
     scale = size.x < 1 ? 1000 : 1;   // glTF in metres -> mm
   }
   rebuildViews();
-  showChecks(h.checks, h.skipped);
-  builtText = `${half} built ${h.built || ""}`;
+  const hs = avail.map((hh) => manifest.halves[hh]);
+  const checks = hs.some((h) => !h.checks) ? null
+    : avail.flatMap((hh) => manifest.halves[hh].checks.map((r) => avail.length > 1 ? { ...r, check: `${hh}: ${r.check}` } : r));
+  showChecks(checks, hs[0].skipped);
+  builtText = avail.map((hh) => `${hh} built ${manifest.halves[hh].built || ""}`).join(" · ");
   if (!document.querySelector("#status .pill")) document.getElementById("status").textContent = builtText;
   if (!framed) frame();
 }
 
 // parts touch face to face (PCB underside on the bottom plate, plates on the housing):
 // a depth bias per layer keeps the coincident faces from flickering (z-fighting)
-const BIAS = { housing: -2, switchplate: -1, pcb: 0, parts: 0, bottomplate: 1 };
+const BIAS = { housing: -2, switchplate: -1, pcb: 0, pads: -1, parts: 0, bottomplate: 1 };
+// Lambert shading (cheap); front faces only and no clipping unless a section is shown (then
+// both sides, so the cut-open insides are visible)
+const mats = [];
+let sectionOn = false;
 function material(n) {
-  return new THREE.MeshStandardMaterial({ color: COLORS[n], metalness: 0.05, roughness: 0.7,
-    side: THREE.DoubleSide, clippingPlanes: [clip],
+  const m = new THREE.MeshLambertMaterial({ color: COLORS[n],
+    side: sectionOn ? THREE.DoubleSide : THREE.FrontSide, clippingPlanes: sectionOn ? [clip] : [],
     polygonOffset: true, polygonOffsetFactor: BIAS[n], polygonOffsetUnits: 4 * BIAS[n] });
+  mats.push(m);
+  return m;
+}
+function setSection(on) {
+  if (on === sectionOn) return;
+  sectionOn = on;
+  for (const m of mats) {
+    m.side = on ? THREE.DoubleSide : THREE.FrontSide;
+    m.clippingPlanes = on ? [clip] : [];
+    m.needsUpdate = true;
+  }
 }
 
 function rebuildViews() {
+  mats.length = 0;
   for (const v of views) {
     v.group.clear();
     v.objs = {};
@@ -306,11 +368,14 @@ function updateMarkers() {
 function render() {
   requestAnimationFrame(render);
   const w = window.innerWidth, h = window.innerHeight;
-  if (canvas.width !== Math.floor(w * DPR) || canvas.height !== Math.floor(h * DPR)) {
+  if (canvas.width !== Math.floor(w * PR) || canvas.height !== Math.floor(h * PR)) {
     renderer.setSize(w, h, false); dirty = true;
   }
-  if (!dirty) return;
+  if (!dirty) { flushPerf(); return; }
   dirty = false;
+  const tStart = performance.now();
+  renderer.info.autoReset = false;
+  renderer.info.reset();
   renderer.setScissorTest(false);
   renderer.clear();
   renderer.setScissorTest(true);
@@ -335,6 +400,23 @@ function render() {
       m.el.style.top = `${(1 - p.y) / 2 * r.height}px`;
     }
   }
+  const dt = performance.now() - tStart;
+  perf.frames++; perf.ms += dt; perf.max = Math.max(perf.max, dt);
+  perf.tris = renderer.info.render.triangles; perf.calls = renderer.info.render.calls;
+  flushPerf();
+}
+
+// once a second, if anything was drawn: fps while interacting, CPU time per frame, load
+function flushPerf() {
+  const now = performance.now();
+  if (now - perf.t0 < 1000) return;
+  if (perf.frames) {
+    perf.last = { fps: Math.round(perf.frames * 1000 / (now - perf.t0)), avg_ms: +(perf.ms / perf.frames).toFixed(2),
+                  max_ms: +perf.max.toFixed(2), triangles: perf.tris, draw_calls: perf.calls,
+                  geometries: renderer.info.memory.geometries, dpr: DPR };
+    console.log("[atlas-perf]", JSON.stringify(perf.last));
+  }
+  perf.frames = 0; perf.ms = 0; perf.max = 0; perf.t0 = now;
 }
 render();
 poll();

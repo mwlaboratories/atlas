@@ -135,23 +135,24 @@ def part_shape(e: cache.Entry):
     return read_shape(e.file("shape.brep"), e.meta["type"])
 
 
-def pcb_entry(store: cache.Store, board, step: Path) -> cache.Entry:
+def pcb_entry(store: cache.Store, board, step: Path, pads_step: Path | None = None) -> cache.Entry:
     """The populated board (pcb3d.populated, ~50 s of STEP import), cached by the STEP's
     content and the board: shape.brep (the board, then every component solid), pcb.glb,
     parts.glb."""
     from atlas_case import pcb3d, viewexport
     slot = f"pcb/{board.half}/{cache.code_key('pcb3d', 'viewexport')[:16]}"
     sha, bk = cache.file_sha(step), cache.board_key(board)
-    e = store.find(slot, lambda m: m["step"] == sha and m["board"] == bk)
+    psha = cache.file_sha(pads_step) if pads_step else None
+    e = store.find(slot, lambda m: m["step"] == sha and m["board"] == bk and m.get("pads") == psha)
     if e is None:
         from build123d import Compound
         pcb = pcb3d.populated(board, step)
         tmp = store.new(slot)
-        viewexport.pcb_glbs(pcb, tmp)
+        viewexport.pcb_glbs(pcb, tmp, pcb3d.pads(board, pads_step) if pads_step else None)
         cache.write_shape(Compound([pcb.board] + [s for p in pcb.parts for s in p.solids]), tmp / "shape.brep")
-        meta = {"step": sha, "board": bk, "parts": [(p.ref, p.model, len(p.solids)) for p in pcb.parts],
+        meta = {"step": sha, "board": bk, "pads": psha, "parts": [(p.ref, p.model, len(p.solids)) for p in pcb.parts],
                 "content": cache.file_sha(tmp / "shape.brep")}
-        e = store.commit(tmp, cache._sha(sha, bk)[:16], meta) if store.enabled else _uncommitted(tmp, meta)
+        e = store.commit(tmp, cache._sha(sha, bk, psha or "")[:16], meta) if store.enabled else _uncommitted(tmp, meta)
     return e
 
 
@@ -257,10 +258,15 @@ def pcb_job(half: str, o: Opts) -> dict:
     os.chdir(d)
     step = pcb3d.board_step(pcb_file, d)
     put_file(step, o.out / "pcb" / step.name)
+    try:                                       # viewer only: where the copper pads are
+        pstep = pcb3d.pads_step(pcb_file, d)
+    except RuntimeError as e:
+        print(f"  note: no pads in the viewer: {str(e).splitlines()[0]}")
+        pstep = None
     old = sorted(d.parent.glob(f".{half}-*"), key=lambda p: -p.stat().st_mtime)
     for x in old[3:]:                          # keep the last few revisions' exports
         shutil.rmtree(x, ignore_errors=True)
-    return {"entry": str(pcb_entry(store, board, step).path)}
+    return {"entry": str(pcb_entry(store, board, step, pstep).path)}
 
 
 def checks_job(half: str, o: Opts, names: tuple, entries: dict, pcb_dir: str) -> dict:
@@ -417,7 +423,8 @@ def main() -> int:
                 continue                       # keep the last good meshes
             pe = cache.Entry(Path(b["entry"]))
             viewexport.publish(out, h, {**{n: Path(d) / "view.glb" for n, d in p["entries"].items()},
-                                        "pcb": pe.file("pcb.glb"), "parts": pe.file("parts.glb")})
+                                        "pcb": pe.file("pcb.glb"), "parts": pe.file("parts.glb"),
+                                        **({"pads": pe.file("pads.glb")} if (pe.path / "pads.glb").exists() else {})})
             for g in groups[h]:
                 futs[("checks", h, g)] = pools[h].submit(_run_job, "checks", h, o, g, p["entries"], b["entry"])
 

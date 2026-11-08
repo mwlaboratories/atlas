@@ -100,10 +100,11 @@ class SwitchplateParams:
     wall: float = 2.605              # bottom side: outer edge = inner face offset by this
     side_wall: float = 1.8           # far side thickness
     corner_r: float = 2.0            # rounds where the far side meets the bottom and the ear
-    # the ear's tail runs into the housing side (x = housing.x_max) almost tangentially; it
-    # ends where it is this wide, with a round end of half this radius (0 = as drawn, a
-    # knife edge no printer can lay down)
-    min_feature: float = 1.2
+    # the ear's tail runs into the housing side (x = housing.x_max) almost tangentially;
+    # 0 = as drawn, a sharp point (default: the better the printer, the sharper it comes
+    # out; user, 2026-11-08); > 0 = it ends where it is this wide, with a round end of half
+    # this radius
+    min_feature: float = 0.0
     # top end of the wall: True fills it out to the housing frame's inner line
     # (x = housing.x_max - rim, flush with the skirt's inner face beside it) along the top
     # side's line, so no pocket is left between wall, skirt and PCB; False ends it on

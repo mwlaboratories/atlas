@@ -15,7 +15,7 @@ import subprocess
 from dataclasses import dataclass
 from pathlib import Path
 
-from build123d import Pos, Solid, import_step
+from build123d import Compound, Pos, Solid, import_step
 
 from .kicad import FRAMES, Board
 
@@ -68,6 +68,33 @@ def board_step(pcb: Path, out_dir: Path) -> Path:
     if missing:
         print(f"  note: {pcb.name}: " + "; ".join(missing))
     return step
+
+
+def pads_step(pcb: Path, out_dir: Path) -> Path:
+    """kicad-cli export of the board's pads only (no body, no components), for the viewer:
+    where the copper pads are (e.g. the trackpoint's). Same coordinates as board_step;
+    cached in out_dir until the board file changes."""
+    out_dir.mkdir(parents=True, exist_ok=True)
+    step = out_dir / (pcb.stem + "-pads.step")
+    if step.exists() and step.stat().st_mtime >= pcb.stat().st_mtime:
+        return step
+    r = subprocess.run(["kicad-cli", "pcb", "export", "step", "--force", "--no-board-body", "--no-components",
+                        "--include-pads", "-o", str(step), str(pcb)], capture_output=True, text=True)
+    if r.returncode or not step.exists():
+        raise RuntimeError(f"kicad-cli pads export failed for {pcb}:\n{r.stdout}{r.stderr}")
+    return step
+
+
+def pads(board: Board, step: Path):
+    """The pads of pads_step in the case frame (kicad-cli puts the board's underside at z 0,
+    as in board_step), or None if there are none. Viewer only: the pads stand 0.035 mm proud
+    of the board, so they stay out of the fit checks."""
+    root = import_step(str(step))
+    solids = root.solids()
+    if not solids:
+        return None
+    t = Pos(FRAMES[board.half].dx, 120.0, PCB_BOTTOM)
+    return Compound([t * s for s in solids])
 
 
 @dataclass
