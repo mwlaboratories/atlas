@@ -71,30 +71,34 @@ def board_step(pcb: Path, out_dir: Path) -> Path:
 
 
 def pads_step(pcb: Path, out_dir: Path) -> Path:
-    """kicad-cli export of the board's pads only (no body, no components), for the viewer:
-    where the copper pads are (e.g. the trackpoint's). Same coordinates as board_step;
-    cached in out_dir until the board file changes."""
+    """kicad-cli export of the board's copper only (pads, tracks, vias; no body, no
+    components), for the viewer: the routing and where the pads are. Same coordinates as
+    board_step; cached in out_dir until the board file changes."""
     out_dir.mkdir(parents=True, exist_ok=True)
-    step = out_dir / (pcb.stem + "-pads.step")
+    step = out_dir / (pcb.stem + "-copper.step")
     if step.exists() and step.stat().st_mtime >= pcb.stat().st_mtime:
         return step
     r = subprocess.run(["kicad-cli", "pcb", "export", "step", "--force", "--no-board-body", "--no-components",
-                        "--include-pads", "-o", str(step), str(pcb)], capture_output=True, text=True)
+                        "--include-pads", "--include-tracks", "-o", str(step), str(pcb)], capture_output=True, text=True)
     if r.returncode or not step.exists():
         raise RuntimeError(f"kicad-cli pads export failed for {pcb}:\n{r.stdout}{r.stderr}")
     return step
 
 
 def pads(board: Board, step: Path):
-    """The pads of pads_step in the case frame (kicad-cli puts the board's underside at z 0,
-    as in board_step), or None if there are none. Viewer only: the pads stand 0.035 mm proud
-    of the board, so they stay out of the fit checks."""
+    """The copper of pads_step in the case frame (kicad-cli puts the board's underside at
+    z 0, as in board_step), split by side: (top, bottom) compounds, either None if empty.
+    Viewer only: copper stands 0.035 mm proud of the board, so it stays out of the checks.
+    Through-hole pads span the board; they go with the side their centre is nearer."""
     root = import_step(str(step))
     solids = root.solids()
     if not solids:
-        return None
+        return None, None
     t = Pos(FRAMES[board.half].dx, 120.0, PCB_BOTTOM)
-    return Compound([t * s for s in solids])
+    mid = board.thickness / 2 if getattr(board, "thickness", None) else 0.8
+    top = [t * s for s in solids if s.bounding_box().center().Z > mid]
+    bot = [t * s for s in solids if s.bounding_box().center().Z <= mid]
+    return (Compound(top) if top else None), (Compound(bot) if bot else None)
 
 
 @dataclass

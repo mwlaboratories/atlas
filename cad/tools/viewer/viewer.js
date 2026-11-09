@@ -5,8 +5,8 @@ import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
-const COLORS = { housing: 0x8d939d, switchplate: 0x3f72d6, pcb: 0x2f8a55, pads: 0xe8b04a, parts: 0xc9a227, bottomplate: 0xe07b39 };
-const NAMES = { housing: "Housing", switchplate: "Switch plate", pcb: "PCB", pads: "Pads", parts: "PCB parts", bottomplate: "Bottom plate" };
+const COLORS = { housing: 0x8d939d, switchplate: 0x3f72d6, pcb: 0x2f8a55, cutop: 0xd8453a, cubot: 0x3f7ee8, parts: 0xc9a227, bottomplate: 0xe07b39 };
+const NAMES = { housing: "Housing", switchplate: "Switch plate", pcb: "PCB", cutop: "Copper top (red)", cubot: "Copper bottom (blue)", parts: "PCB parts", bottomplate: "Bottom plate" };
 // the pairs to inspect: each mating interface on its own
 const PAIRS = [
   ["switchplate", "housing", "Switch plate · housing"],
@@ -15,7 +15,7 @@ const PAIRS = [
   ["bottomplate", "housing", "Bottom plate · housing skirt"],
   ["switchplate", "bottomplate", "Thumb lip · bottom plate lock"],
 ];
-const EXPLODE = { housing: 2, switchplate: 1, pcb: 0, pads: 0, parts: 0, bottomplate: -1 };
+const EXPLODE = { housing: 2, switchplate: 1, pcb: 0, cutop: 0, cubot: 0, parts: 0, bottomplate: -1 };
 const TIGHT = 0.2;   // mm: passing gaps below this get an orange marker
 
 const canvas = document.getElementById("gl");
@@ -220,7 +220,7 @@ async function load(force) {
 
 // parts touch face to face (PCB underside on the bottom plate, plates on the housing):
 // a depth bias per layer keeps the coincident faces from flickering (z-fighting)
-const BIAS = { housing: -2, switchplate: -1, pcb: 0, pads: -1, parts: 0, bottomplate: 1 };
+const BIAS = { housing: -2, switchplate: -1, pcb: 0, cutop: -1, cubot: -1, parts: 0, bottomplate: 1 };
 // Lambert shading (cheap); front faces only and no clipping unless a section is shown (then
 // both sides, so the cut-open insides are visible)
 const mats = [];

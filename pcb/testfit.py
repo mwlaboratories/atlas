@@ -15,7 +15,8 @@ What it does per half:
   - drops everything on the top side (the XIAO and the top copper/mask/silk layers),
     so the top face lies flat on the bed
   - thickens the board body to the real 1.6 mm (KiCad's STEP board is 1.51 mm dielectric)
-  - keeps the bottom side: hotswap sockets, diodes, BAW56s, ADS1220, switches, 0402s
+  - keeps the bottom side: hotswap sockets, diodes, BAW56s, ADS1220, switches, 0402s,
+    each extended 0.15 mm up over its solder gap and fused with the board into one solid
   - cuts every 3.0 mm hotswap pin hole straight through board and socket, so the
     printer doesn't try the tiny receptacle slits and real switch legs drop in
   - flips the part top-face-down
@@ -33,6 +34,10 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(HERE, "testfit")
 BOARD_MM = 1.6
 HOLE_R = 1.5          # hotswap pin hole, 3.0 mm drill
+# KiCad's models stand off the board's underside by the solder joint (hotswap sockets
+# 0.1 mm, chips and diodes 0.085): printed like that they hang on a seam and came loose
+# (user, 2026-11-09). Each part is extended this far up into the board and fused with it.
+SOLDER_FILL = 0.15
 BED_MM = 180.0        # Bambu Lab A1 mini; plates are laid out on this grid
 
 
@@ -61,21 +66,25 @@ def build(half):
     zhi = top + t + 1
     cyls = [Part.makeCylinder(HOLE_R, zhi - zlo, App.Vector(x, y, zlo)) for x, y in holes]
 
-    parts, ncut = [], 0
-    for s in [board] + keep:
-        hit = [c for c in cyls if s.BoundBox.intersect(c.BoundBox) and s.common(c).Volume > 1e-6]
-        if hit:
-            parts += s.cut(hit).Solids
-            ncut += 1
-        else:
-            parts.append(s)
-    body = Part.makeCompound(parts)
+    # close the solder gap (extend each part up, its underside stays where it is) and
+    # fuse everything into one solid: no loose shells, no non-manifold contacts
+    up = App.Vector(0, 0, SOLDER_FILL)
+    filled = [s.fuse(s.translated(up)).removeSplitter() if s.BoundBox.ZMax < top else s for s in keep]
+    attached = [s for s in filled if s.distToShape(board)[0] < 1e-6]
+    loose = len(filled) - len(attached)
+    body = board.fuse(attached).removeSplitter()
+    hit = [c for c in cyls if body.common(c).Volume > 1e-6]
+    ncut = len(hit)
+    body = body.cut(hit).removeSplitter()
+    if len(body.Solids) != 1:
+        print(f"  warning: {len(body.Solids)} solids after fusing")
+    body = body.Solids[0] if len(body.Solids) == 1 else body
     body.rotate(App.Vector(0, 0, 0), App.Vector(1, 0, 0), 180)
     body.translate(App.Vector(0, 0, -body.BoundBox.ZMin))
 
     bb = body.BoundBox
     print(f"{half}: removed {drop} top-side solids, kept {len(keep)}, board {BOARD_MM} mm, "
-          f"{len(holes)} pin holes through {ncut} solids, size {bb.XLength:.1f} x {bb.YLength:.1f} x {bb.ZLength:.2f} mm")
+          f"{len(holes)} pin holes ({ncut} cut), {loose} loose parts dropped, {len(body.Solids)} solid, size {bb.XLength:.1f} x {bb.YLength:.1f} x {bb.ZLength:.2f} mm")
     if bb.XLength > BED_MM or bb.YLength > BED_MM:
         print(f"  warning: larger than the {BED_MM:.0f} mm bed")
     name = f"atlas-{half}-pcb-testfit"

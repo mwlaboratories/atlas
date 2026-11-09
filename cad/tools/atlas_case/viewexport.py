@@ -27,7 +27,7 @@ from build123d import Compound, export_gltf
 from .pcb3d import PopulatedBoard
 
 # stack order, top to bottom; the viewer draws pair views between neighbours from this
-STACK = ["housing", "switchplate", "pcb", "pads", "parts", "bottomplate"]
+STACK = ["housing", "switchplate", "cutop", "pcb", "cubot", "parts", "bottomplate"]
 
 
 def _baked(shape):
@@ -57,8 +57,10 @@ def pcb_glbs(pcb: PopulatedBoard, d: Path, pads=None) -> dict[str, Path]:
     glb(Compound([s for p in pcb.parts for s in p.solids]), d / "parts.glb", tol=0.1, angular=0.5)
     out = {"pcb": d / "pcb.glb", "parts": d / "parts.glb"}
     if pads is not None:
-        glb(pads, d / "pads.glb", tol=0.02, angular=0.3)
-        out["pads"] = d / "pads.glb"
+        for name, shp in zip(("cutop", "cubot"), pads):
+            if shp is not None:
+                glb(shp, d / f"{name}.glb", tol=0.02, angular=0.3)
+                out[name] = d / f"{name}.glb"
     return out
 
 

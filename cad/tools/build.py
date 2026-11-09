@@ -424,7 +424,7 @@ def main() -> int:
             pe = cache.Entry(Path(b["entry"]))
             viewexport.publish(out, h, {**{n: Path(d) / "view.glb" for n, d in p["entries"].items()},
                                         "pcb": pe.file("pcb.glb"), "parts": pe.file("parts.glb"),
-                                        **({"pads": pe.file("pads.glb")} if (pe.path / "pads.glb").exists() else {})})
+                                        **{n: pe.file(f"{n}.glb") for n in ("cutop", "cubot") if (pe.path / f"{n}.glb").exists()}})
             for g in groups[h]:
                 futs[("checks", h, g)] = pools[h].submit(_run_job, "checks", h, o, g, p["entries"], b["entry"])
 

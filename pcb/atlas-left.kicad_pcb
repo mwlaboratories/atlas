@@ -24061,7 +24061,7 @@
 		(uuid "90209728-34fb-426b-a389-a51b5e345e87")
 	)
 	(segment
-		(start 55.45 96.45)
+		(start 55.1 96.8)
 		(end 51.35 100.55)
 		(width 0.2)
 		(layer "F.Cu")
@@ -24229,7 +24229,7 @@
 		(uuid "5a37f922-be44-4445-b155-e25a84618dce")
 	)
 	(via
-		(at 55.45 96.45)
+		(at 55.1 96.8)
 		(size 0.6)
 		(drill 0.3)
 		(layers "F.Cu" "B.Cu")
@@ -24453,8 +24453,8 @@
 		(uuid "9feda57f-85dc-4fdb-ba01-ec5baf5fd083")
 	)
 	(segment
-		(start 55.45 96.15)
-		(end 55.45 96.45)
+		(start 55.75 96.15)
+		(end 55.1 96.8)
 		(width 0.2)
 		(layer "B.Cu")
 		(net "P3")

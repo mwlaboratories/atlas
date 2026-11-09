@@ -44,10 +44,12 @@ class HousingParams:
     # above it (without it the print came out ~1.5 mm short, 2026-11-08).
     notch_x: tuple = (-63.0, -17.0)          # = the PCB notch (x)
     # (front, back): the front is the skirt's inner face along the PCB's front edge
-    # (y -20 minus pcb_clearance), so the front wall runs straight past the tray; the
-    # back is where the switch plate's layer is cut back to (it keeps a 2.5 mm strip in
-    # front of the first row's 14 mm cutouts). Fusion had a 3.25 mm lip: (-23.25, -7.5).
-    notch_y: tuple = (-20.2, -7.5)
+    # (y -20 minus pcb_clearance) plus a 1.6 mm lip into the front wall for the pouch (the
+    # flush tray came out tight on a print, user 2026-11-09); 1.6 = tray_lip_corner_r, so
+    # the lip's rounded corners are full quarter rounds that end tangent on the skirt face;
+    # the wall keeps 3.2 mm there; the back is where the switch plate's layer is cut back to (it keeps a 2.5 mm strip
+    # in front of the first row's 14 mm cutouts). Fusion had a 3.25 mm lip: (-23.25, -7.5).
+    notch_y: tuple = (-21.8, -7.5)
     # recess in the wood above z = 0 (the tray ceiling); None = derived: the cell's top
     # (tray_floor + battery thickness) + battery_clearance = 1.4, as in Fusion. The
     # clearance is kept at 0.2 so the wood over the tray stays 3.6 mm for the CNC
@@ -57,7 +59,13 @@ class HousingParams:
     # opening (between notch_y), along the tray's whole length, this much deeper (user,
     # 2026-11-09); width 0 = none
     tray_groove_width: float = 9.5
-    tray_groove_depth: float = 0.25
+    tray_groove_depth: float = 0.75
+    # the groove's centre line (y); None = the tray opening's centre (user, 2026-11-09:
+    # centred on the pouch it sat 0.35 mm off the opening's centre and looked off)
+    tray_groove_y: float | None = None
+    # the lip's two front corners (into the front wall): the 1/8" end mill's radius, so
+    # CAM cuts them as drawn; the lip is this deep, so they meet the skirt face tangent
+    tray_lip_corner_r: float = 1.6
     battery: tuple = (35.0, 15.0, 7.0)       # 701535 pouch: length (x), width (y), thickness (z)
     battery_clearance: float = 0.2
     # the bottom plate's bay floor as printed (its bottom + floor_skin); keep in step with
@@ -123,9 +131,12 @@ def tray_face(p: HousingParams, y1: float, recess: bool = False):
     face = box(x0, x1, y0, y1)
     # the recess above z = 0 is a pocket in the wood, so its front corners are inside
     # corners there even when the tray front is flush with the skirt below
-    if p.cnc_corner_r > 0 and (recess or y0 < -20.0 - p.pcb_clearance - 1e-6):
+    lip = y0 < -20.0 - p.pcb_clearance - 1e-6
+    r = p.tray_lip_corner_r if lip and p.tray_lip_corner_r > 0 else (
+        p.cnc_corner_r if p.cnc_corner_r > 0 and (recess or lip) else 0.0)
+    if r > 0:
         f = face.faces()[0]
-        face = f.fillet_2d(p.cnc_corner_r, [v for v in f.vertices() if abs(v.Y - y0) < 1e-6])
+        face = f.fillet_2d(r, [v for v in f.vertices() if abs(v.Y - y0) < 1e-6])
     return face
 
 
@@ -210,7 +221,8 @@ def build_housing(board: Board, p: HousingParams = HousingParams()):
     if p.notch_depth > 0:
         part -= prism(tray_face(p, p.notch_y[1], recess=True), 0, p.notch_depth)
         if p.tray_groove_width > 0 and p.tray_groove_depth > 0:
-            (gx0, gx1), yc = p.notch_x, (p.notch_y[0] + p.notch_y[1]) / 2
+            (gx0, gx1) = p.notch_x
+            yc = (p.notch_y[0] + p.notch_y[1]) / 2 if p.tray_groove_y is None else p.tray_groove_y
             hw = p.tray_groove_width / 2
             part -= prism(box(gx0, gx1, yc - hw, yc + hw), p.notch_depth - 0.01, p.notch_depth + p.tray_groove_depth)
 
@@ -235,4 +247,4 @@ def build_housing(board: Board, p: HousingParams = HousingParams()):
 # The Fusion housing (cad/atlas-*-housing.step): a roomier battery tray with sharp
 # corners; build.py compares this variant.
 REFERENCE_PARAMS = HousingParams(notch_y=(-23.25, -7.5), notch_depth=1.4, cnc_corner_r=0.0,
-                                 opening_corner_r=0.0)
+                                 opening_corner_r=0.0, tray_lip_corner_r=0.0)
