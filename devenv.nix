@@ -43,6 +43,14 @@ in
     echo "→ renders/atlas-{left,right}-{top,bottom}.png"
   '';
 
+  # PCBWay panel: both halves joined by two rails + the thumb-cluster bridge, with
+  # mouse bites -> pcb/atlas-panel.kicad_pcb (+ .kicad_pro/.kicad_dru). Stdlib Python,
+  # no pcbnew. See pcb/tools/panelize.py; args pass through (--pcb-dir, --out).
+  scripts.panel.exec = ''
+    cd "''${DEVENV_ROOT}"
+    python3 pcb/tools/panelize.py "$@"
+  '';
+
   # Printable PCB test-fit models (top side flat, hotswap pin holes drilled
   # through) for checking real switches and the case. See pcb/testfit.py.
   scripts.testfit.exec = ''
@@ -90,6 +98,7 @@ in
     echo ""
     echo "  atlas — KiCad PCB, case STEP files + ZMK firmware"
     echo "  render            render pcb/atlas-{left,right}.kicad_pcb to PNGs"
+    echo "  panel             build pcb/atlas-panel.kicad_pcb (PCBWay panel) from the halves"
     echo "  testfit           printable PCB test-fit models -> pcb/testfit/ (Bambu 3MF)"
     echo "  cad               build the case from the boards -> cad/out/, all checks (cached)"
     echo "  cad --fast        quick iteration: no reference compare, no thin-wall scan"
