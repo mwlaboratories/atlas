@@ -11903,7 +11903,7 @@
 	(footprint "ceoloide:diode_tht_sod123"
 		(layer "B.Cu")
 		(uuid "c23a6f5b-c549-46d1-b56f-a576edac116c")
-		(at 106 104.995 90)
+		(at 106 107.145 90)
 		(property "Reference" "D6"
 			(at 0 0 90)
 			(layer "B.SilkS")

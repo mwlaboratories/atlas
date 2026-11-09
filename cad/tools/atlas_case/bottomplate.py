@@ -119,7 +119,7 @@ class BottomplateParams:
     # --- battery bay under the PCB notch (the housing's notch recess is above it)
     bay_x: tuple = H.notch_x
     bay_y: tuple = (H.notch_y[0], H.notch_y[1], -3.0)   # front, step, PCB edge
-    bay_floors: tuple = (-5.95, -5.5)                    # front part, back part
+    bay_floors: tuple = (-5.5, -5.5)                     # front part, back part (= bottom + floor_skin)
     # the bay reaches under the diode lying along its back edge: x half-width and
     # how far past the diode's centre line it goes (diode frame, towards the bay = +y)
     bay_tongue: tuple = (2.469, 0.95)
@@ -434,8 +434,10 @@ def build_bottomplate(board: Board, p: BottomplateParams = BottomplateParams()):
 
     def cut(face, z0, z1=None):
         # every pocket that doesn't go through keeps at least floor_skin under it,
-        # so no floor is a single printed layer (see floor_skin)
-        if z0 > p.bottom:
+        # so no floor is a single printed layer (see floor_skin). Through cuts say so
+        # explicitly (z0 = bottom - 1); a pocket floor drawn for the thicker plate that
+        # now lies at or just below the bottom (the battery bay's -5.95) keeps its floor
+        if z0 > p.bottom - 0.5:
             # down onto the layer grid: no floor step thinner than a layer (a 0.1 mm
             # step prints as a stray line), and deeper only ever adds clearance
             z0 = max(p.bottom + math.floor((z0 - p.bottom) / p.layer + 1e-6) * p.layer,

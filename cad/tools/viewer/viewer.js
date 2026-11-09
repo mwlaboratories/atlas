@@ -145,12 +145,17 @@ document.querySelectorAll("#halves button").forEach((b) => b.addEventListener("c
 }));
 
 // --- loading ------------------------------------------------------------------------------
+let serverState = null;                 // view.py's build state, from pollStatus
 async function poll() {
   try {
     const r = await fetch(`view/view.json?t=${Date.now()}`);
     if (r.ok) {
       const m = await r.json();
-      if (m.version !== version) { manifest = m; version = m.version; await load(false); }
+      // only take a new build once the server says it's finished (or can't tell us):
+      // mid-build publishes (one half, then checks) would stall the page with reloads
+      if (m.version !== version && serverState !== "building" && serverState !== "waiting") {
+        manifest = m; version = m.version; await load(false);
+      }
     }
   } catch (e) { document.getElementById("status").textContent = "waiting for `cad`…"; }
   setTimeout(poll, 1500);
@@ -162,7 +167,7 @@ let builtText = "";
 async function pollStatus() {
   try {
     const r = await fetch(`status?half=${half}&t=${Date.now()}`);
-    if (r.ok) showStatus(await r.json());
+    if (r.ok) { const st = await r.json(); serverState = st.state; showStatus(st); }
   } catch (e) { /* server restarting */ }
   setTimeout(pollStatus, 1000);
 }

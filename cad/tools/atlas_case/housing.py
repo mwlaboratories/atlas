@@ -53,6 +53,11 @@ class HousingParams:
     # clearance is kept at 0.2 so the wood over the tray stays 3.6 mm for the CNC
     # (0.3 gave 1.5 and thinner wood; user, 2026-11-08).
     notch_depth: float | None = 1.4          # kept at 1.4 for the wood over the tray (user)
+    # a groove in that roof where the pouch is thickest: this wide, centred on the tray
+    # opening (between notch_y), along the tray's whole length, this much deeper (user,
+    # 2026-11-09); width 0 = none
+    tray_groove_width: float = 9.5
+    tray_groove_depth: float = 0.25
     battery: tuple = (35.0, 15.0, 7.0)       # 701535 pouch: length (x), width (y), thickness (z)
     battery_clearance: float = 0.2
     # the bottom plate's bay floor as printed (its bottom + floor_skin); keep in step with
@@ -204,6 +209,10 @@ def build_housing(board: Board, p: HousingParams = HousingParams()):
     # battery tray ceiling: recess under the frame at the notch
     if p.notch_depth > 0:
         part -= prism(tray_face(p, p.notch_y[1], recess=True), 0, p.notch_depth)
+        if p.tray_groove_width > 0 and p.tray_groove_depth > 0:
+            (gx0, gx1), yc = p.notch_x, (p.notch_y[0] + p.notch_y[1]) / 2
+            hw = p.tray_groove_width / 2
+            part -= prism(box(gx0, gx1, yc - hw, yc + hw), p.notch_depth - 0.01, p.notch_depth + p.tray_groove_depth)
 
     # XIAO pocket and USB-C slot through the side wall
     x0, x1, y0, y1, d = p.usb_pocket
