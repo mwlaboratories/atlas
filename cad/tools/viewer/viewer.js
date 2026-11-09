@@ -19,11 +19,10 @@ const EXPLODE = { housing: 2, switchplate: 1, pcb: 0, cutop: 0, cubot: 0, parts:
 const TIGHT = 0.2;   // mm: passing gaps below this get an orange marker
 
 const canvas = document.getElementById("gl");
-// no MSAA (costly at high resolution); while the camera moves, half resolution
-const renderer = new THREE.WebGLRenderer({ canvas, antialias: false, alpha: true, powerPreference: "high-performance" });
-const DPR = Math.min(window.devicePixelRatio, 1.5);
-let PR = DPR;                                   // current pixel ratio (lowered while dragging)
-renderer.setPixelRatio(PR);
+// MSAA always; on a real GPU the still image is also supersampled (rendered at 2x the
+// screen's pixel ratio, the browser scales it down) and drags run at the screen's ratio.
+// Software rendering keeps the old cheap path: 1.5x cap, half resolution while dragging.
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: "high-performance" });
 // which renderer the browser really uses: a software fallback (SwiftShader / llvmpipe) is
 // the usual reason a simple scene lags on a big GPU (Chromium on Linux + NVIDIA)
 const GPU = (() => {
@@ -39,6 +38,11 @@ console.log("[atlas-gpu]", GPU, SOFTWARE ? "(SOFTWARE RENDERING)" : "");
   el.className = "pill " + (SOFTWARE ? "fail" : "ok");
   if (SOFTWARE) el.title = "the browser draws on the CPU; enable hardware acceleration / GPU for this browser";
 }
+const SCREEN = Math.max(window.devicePixelRatio || 1, 1);
+const DPR = SOFTWARE ? Math.min(SCREEN, 1.5) : Math.min(SCREEN * 2, 4);   // at rest
+const DRAG_PR = SOFTWARE ? DPR * 0.5 : SCREEN;                             // while the camera moves
+let PR = DPR;                                   // current pixel ratio (lowered while dragging)
+renderer.setPixelRatio(PR);
 renderer.localClippingEnabled = true;
 const persp = new THREE.PerspectiveCamera(35, 1, 0.5, 5000);
 const ortho = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 5000);
@@ -61,7 +65,7 @@ const perf = { frames: 0, ms: 0, max: 0, tris: 0, calls: 0, t0: performance.now(
 window.atlasPerf = perf;                 // read from the console / devtools: atlasPerf.last
 const redraw = () => { dirty = true; };
 controls.addEventListener("change", redraw);
-controls.addEventListener("start", () => { PR = DPR * 0.5; renderer.setPixelRatio(PR); redraw(); });
+controls.addEventListener("start", () => { PR = DRAG_PR; renderer.setPixelRatio(PR); redraw(); });
 controls.addEventListener("end", () => { PR = DPR; renderer.setPixelRatio(PR); redraw(); });
 window.addEventListener("resize", redraw);
 for (const el of [document.querySelector("header"), document.getElementById("side")])
