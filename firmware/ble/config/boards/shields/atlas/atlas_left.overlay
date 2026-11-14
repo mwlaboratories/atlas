@@ -1,13 +1,18 @@
 #include "atlas.dtsi"
 
 &kscan0 {
-    interrupt-gpios = <&xiao_d 5 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>;
-    gpios
-        = <&xiao_d 0 GPIO_ACTIVE_HIGH>    /* P0 */
-        , <&xiao_d 1 GPIO_ACTIVE_HIGH>    /* P1 */
-        , <&xiao_d 2 GPIO_ACTIVE_HIGH>    /* P2 */
-        , <&xiao_d 3 GPIO_ACTIVE_HIGH>    /* P3 */
-        , <&xiao_d 4 GPIO_ACTIVE_HIGH>    /* P4 */
+    row-gpios
+        = <&gpio0 19 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>   /* ROW0  Plus pad 16, P0.19 */
+        , <&xiao_d 1 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>   /* ROW1  D1 */
+        , <&gpio0 15 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>   /* ROW2  Plus pad 15, P0.15 */
+        , <&xiao_d 0 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>   /* ROW3  D0, thumbs */
+        ;
+    col-gpios
+        = <&xiao_d 5 GPIO_ACTIVE_HIGH>                      /* COL0  D5 */
+        , <&xiao_d 4 GPIO_ACTIVE_HIGH>                      /* COL1  D4 */
+        , <&xiao_d 3 GPIO_ACTIVE_HIGH>                      /* COL2  D3 */
+        , <&gpio1 1 GPIO_ACTIVE_HIGH>                       /* COL3  Plus pad 17, P1.01 */
+        , <&xiao_d 2 GPIO_ACTIVE_HIGH>                      /* COL4  D2 */
         ;
 };
 

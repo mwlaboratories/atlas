@@ -5,13 +5,18 @@
 };
 
 &kscan0 {
-    interrupt-gpios = <&xiao_d 5 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>;
-    gpios
-        = <&xiao_d 7 GPIO_ACTIVE_HIGH>    /* P0 */
-        , <&xiao_d 8 GPIO_ACTIVE_HIGH>    /* P1 */
-        , <&xiao_d 9 GPIO_ACTIVE_HIGH>    /* P2 */
-        , <&xiao_d 10 GPIO_ACTIVE_HIGH>    /* P3 */
-        , <&xiao_d 6 GPIO_ACTIVE_HIGH>    /* P4 */
+    row-gpios
+        = <&gpio1 3 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>    /* ROW0  Plus pad 21, P1.03 */
+        , <&xiao_d 7 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>   /* ROW1  D7 */
+        , <&xiao_d 6 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>   /* ROW2  D6 */
+        , <&xiao_d 5 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>   /* ROW3  D5, thumbs */
+        ;
+    col-gpios
+        = <&xiao_d 10 GPIO_ACTIVE_HIGH>                     /* COL0  D10 */
+        , <&gpio1 7 GPIO_ACTIVE_HIGH>                       /* COL1  Plus pad 23, P1.07 */
+        , <&xiao_d 9 GPIO_ACTIVE_HIGH>                      /* COL2  D9 */
+        , <&gpio1 5 GPIO_ACTIVE_HIGH>                       /* COL3  Plus pad 22, P1.05 */
+        , <&xiao_d 8 GPIO_ACTIVE_HIGH>                      /* COL4  D8 */
         ;
 };
 
