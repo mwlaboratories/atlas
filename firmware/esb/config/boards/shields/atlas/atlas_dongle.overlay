@@ -42,4 +42,35 @@
         display-name = "Default Layout";
         transform = <&default_transform>;
     };
+
+    /*
+     * Trackpoints (ADS1220=1 builds of the halves): each half sends its
+     * pointer events over the split, reg = its ESB peripheral id. A half
+     * built without the ADS1220 just never sends any.
+     */
+    split_inputs {
+        #address-cells = <1>;
+        #size-cells = <0>;
+
+        trackpoint_left: trackpoint@1 {
+            compatible = "zmk,input-split";
+            reg = <1>;
+        };
+
+        trackpoint_right: trackpoint@2 {
+            compatible = "zmk,input-split";
+            reg = <2>;
+        };
+    };
+
+    /* Both move the pointer, unscaled; speed and scroll layers are input-processors to add here. */
+    trackpoint_left_listener {
+        compatible = "zmk,input-listener";
+        device = <&trackpoint_left>;
+    };
+
+    trackpoint_right_listener {
+        compatible = "zmk,input-listener";
+        device = <&trackpoint_right>;
+    };
 };

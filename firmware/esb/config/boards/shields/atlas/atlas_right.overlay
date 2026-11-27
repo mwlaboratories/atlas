@@ -20,6 +20,5 @@
         ;
 };
 
-/* ADS1220 strain-gauge pointing (SPI, U2 per pcb/atlas-*.kicad_pcb): not fitted
- * yet, so off. When it is: build with ADS1220=1 (see build-firmware.sh), which
- * adds ads1220.conf + ads1220.overlay next to this file. */
+/* ADS1220 strain-gauge trackpoint (U2, SPI): off in a plain build. ADS1220=1
+ * (see build-firmware.sh) adds ads1220.conf + ads1220_right.overlay. */
