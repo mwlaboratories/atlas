@@ -1,0 +1,62 @@
+/*
+ * Left half, ADS1220 pins (U2 in pcb/atlas-left.kicad_pcb):
+ *   SCLK D8 (P1.13)   DIN D9 (P1.14)   DOUT D10 (P1.15)   CS D7 (P1.12)   DRDY D6 (P1.11)
+ * D9/D10 are the other way round from the XIAO's default SPI (MISO D9,
+ * MOSI D10), so the bus gets its own pinctrl.
+ */
+#include "ads1220.dtsi"
+
+&pinctrl {
+    ads1220_spi_default: ads1220_spi_default {
+        group1 {
+            psels = <NRF_PSEL(SPIM_SCK, 1, 13)>,
+                    <NRF_PSEL(SPIM_MOSI, 1, 14)>,
+                    <NRF_PSEL(SPIM_MISO, 1, 15)>;
+        };
+    };
+
+    ads1220_spi_sleep: ads1220_spi_sleep {
+        group1 {
+            psels = <NRF_PSEL(SPIM_SCK, 1, 13)>,
+                    <NRF_PSEL(SPIM_MOSI, 1, 14)>,
+                    <NRF_PSEL(SPIM_MISO, 1, 15)>;
+            low-power-enable;
+        };
+    };
+};
+
+&xiao_spi {
+    cs-gpios = <&xiao_d 7 GPIO_ACTIVE_LOW>;
+};
+
+&ads1220 {
+    drdy-gpios = <&xiao_d 6 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
+};
+
+/ {
+    /*
+     * This half is the central: its own stick feeds a listener directly, the
+     * right half's arrives over the split (same reg as in ads1220_right.overlay).
+     * Both move the pointer, unscaled; speed and scroll layers are
+     * input-processors to add on the listeners.
+     */
+    trackpoint_left_listener {
+        compatible = "zmk,input-listener";
+        device = <&trackpoint>;
+    };
+
+    split_inputs {
+        #address-cells = <1>;
+        #size-cells = <0>;
+
+        trackpoint_right: trackpoint@1 {
+            compatible = "zmk,input-split";
+            reg = <1>;
+        };
+    };
+
+    trackpoint_right_listener {
+        compatible = "zmk,input-listener";
+        device = <&trackpoint_right>;
+    };
+};

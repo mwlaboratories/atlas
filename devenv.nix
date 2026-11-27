@@ -87,11 +87,12 @@ in
     echo "→ images/keymap.svg"
   '';
 
-  # Build both firmware halves with the strata layer reporter (zmk-strata, pulled
-  # via west.yml) baked into the central. Logic lives in build-firmware.sh to avoid Nix
+  # Build both BLE firmware halves; old_prototype (the default) has the strata
+  # layer reporter (zmk-strata, pulled via west.yml) baked into the central.
+  # Arguments go to build-firmware.sh (`firmware atlas`). Logic lives there to avoid Nix
   # string-escaping; it drops into the zmk-nix dev shell for west + the SDK.
   scripts.firmware.exec = ''
-    exec bash "''${DEVENV_ROOT}/firmware/ble/build-firmware.sh"
+    exec bash "''${DEVENV_ROOT}/firmware/ble/build-firmware.sh" "$@"
   '';
 
   enterShell = ''
@@ -106,6 +107,7 @@ in
     echo "  cad print         build + cad/out/atlas-case.3mf for Bambu (one part per plate)"
     echo "  draw-keymap       regenerate images/keymap.svg from the keymap"
     echo "  firmware          build old_prototype_{left,right}.uf2 (left = + strata)"
+    echo "  firmware atlas    BLE firmware for the PCB; ADS1220=1 adds the trackpoints"
     echo ""
   '';
 }

@@ -20,4 +20,5 @@
         ;
 };
 
-/* ADS1220 trackpoint ADC (SPI): pins per pcb/atlas-*.kicad_pcb (U2); driver = badjeff's module (TODO). */
+/* ADS1220 strain-gauge trackpoint (U2, SPI): off in a plain build. ADS1220=1
+ * (see build-firmware.sh) adds ads1220.conf + ads1220_right.overlay. */

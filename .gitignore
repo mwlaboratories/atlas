@@ -58,6 +58,8 @@ firmware/ble/zmk/
 firmware/ble/kb_zmk_ps2_mouse_trackpoint_driver/
 firmware/ble/zmk-raw-hid/
 firmware/ble/zmk-strata/
+firmware/ble/ads1220-zephyr-module/
+firmware/ble/analog-axis-hires-input-zephyr-module/
 
 # keymap-drawer intermediate (SVG lands in images/keymap.svg)
 nix/keymap.yaml

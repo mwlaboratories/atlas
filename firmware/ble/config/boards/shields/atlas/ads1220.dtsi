@@ -1,0 +1,107 @@
+/*
+ * ADS1220 strain-gauge trackpoint: U2 + Sprintek SK8707 (J1), one per half.
+ * Shared part; ads1220_{left,right}.overlay include this and add the pins.
+ *
+ * Circuit (pcb/atlas-*.kicad_pcb), the same as the bench rig at tag bench/ads1220:
+ *   AIN0 = stick x, AIN1 = stick y, REFP0/REFN0 = stick supply (REFN0 on GND),
+ *   AIN2 = midpoint of 2 x 2.4 kOhm across REFP0/REFN0.
+ *   x = AIN0 - AIN2, y = AIN1 - AIN2, ratiometric against REFP0/REFN0,
+ *   excitation from IDAC1 into REFP0.
+ *
+ * The properties below make the driver write the registers proven on the bench:
+ *   R0 = 0x1C (x) / 0x3C (y)   mux, gain 64, PGA on
+ *   R1 = 0x60                  175 SPS, single-shot
+ *   R2 = 0x44                  reference REFP0/REFN0, IDAC 250 uA
+ *   R3 = 0xA0                  IDAC1 -> REFP0, DRDY on its own pin
+ * SPI mode 1 comes from the driver.
+ */
+#include <zephyr/dt-bindings/input/input-event-codes.h>
+
+&xiao_spi {
+    compatible = "nordic,nrf-spim";
+    status = "okay";
+    pinctrl-0 = <&ads1220_spi_default>;
+    pinctrl-1 = <&ads1220_spi_sleep>;
+    pinctrl-names = "default", "sleep";
+
+    ads1220: ads1220@0 {
+        compatible = "ti,ads1220";
+        reg = <0>;
+        spi-max-frequency = <1000000>;
+        #io-channel-cells = <1>;
+        #address-cells = <1>;
+        #size-cells = <0>;
+        /* On for as long as the half is awake, as on the bench. Off in deep
+         * sleep: ZMK suspends the device, which sends POWERDOWN. */
+        idac-ua = <250>;
+
+        channel@0 {
+            reg = <0>;
+            zephyr,resolution = <24>;
+            zephyr,gain = "ADC_GAIN_64";
+            zephyr,reference = "ADC_REF_EXTERNAL0";   /* REFP0/REFN0 */
+            zephyr,acquisition-time = <175>;          /* this driver reads it as SPS */
+            zephyr,input-positive = <0>;              /* AIN0, x */
+            zephyr,input-negative = <2>;              /* AIN2 */
+            zephyr,current-source-pin = [05 00];      /* IDAC1 -> REFP0, IDAC2 off */
+        };
+
+        channel@1 {
+            reg = <1>;
+            zephyr,resolution = <24>;
+            zephyr,gain = "ADC_GAIN_64";
+            zephyr,reference = "ADC_REF_EXTERNAL0";
+            zephyr,acquisition-time = <175>;
+            zephyr,input-positive = <1>;              /* AIN1, y */
+            zephyr,input-negative = <2>;
+            zephyr,current-source-pin = [05 00];
+        };
+    };
+};
+
+/ {
+    /*
+     * Raw counts -> relative pointer motion, with the bench mapping per axis:
+     * rest position zeroed over 32 samples at boot (don't touch the stick
+     * then), 20000 counts of deadzone, then 4000 counts per step up to +-127
+     * (20000 + 127 * 4000 = 528000). The bench deadzone was radial; this
+     * driver only has one per axis.
+     */
+    trackpoint: trackpoint {
+        compatible = "analog-axis-hires";
+        /*
+         * <period  idle-ms period  idle-ms period>: sample back to back (two
+         * conversions at 175 SPS take longer than 8 ms), 50 ms after 3 s
+         * without a change, 250 ms after 10 s more. An output that stays the
+         * same counts as idle, also a steady full push, so the first step is
+         * long on purpose.
+         */
+        poll-period-downshift-ms = <8 3000 50 10000 250>;
+
+        trackpoint_x: axis-x {
+            io-channels = <&ads1220 0>;
+            in-min = <(-528000)>;
+            in-max = <528000>;
+            in-deadzone = <20000>;
+            in-calib-cycle = <32>;
+            out-min = <(-127)>;
+            out-max = <127>;
+            skip-change-comparator;   /* relative axis: report while held */
+            zephyr,axis-type = <INPUT_EV_REL>;
+            zephyr,axis = <INPUT_REL_X>;
+        };
+
+        trackpoint_y: axis-y {
+            io-channels = <&ads1220 1>;
+            in-min = <(-528000)>;
+            in-max = <528000>;
+            in-deadzone = <20000>;
+            in-calib-cycle = <32>;
+            out-min = <(-127)>;
+            out-max = <127>;
+            skip-change-comparator;
+            zephyr,axis-type = <INPUT_EV_REL>;
+            zephyr,axis = <INPUT_REL_Y>;
+        };
+    };
+};

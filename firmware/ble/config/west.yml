@@ -17,6 +17,14 @@ manifest:
     - name: kb_zmk_ps2_mouse_trackpoint_driver
       remote: badjeff
       revision: 2df4d6d0d305ed121b1efbf0a028b44b174dccc7
+    # ADS1220 strain-gauge trackpoint for the atlas PCB (ADS1220=1 builds only;
+    # inert otherwise): the ADC driver and the input driver on top of it.
+    - name: ads1220-zephyr-module
+      remote: badjeff
+      revision: main
+    - name: analog-axis-hires-input-zephyr-module
+      remote: badjeff
+      revision: main
     # Raw-HID transport for the strata layer reporter.
     - name: zmk-raw-hid
       remote: zzeneg

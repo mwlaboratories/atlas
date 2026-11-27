@@ -5,6 +5,17 @@
  */
 #include <dt-bindings/zmk/matrix_transform.h>
 
+/*
+ * The XIAO's default buses sit on pins this board uses for something else
+ * (SPI D8-D10: right-hand columns; I2C D4/D5: columns left, ADS1220 DOUT +
+ * thumb row right; UART D6/D7: ADS1220 DRDY/CS left, rows right). Off, so
+ * that switching on a bus driver can't hand them those pins. The ADS1220
+ * build turns SPI back on with its own pins (ads1220.dtsi).
+ */
+&xiao_spi { status = "disabled"; };
+&xiao_i2c { status = "disabled"; };
+&xiao_serial { status = "disabled"; };
+
 / {
     chosen {
         zmk,kscan = &kscan0;
