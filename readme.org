@@ -10,21 +10,16 @@
 34-key split ergonomic keyboard with trackpoint. Per-half XIAO nRF52840 Plus,
 BLE split, ZMK firmware, Choc V2 hotswap, 20 × 17 mm column stagger.
 
-** Status (October 2026)
+** Status (November 2026)
 
-- Daily driver: breakout-board prototype, Sprintek AIO trackpoint on the
-  left half. Pinned at the =proto/breakout-v1= tag.
-- PCB: hotswap board ordered (5 panels, fully assembled). Each panel holds
-  both halves.
-- ADS1220 strain-gauge trackpoint: firmware bench-proven (HID mouse,
-  radial deadzone, click-to-wake) at the =bench/ads1220= tag; on the PCB
-  per half.
+The first 5 test PCBs (v4.3) have been ordered.
 
 ** Repository
 
 | =cad/=                    | Case parts as STEP, per half: wooden housing, switch plate, bottom plate |
 | =pcb/=                    | KiCad project: =atlas-left=, =atlas-right= and =atlas-panel= (both halves, as ordered) |
-| =firmware/ble/=           | ZMK workspace, BLE split: shields =atlas= (the PCB; 4×5 col2row diode matrix) and =old_prototype= (breakout prototype) |
+| =firmware/ble/=           | ZMK workspace, BLE split: shields =atlas= (the PCB; 4×5 col2row diode matrix, ADS1220 trackpoints) and =old_prototype= (breakout prototype) |
+| =firmware/esb/=           | The same two shields with the halves on Enhanced ShockBurst to a USB dongle |
 | =images/=, =nix/=         | Photo, keymap drawing and the keymap-drawer setup |
 | =licenses/=               | License texts, see below |
 
